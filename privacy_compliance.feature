@@ -1,0 +1,288 @@
+@gdpr @privacy @compliance
+Feature: Privacy Compliance
+  As a Vauchi user
+  I want control over my personal data
+  So that my privacy rights are respected
+
+  Background:
+    Given I have an identity with contacts and settings
+
+  # ============================================================
+  # Data Export
+  # ============================================================
+
+  @export
+  Scenario: Export all my data
+    When I go to Settings > Privacy > Export My Data
+    And I confirm the export
+    Then I should receive a downloadable file
+    And the file should contain all my personal data
+    And the file should be in a machine-readable format (JSON)
+
+  @export
+  Scenario: Export includes all data types
+    When I export my data
+    Then the export should include:
+      | Data Type | Included |
+      | My contact card | Yes |
+      | My contacts list | Yes |
+      | My settings | Yes |
+      | My device list | Yes |
+      | My visibility labels | Yes |
+      | Update history | Yes |
+      | Recovery configuration | Yes |
+    And the export should NOT include contacts' private keys
+    And the export should be encrypted with my key
+
+  @export
+  Scenario: Export requires authentication
+    Given I request a data export
+    Then I should be required to authenticate (PIN/biometric)
+    And the export file should be encrypted
+    And a notification should be sent to all my devices
+
+  @export
+  Scenario: Export works offline
+    Given I am offline
+    When I export my data
+    Then the export should succeed for local data
+    And I should be informed that relay data may be incomplete
+
+  # ============================================================
+  # Data Deletion
+  # ============================================================
+
+  @deletion
+  Scenario: Delete my account
+    When I go to Settings > Privacy > Delete Account
+    And I confirm deletion by typing "DELETE"
+    And I confirm again
+    Then my identity should be deleted locally
+    And my data should be removed from all relays
+    And my contacts should be notified I'm gone
+    And I should return to the welcome screen
+
+  @deletion
+  Scenario: Deletion is thorough
+    When I delete my account
+    Then all local data should be wiped
+    And keychain/keystore entries should be removed
+    And cached files should be deleted
+    And database should be wiped
+    And no personal data should remain on device
+
+  @deletion
+  Scenario: Deletion notifies contacts
+    Given Alice has my contact
+    When I delete my account
+    Then Alice should receive a notification
+    And my card in Alice's contacts should be marked "Account deleted"
+    And Alice should be unable to send me updates
+
+  @deletion
+  Scenario: Grace period before permanent deletion
+    When I request account deletion
+    Then I should be told there is a 7-day grace period
+    And I should be able to cancel during this period
+    And after 7 days deletion should be permanent
+    And I should receive reminder notifications
+
+  @deletion
+  Scenario: Cancel deletion during grace period
+    Given I requested account deletion 3 days ago
+    When I go to Settings > Privacy
+    Then I should see "Deletion scheduled"
+    And I should be able to cancel
+    And canceling should restore my account fully
+
+  @deletion
+  Scenario: Delete specific contacts
+    Given I have a contact Bob
+    When I delete Bob from my contacts
+    Then Bob's data should be removed from my device
+    And Bob should not be notified (my choice to forget)
+    And I should be able to re-exchange later if needed
+
+  # ============================================================
+  # Consent
+  # ============================================================
+
+  @consent
+  Scenario: Consent collected on first launch
+    Given I am launching the app for the first time
+    When I reach the terms screen
+    Then I should see a clear privacy policy summary
+    And I should explicitly agree to the terms
+    And my consent should be recorded with timestamp
+    And I cannot proceed without agreeing
+
+  @consent
+  Scenario: View what I consented to
+    When I go to Settings > Privacy > Consent
+    Then I should see what I consented to
+    And I should see when I consented
+    And I should see the version of terms I agreed to
+
+  @consent
+  Scenario: Consent for optional features
+    Given I want to enable usage telemetry
+    When I toggle the telemetry option
+    Then I should see exactly what data would be collected
+    And I should explicitly consent
+    And I should be able to withdraw consent later
+
+  @consent
+  Scenario: Withdraw consent for telemetry
+    Given I previously consented to telemetry
+    When I disable telemetry in settings
+    Then data collection should stop immediately
+    And I should be offered to delete already collected data
+    And my withdrawal should be recorded
+
+  @consent
+  Scenario: Re-consent required for major changes
+    Given I consented to version 1.0 of privacy policy
+    When version 2.0 introduces new data collection
+    Then I should be prompted to re-consent
+    And I should see what changed
+    And I can continue to decline new collection
+
+  # ============================================================
+  # Privacy Information
+  # ============================================================
+
+  @transparency
+  Scenario: View privacy policy in app
+    When I go to Settings > Privacy Policy
+    Then I should see the full privacy policy
+    And it should be in my language if available
+    And it should be understandable (no legal jargon)
+
+  @transparency
+  Scenario: View what data is stored locally
+    When I go to Settings > Privacy > My Data
+    Then I should see a summary of stored data:
+      | Category | Description |
+      | Identity | Your contact card and encryption keys |
+      | Contacts | People you've exchanged with |
+      | Devices | Your linked devices |
+      | Settings | Your preferences |
+    And I should see that data is E2E encrypted
+
+  @transparency
+  Scenario: View what data is on relays
+    When I go to Settings > Privacy > Relay Data
+    Then I should see pending messages on relays
+    And I should see their expiration dates
+    And I should be able to delete them early
+
+  @transparency
+  Scenario: Understand E2E encryption
+    When I go to Settings > Privacy > How Your Data Is Protected
+    Then I should see an explanation of E2E encryption
+    And it should explain that Vauchi cannot read my data
+    And it should explain that only my contacts can read updates
+
+  # ============================================================
+  # Data Retention
+  # ============================================================
+
+  @retention
+  Scenario: Relay data expires automatically
+    Given I sent an update via relay
+    When 30 days pass without delivery
+    Then the update should be automatically deleted from the relay
+    And no personal data should persist on relays beyond TTL
+
+  @retention
+  Scenario: Local data persists until deleted
+    Given I have contacts and settings
+    Then local data should persist indefinitely
+    Until I explicitly delete it
+    And no automatic purging should occur without my consent
+
+  @retention
+  Scenario: View data retention settings
+    When I go to Settings > Privacy > Data Retention
+    Then I should see:
+      | Setting | Value |
+      | Relay message TTL | 30 days |
+      | Local data retention | Forever (until you delete) |
+      | Backup retention | Your control |
+    And I should understand each setting
+
+  # ============================================================
+  # Third-Party Sharing
+  # ============================================================
+
+  @sharing
+  Scenario: No data sold to third parties
+    Then Vauchi should never sell personal data
+    And no advertising profiles should be created
+    And no data should be shared for marketing
+    And this should be stated in the privacy policy
+
+  @sharing
+  Scenario: No tracking across apps
+    Then Vauchi should not track users across apps
+    And no device fingerprinting should occur
+    And no advertising IDs should be used
+    And no third-party analytics without consent
+
+  @sharing
+  Scenario: Relay operators cannot access content
+    Given I use a third-party relay
+    Then the relay operator should not be able to read my data
+    And only encrypted blobs should be visible to relays
+    And metadata should be minimized
+
+  # ============================================================
+  # Privacy Controls
+  # ============================================================
+
+  @controls
+  Scenario: Control visibility of my data
+    When I go to Settings > Privacy > Visibility
+    Then I should be able to configure who sees what
+    And I should have granular control per field
+    And I should be able to hide from specific contacts
+
+  @controls
+  Scenario: Disable read receipts
+    When I go to Settings > Privacy > Read Receipts
+    And I disable read receipts
+    Then contacts should not know when I read their updates
+    And I should not see when they read mine
+    And this preference should be respected
+
+  @controls
+  Scenario: Limit metadata exposure
+    When I go to Settings > Privacy > Minimize Metadata
+    Then I should be able to enable enhanced privacy
+    And this may include padding messages, random delays
+    And I should understand the tradeoffs
+
+  # ============================================================
+  # Audit & Verification
+  # ============================================================
+
+  @audit
+  Scenario: View access log
+    When I go to Settings > Privacy > Access Log
+    Then I should see when my data was accessed
+    And I should see which devices accessed it
+    And I should see export/deletion events
+
+  @audit
+  Scenario: Verify no unexpected data access
+    Given I have one device
+    When I view the access log
+    Then I should only see access from my device
+    And no unexpected access should appear
+    And I should be able to report suspicious activity
+
+  @audit
+  Scenario: Open source verification
+    Then Vauchi's source code should be publicly available
+    And users should be able to verify privacy claims
+    And cryptographic implementations should be auditable
