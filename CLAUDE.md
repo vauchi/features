@@ -17,6 +17,7 @@ These are the source of truth for TDD - shared by Rust, iOS, Android, and deskto
 - Use `Background` for shared setup
 - Tag scenarios: `@wip`, `@security`, `@slow` as appropriate
 - `future/` contains planned but not-yet-implemented features
+- `ideas/` contains ideas for new features. Not to be implemented. And should be ignored when implementing.
 
 ## Adding New Features
 

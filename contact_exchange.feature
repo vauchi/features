@@ -259,3 +259,95 @@ Feature: Contact Card Exchange
     Then Bob should be asked to confirm Alice is present
     And Alice should be asked to confirm Bob is present
     And the exchange should complete after both confirmations
+
+  # Edge Cases (Added 2026-01-21)
+
+  @edge-case @self-exchange
+  Scenario: Cannot exchange with yourself
+    Given Alice has generated an exchange QR code
+    When Alice scans her own QR code
+    Then the exchange should fail with "SelfExchange" error
+    And Alice should see "Cannot exchange with yourself"
+
+  @edge-case @duplicate
+  Scenario: Same QR scanned twice by same person
+    Given Alice has generated an exchange QR code
+    And Bob has scanned it and completed exchange
+    When Bob attempts to scan the same QR again
+    Then Bob should see "Already connected with Alice"
+    And no duplicate contact should be created
+
+  @edge-case @network
+  Scenario: Network failure during key exchange
+    Given Alice and Bob are mid-exchange
+    When the network drops during X3DH handshake
+    Then ephemeral keys should be discarded
+    And no partial state should be stored
+    And exchange should require a fresh start
+
+  @edge-case @prekey
+  Scenario: Exchange with stale prekey
+    Given Alice's prekey bundle is cached by Bob
+    When Alice has rotated her prekeys since Bob cached them
+    And Bob uses the cached stale prekey
+    Then the exchange should fail gracefully
+    And Bob should fetch fresh prekeys
+    And the exchange should be retried
+
+
+  @privacy @consent
+  Scenario: Deny exchange request
+    Given Alice sees Bob in the nearby list
+    When Alice sends an exchange request to Bob
+    And Bob selects "Decline" Then Alice should see "Exchange declined"
+    And no contact cards or keys should be shared
+
+  @privacy @consent
+  Scenario: Blocked user attempts exchange
+    Given Alice has previously blocked "Eve"
+    When Eve scans Alice's exchange QR code
+    Then the exchange should be automatically rejected
+    And Alice should not receive any notification
+    And Eve should see "Exchange failed"
+
+# Hardware & Resource Constraints
+  @hardware @battery
+  Scenario: Exchange blocked on low battery
+    Given Alice's device battery is below 5%
+    When Alice attempts to initiate an exchange
+    Then Alice should see "Battery too low for secure exchange"
+    And the QR code should not be generated
+
+  @hardware @storage
+  Scenario: Exchange fails due to full storage
+    Given Bob's device has zero available storage
+    When Bob scans Alice's QR code
+    Then the exchange should fail
+    And Bob should see "Storage full: cannot save contact"
+
+# Multi-User / Group Dynamics
+
+  @multi-user @proximity
+  Scenario: Simultaneous QR scans (Group mode)
+    Given Alice is displaying a "Group Exchange" QR code
+    And Bob and Charlie are both scanning it simultaneously
+    When both verify proximity via audio
+    Then Alice should receive contact cards from both Bob and Charlie
+    And Bob and Charlie should both receive Alice's card
+    But Bob and Charlie should NOT receive each other's cards
+
+# Identity & Spoofing
+  @security @spoofing
+  Scenario: Identity mismatch detection
+    Given Alice's QR code contains Public Key A
+    When Alice's device attempts to sign the exchange with Private Key B
+    Then the exchange should be aborted
+    And Bob should see "Identity verification error"
+
+# Time & Synchronization
+  @edge-case @clock-drift
+  Scenario: Exchange fails with significant clock drift
+    Given Alice's system clock is 1 hour behind real time
+    And Bob's clock is accurate When Alice and Bob attempt an exchange
+    Then the timestamped exchange token should be rejected
+    And Alice should see "Check your device time settings"

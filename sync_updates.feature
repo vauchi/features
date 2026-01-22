@@ -288,3 +288,39 @@ Feature: Sync and Updates
     Then updates should be processed in batches
     And UI should remain responsive
     And progress should be shown
+
+  # Clock Skew Handling (Added 2026-01-21)
+
+  @edge-case @clock-skew
+  Scenario: Sync handles clock skew between devices
+    Given Device A's clock is 1 hour ahead
+    And Device B has the correct time
+    When both devices make concurrent updates
+    Then version vectors should track causality correctly
+    And timestamp-based resolution should not give unfair advantage
+    And both devices should converge to the same state
+
+  @edge-case @clock-skew
+  Scenario: Extreme clock skew detection
+    Given Device A's clock is set to year 2100
+    When Device A sends an update
+    Then the system should detect the unrealistic timestamp
+    And version vector ordering should still work correctly
+
+  @edge-case @concurrent
+  Scenario: Detect truly concurrent updates
+    Given Device A and Device B are offline
+    And Device A updates field X at logical time 1
+    And Device B updates field X at logical time 1
+    When both come online simultaneously
+    Then version vectors should detect concurrent updates
+    And deterministic tie-breaker should be applied
+    And both devices should converge to the same winner
+
+  @edge-case @network
+  Scenario: Network partition during sync
+    Given Device A and Device B are syncing
+    When network connection drops mid-sync
+    Then partial updates should not be committed
+    And sync should resume from last checkpoint
+    And no data corruption should occur

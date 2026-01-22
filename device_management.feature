@@ -269,3 +269,93 @@ Feature: Device Management
     When Device A is about to be replaced
     Then I should be able to designate Device B as primary
     And Device B should handle all primary device functions
+
+  # Race Condition Edge Cases (Added 2026-01-21)
+
+  @edge-case @race-condition
+  Scenario: Concurrent device linking attempts
+    Given Device A is showing a linking code
+    And Device B and Device C both scan it simultaneously
+    When both attempt to link at the same time
+    Then only one device should successfully link
+    And the other should receive "Linking code already used"
+    And no duplicate devices should be created
+
+  @edge-case @race-condition
+  Scenario: Concurrent link and revoke
+    Given Device B is linked
+    And Device A initiates revocation of Device B
+    And Device C attempts to link simultaneously
+    When both operations race
+    Then both operations should complete correctly
+    And device registry should remain consistent
+    And version should be incremented for each change
+
+  @edge-case @duplicate
+  Scenario: Link same device twice
+    Given Device B is already linked to my identity
+    When I attempt to link Device B again
+    Then I should see "Device already linked"
+    And no duplicate entry should be created
+    And no duplicate entry should be created in the device registry
+    And the existing sync session for Device B should be refreshed
+
+  @edge-case @version
+  Scenario: Device registry version tracking
+    Given I have linked devices
+    When I add a new device
+    Then the registry version should increment
+    When I revoke a device
+    Then the registry version should increment again
+    And version should enable sync conflict detection
+
+
+  @edge-case @interruption
+  Scenario: Interrupted initial sync
+    Given I am linking Device B to Device A
+    And the data transfer is 50% complete
+    When Device B loses internet connection
+    Then Device B should pause the process
+    And Device B should NOT show as a functional device in the registry
+    And the process should resume or restart cleanly when reconnected
+
+  @edge-case @storage
+  Scenario: Insufficient storage for sync
+    Given Device B has only 10MB of free space
+    And my identity data is 50MB
+    When I attempt to link Device B
+    Then the system should pre-check storage
+    And linking should be blocked with "Insufficient Storage" error
+
+  @edge-case @identity-collision
+  Scenario: Linking to a device that already has a different identity
+    Given Device B is already set up with identity "Bob"
+    When I try to link Device B to identity "Alice"
+    Then Device B must prompt: "Existing data will be wiped. Proceed?"
+    And "Bob's" data must be securely erased before "Alice's" data is synced
+
+
+  @edge-case @timezone
+  Scenario: Timezone change during sync
+    Given Device A is in London (UTC+0) and Device B is linked
+    When I travel to New York (UTC-5) and Device A updates its wall clock
+    And I edit a contact on Device A in New York
+    Then Device A should use a UTC-based timestamp for the sync
+    And Device B should correctly identify the New York edit as the "latest"
+    And the change should sync to Device B despite the 5-hour local time jump
+
+  @edge-case @clock-skew
+  Scenario: Backward clock jump (Clock Skew)
+    Given Device A's system clock is manually moved back by 1 hour
+    When I make a change to my profile
+    Then the sync engine should detect the backward jump
+    And it should increment the Logical Counter instead of using the regressed wall-clock time
+    And the change must still propagate as the "most recent" version to other devices
+
+  @edge-case @expiry
+  Scenario: Linking code ignores timezone
+    Given Device A generates a linking code in Tokyo (UTC+9)
+    And Device B is in Los Angeles (UTC-8)
+    When Device B scans the code within 5 minutes of real-world time
+    Then the linking should succeed
+    And the 5-minute expiry should be calculated using absolute UTC time, not local time
