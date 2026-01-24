@@ -34,3 +34,39 @@ These are the source of truth for TDD - shared by Rust, iOS, Android, and deskto
 - Use snake_case: `contact_exchange.feature`
 - One feature per file
 - Group related scenarios within a feature
+
+## Git Workflow
+
+This repo (`vauchi/features`) follows the standard Vauchi branch strategy.
+
+### Branch Types
+
+| Type | Use Case | Example |
+|------|----------|---------|
+| `feature/` | New feature specs | `feature/remote-content-updates` |
+| `bugfix/` | Fix spec errors | `bugfix/exchange-scenario-typo` |
+| `refactor/` | Reorganize specs | `refactor/split-large-feature` |
+
+### Cross-Repo Changes
+
+Feature specs typically accompany implementation in other repos. Use the **same branch name**:
+
+```bash
+# Feature spec + implementation + planning
+git -C features checkout -b feature/remote-content-updates
+git -C core checkout -b feature/remote-content-updates
+git -C _docs checkout -b feature/remote-content-updates
+```
+
+### Linking MRs
+
+In the MR description, link to related MRs:
+
+```markdown
+## Related MRs
+
+- vauchi/docs!15 - Planning documents
+- vauchi/core!78 - Implementation
+```
+
+Format: `{group}/{project}!{mr_number}`
