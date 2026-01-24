@@ -1,32 +1,39 @@
-@social @validation @trust
-Feature: Social Profile Validation
+@validation @trust
+Feature: Field Validation
   As a Vauchi user
-  I want to verify that social profiles belong to my contacts
-  So that I can trust the social links they share are authentic
+  I want to verify that contact fields belong to my contacts
+  So that I can trust the information they share is authentic
 
   Background:
     Given I have an existing identity as "Alice"
     And I have a contact "Bob" in my contacts
-    And Bob has a social field for "twitter" with value "@bob_smith"
+    And Bob has the following fields:
+      | type    | name     | value                |
+      | social  | twitter  | @bob_smith           |
+      | email   | work     | bob@example.com      |
+      | phone   | mobile   | +1-555-123-4567      |
+      | website | blog     | https://bob.dev      |
+      | address | home     | 123 Main St, City    |
+      | custom  | signal   | bob.42               |
 
   # Viewing Validation Status
 
   @view-status
-  Scenario: View unvalidated social profile
+  Scenario: View unvalidated field
     Given no one has validated Bob's Twitter profile
     When I view Bob's contact card
     Then the Twitter field should show validation score 0
     And the field should be marked as "unverified"
 
   @view-status
-  Scenario: View partially validated social profile
+  Scenario: View partially validated field
     Given 2 contacts have validated Bob's Twitter profile
     When I view Bob's contact card
     Then the Twitter field should show validation score 2
     And the field should be marked as "partially verified"
 
   @view-status
-  Scenario: View highly validated social profile
+  Scenario: View highly validated field
     Given 5 or more contacts have validated Bob's Twitter profile
     When I view Bob's contact card
     Then the Twitter field should show validation score 5+
@@ -34,7 +41,7 @@ Feature: Social Profile Validation
 
   # Validating Social Profiles
 
-  @validate
+  @validate @social
   Scenario: Validate a contact's social profile
     Given I am viewing Bob's contact card
     And Bob has a Twitter profile "@bob_smith"
@@ -45,13 +52,13 @@ Feature: Social Profile Validation
     And Bob should be notified that I validated their profile
 
   @validate
-  Scenario: Cannot validate own social profile
+  Scenario: Cannot validate own field
     Given I have a Twitter field "@alice_wonder"
     When I view my own contact card
     Then I should not see a "Verify" option on my Twitter field
 
   @validate
-  Scenario: Cannot validate same profile twice
+  Scenario: Cannot validate same field twice
     Given I have already validated Bob's Twitter profile
     When I view Bob's contact card
     Then the Twitter field should show "You verified this"
@@ -64,6 +71,87 @@ Feature: Social Profile Validation
     And I confirm the revocation
     Then my validation should be removed
     And Bob's Twitter validation score should decrease by 1
+
+  # Email Validation
+
+  @validate @email
+  Scenario: Validate a contact's email address
+    Given Bob has an email field "bob@example.com"
+    When I tap "Verify" on the email field
+    And I confirm "I recognize this as Bob's email"
+    Then my validation should be recorded
+    And Bob's email validation score should increase by 1
+
+  @validate @email
+  Scenario: Email validation shows trust level
+    Given Bob's email has 3 validations
+    When I view Bob's contact card
+    Then the email field should show trust level "partial confidence"
+
+  # Phone Validation
+
+  @validate @phone
+  Scenario: Validate a contact's phone number
+    Given Bob has a phone field "+1-555-123-4567"
+    When I tap "Verify" on the phone field
+    And I confirm "I recognize this as Bob's phone"
+    Then my validation should be recorded
+    And Bob's phone validation score should increase by 1
+
+  @validate @phone
+  Scenario: Phone validation persists when email changes
+    Given Bob's phone has 5 validations
+    When Bob updates his email address
+    Then Bob's phone validation count should remain 5
+
+  # Website Validation
+
+  @validate @website
+  Scenario: Validate a contact's website
+    Given Bob has a website field "https://bob.dev"
+    When I tap "Verify" on the website field
+    And I confirm "I recognize this as Bob's website"
+    Then my validation should be recorded
+
+  @validate @website
+  Scenario: Website validation requires exact URL match
+    Given Bob's website "https://bob.dev" has 5 validations
+    When Bob changes his website to "https://bob.dev/new"
+    Then the validation count should reset to 0
+
+  # Address Validation
+
+  @validate @address
+  Scenario: Validate a contact's address
+    Given Bob has an address field "123 Main St"
+    When I tap "Verify" on the address field
+    And I confirm "I've been to this address for Bob"
+    Then my validation should be recorded
+
+  # Custom Field Validation
+
+  @validate @custom
+  Scenario: Validate a custom field
+    Given Bob has a custom field "signal" with value "bob.42"
+    When I tap "Verify" on the custom field
+    And I confirm "I recognize this Signal handle as Bob's"
+    Then my validation should be recorded
+
+  # Multiple Field Types
+
+  @multiple @all-types
+  Scenario: Each field type has independent validation
+    Given Bob has fields with the following validations:
+      | type    | name    | validations |
+      | social  | twitter | 5           |
+      | email   | work    | 3           |
+      | phone   | mobile  | 2           |
+      | website | blog    | 0           |
+    When I view Bob's contact card
+    Then Twitter should show "verified" (high confidence)
+    And email should show "partial confidence"
+    And phone should show "low confidence"
+    And website should show "unverified"
 
   # Validation Propagation
 
@@ -134,7 +222,7 @@ Feature: Social Profile Validation
   # Validation on Profile Changes
 
   @profile-change
-  Scenario: Validation resets when profile value changes
+  Scenario: Validation resets when field value changes
     Given Bob's Twitter "@bob_smith" has 5 validations
     When Bob changes his Twitter to "@bob_new_handle"
     Then the validation count should reset to 0
@@ -150,8 +238,8 @@ Feature: Social Profile Validation
   # Edge Cases
 
   @edge-cases
-  Scenario: Validation for contact with no social profiles
-    Given Bob has no social fields
+  Scenario: Validation for contact with no fields
+    Given Bob has no contact fields
     When I view Bob's contact card
     Then I should not see any validation options
 
@@ -173,9 +261,9 @@ Feature: Social Profile Validation
 
   @incentives
   Scenario: View my validation contributions
-    Given I have validated 10 social profiles for various contacts
+    Given I have validated 10 fields for various contacts
     When I view my validation history
-    Then I should see a list of profiles I've validated
+    Then I should see a list of fields I've validated
     And I should see when I validated each one
 
   @incentives
