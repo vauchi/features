@@ -1,12 +1,23 @@
-# GitLab CI for Gherkin Feature Specifications
+# GitLab CI for vauchi-features
 #
-# Validates feature file syntax and structure
+# Gherkin feature specifications - lint-only pipeline
+#
+# Uses shared templates from vauchi/scripts for consistency.
+
+# Include shared templates
+include:
+  - project: 'vauchi/scripts'
+    ref: main
+    file:
+      - '/ci-templates/lint-docs.yml'
+      - '/ci-templates/mr-rules.yml'
 
 stages:
   - lint
 
-# Lint Gherkin feature files
+# Validate Gherkin feature files
 lint:gherkin:
+  extends: .mr-or-main
   stage: lint
   image: node:20-alpine
   before_script:
@@ -15,25 +26,27 @@ lint:gherkin:
     - |
       echo "Validating Gherkin feature files..."
       ERRORS=0
+
       for file in $(find . -name "*.feature" -not -path "./node_modules/*"); do
         echo "Checking: $file"
+
         # Parse the file to check for syntax errors
         gherkin-utils format "$file" > /dev/null 2>&1 || {
           echo "WARNING: Invalid Gherkin syntax in $file"
           ERRORS=$((ERRORS + 1))
         }
       done
+
       if [ $ERRORS -gt 0 ]; then
         echo "Found $ERRORS file(s) with warnings"
       fi
-      echo "Gherkin check complete"
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == "main"
-  allow_failure: true  # Advisory until all files are fixed
 
-# Check for common issues
+      echo "Gherkin check complete"
+  allow_failure: true
+
+# Check feature file structure
 lint:structure:
+  extends: .mr-or-main
   stage: lint
   image: alpine:latest
   script:
@@ -57,6 +70,3 @@ lint:structure:
       done
 
       echo "Structure checks passed!"
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == "main"
