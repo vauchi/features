@@ -1,44 +1,24 @@
 # Future Features (P2/P3)
 
-This directory contains feature specifications for planned but not-yet-implemented functionality. These are advanced features scheduled for post-launch development.
+This directory previously contained feature specifications for planned but not-yet-implemented functionality. These have been migrated to problem records following the Problem to Solution Flow.
 
-## Features in This Directory
+## Migrated Features
 
-| Feature | Description | Scenarios | Priority |
-|---------|-------------|-----------|----------|
-| `contact_recovery.feature` | Recover contacts via social vouching after device loss | 47 | P2 |
-| `duress_password.feature` | Decoy profile under coercion, silent alerts | 45 | P3 |
-| `hidden_contacts.feature` | Secret gesture/PIN to reveal contacts, plausible deniability | 36 | P3 |
-| `tor_mode.feature` | Route traffic through Tor, circuit management, bridge support | 29 | P3 |
+| Feature | Problem Record | Priority |
+|---------|---------------|----------|
+| Contact Recovery | _(listed but no spec existed)_ | P2 |
+| Duress Password | `docs/planning/problems/2026-01-26-duress-password/` | P3 |
+| Hidden Contacts | `docs/planning/problems/2026-01-26-hidden-contacts/` | P3 |
+| Tor Mode | `docs/planning/problems/2026-01-26-tor-mode/` | P3 |
 
-**Total**: 157 scenarios (unimplemented)
-
-## Priority Definitions
-
-### P2: Contact Recovery
-`contact_recovery.feature` is P2 because:
-- **Important for user confidence** - Users need assurance they can recover
-- **No external dependencies** - Uses existing relay infrastructure
-- **Clear implementation path** - Well-defined protocol
-
-### P3: Advanced Privacy
-Other features are P3 (post-launch) because:
-1. **Not required for MVP** - Core functionality works without them
-2. **Complex implementation** - Require significant additional infrastructure
-3. **Niche use cases** - Target users with specific threat models
-4. **Opt-in features** - Won't affect users who don't enable them
+Gherkin `.feature` files will be written as part of the implementation planning phase for each problem, per the Problem to Solution Flow.
 
 ## Implementation Notes
 
 When implementing these features:
 
-1. Create a planning document in `docs/planning/todo/`
-2. Follow TDD: Write failing tests first
-3. Consider security implications carefully (see `docs/THREAT_ANALYSIS.md`)
-4. These features may require platform-specific implementations
-
-## Related Documentation
-
-- `docs/THREAT_ANALYSIS.md` - Security threat model
-- `docs/planning/` - Implementation planning documents
-- Parent `features/README.md` - Full feature status overview
+1. Follow the Problem to Solution Flow (`docs/2026-01-23-problem-to-solution-flow.md`)
+2. Start from the problem record in `docs/planning/problems/`
+3. Write Gherkin features during the planning phase
+4. Follow TDD: Write failing tests first
+5. Consider security implications carefully (see `docs/THREAT_ANALYSIS.md`)
