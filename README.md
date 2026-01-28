@@ -17,15 +17,8 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 | visibility_labels | 41 | 0 | P2 | Post-launch |
 | relay_network | 43 | 20 | P2 | Basic relay done |
 | social_profile_validation | 33 | 0 | P3 | Low priority |
-| **future/** | | | P2-P3 | See `future/README.md` |
-| - contact_recovery | 47 | 0 | P2 | Social vouching recovery |
-| - tor_mode | 29 | 0 | P3 | Moved to `future/` |
-| - hidden_contacts | 36 | 0 | P3 | Moved to `future/` |
-| - duress_password | 45 | 0 | P3 | Moved to `future/` |
 
-**Total**: 514 scenarios | **Implemented**: ~245 (~48%)
-
-> **Note**: Future features have been moved to `features/future/` to clearly separate planned-but-unimplemented features from active development. See `features/future/README.md` for details.
+**Total**: 357 scenarios | **Implemented**: ~245 (~69%)
 
 ## Priority Definitions
 
@@ -100,34 +93,11 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 - Federation (planned)
 - Code: `vauchi-relay/`
 
-**future/contact_recovery.feature**
-- Recover contacts after device loss via social vouching
-- In-person verification with K contacts (configurable threshold)
-- Other contacts verify via mutual contact trust
-- Isolated contacts (no mutual vouchers) get warnings
-- Planning: `docs/planning/todo/contact-recovery.md`
-
 ### P3: Advanced Privacy (Post-Launch)
 
 **social_profile_validation.feature**
 - Crowd-sourced profile validation
 - OAuth verification (low priority)
-
-> The following P3 features have been moved to `features/future/`:
-
-**future/tor_mode.feature**
-- Route traffic through Tor
-- Circuit management, bridge support
-
-**future/hidden_contacts.feature**
-- Secret gesture/PIN to reveal contacts
-- Plausible deniability
-
-**future/duress_password.feature**
-- Decoy profile under coercion
-- Silent alerts
-
-See `features/future/README.md` for implementation notes.
 
 ## Running Scenario Tests
 
@@ -148,4 +118,4 @@ cargo test sync
 3. Implement minimal code to pass
 4. Refactor while green
 
-See `docs/TDD_RULES.md` for methodology.
+See `docs/2026-01-22-TDD_RULES.md` for methodology.

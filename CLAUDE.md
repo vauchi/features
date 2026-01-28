@@ -1,7 +1,7 @@
 # CLAUDE.md - Feature Specifications
 
 > **Inherits**: See [CLAUDE.md](../CLAUDE.md) for project-wide rules.
-> **Reference**: [TDD Rules](../_docs/2026-01-22-TDD_RULES.md)
+> **Reference**: [TDD Rules](../docs/2026-01-22-TDD_RULES.md)
 
 Top-level Gherkin `.feature` files defining expected behavior across all platforms.
 These are the source of truth for TDD - shared by Rust, iOS, Android, and desktop.
@@ -19,8 +19,6 @@ These are the source of truth for TDD - shared by Rust, iOS, Android, and deskto
 - Keep scenarios focused and atomic
 - Use `Background` for shared setup
 - Tag scenarios: `@wip`, `@security`, `@slow` as appropriate
-- `future/` contains planned but not-yet-implemented features
-- `ideas/` contains ideas for new features. Not to be implemented. Should be ignored when implementing.
 
 ## Adding New Features
 
@@ -55,7 +53,7 @@ Feature specs typically accompany implementation in other repos. Use the **same 
 # Feature spec + implementation + planning
 git -C features checkout -b feature/remote-content-updates
 git -C core checkout -b feature/remote-content-updates
-git -C _docs checkout -b feature/remote-content-updates
+git -C docs checkout -b feature/remote-content-updates
 ```
 
 ### Linking MRs
