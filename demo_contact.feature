@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 @demo @onboarding @ux
 Feature: Demo Contact
   As a new Vauchi user with no contacts

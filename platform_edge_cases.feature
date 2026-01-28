@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 @platform @edge-cases
 Feature: Platform-Specific Edge Cases
   As a Vauchi user on any platform

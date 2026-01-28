@@ -1,3 +1,6 @@
+<!-- SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me> -->
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+
 # Future Features (P2/P3)
 
 This directory previously contained feature specifications for planned but not-yet-implemented functionality. These have been migrated to problem records following the Problem to Solution Flow.

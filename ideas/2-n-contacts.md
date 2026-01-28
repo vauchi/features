@@ -1,3 +1,6 @@
+<!-- SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me> -->
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+
 # Web of Trust: N-of-M Contact Introduction
 
 ## The Question
