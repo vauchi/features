@@ -19,6 +19,50 @@ include:
 stages:
   - lint
 
+# Override shared template to exclude ideas/ directory from naming check.
+# Idea files don't need date prefixes — they're informal brainstorming docs.
+check-doc-naming:
+  script:
+    - |
+      ERRORS=0
+
+      for file in $(git diff --name-only origin/$CI_DEFAULT_BRANCH...HEAD -- '*.md' 2>/dev/null || find . -name "*.md" -type f); do
+        filename=$(basename "$file")
+        dirname=$(dirname "$file")
+
+        # Skip exceptions
+        case "$filename" in
+          README.md|CLAUDE.md|CONTRIBUTING.md|roadmap.md|PRINCIPLES.md)
+            continue
+            ;;
+        esac
+
+        # Skip diagrams and ideas directories
+        if echo "$dirname" | grep -qE "(diagrams|ideas)"; then
+          continue
+        fi
+
+        # Skip root level files
+        if [ "$dirname" = "." ]; then
+          continue
+        fi
+
+        # Check for date prefix (YYYY-MM-DD-)
+        if ! echo "$filename" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}-'; then
+          echo "ERROR: $file does not follow YYYY-MM-DD-name.md convention"
+          ERRORS=$((ERRORS + 1))
+        fi
+      done
+
+      if [ $ERRORS -gt 0 ]; then
+        echo ""
+        echo "Found $ERRORS file(s) not following naming convention."
+        echo "Files must be named: YYYY-MM-DD-description.md"
+        exit 1
+      fi
+
+      echo "All documentation files follow naming convention."
+
 # Validate Gherkin feature files
 lint:gherkin:
   extends: .mr-or-main
