@@ -291,3 +291,31 @@ Feature: Performance Requirements
     Then memory should be stable (no growth)
     And performance should not degrade
     And no resource leaks should occur
+
+  # ============================================================
+  # Pagination and Batch Operations (P15)
+  # ============================================================
+
+  @contacts @pagination
+  Scenario: Batch contact loading with pagination
+    Given I have 500 contacts
+    When I load contacts in pages of 50
+    Then each page should load within 100ms
+    And total memory usage should stay under 100MB
+    And I should be able to navigate to any page
+
+  @sync @coalesce
+  Scenario: Coalesce rapid edits before sync
+    Given I edit my contact card 20 times in 10 seconds
+    When the debounce timer expires
+    Then all edits should coalesce into a single sync payload
+    And only 1 sync message should be sent
+    And the final state should be correct
+
+  @sync @batch-encrypt
+  Scenario: Batch encryption for multi-contact sync
+    Given I have 50 pending updates for different contacts
+    When batch encryption runs
+    Then all 50 updates should be encrypted within 10 seconds
+    And each update should use the correct per-contact key
+    And the pipeline should not block the UI

@@ -283,3 +283,31 @@ Feature: Platform-Specific Edge Cases
     Then my identity should be recoverable
     And contacts should sync from relays
     And the experience should be smooth
+
+  # ============================================================
+  # Crash Recovery and Resilience (P18)
+  # ============================================================
+
+  @cross-platform @crash-recovery
+  Scenario: Sync state persisted atomically
+    Given a batch sync of 50 items is in progress
+    When the app crashes after processing 25 items
+    Then the checkpoint should record exactly 25 items synced
+    And on restart, sync should resume from item 26
+    And no items should be duplicated or orphaned
+
+  @ios @nfc
+  Scenario: CoreNFC session timeout handling
+    Given I am scanning an NFC tag on iOS
+    When the CoreNFC session times out after 60 seconds
+    Then the session should close gracefully
+    And I should see "NFC scan timed out"
+    And I should be able to retry immediately
+
+  @android @battery
+  Scenario: WorkManager respects battery optimization
+    Given the Android device is in battery saver mode
+    When a background sync is scheduled via WorkManager
+    Then sync frequency should be reduced to every 4 hours
+    And the sync should respect doze mode constraints
+    And critical notifications should still be delivered

@@ -290,3 +290,31 @@ Feature: Privacy Compliance
     Then Vauchi's source code should be publicly available
     And users should be able to verify privacy claims
     And cryptographic implementations should be auditable
+
+  # ============================================================
+  # Enhanced GDPR Compliance (P16)
+  # ============================================================
+
+  @deletion @relay
+  Scenario: Relay notified on account deletion
+    Given I have pending messages on a relay
+    When I delete my account
+    Then the relay should receive a deletion request
+    And all my mailbox data should be purged within 24 hours
+    And the relay should return a confirmation receipt
+
+  @consent @versioning
+  Scenario: Consent records include policy version
+    Given I consented to privacy policy version "1.0"
+    When I view my consent records
+    Then each record should show the policy version
+    And re-consent should be triggered on version change
+
+  @export @enhanced
+  Scenario: Export includes device list and recovery config
+    Given I have 2 linked devices and recovery configured
+    When I export my data
+    Then the export should include my device list
+    And the export should include my recovery configuration
+    And the export should include all consent records with versions
+    And the export should NOT include private keys
