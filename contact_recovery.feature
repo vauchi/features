@@ -4,8 +4,8 @@
 
 Feature: Contact Recovery
   As a user who lost their device
-  I want to recover my contact relationships through social vouching
-  So that I can reconnect with my contacts without pre-designated recovery contacts
+  I want to recover my contact relationships through social vouching by trusted contacts
+  So that I can reconnect with my contacts securely using only contacts I explicitly trust
 
   Background:
     Given the Vauchi app is installed
@@ -42,6 +42,117 @@ Feature: Contact Recovery
     Then the operation should fail with "Recovery threshold must be at least 1"
     When I try to set my recovery threshold to 20
     Then the operation should fail with "Recovery threshold cannot exceed 10"
+
+  # ============================================================
+  # Trusted Contacts for Recovery
+  # ============================================================
+
+  @recovery @trust
+  Scenario: New contacts are not recovery-trusted by default
+    Given Alice has exchanged contacts with Bob
+    Then Bob should not be marked as recovery-trusted
+    And Alice should have 0 recovery-trusted contacts
+
+  @recovery @trust
+  Scenario: Mark contact as trusted for recovery
+    Given Alice has exchanged contacts with Bob
+    When Alice marks Bob as trusted for recovery
+    Then Bob should appear as recovery-trusted in Alice's contact list
+    And Alice should have 1 recovery-trusted contact
+
+  @recovery @trust
+  Scenario: Remove recovery trust from contact
+    Given Alice has marked Bob as recovery-trusted
+    When Alice removes recovery trust from Bob
+    Then Bob should not be marked as recovery-trusted
+    And Alice should have 0 recovery-trusted contacts
+
+  @recovery @trust
+  Scenario: Trust state syncs across linked devices
+    Given Alice has two linked devices
+    And Alice has exchanged contacts with Bob
+    When Alice marks Bob as recovery-trusted on device 1
+    And device 1 syncs with device 2
+    Then Bob should be recovery-trusted on device 2
+
+  @recovery @trust
+  Scenario: Trust state is private to the user
+    Given Alice has marked Bob as recovery-trusted
+    Then Bob should not know he is marked as recovery-trusted
+    And no trust information is shared during contact exchange
+    And no trust information is included in sync updates to contacts
+
+  @recovery @trust
+  Scenario: Only trusted contacts can provide valid vouchers
+    Given Alice has 5 contacts: Bob, Charlie, Dave, Eve, and Frank
+    And Alice has marked Bob, Charlie, and Dave as recovery-trusted
+    And Alice's recovery threshold is 3
+    When Alice loses her device and creates a recovery claim
+    And Eve vouches for Alice's recovery
+    And Alice tries to add Eve's voucher to her recovery proof
+    Then the voucher should be rejected because Eve is not recovery-trusted
+
+  @recovery @trust
+  Scenario: Recovery succeeds with trusted vouchers only
+    Given Alice has marked Bob, Charlie, and Dave as recovery-trusted
+    And Alice's recovery threshold is 3
+    When Alice loses her device and creates a recovery claim
+    And Bob vouches for Alice
+    And Charlie vouches for Alice
+    And Dave vouches for Alice
+    And Alice adds all three vouchers
+    Then Alice's recovery proof should be valid
+    And the proof contains 3 trusted vouchers
+
+  @recovery @trust
+  Scenario: Insufficient trusted vouchers even with untrusted vouchers available
+    Given Alice has 5 contacts
+    And Alice has marked only Bob and Charlie as recovery-trusted
+    And Alice's recovery threshold is 3
+    When Alice loses her device and creates a recovery claim
+    And Bob, Charlie, Dave, Eve, and Frank all vouch for Alice
+    Then Alice can only add Bob's and Charlie's vouchers
+    And the recovery proof has 2 of 3 required vouchers
+    And the recovery threshold is not met
+
+  @recovery @trust
+  Scenario: Warning when trusted contacts below threshold
+    Given Alice's recovery threshold is 3
+    And Alice has only 2 recovery-trusted contacts
+    When Alice views her recovery settings
+    Then she should see a warning:
+      """
+      ⚠️ You have 2 trusted contacts but need at least 3 for recovery.
+      Mark 1 more contact as trusted to enable social recovery.
+      """
+
+  @recovery @trust
+  Scenario: Warning when removing trust drops below threshold
+    Given Alice has recovery threshold of 3
+    And Alice has exactly 3 recovery-trusted contacts: Bob, Charlie, Dave
+    When Alice removes recovery trust from Dave
+    Then Alice should see a warning:
+      """
+      ⚠️ You now have 2 trusted contacts, below your recovery threshold of 3.
+      If you lose your device, you may not be able to recover.
+      """
+
+  @recovery @trust
+  Scenario: Blocked contact cannot be recovery-trusted
+    Given Alice has blocked Bob
+    When Alice tries to mark Bob as recovery-trusted
+    Then the operation should fail
+    And Alice should see "Blocked contacts cannot be trusted for recovery"
+
+  @recovery @trust
+  Scenario: Removing trust does not affect other contact properties
+    Given Alice has marked Bob as recovery-trusted
+    And Alice has verified Bob's fingerprint
+    And Alice has set visibility rules for Bob
+    When Alice removes recovery trust from Bob
+    Then Bob's fingerprint verification should remain unchanged
+    And Bob's visibility rules should remain unchanged
+    And only the recovery trust flag should change
 
   # ============================================================
   # Identity Loss and New Identity Creation
@@ -119,15 +230,16 @@ Feature: Contact Recovery
     And Bob and Alice can communicate using the new shared key
 
   @recovery @vouching
-  Scenario: Collect multiple vouchers
+  Scenario: Collect multiple vouchers from trusted contacts
     Given Alice has recovery threshold of 3
+    And Alice has marked Bob, Charlie, and Betty as recovery-trusted
     And Alice has collected vouchers from:
       | voucher |
       | Bob     |
       | Charlie |
     When Alice meets Betty in person
     And Betty vouches for Alice's recovery
-    Then Alice has 3 vouchers
+    Then Alice has 3 trusted vouchers
     And the recovery threshold is met
 
   # ============================================================
@@ -137,7 +249,8 @@ Feature: Contact Recovery
   @recovery @proof
   Scenario: Create recovery proof when threshold met
     Given Alice has recovery threshold of 3
-    And Alice has collected 3 vouchers from Bob, Charlie, and Betty
+    And Alice has marked Bob, Charlie, and Betty as recovery-trusted
+    And Alice has collected 3 trusted vouchers from Bob, Charlie, and Betty
     When the recovery threshold is met
     Then a recovery proof is automatically created containing:
       | field     | value                              |
