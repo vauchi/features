@@ -11,13 +11,13 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 |---------|-----------|-------------|----------|-------|
 | identity_management | 15 | 15 | P0 | Core |
 | contact_card_management | 34 | 34 | P0 | Core |
-| contact_exchange | 27 | 12 | P0 | QR done, BLE/NFC planned |
+| contact_exchange | 27 | 12 | P0 | QR done, BLE stubbed, NFC removed |
 | contacts_management | 40 | 40 | P0 | Core |
 | device_management | 30 | 30 | P0 | Core |
 | sync_updates | 34 | 34 | P0 | WebSocket relay |
 | security | 34 | 34 | P1 | Crypto, signatures |
 | visibility_control | 26 | 26 | P1 | Per-contact rules |
-| visibility_labels | 41 | 0 | P2 | Post-launch |
+| visibility_labels | 41 | 26 | P2 | Core implemented (labels.rs, storage, API) |
 | relay_network | 43 | 20 | P2 | Basic relay done |
 | social_profile_validation | 33 | 0 | P3 | Low priority |
 
@@ -48,8 +48,8 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 **contact_exchange.feature**
 - QR code generation and scanning (implemented)
 - X3DH key exchange (implemented)
-- BLE proximity exchange (planned)
-- NFC tap exchange (planned)
+- BLE proximity exchange (stubbed)
+- NFC tap exchange (removed post-MVP)
 - Code: `vauchi-core/src/exchange/`
 
 **contacts_management.feature**
@@ -88,7 +88,7 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 **visibility_labels.feature**
 - Group contacts by label (Family, Work, etc.)
 - Bulk visibility rules
-- Status: Designed, not implemented
+- Code: `vauchi-core/src/contact/labels.rs`, `vauchi-core/src/storage/labels.rs`
 
 **relay_network.feature**
 - Store-and-forward relay
