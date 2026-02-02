@@ -318,3 +318,107 @@ Feature: Privacy Compliance
     And the export should include my recovery configuration
     And the export should include all consent records with versions
     And the export should NOT include private keys
+
+  # ============================================================
+  # Crypto-Shredding
+  # ============================================================
+
+  @crypto-shredding @deletion
+  Scenario: Card updates use per-contact content encryption key
+    Given Alice has exchanged cards with Bob
+    When Alice updates her contact card
+    Then the update is encrypted with a new content encryption key
+    And the previous content encryption key is no longer valid
+
+  @crypto-shredding @deletion
+  Scenario: Account deletion destroys all content encryption keys
+    Given Alice has exchanged cards with Bob and Carol
+    When Alice deletes her account
+    Then Alice's content encryption keys for Bob and Carol are destroyed
+    And Bob's copy of Alice's card becomes permanently unreadable
+    And Carol's copy of Alice's card becomes permanently unreadable
+
+  @crypto-shredding @deletion
+  Scenario: Crypto-shredding renders card unreadable without key
+    Given Bob has Alice's card encrypted with a content encryption key
+    When Alice's content encryption key is destroyed
+    Then Bob cannot decrypt Alice's card
+    And the encrypted card data is computationally irrecoverable
+
+  @crypto-shredding @deletion
+  Scenario: Contact display name is protected by crypto-shredding
+    Given Bob has Alice's card with display name "Alice Smith"
+    When Alice's content encryption key is destroyed
+    Then Bob cannot recover Alice's display name from storage
+    And no plaintext personal data remains in the database
+
+  # ============================================================
+  # Revocation Protocol
+  # ============================================================
+
+  @revocation @deletion
+  Scenario: Account deletion sends revocation signal to all contacts
+    Given Alice has exchanged cards with Bob and Carol
+    When Alice deletes her account
+    Then Bob receives an authenticated revocation signal from Alice
+    And Carol receives an authenticated revocation signal from Alice
+
+  @revocation @deletion @security
+  Scenario: Revocation signal is cryptographically authenticated
+    Given Bob receives a revocation signal claiming to be from Alice
+    When Bob verifies the signal's Ed25519 signature
+    Then the signature matches Alice's stored public key
+    And Bob removes Alice's card and encryption keys
+
+  @revocation @deletion @security
+  Scenario: Spoofed revocation signal is rejected
+    Given Bob receives a revocation signal claiming to be from Alice
+    When the signature does not match Alice's public key
+    Then Bob rejects the revocation signal
+    And Alice's card remains unchanged
+
+  @revocation @deletion @relay
+  Scenario: Offline contact receives revocation on reconnect
+    Given Alice deleted her account while Bob was offline
+    When Bob reconnects to the relay within 30 days
+    Then Bob receives the revocation signal
+    And Alice's card is removed from Bob's device
+
+  @revocation @security
+  Scenario: Card update arriving after revocation is discarded
+    Given Bob has processed a revocation signal from Alice
+    When a card update from Alice arrives on the relay
+    Then Bob discards the update
+    And no data for Alice is re-created
+
+  @revocation @security
+  Scenario: Replayed revocation for re-established contact is rejected
+    Given Alice previously revoked her account
+    And Alice created a new account and re-exchanged cards with Bob
+    When an attacker replays Alice's old revocation signal
+    Then Bob rejects the stale revocation
+    And Alice's new card remains intact
+
+  # ============================================================
+  # Multi-Device Deletion
+  # ============================================================
+
+  @deletion @sync
+  Scenario: Account deletion propagates across all user devices
+    Given Alice has devices A, B, and C
+    When Alice schedules account deletion from device A
+    Then device B receives the deletion schedule via device sync
+    And device C receives the deletion schedule via device sync
+    And all devices execute deletion after the grace period
+
+  # ============================================================
+  # Relay Purge
+  # ============================================================
+
+  @deletion @relay
+  Scenario: Account deletion purges all relay data including recovery proofs
+    Given Alice has stored blobs and recovery proofs on the relay
+    When Alice deletes her account
+    Then all blobs for Alice are deleted from the relay
+    And all device sync messages for Alice are deleted
+    And Alice's recovery proof is deleted

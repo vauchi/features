@@ -65,7 +65,7 @@ Feature: Message Delivery Guarantees
   @persistence
   Scenario: Message stored with TTL
     Given I send an update via relay
-    Then the relay should store it for at least 7 days
+    Then the relay should store it for at least 30 days
     And the TTL should be visible in delivery status
     And I should be able to resend if TTL expires
 
@@ -90,7 +90,7 @@ Feature: Message Delivery Guarantees
 
   @expiration
   Scenario: Notification before message expires
-    Given I sent an update to an offline contact 6 days ago
+    Given I sent an update to an offline contact 29 days ago
     When the message is approaching expiration
     Then I should receive a warning notification
     And the notification should say "Update to X will expire in 1 day"
@@ -98,9 +98,9 @@ Feature: Message Delivery Guarantees
 
   @expiration
   Scenario: Message expires after TTL
-    Given I sent an update 8 days ago
+    Given I sent an update 31 days ago
     And the recipient never came online
-    When the TTL (7 days) expires
+    When the TTL (30 days) expires
     Then the message should be removed from the relay
     And my delivery status should update to "Expired"
     And I should be prompted to try again

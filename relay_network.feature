@@ -42,7 +42,7 @@ Feature: Relay Network
   @usage
   Scenario: Relay blob expiration
     Given I sent an update to Dave via relay
-    And Dave has been offline for 7 days
+    And Dave has been offline for 30 days
     Then the relay should expire the update blob
     And my client should be notified of failed delivery
     And I should be prompted to retry later
@@ -181,7 +181,7 @@ Feature: Relay Network
   @abuse
   Scenario: Automatic cleanup of stale blobs
     Given blobs have been stored on a relay
-    When 7 days pass without retrieval
+    When 30 days pass without retrieval
     Then stale blobs should be automatically deleted
     And storage should be reclaimed
     And the sender should be notified
