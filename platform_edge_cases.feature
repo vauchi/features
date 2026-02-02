@@ -296,14 +296,6 @@ Feature: Platform-Specific Edge Cases
     And on restart, sync should resume from item 26
     And no items should be duplicated or orphaned
 
-  @ios @nfc
-  Scenario: CoreNFC session timeout handling
-    Given I am scanning an NFC tag on iOS
-    When the CoreNFC session times out after 60 seconds
-    Then the session should close gracefully
-    And I should see "NFC scan timed out"
-    And I should be able to retry immediately
-
   @android @battery
   Scenario: WorkManager respects battery optimization
     Given the Android device is in battery saver mode

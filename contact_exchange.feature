@@ -98,25 +98,6 @@ Feature: Contact Card Exchange
     And the exchange should be blocked
     And Alice should see "Security verification failed"
 
-  # NFC Exchange
-
-  @nfc @mobile
-  Scenario: NFC contact exchange
-    Given Alice and Bob have NFC-capable devices
-    And both have NFC enabled
-    When Alice and Bob tap their devices together
-    Then NFC exchange should initiate
-    And public keys should be exchanged
-    And both should confirm the exchange
-    And contact cards should be exchanged
-
-  @nfc @mobile
-  Scenario: NFC exchange timeout
-    Given Alice has initiated NFC mode
-    When 30 seconds pass without NFC contact
-    Then NFC mode should timeout
-    And Alice should return to the main screen
-
   # Exchange Protocol Security
 
   @security @exchange
@@ -356,63 +337,3 @@ Feature: Contact Card Exchange
     Then the timestamped exchange token should be rejected
     And Alice should see "Check your device time settings"
 
-  # ============================================================
-  # NFC Tag as Device (Mailbox-based exchange)
-  # ============================================================
-
-  @nfc @tag
-  Scenario: Create open NFC tag
-    Given Alice has an identity
-    When Alice creates an open NFC tag
-    Then the tag should contain Alice's public key and relay URL
-    And a mailbox should be created on the relay
-    And the tag should be writable to an NFC tag
-
-  @nfc @tag
-  Scenario: Contact scans open tag and sends introduction
-    Given Alice has created an open NFC tag
-    And Bob scans the tag with his device
-    When Bob confirms sending his introduction
-    Then Bob's introduction should be encrypted with Alice's exchange key
-    And the introduction should be submitted to Alice's mailbox on the relay
-    And Bob should see "Introduction sent"
-
-  @nfc @tag @inbox
-  Scenario: User receives and accepts introduction
-    Given Alice has an NFC tag with pending introductions
-    When Alice opens her introduction inbox
-    Then she should see Bob's introduction with his display name
-    And she should be able to accept or reject
-    When Alice accepts Bob's introduction
-    Then Bob should appear in Alice's contacts
-    And Alice's card should be queued for delivery to Bob
-
-  @nfc @tag @protected
-  Scenario: Create password-protected tag
-    Given Alice wants a password-protected NFC tag
-    When Alice creates a tag with password "secret123"
-    Then the tag should include a password salt and verifier
-    And scanning should require password entry before introduction
-
-  @nfc @tag @protected
-  Scenario: Wrong password rejected locally
-    Given Alice has a password-protected NFC tag
-    When Bob scans the tag and enters wrong password
-    Then password verification should fail locally
-    And no introduction should be sent
-    And Bob should see "Incorrect password"
-
-  @nfc @tag @rate-limit
-  Scenario: Rate limit introductions per mailbox
-    Given Alice's mailbox has received 10 introductions today
-    When an 11th introduction is submitted
-    Then the relay should reject it with a rate limit error
-    And the sender should see "Mailbox rate limit reached"
-
-  @nfc @tag @close
-  Scenario: Close mailbox remotely
-    Given Alice has an active NFC tag with a mailbox
-    When Alice closes the mailbox from her app
-    Then new introductions should be rejected by the relay
-    And existing pending introductions should still be fetchable
-    And Alice should be able to reopen the mailbox later
