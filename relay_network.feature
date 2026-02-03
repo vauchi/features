@@ -260,8 +260,12 @@ Feature: Relay Network
     And delivery should use alternative routes
 
   # Relay Federation - Message Offloading
+  # Phase 1 (static federation): implemented in relay!22
+  # Phase 2 (client multi-relay): pending
+  # Phase 3 (dynamic discovery): pending
+  # Phase 4 (mutual TLS): pending
 
-  @federation
+  @federation @phase1
   Scenario: Relay detects high storage usage
     Given a relay node has storage limits configured
     When stored blobs exceed 80% of capacity
@@ -269,7 +273,7 @@ Feature: Relay Network
     And it should attempt to redistribute oldest blobs to peer relays
     And new incoming blobs should still be accepted
 
-  @federation
+  @federation @phase1
   Scenario: Relay offloads messages to peer relays
     Given relay A is at 85% storage capacity
     And relay A knows about peer relays B and C
@@ -278,7 +282,7 @@ Feature: Relay Network
     And transferred blobs should be removed from relay A
     And relay A should record where blobs were sent
 
-  @federation
+  @federation @wip @phase3
   Scenario: Peer relay discovery
     Given a relay node starts up
     When it queries the relay registry
@@ -286,7 +290,7 @@ Feature: Relay Network
     And it should establish peer connections
     And it should exchange capacity information periodically
 
-  @federation
+  @federation @wip @phase3
   Scenario: Relay registry for peer discovery
     Given multiple relay nodes exist
     Then there should be a registry of known relays
@@ -294,7 +298,7 @@ Feature: Relay Network
     And relays should self-register on startup
     And the registry should remove unresponsive relays
 
-  @federation
+  @federation @wip @phase2
   Scenario: Client queries multiple relays for messages
     Given my messages may be on relay A or B
     When I sync for pending messages
@@ -302,7 +306,7 @@ Feature: Relay Network
     And messages should be collected from all sources
     And duplicate messages should be deduplicated
 
-  @federation
+  @federation @phase1
   Scenario: Relay includes forwarding hints
     Given relay A has offloaded blob X to relay B
     When the recipient queries relay A for messages
@@ -310,7 +314,7 @@ Feature: Relay Network
     And the client should fetch blob X from relay B
     And the hint should be temporary (TTL-based)
 
-  @federation
+  @federation @phase1
   Scenario: Offloaded messages preserve TTL
     Given a blob has 30 days remaining TTL
     When it is offloaded to another relay
@@ -318,7 +322,7 @@ Feature: Relay Network
     And the blob should not get extra lifetime from transfer
     And TTL should be included in transfer metadata
 
-  @federation
+  @federation @phase1
   Scenario: Relay refuses offload when at capacity
     Given relay B is at 95% capacity
     When relay A tries to offload blobs to relay B
@@ -326,7 +330,7 @@ Feature: Relay Network
     And relay A should try other peers
     And relay A should mark relay B as "full" temporarily
 
-  @federation
+  @federation @phase1
   Scenario: Graceful handling of relay shutdown
     Given relay A is shutting down for maintenance
     When it initiates graceful shutdown
@@ -334,7 +338,7 @@ Feature: Relay Network
     And it should deregister from the relay registry
     And clients should be directed to other relays
 
-  @federation
+  @federation @wip @phase3
   Scenario: Load balancing across relay network
     Given the relay network has varying capacity
     When a new blob needs to be stored
@@ -344,7 +348,7 @@ Feature: Relay Network
 
   # Federation Security
 
-  @federation @security
+  @federation @security @wip @phase4
   Scenario: Only authorized relays can join federation
     Given the relay federation uses mutual TLS
     When an unknown relay tries to join
@@ -352,14 +356,14 @@ Feature: Relay Network
     And federation traffic should be encrypted
     And relay identity should be verified
 
-  @federation @security
+  @federation @security @phase1
   Scenario: Blob integrity preserved during transfer
     Given a blob is being transferred between relays
     Then the blob should be transferred with its signature
     And the receiving relay should verify integrity
     And corrupted blobs should be rejected
 
-  @federation @security
+  @federation @security @phase1
   Scenario: Relay cannot read offloaded blobs
     Given relay A offloads encrypted blobs to relay B
     Then relay B receives the same encrypted data
