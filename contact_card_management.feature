@@ -201,14 +201,14 @@ Feature: Contact Card Management
     Given my contact card has no avatar
     When I add an avatar image
     Then my contact card should display the avatar
-    And the avatar should be under 64KB
+    And the avatar should be under 256KB
 
   @avatar
   Scenario: Avatar image too large
     Given I am adding an avatar
-    When I select an image larger than 64KB
-    Then the image should be automatically compressed
-    And the compressed avatar should be under 64KB
+    When I select an image larger than 256KB
+    Then I should see an error "Avatar too large"
+    And the avatar should not be saved
 
   @avatar
   Scenario: Remove avatar from contact card

@@ -271,7 +271,7 @@ Feature: Security
     And key exchange should use X25519
     And symmetric encryption should use XChaCha20-Poly1305
     And key derivation should use Argon2id
-    And hashing should use BLAKE3 or SHA-256
+    And hashing should use SHA-256
 
   @crypto
   Scenario: Sufficient key lengths

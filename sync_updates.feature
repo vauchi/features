@@ -73,31 +73,29 @@ Feature: Sync and Updates
     Then I should not receive any update from Bob
     And my view of Bob should remain unchanged
 
-  # P2P Sync Network
+  # Relay-Based Sync
 
-  @p2p
-  Scenario: Direct P2P sync when both online
+  @relay
+  Scenario: Sync via WebSocket relay
     Given Bob and I are both online
-    And we can establish a direct connection
     When I update my contact card
-    Then the update should be sent directly to Bob
-    And no relay should be used
-
-  @p2p
-  Scenario: DHT-based discovery
-    Given Bob's IP address has changed
-    When I try to sync with Bob
-    Then I should discover Bob's new address via DHT
-    And sync should succeed
-
-  @p2p
-  Scenario: Relay fallback when direct connection fails
-    Given Bob is behind a restrictive NAT
-    And direct P2P connection fails
-    When I update my contact card
-    Then the update should be sent via relay node
+    Then the update should be sent via the relay server
     And Bob should receive the update
     And the update should remain end-to-end encrypted
+
+  @relay
+  Scenario: Relay routes by recipient ID
+    Given Bob is connected to the relay
+    When I send an update for Bob
+    Then the relay should route it by Bob's recipient ID
+    And Bob should receive the update
+
+  @relay
+  Scenario: Relay stores updates for offline contacts
+    Given Bob is offline
+    When I update my contact card
+    Then the relay should store the encrypted update
+    And when Bob comes online Bob should receive the update
 
   # Conflict Resolution
 
@@ -118,11 +116,11 @@ Feature: Sync and Updates
     And both devices should have the new phone and email
 
   @conflict
-  Scenario: CRDT merge for complex changes
+  Scenario: LWW merge for complex changes
     Given I have made offline changes on Device A
     And I have made different offline changes on Device B
     When both devices come online
-    Then changes should be merged using CRDT rules
+    Then changes should be merged using last-write-wins with device-id tie-breaking
     And no data should be lost
     And both devices should converge to the same state
 
