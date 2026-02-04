@@ -62,6 +62,51 @@ Feature: Contact Card Exchange
     Then Bob should receive Alice's contact card
     But Alice should not receive Bob's contact card
 
+  # Mutual QR Code Exchange
+
+  @qr-mutual
+  Scenario: Mutual QR exchange with bidirectional scanning
+    Given Alice and Bob both want to exchange contact cards
+    When Alice initiates a mutual QR exchange
+    And Bob initiates a mutual QR exchange
+    Then both devices should display QR codes simultaneously
+    And each QR code should contain a fresh ephemeral X25519 key
+    When Alice scans Bob's QR code
+    And Bob scans Alice's QR code
+    Then symmetric key agreement should succeed
+    And both should receive each other's contact cards
+    And both should see "Exchange Successful"
+
+  @qr-mutual @forward-secrecy
+  Scenario: Mutual QR uses fresh ephemeral keys for forward secrecy
+    Given Alice initiates a mutual QR exchange
+    When Alice's QR code is generated
+    Then the exchange key in the QR should be a fresh ephemeral key
+    And the ephemeral key should differ from Alice's identity exchange key
+    And a new exchange generates a different ephemeral key each time
+
+  @qr-mutual
+  Scenario: Mutual QR rejects expired peer QR code
+    Given Alice has initiated a mutual QR exchange
+    And Bob's QR code was generated more than 5 minutes ago
+    When Alice scans Bob's expired QR code
+    Then the exchange should fail with "QrExpired" error
+    And Alice should see "QR code has expired"
+
+  @qr-mutual @self-exchange
+  Scenario: Mutual QR prevents self-exchange
+    Given Alice has initiated a mutual QR exchange
+    When Alice scans her own QR code
+    Then the exchange should fail with "SelfExchange" error
+    And Alice should see "Cannot exchange with yourself"
+
+  @qr-mutual @security
+  Scenario: Mutual QR produces different shared key than one-way QR
+    Given Alice and Bob perform a mutual QR exchange
+    And Alice and Bob also perform a one-way QR exchange
+    Then the shared keys from each exchange should differ
+    And both exchanges should complete successfully
+
   # Bluetooth Low Energy (BLE) Exchange
 
   @ble @mobile
@@ -97,6 +142,84 @@ Feature: Contact Card Exchange
     Then the relay attack should be detected
     And the exchange should be blocked
     And Alice should see "Security verification failed"
+
+  @ble @forward-secrecy
+  Scenario: BLE exchange uses fresh ephemeral keys
+    Given Alice and Bob are exchanging via BLE
+    When both devices generate BLE exchange payloads
+    Then each payload should contain a fresh ephemeral X25519 key
+    And the ephemeral keys should differ from identity exchange keys
+    And symmetric DH key agreement should produce matching shared secrets
+    And forward secrecy should be established
+
+  @ble @mobile
+  Scenario: BLE exchange rejects expired payload
+    Given Alice has initiated a BLE exchange
+    And Bob's BLE payload was generated more than 60 seconds ago
+    When Alice receives Bob's expired BLE payload
+    Then the exchange should fail with "BleExpired" error
+
+  @ble @mobile @self-exchange
+  Scenario: BLE exchange prevents self-exchange
+    Given Alice has initiated a BLE exchange
+    When Alice's device discovers its own BLE advertisement
+    Then the exchange should fail with "SelfExchange" error
+
+  # NFC Active Exchange (phone-to-phone tap)
+
+  @nfc @active @mobile
+  Scenario: NFC active exchange between two phones
+    Given Alice and Bob both have NFC-capable devices
+    When Alice initiates an NFC exchange
+    And Bob initiates an NFC exchange
+    And Alice and Bob tap their phones together
+    Then both devices should exchange 174-byte NFC payloads via APDU
+    And symmetric key agreement should succeed
+    And both should receive each other's contact cards
+    And both should see "Exchange Successful"
+
+  @nfc @active @forward-secrecy
+  Scenario: NFC active uses fresh ephemeral keys for forward secrecy
+    Given Alice initiates an NFC exchange
+    When the NFC payload is generated
+    Then the payload should contain a fresh ephemeral X25519 key
+    And the ephemeral key should differ from Alice's identity exchange key
+    And the payload should be exactly 174 bytes with "VNFC" magic
+
+  @nfc @active
+  Scenario: NFC payload expires after 60 seconds
+    Given Alice has generated an NFC exchange payload
+    When 60 seconds have passed since generation
+    Then the NFC payload should be expired
+    And scanning the expired payload should fail
+    And Alice should need to regenerate the payload
+
+  @nfc @active @self-exchange
+  Scenario: NFC exchange prevents self-exchange
+    Given Alice has initiated an NFC exchange
+    When Alice's device receives its own NFC payload
+    Then the exchange should fail with "SelfExchange" error
+
+  @nfc @active @cross-platform
+  Scenario Outline: NFC active exchange platform compatibility
+    Given Alice is using <platform_a>
+    And Bob is using <platform_b>
+    When they perform an NFC active exchange
+    Then the exchange should <result>
+
+    Examples:
+      | platform_a | platform_b | result                              |
+      | Android    | Android    | succeed                             |
+      | iOS        | Android    | succeed (iOS as reader)             |
+      | iOS        | iOS        | fail — both cannot do HCE, use QR   |
+
+  @nfc @active
+  Scenario: NFC tap too brief to complete exchange
+    Given Alice and Bob are attempting an NFC exchange
+    When the devices are tapped together too briefly
+    And the APDU exchange does not complete
+    Then both should see "Tap again — exchange incomplete"
+    And no partial state should be stored
 
   # Exchange Protocol Security
 
