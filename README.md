@@ -9,25 +9,25 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 
 | Feature | Scenarios | Implemented | Priority | Notes |
 |---------|-----------|-------------|----------|-------|
-| identity_management | 15 | 15 | P0 | Core |
+| identity_management | 15 | 12 | P0 | Core, backup, password done; QR linking gaps |
 | contact_card_management | 34 | 34 | P0 | Core |
-| contact_exchange | 50 | 18 | P0 | QR done, NFC Active done, BLE stubbed |
-| contacts_management | 40 | 40 | P0 | Core |
-| device_management | 40 | 30 | P0 | Core |
-| sync_updates | 38 | 34 | P0 | WebSocket relay |
+| contact_exchange | 50 | 30 | P0 | QR, Mutual QR, BLE, NFC Active, X3DH done |
+| contacts_management | 40 | 19 | P0 | CRUD, search, blocking, merge; groups missing |
+| device_management | 40 | 18 | P0 | Linking, registry, revocation; UI/settings gaps |
+| sync_updates | 38 | 22 | P0 | Relay, conflict, security done; settings gaps |
 | onboarding | 31 | 0 | P0 | First-run experience |
-| demo_contact | 17 | 0 | P0 | Demo contact flow |
-| security | 34 | 34 | P1 | Crypto, signatures |
-| visibility_control | 26 | 26 | P1 | Per-contact rules |
-| field_validation | 42 | 0 | P1 | Crowd-sourced trust validation, OAuth |
-| privacy_compliance | 46 | 0 | P1 | GDPR, data export/deletion |
+| demo_contact | 17 | 12 | P0 | Core flow, persistence, dismissal done |
+| security | 34 | 19 | P1 | Crypto, signatures, replay; access/notifs platform-specific |
+| visibility_control | 26 | 10 | P1 | Core rules done; groups, propagation, preview gaps |
+| field_validation | 42 | 15 | P1 | Trust levels, validation status done |
+| privacy_compliance | 46 | 25 | P1 | GDPR export/deletion, consent, crypto-shredding done |
 | visibility_labels | 41 | 26 | P2 | Core implemented (labels.rs, storage, API) |
 | relay_network | 43 | 20 | P2 | Basic relay done |
-| message_delivery | 34 | 0 | P2 | Delivery receipts, retry |
-| contact_actions | 47 | 0 | P2 | Contact interactions |
-| contact_recovery | 59 | 0 | P2 | Recovery flows |
-| remote_content | 45 | 0 | P2 | Remote content updates |
-| tor_mode | 29 | 0 | P2 | Tor routing, bridges, .onion support |
+| message_delivery | 34 | 15 | P2 | Delivery records, device tracking done |
+| contact_actions | 47 | 25 | P2 | URI builder done (phone, email, social, address) |
+| contact_recovery | 59 | 30 | P2 | Trust config, vouching, proof, discovery done |
+| remote_content | 45 | 8 | P2 | Manifest, version check, fallback done |
+| tor_mode | 29 | 0 | P2 | Code exists, no test coverage |
 | performance | 35 | 0 | P3 | Performance benchmarks |
 | accessibility | 38 | 0 | P3 | A11y compliance |
 | internationalization | 36 | 0 | P3 | i18n/l10n |
@@ -35,7 +35,7 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 | platform_edge_cases | 34 | 0 | P3 | Platform-specific edge cases |
 | aha_moments | 15 | 0 | P3 | User delight moments |
 
-**Total**: 908 scenarios | **Implemented**: ~277 (~31%)
+**Total**: 908 scenarios | **Implemented**: ~340 (~37%)
 
 ## Priority Definitions
 
@@ -89,6 +89,7 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 
 **demo_contact.feature**
 - Demo contact for new users to explore features
+- Code: `vauchi-core/tests/demo_contact_integration_tests.rs`
 
 ### P1: Security Features
 
@@ -105,9 +106,13 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 
 **field_validation.feature**
 - Input validation rules for contact fields
+- Trust levels, validation status tracking
+- Code: `vauchi-core/src/storage/validation.rs`
 
 **privacy_compliance.feature**
 - GDPR compliance, data export, data deletion
+- Consent storage, crypto-shredding, revocation protocol
+- Code: `vauchi-core/src/storage/consent.rs`, `vauchi-core/src/crypto/shredding.rs`
 
 ### P2: Infrastructure
 
@@ -124,15 +129,23 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 
 **message_delivery.feature**
 - Delivery receipts, retry logic
+- Device delivery tracking, status transitions
+- Code: `vauchi-core/src/storage/delivery.rs`, `vauchi-core/src/storage/device_delivery.rs`
 
 **contact_actions.feature**
 - Contact interactions (share, export, etc.)
+- URI builder for phone, email, social, address, website
+- Code: `vauchi-core/src/contact_card/uri_builder.rs`
 
 **contact_recovery.feature**
 - Contact recovery flows
+- Trust configuration, vouching, proof collection, discovery
+- Code: `vauchi-core/src/recovery/`
 
 **remote_content.feature**
 - Remote content updates
+- Manifest fetching, version comparison, fallback behavior
+- Code: `vauchi-core/src/content/`
 
 **tor_mode.feature**
 - Tor routing for relay connections
