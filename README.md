@@ -11,7 +11,7 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 |---------|-----------|-------------|----------|-------|
 | identity_management | 15 | 15 | P0 | Core |
 | contact_card_management | 34 | 34 | P0 | Core |
-| contact_exchange | 50 | 12 | P0 | QR done, BLE stubbed, NFC @post-mvp |
+| contact_exchange | 50 | 18 | P0 | QR done, NFC Active done, BLE stubbed |
 | contacts_management | 40 | 40 | P0 | Core |
 | device_management | 40 | 30 | P0 | Core |
 | sync_updates | 38 | 34 | P0 | WebSocket relay |
@@ -35,7 +35,7 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 | platform_edge_cases | 34 | 0 | P3 | Platform-specific edge cases |
 | aha_moments | 15 | 0 | P3 | User delight moments |
 
-**Total**: 908 scenarios | **Implemented**: ~271 (~30%)
+**Total**: 908 scenarios | **Implemented**: ~277 (~31%)
 
 ## Priority Definitions
 
@@ -63,7 +63,7 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 - QR code generation and scanning (implemented)
 - X3DH key exchange (implemented)
 - BLE proximity exchange (stubbed)
-- NFC tap exchange (removed post-MVP)
+- NFC Active exchange (implemented — 174-byte APDU, VNFC magic)
 - Code: `vauchi-core/src/exchange/`
 
 **contacts_management.feature**

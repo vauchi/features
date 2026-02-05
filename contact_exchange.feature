@@ -165,9 +165,9 @@ Feature: Contact Card Exchange
     When Alice's device discovers its own BLE advertisement
     Then the exchange should fail with "SelfExchange" error
 
-  # NFC Active Exchange (phone-to-phone tap) — removed post-MVP
+  # NFC Active Exchange (phone-to-phone tap)
 
-  @nfc @active @mobile @post-mvp
+  @nfc @active @mobile
   Scenario: NFC active exchange between two phones
     Given Alice and Bob both have NFC-capable devices
     When Alice initiates an NFC exchange
@@ -178,7 +178,7 @@ Feature: Contact Card Exchange
     And both should receive each other's contact cards
     And both should see "Exchange Successful"
 
-  @nfc @active @forward-secrecy @post-mvp
+  @nfc @active @forward-secrecy
   Scenario: NFC active uses fresh ephemeral keys for forward secrecy
     Given Alice initiates an NFC exchange
     When the NFC payload is generated
@@ -186,7 +186,7 @@ Feature: Contact Card Exchange
     And the ephemeral key should differ from Alice's identity exchange key
     And the payload should be exactly 174 bytes with "VNFC" magic
 
-  @nfc @active @post-mvp
+  @nfc @active
   Scenario: NFC payload expires after 60 seconds
     Given Alice has generated an NFC exchange payload
     When 60 seconds have passed since generation
@@ -194,13 +194,13 @@ Feature: Contact Card Exchange
     And scanning the expired payload should fail
     And Alice should need to regenerate the payload
 
-  @nfc @active @self-exchange @post-mvp
+  @nfc @active @self-exchange
   Scenario: NFC exchange prevents self-exchange
     Given Alice has initiated an NFC exchange
     When Alice's device receives its own NFC payload
     Then the exchange should fail with "SelfExchange" error
 
-  @nfc @active @cross-platform @post-mvp
+  @nfc @active @cross-platform
   Scenario Outline: NFC active exchange platform compatibility
     Given Alice is using <platform_a>
     And Bob is using <platform_b>
@@ -213,7 +213,7 @@ Feature: Contact Card Exchange
       | iOS        | Android    | succeed (iOS as reader)             |
       | iOS        | iOS        | fail — both cannot do HCE, use QR   |
 
-  @nfc @active @post-mvp
+  @nfc @active
   Scenario: NFC tap too brief to complete exchange
     Given Alice and Bob are attempting an NFC exchange
     When the devices are tapped together too briefly
