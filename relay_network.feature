@@ -210,6 +210,61 @@ Feature: Relay Network
     And I should verify the relay's identity
     And connection should be encrypted (TLS)
 
+  # Client Identity Verification (Relay Authentication Phase 1)
+  # Implemented in relay!28 + core!88
+
+  @protocol @authentication
+  Scenario: Client authenticates with Ed25519 signature
+    Given I have an identity with an Ed25519 signing key
+    When I connect to the relay
+    Then my client should sign a nonce and timestamp with my private key
+    And the handshake should include my public key in hex encoding
+    And the relay should verify the signature before accepting me
+    And my routing should use my verified public key as client_id
+
+  @protocol @authentication
+  Scenario: Invalid signature rejected by relay
+    Given an attacker sends a handshake with a forged signature
+    When the relay verifies the handshake
+    Then the relay should reject the connection
+    And the attacker should not receive any routed messages
+
+  @protocol @authentication
+  Scenario: Client ID mismatch rejected
+    Given an attacker signs with key A but claims client_id of key B
+    When the relay verifies the handshake
+    Then the relay should detect the mismatch
+    And the connection should be rejected
+
+  @protocol @authentication
+  Scenario: Nonce replay attack prevented
+    Given an attacker captures a valid signed handshake
+    When the attacker replays the exact same handshake
+    Then the relay should detect the nonce was already used
+    And the replayed handshake should be rejected
+
+  @protocol @authentication
+  Scenario: Expired timestamp rejected
+    Given an attacker replays a handshake with a stale timestamp
+    When the relay checks the timestamp
+    Then the relay should reject handshakes older than 60 seconds
+    And the connection should not be established
+
+  @protocol @authentication
+  Scenario: Unauthenticated clients still accepted (backward compatibility)
+    Given a legacy client without signature support
+    When the client sends a handshake without auth fields
+    Then the relay should accept the connection
+    And routing should work as before
+    And no authentication should be enforced
+
+  @protocol @authentication
+  Scenario: Routing token mode unaffected by authentication
+    Given I am using a routing token for anonymous access
+    When I connect to the relay with a routing token
+    Then no signature verification should be required
+    And the routing token should work as before
+
   @protocol
   Scenario: Relay gossip protocol
     Given relay nodes are in the network
