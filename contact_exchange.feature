@@ -165,9 +165,9 @@ Feature: Contact Card Exchange
     When Alice's device discovers its own BLE advertisement
     Then the exchange should fail with "SelfExchange" error
 
-  # NFC Active Exchange (phone-to-phone tap)
+  # NFC Active Exchange (phone-to-phone tap) — removed post-MVP
 
-  @nfc @active @mobile
+  @nfc @active @mobile @post-mvp
   Scenario: NFC active exchange between two phones
     Given Alice and Bob both have NFC-capable devices
     When Alice initiates an NFC exchange
@@ -178,7 +178,7 @@ Feature: Contact Card Exchange
     And both should receive each other's contact cards
     And both should see "Exchange Successful"
 
-  @nfc @active @forward-secrecy
+  @nfc @active @forward-secrecy @post-mvp
   Scenario: NFC active uses fresh ephemeral keys for forward secrecy
     Given Alice initiates an NFC exchange
     When the NFC payload is generated
@@ -186,7 +186,7 @@ Feature: Contact Card Exchange
     And the ephemeral key should differ from Alice's identity exchange key
     And the payload should be exactly 174 bytes with "VNFC" magic
 
-  @nfc @active
+  @nfc @active @post-mvp
   Scenario: NFC payload expires after 60 seconds
     Given Alice has generated an NFC exchange payload
     When 60 seconds have passed since generation
@@ -194,13 +194,13 @@ Feature: Contact Card Exchange
     And scanning the expired payload should fail
     And Alice should need to regenerate the payload
 
-  @nfc @active @self-exchange
+  @nfc @active @self-exchange @post-mvp
   Scenario: NFC exchange prevents self-exchange
     Given Alice has initiated an NFC exchange
     When Alice's device receives its own NFC payload
     Then the exchange should fail with "SelfExchange" error
 
-  @nfc @active @cross-platform
+  @nfc @active @cross-platform @post-mvp
   Scenario Outline: NFC active exchange platform compatibility
     Given Alice is using <platform_a>
     And Bob is using <platform_b>
@@ -213,7 +213,7 @@ Feature: Contact Card Exchange
       | iOS        | Android    | succeed (iOS as reader)             |
       | iOS        | iOS        | fail — both cannot do HCE, use QR   |
 
-  @nfc @active
+  @nfc @active @post-mvp
   Scenario: NFC tap too brief to complete exchange
     Given Alice and Bob are attempting an NFC exchange
     When the devices are tapped together too briefly
@@ -407,7 +407,8 @@ Feature: Contact Card Exchange
   Scenario: Deny exchange request
     Given Alice sees Bob in the nearby list
     When Alice sends an exchange request to Bob
-    And Bob selects "Decline" Then Alice should see "Exchange declined"
+    And Bob selects "Decline"
+    Then Alice should see "Exchange declined"
     And no contact cards or keys should be shared
 
   @privacy @consent
@@ -418,7 +419,8 @@ Feature: Contact Card Exchange
     And Alice should not receive any notification
     And Eve should see "Exchange failed"
 
-# Hardware & Resource Constraints
+  # Hardware & Resource Constraints
+
   @hardware @battery
   Scenario: Exchange blocked on low battery
     Given Alice's device battery is below 5%
@@ -433,7 +435,7 @@ Feature: Contact Card Exchange
     Then the exchange should fail
     And Bob should see "Storage full: cannot save contact"
 
-# Multi-User / Group Dynamics
+  # Multi-User / Group Dynamics
 
   @multi-user @proximity
   Scenario: Simultaneous QR scans (Group mode)
@@ -444,7 +446,8 @@ Feature: Contact Card Exchange
     And Bob and Charlie should both receive Alice's card
     But Bob and Charlie should NOT receive each other's cards
 
-# Identity & Spoofing
+  # Identity & Spoofing
+
   @security @spoofing
   Scenario: Identity mismatch detection
     Given Alice's QR code contains Public Key A
@@ -452,11 +455,13 @@ Feature: Contact Card Exchange
     Then the exchange should be aborted
     And Bob should see "Identity verification error"
 
-# Time & Synchronization
+  # Time & Synchronization
+
   @edge-case @clock-drift
   Scenario: Exchange fails with significant clock drift
     Given Alice's system clock is 1 hour behind real time
-    And Bob's clock is accurate When Alice and Bob attempt an exchange
+    And Bob's clock is accurate
+    When Alice and Bob attempt an exchange
     Then the timestamped exchange token should be rejected
     And Alice should see "Check your device time settings"
 

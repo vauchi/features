@@ -11,7 +11,7 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 |---------|-----------|-------------|----------|-------|
 | identity_management | 15 | 15 | P0 | Core |
 | contact_card_management | 34 | 34 | P0 | Core |
-| contact_exchange | 36 | 12 | P0 | QR done, BLE stubbed, NFC removed |
+| contact_exchange | 50 | 12 | P0 | QR done, BLE stubbed, NFC @post-mvp |
 | contacts_management | 40 | 40 | P0 | Core |
 | device_management | 40 | 30 | P0 | Core |
 | sync_updates | 38 | 34 | P0 | WebSocket relay |
@@ -19,23 +19,23 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 | demo_contact | 17 | 0 | P0 | Demo contact flow |
 | security | 34 | 34 | P1 | Crypto, signatures |
 | visibility_control | 26 | 26 | P1 | Per-contact rules |
-| field_validation | 42 | 0 | P1 | Input validation rules |
+| field_validation | 42 | 0 | P1 | Crowd-sourced trust validation, OAuth |
 | privacy_compliance | 46 | 0 | P1 | GDPR, data export/deletion |
 | visibility_labels | 41 | 26 | P2 | Core implemented (labels.rs, storage, API) |
 | relay_network | 43 | 20 | P2 | Basic relay done |
 | message_delivery | 34 | 0 | P2 | Delivery receipts, retry |
 | contact_actions | 47 | 0 | P2 | Contact interactions |
 | contact_recovery | 59 | 0 | P2 | Recovery flows |
-| remote-content | 45 | 0 | P2 | Remote content updates |
+| remote_content | 45 | 0 | P2 | Remote content updates |
+| tor_mode | 29 | 0 | P2 | Tor routing, bridges, .onion support |
 | performance | 35 | 0 | P3 | Performance benchmarks |
 | accessibility | 38 | 0 | P3 | A11y compliance |
 | internationalization | 36 | 0 | P3 | i18n/l10n |
 | theming | 39 | 0 | P3 | Visual theming |
 | platform_edge_cases | 34 | 0 | P3 | Platform-specific edge cases |
 | aha_moments | 15 | 0 | P3 | User delight moments |
-| social_profile_validation | 0 | 0 | P3 | Low priority, feature file not yet created |
 
-**Total**: 865 scenarios | **Implemented**: ~271 (~31%)
+**Total**: 908 scenarios | **Implemented**: ~271 (~30%)
 
 ## Priority Definitions
 
@@ -131,8 +131,13 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 **contact_recovery.feature**
 - Contact recovery flows
 
-**remote-content.feature**
+**remote_content.feature**
 - Remote content updates
+
+**tor_mode.feature**
+- Tor routing for relay connections
+- Bridge support for censored networks
+- .onion address support
 
 ### P3: Advanced Features (Post-Launch)
 
@@ -153,10 +158,6 @@ Gherkin scenarios defining Vauchi behavior. Each scenario should have correspond
 
 **aha_moments.feature**
 - User delight moments
-
-**social_profile_validation.feature**
-- Crowd-sourced profile validation
-- OAuth verification (low priority)
 
 ## Running Scenario Tests
 

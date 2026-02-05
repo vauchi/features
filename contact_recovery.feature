@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+@recovery
 Feature: Contact Recovery
   As a user who lost their device
   I want to recover my contact relationships through social vouching by trusted contacts

@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-@remote-content @content-updates
+@remote_content @content-updates
 Feature: Remote Content Updates
   As a Vauchi user
   I want the app to automatically update content like themes, translations, and social networks
