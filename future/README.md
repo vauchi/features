@@ -24,4 +24,4 @@ When implementing these features:
 2. Start from the problem record in `docs/planning/problems/`
 3. Write Gherkin features during the planning phase
 4. Follow TDD: Write failing tests first
-5. Consider security implications carefully (see `docs/THREAT_ANALYSIS.md`)
+5. Consider security implications carefully (see `_private/docs/reference/threat-analysis.md`)

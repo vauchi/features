@@ -191,4 +191,4 @@ cargo test sync
 3. Implement minimal code to pass
 4. Refactor while green
 
-See `docs/2026-01-22-TDD_RULES.md` for methodology.
+See `_private/docs/guides/tdd-rules.md` for methodology.

@@ -4,7 +4,7 @@
 # CLAUDE.md - Feature Specifications
 
 > **Inherits**: See [CLAUDE.md](../CLAUDE.md) for project-wide rules.
-> **Reference**: [TDD Rules](../docs/2026-01-22-TDD_RULES.md)
+> **Reference**: [TDD Rules](../_private/docs/guides/tdd-rules.md)
 
 Top-level Gherkin `.feature` files defining expected behavior across all platforms.
 These are the source of truth for TDD - shared by Rust, iOS, Android, and desktop.
