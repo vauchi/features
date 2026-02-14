@@ -422,3 +422,29 @@ Feature: Privacy Compliance
     Then all blobs for Alice are deleted from the relay
     And all device sync messages for Alice are deleted
     And Alice's recovery proof is deleted
+
+  @deletion @relay @command
+  Scenario: Execute deletion after grace period sends revocations and purge
+    Given I scheduled account deletion 8 days ago
+    And I have contacts Alice and Bob
+    When I execute the account deletion
+    Then Alice should receive an authenticated revocation signal
+    And Bob should receive an authenticated revocation signal
+    And the relay should receive a purge request
+    And all local keys and data should be destroyed
+
+  @deletion @relay @command
+  Scenario: Execute deletion requires grace period to have elapsed
+    Given I scheduled account deletion 2 days ago
+    When I try to execute the account deletion
+    Then the execution should fail with a grace period error
+    And no data should be destroyed
+
+  @deletion @relay @command @emergency
+  Scenario: Panic shred immediately destroys all data and notifies contacts
+    Given I have contacts Alice and Bob
+    When I execute a panic shred
+    Then Alice should receive an authenticated revocation signal
+    And Bob should receive an authenticated revocation signal
+    And the relay should receive a purge request
+    And all local keys and data should be destroyed immediately
