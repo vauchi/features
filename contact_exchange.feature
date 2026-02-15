@@ -21,6 +21,7 @@ Feature: Contact Card Exchange
     When Alice selects "Share Contact"
     Then a QR code should be displayed
     And the QR code should contain Alice's public key
+    And the QR code should contain a fresh ephemeral X25519 exchange key
     And the QR code should contain a one-time exchange token
     And the QR code should contain an audio challenge seed
 
@@ -32,13 +33,14 @@ Feature: Contact Card Exchange
     And Alice should be prompted to generate a new one
     And scanning the expired QR code should fail
 
-  @qr-code
+  @qr-code @qr-mutual
   Scenario: Successful QR code exchange with proximity
     Given Alice is displaying her exchange QR code
-    And Bob is physically present with Alice
-    When Bob scans Alice's QR code
-    And both devices emit and verify ultrasonic audio handshake
-    Then the exchange should proceed
+    And Bob is displaying his exchange QR code
+    And both are physically present
+    When Alice scans Bob's QR code
+    And Bob scans Alice's QR code
+    Then symmetric key agreement should succeed
     And Bob should receive Alice's contact card
     And Alice should receive Bob's contact card
     And both should see "Exchange Successful"
@@ -53,12 +55,11 @@ Feature: Contact Card Exchange
     And both should see "Proximity verification failed"
     And no contact cards should be exchanged
 
-  @qr-code
-  Scenario: QR code exchange with one-way sharing
+  @qr-code @qr-mutual
+  Scenario: QR code exchange with share-only mode
     Given Alice wants to share but not receive
     And Alice has selected "Share Only" mode
-    When Alice displays her QR code
-    And Bob scans it with proximity verified
+    When Alice and Bob perform a mutual QR exchange
     Then Bob should receive Alice's contact card
     But Alice should not receive Bob's contact card
 
@@ -100,12 +101,22 @@ Feature: Contact Card Exchange
     Then the exchange should fail with "SelfExchange" error
     And Alice should see "Cannot exchange with yourself"
 
-  @qr-mutual @security
-  Scenario: Mutual QR produces different shared key than one-way QR
-    Given Alice and Bob perform a mutual QR exchange
-    And Alice and Bob also perform a one-way QR exchange
-    Then the shared keys from each exchange should differ
-    And both exchanges should complete successfully
+  @qr-mutual
+  Scenario: Default QR exchange uses mutual flow
+    Given Alice initiates a QR exchange
+    Then the exchange should use the mutual QR flow
+    And Alice's QR code should contain a fresh ephemeral X25519 key
+    And Alice should see her QR code and a scanner simultaneously
+
+  @qr-mutual
+  Scenario: Share-only mode with mutual QR
+    Given Alice has selected "Share Only" mode
+    When Alice initiates a mutual QR exchange
+    And Bob initiates a mutual QR exchange
+    And Alice scans Bob's QR code
+    And Bob scans Alice's QR code
+    Then Bob should receive Alice's contact card
+    But Alice should not store Bob as a contact
 
   # Bluetooth Low Energy (BLE) Exchange
 
