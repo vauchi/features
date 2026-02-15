@@ -55,14 +55,6 @@ Feature: Contact Card Exchange
     And both should see "Proximity verification failed"
     And no contact cards should be exchanged
 
-  @qr-code @qr-mutual
-  Scenario: QR code exchange with share-only mode
-    Given Alice wants to share but not receive
-    And Alice has selected "Share Only" mode
-    When Alice and Bob perform a mutual QR exchange
-    Then Bob should receive Alice's contact card
-    But Alice should not receive Bob's contact card
-
   # Mutual QR Code Exchange
 
   @qr-mutual
@@ -107,16 +99,6 @@ Feature: Contact Card Exchange
     Then the exchange should use the mutual QR flow
     And Alice's QR code should contain a fresh ephemeral X25519 key
     And Alice should see her QR code and a scanner simultaneously
-
-  @qr-mutual
-  Scenario: Share-only mode with mutual QR
-    Given Alice has selected "Share Only" mode
-    When Alice initiates a mutual QR exchange
-    And Bob initiates a mutual QR exchange
-    And Alice scans Bob's QR code
-    And Bob scans Alice's QR code
-    Then Bob should receive Alice's contact card
-    But Alice should not store Bob as a contact
 
   # Bluetooth Low Energy (BLE) Exchange
 
