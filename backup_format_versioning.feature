@@ -35,7 +35,7 @@ Feature: Backup Format Versioning
   Scenario: V2 backup includes salt
     When I create a v2 backup
     Then a random salt should be generated
-    And the salt should be prepended to the ciphertext
+    And the salt should follow the version tag byte and precede the ciphertext
     And the salt should be used for Argon2id key derivation
 
   @v2

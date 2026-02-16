@@ -83,7 +83,7 @@ Feature: Contact Card Exchange
     Given Alice has initiated a mutual QR exchange
     And Bob's QR code was generated more than 5 minutes ago
     When Alice scans Bob's expired QR code
-    Then the exchange should fail with "QrExpired" error
+    Then the exchange should fail with "QRExpired" error
     And Alice should see "QR code has expired"
 
   @qr-mutual @self-exchange
