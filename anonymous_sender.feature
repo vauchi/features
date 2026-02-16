@@ -110,6 +110,6 @@ Feature: Anonymous Sender Protocol
 
   @privacy
   Scenario: Derivation context prevents cross-protocol confusion
-    Given the HKDF context string is "Vauchi_AnonymousSender"
+    Given the HKDF context string is "Vauchi_AnonymousSender_v2"
     Then anonymous IDs should not collide with other HKDF-derived values
     And the context should be fixed and non-configurable
