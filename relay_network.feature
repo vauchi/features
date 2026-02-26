@@ -14,7 +14,7 @@ Feature: Relay Network
 
   # Relay Usage
 
-  @usage
+  @usage @implemented
   Scenario: Automatic fallback to relay
     Given I am trying to send an update to Bob
     And direct P2P connection to Bob fails
@@ -23,7 +23,7 @@ Feature: Relay Network
     And the update should be delivered via relay
     And I should see "Delivered via relay"
 
-  @usage
+  @usage @implemented
   Scenario: Direct connection preferred
     Given Bob and I can establish direct P2P connection
     When I send an update to Bob
@@ -31,7 +31,7 @@ Feature: Relay Network
     And relay nodes should not be used
     And latency should be minimal
 
-  @usage
+  @usage @implemented
   Scenario: Relay stores messages for offline contacts
     Given Carol is offline
     When I send an update to Carol
@@ -39,7 +39,7 @@ Feature: Relay Network
     And the update should be delivered when Carol comes online
     And the relay should delete the blob after delivery
 
-  @usage
+  @usage @implemented
   Scenario: Relay blob expiration
     Given I sent an update to Dave via relay
     And Dave has been offline for 30 days
@@ -49,28 +49,28 @@ Feature: Relay Network
 
   # Privacy in Relay
 
-  @privacy
+  @privacy @implemented
   Scenario: Relay only sees encrypted blobs
     Given I am sending data through a relay
     Then the relay should only receive encrypted blobs
     And the relay should have no decryption keys
     And the relay should learn nothing about content
 
-  @privacy
+  @privacy @implemented
   Scenario: Relay cannot identify users
     Given I am using a relay
     Then the relay should not require user accounts
     And the relay should not log user identities
     And routing should use anonymous identifiers
 
-  @privacy
+  @privacy @implemented
   Scenario: Relay cannot correlate sender and recipient
     Given I send an update via relay
     Then the relay should not know I am the sender
     And the relay should not know who the recipient is
     And metadata should be minimized
 
-  @privacy
+  @privacy @implemented
   Scenario: Tor support for relay access
     Given I want maximum privacy
     When I enable Tor mode
@@ -80,7 +80,7 @@ Feature: Relay Network
 
   # Running a Relay Node
 
-  @contribute
+  @contribute @implemented
   Scenario: Deploy relay node with Docker
     Given I want to contribute a relay node
     When I run the Docker image
@@ -88,7 +88,7 @@ Feature: Relay Network
     And it should join the relay network
     And it should begin accepting connections
 
-  @contribute
+  @contribute @implemented
   Scenario: Relay node configuration
     Given I am setting up a relay node
     When I configure the node
@@ -96,7 +96,7 @@ Feature: Relay Network
     And I should be able to set storage limits
     And I should be able to set geographic restrictions
 
-  @contribute
+  @contribute @implemented
   Scenario: Relay node monitoring
     Given I am running a relay node
     When I view the monitoring dashboard
@@ -105,7 +105,7 @@ Feature: Relay Network
     And I should see uptime statistics
     And I should NOT see any user data
 
-  @contribute
+  @contribute @implemented
   Scenario: Relay node health check
     Given a relay node is running
     Then it should respond to health check probes
@@ -114,7 +114,7 @@ Feature: Relay Network
 
   # Contribution Model
 
-  @contribution
+  @contribution @planned
   Scenario: Prompt to contribute after using relays
     Given I have used relay bandwidth significantly
     When the app detects high relay usage
@@ -122,7 +122,7 @@ Feature: Relay Network
     And I should be able to dismiss the suggestion
     And dismissing should not affect functionality
 
-  @contribution
+  @contribution @planned
   Scenario: View relay contribution options
     When I view the contribution screen
     Then I should see options to run a relay node
@@ -130,7 +130,7 @@ Feature: Relay Network
     And I should see current network health
     And contribution should always be voluntary
 
-  @contribution
+  @contribution @planned
   Scenario: No special privileges for contributors
     Given I am running a relay node
     Then I should not get priority routing
@@ -139,7 +139,7 @@ Feature: Relay Network
 
   # Relay Network Health
 
-  @health
+  @health @implemented
   Scenario: Multiple relay nodes for redundancy
     Given the relay network has 100 nodes
     When 10 nodes go offline
@@ -147,14 +147,14 @@ Feature: Relay Network
     And remaining nodes should handle increased load
     And network should remain functional
 
-  @health
+  @health @implemented
   Scenario: Geographic distribution of relays
     Given users are distributed globally
     Then relay nodes should be distributed globally
     And users should connect to nearby relays
     And latency should be minimized
 
-  @health
+  @health @implemented
   Scenario: Relay node discovery via DHT
     Given I need to find a relay node
     When I query the DHT
@@ -164,21 +164,21 @@ Feature: Relay Network
 
   # Abuse Prevention
 
-  @abuse
+  @abuse @implemented
   Scenario: Rate limiting on relay nodes
     Given a user is sending excessive traffic
     Then the relay should rate limit them
     And legitimate traffic should not be affected
     And the rate limit should be per-anonymous-identifier
 
-  @abuse
+  @abuse @implemented
   Scenario: Storage limits per blob
     Given a user tries to store a very large blob
     Then the relay should reject oversized blobs
     And the maximum blob size should be enforced
     And storage should be fairly distributed
 
-  @abuse
+  @abuse @implemented
   Scenario: Automatic cleanup of stale blobs
     Given blobs have been stored on a relay
     When 30 days pass without retrieval
@@ -186,7 +186,7 @@ Feature: Relay Network
     And storage should be reclaimed
     And the sender should be notified
 
-  @abuse
+  @abuse @implemented
   Scenario: Sybil attack resistance
     Given an attacker tries to flood the network
     Then proof-of-work may be required
@@ -195,7 +195,7 @@ Feature: Relay Network
 
   # Relay Protocol
 
-  @protocol
+  @protocol @planned
   Scenario: Relay protocol versioning
     Given relays support protocol version 1.0
     When version 1.1 is released
@@ -203,7 +203,7 @@ Feature: Relay Network
     And clients should negotiate version
     And upgrade path should be smooth
 
-  @protocol
+  @protocol @planned
   Scenario: Relay node authentication
     Given I am connecting to a relay
     Then the relay should authenticate with a certificate
@@ -213,7 +213,7 @@ Feature: Relay Network
   # Client Identity Verification (Relay Authentication Phase 1)
   # Implemented in relay!28 + core!88
 
-  @protocol @authentication
+  @protocol @authentication @planned
   Scenario: Client authenticates with Ed25519 signature
     Given I have an identity with an Ed25519 signing key
     When I connect to the relay
@@ -222,35 +222,35 @@ Feature: Relay Network
     And the relay should verify the signature before accepting me
     And my routing should use my verified public key as client_id
 
-  @protocol @authentication
+  @protocol @authentication @planned
   Scenario: Invalid signature rejected by relay
     Given an attacker sends a handshake with a forged signature
     When the relay verifies the handshake
     Then the relay should reject the connection
     And the attacker should not receive any routed messages
 
-  @protocol @authentication
+  @protocol @authentication @planned
   Scenario: Client ID mismatch rejected
     Given an attacker signs with key A but claims client_id of key B
     When the relay verifies the handshake
     Then the relay should detect the mismatch
     And the connection should be rejected
 
-  @protocol @authentication
+  @protocol @authentication @planned
   Scenario: Nonce replay attack prevented
     Given an attacker captures a valid signed handshake
     When the attacker replays the exact same handshake
     Then the relay should detect the nonce was already used
     And the replayed handshake should be rejected
 
-  @protocol @authentication
+  @protocol @authentication @planned
   Scenario: Expired timestamp rejected
     Given an attacker replays a handshake with a stale timestamp
     When the relay checks the timestamp
     Then the relay should reject handshakes older than 60 seconds
     And the connection should not be established
 
-  @protocol @authentication
+  @protocol @authentication @planned
   Scenario: Unauthenticated clients still accepted (backward compatibility)
     Given a legacy client without signature support
     When the client sends a handshake without auth fields
@@ -258,14 +258,14 @@ Feature: Relay Network
     And routing should work as before
     And no authentication should be enforced
 
-  @protocol @authentication
+  @protocol @authentication @planned
   Scenario: Routing token mode unaffected by authentication
     Given I am using a routing token for anonymous access
     When I connect to the relay with a routing token
     Then no signature verification should be required
     And the routing token should work as before
 
-  @protocol
+  @protocol @planned
   Scenario: Relay gossip protocol
     Given relay nodes are in the network
     Then they should gossip routing information
@@ -274,7 +274,7 @@ Feature: Relay Network
 
   # Fallback Behavior
 
-  @fallback
+  @fallback @planned
   Scenario: No relays available
     Given all relay nodes are unreachable
     When I try to send an update
@@ -282,7 +282,7 @@ Feature: Relay Network
     And I should be notified "Updates will send when network available"
     And retry should occur periodically
 
-  @fallback
+  @fallback @planned
   Scenario: Partial relay network failure
     Given half the relay nodes are down
     When I send an update
@@ -292,7 +292,7 @@ Feature: Relay Network
 
   # User Preferences
 
-  @preferences
+  @preferences @planned
   Scenario: Opt out of relay usage
     Given I want direct P2P only
     When I disable relay usage
@@ -300,14 +300,14 @@ Feature: Relay Network
     And I should be warned about potential delivery failures
     And the setting should be respected
 
-  @preferences
+  @preferences @planned
   Scenario: Prefer specific relay nodes
     Given I have trusted relay nodes
     When I configure preferred relays
     Then those relays should be used first
     And fallback to other relays should occur if needed
 
-  @preferences
+  @preferences @planned
   Scenario: Block specific relay nodes
     Given I don't trust certain relay nodes
     When I block those relays
@@ -320,7 +320,7 @@ Feature: Relay Network
   # Phase 3 (dynamic discovery): pending
   # Phase 4 (mutual TLS): pending
 
-  @federation @phase1
+  @federation @phase1 @planned
   Scenario: Relay detects high storage usage
     Given a relay node has storage limits configured
     When stored blobs exceed 80% of capacity
@@ -328,7 +328,7 @@ Feature: Relay Network
     And it should attempt to redistribute oldest blobs to peer relays
     And new incoming blobs should still be accepted
 
-  @federation @phase1
+  @federation @phase1 @planned
   Scenario: Relay offloads messages to peer relays
     Given relay A is at 85% storage capacity
     And relay A knows about peer relays B and C
@@ -337,7 +337,7 @@ Feature: Relay Network
     And transferred blobs should be removed from relay A
     And relay A should record where blobs were sent
 
-  @federation @wip @phase3
+  @federation @wip @phase3 @planned
   Scenario: Peer relay discovery
     Given a relay node starts up
     When it queries the relay registry
@@ -345,7 +345,7 @@ Feature: Relay Network
     And it should establish peer connections
     And it should exchange capacity information periodically
 
-  @federation @wip @phase3
+  @federation @wip @phase3 @planned
   Scenario: Relay registry for peer discovery
     Given multiple relay nodes exist
     Then there should be a registry of known relays
@@ -353,7 +353,7 @@ Feature: Relay Network
     And relays should self-register on startup
     And the registry should remove unresponsive relays
 
-  @federation @wip @phase2
+  @federation @wip @phase2 @planned
   Scenario: Client queries multiple relays for messages
     Given my messages may be on relay A or B
     When I sync for pending messages
@@ -361,7 +361,7 @@ Feature: Relay Network
     And messages should be collected from all sources
     And duplicate messages should be deduplicated
 
-  @federation @phase1
+  @federation @phase1 @planned
   Scenario: Relay includes forwarding hints
     Given relay A has offloaded blob X to relay B
     When the recipient queries relay A for messages
@@ -369,7 +369,7 @@ Feature: Relay Network
     And the client should fetch blob X from relay B
     And the hint should be temporary (TTL-based)
 
-  @federation @phase1
+  @federation @phase1 @planned
   Scenario: Offloaded messages preserve TTL
     Given a blob has 30 days remaining TTL
     When it is offloaded to another relay
@@ -377,7 +377,7 @@ Feature: Relay Network
     And the blob should not get extra lifetime from transfer
     And TTL should be included in transfer metadata
 
-  @federation @phase1
+  @federation @phase1 @planned
   Scenario: Relay refuses offload when at capacity
     Given relay B is at 95% capacity
     When relay A tries to offload blobs to relay B
@@ -385,7 +385,7 @@ Feature: Relay Network
     And relay A should try other peers
     And relay A should mark relay B as "full" temporarily
 
-  @federation @phase1
+  @federation @phase1 @planned
   Scenario: Graceful handling of relay shutdown
     Given relay A is shutting down for maintenance
     When it initiates graceful shutdown
@@ -393,7 +393,7 @@ Feature: Relay Network
     And it should deregister from the relay registry
     And clients should be directed to other relays
 
-  @federation @wip @phase3
+  @federation @wip @phase3 @planned
   Scenario: Load balancing across relay network
     Given the relay network has varying capacity
     When a new blob needs to be stored
@@ -403,7 +403,7 @@ Feature: Relay Network
 
   # Federation Security
 
-  @federation @security @wip @phase4
+  @federation @security @wip @phase4 @planned
   Scenario: Only authorized relays can join federation
     Given the relay federation uses mutual TLS
     When an unknown relay tries to join
@@ -411,14 +411,14 @@ Feature: Relay Network
     And federation traffic should be encrypted
     And relay identity should be verified
 
-  @federation @security @phase1
+  @federation @security @phase1 @planned
   Scenario: Blob integrity preserved during transfer
     Given a blob is being transferred between relays
     Then the blob should be transferred with its signature
     And the receiving relay should verify integrity
     And corrupted blobs should be rejected
 
-  @federation @security @phase1
+  @federation @security @phase1 @planned
   Scenario: Relay cannot read offloaded blobs
     Given relay A offloads encrypted blobs to relay B
     Then relay B receives the same encrypted data

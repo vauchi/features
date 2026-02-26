@@ -16,7 +16,7 @@ Feature: Aha Moments
   # Card Creation Celebration
   # ============================================================
 
-  @card-creation
+  @card-creation @planned
   Scenario: Card creation shows completion message
     Given I have just created my identity
     And my contact card is ready
@@ -26,7 +26,7 @@ Feature: Aha Moments
     And there should be a brief explanation about auto-updates
     And the overlay should be dismissible
 
-  @card-creation
+  @card-creation @planned
   Scenario: Card creation celebration is shown once
     Given I have seen the card creation aha moment
     When I navigate away and return to my card
@@ -36,7 +36,7 @@ Feature: Aha Moments
   # First Edit Feedback
   # ============================================================
 
-  @first-edit
+  @first-edit @planned
   Scenario: First edit shows would-update feedback
     Given I have created my contact card
     And I have not yet added any contacts
@@ -45,14 +45,14 @@ Feature: Aha Moments
     And the message should say "If anyone had your card, they'd see this change instantly"
     And there may be a brief ripple animation
 
-  @first-edit
+  @first-edit @planned
   Scenario: First edit feedback shown only once
     Given I have seen the first edit feedback
     When I edit my card again
     Then I should not see the first edit feedback
     But the edit should still succeed
 
-  @first-edit
+  @first-edit @planned
   Scenario: Edit with contacts shows delivery feedback
     Given I have contacts Bob and Alice
     When I edit my contact card
@@ -63,7 +63,7 @@ Feature: Aha Moments
   # First Contact Celebration
   # ============================================================
 
-  @first-contact
+  @first-contact @planned
   Scenario: First contact added celebration
     Given I have no contacts
     When I complete an exchange with Bob
@@ -71,7 +71,7 @@ Feature: Aha Moments
     And the message should mention Bob's name
     And explain that I'll see Bob's updates automatically
 
-  @first-contact
+  @first-contact @planned
   Scenario: Subsequent contacts do not show celebration
     Given I have already added my first contact
     When I complete an exchange with Alice
@@ -82,7 +82,7 @@ Feature: Aha Moments
   # First Received Update
   # ============================================================
 
-  @first-update
+  @first-update @planned
   Scenario: First received update shows diff view
     Given Bob is my contact
     And Bob has updated his phone number
@@ -92,7 +92,7 @@ Feature: Aha Moments
     And it should show a before/after diff
     And explain "This is the magic - Bob updated, you see it"
 
-  @first-update
+  @first-update @planned
   Scenario: Subsequent updates do not show aha moment
     Given I have received updates before
     When I receive another update from a contact
@@ -103,7 +103,7 @@ Feature: Aha Moments
   # First Outbound Update (with contacts)
   # ============================================================
 
-  @first-outbound
+  @first-outbound @planned
   Scenario: First outbound update shows delivery confirmation
     Given I have contacts
     And I have never sent an update before
@@ -116,7 +116,7 @@ Feature: Aha Moments
   # Aha Moment Persistence
   # ============================================================
 
-  @persistence
+  @persistence @planned
   Scenario: Aha moments are tracked per milestone
     Given I have seen the card-creation aha moment
     But I have not seen the first-edit aha moment
@@ -124,7 +124,7 @@ Feature: Aha Moments
     Then I should see the first-edit aha moment
     And the card-creation moment should not repeat
 
-  @persistence
+  @persistence @planned
   Scenario: Aha moments persist across app restarts
     Given I have seen the card-creation aha moment
     When I force quit and relaunch the app
@@ -134,14 +134,14 @@ Feature: Aha Moments
   # Dismissal and Accessibility
   # ============================================================
 
-  @dismissal
+  @dismissal @planned
   Scenario: Aha moments can be dismissed
     When an aha moment overlay is shown
     Then I should be able to tap outside to dismiss
     Or tap a close button
     Or swipe down to dismiss
 
-  @accessibility
+  @accessibility @planned
   Scenario: Aha moments are accessible
     Given VoiceOver or TalkBack is enabled
     When an aha moment overlay is shown
@@ -149,7 +149,7 @@ Feature: Aha Moments
     And the dismiss action should be accessible
     And focus should be managed appropriately
 
-  @accessibility
+  @accessibility @planned
   Scenario: Reduce motion respects system setting
     Given the user has enabled "Reduce Motion" in system settings
     When an aha moment with animation is triggered

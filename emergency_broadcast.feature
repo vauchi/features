@@ -26,7 +26,7 @@ Feature: Emergency Broadcast
   # Setup and Configuration
   # ============================================================
 
-  @setup
+  @setup @planned
   Scenario: Configure emergency broadcast contacts
     Given I am in the app settings
     When I navigate to "Emergency Broadcast"
@@ -34,7 +34,7 @@ Feature: Emergency Broadcast
     And I should be able to select up to 10 trusted contacts
     And selected contacts will receive alerts when triggered
 
-  @setup
+  @setup @planned
   Scenario: Configure alert message
     Given I am configuring emergency broadcast
     When I set up my alert message
@@ -42,7 +42,7 @@ Feature: Emergency Broadcast
     Or I can write a custom message (max 500 chars)
     And the message is stored encrypted locally
 
-  @setup
+  @setup @planned
   Scenario: Configure location sharing for alerts
     Given I am configuring emergency broadcast
     When I configure location settings
@@ -50,7 +50,7 @@ Feature: Emergency Broadcast
     And I can enable "Include last known location in alerts"
     And I understand this reduces privacy for safety
 
-  @setup
+  @setup @planned
   Scenario: Emergency broadcast is opt-in
     Given I have just installed the app
     When I check settings
@@ -61,7 +61,7 @@ Feature: Emergency Broadcast
   # Triggering Alerts
   # ============================================================
 
-  @trigger
+  @trigger @planned
   Scenario: Send emergency broadcast from app
     Given I have configured emergency broadcast contacts
     When I navigate to the emergency broadcast screen
@@ -69,21 +69,21 @@ Feature: Emergency Broadcast
     Then a confirmation should appear briefly
     And the alert should be sent to all trusted contacts
 
-  @trigger
+  @trigger @planned
   Scenario: Quick access to emergency broadcast
     Given I have configured emergency broadcast
     When I use the quick access gesture (e.g., triple-tap header)
     Then the emergency broadcast screen should open immediately
     And I can trigger the alert within 2 taps
 
-  @trigger
+  @trigger @planned
   Scenario: Emergency broadcast from widget
     Given I have the emergency broadcast widget on my home screen
     When I trigger the widget
     Then the alert should be sent to trusted contacts
     And this should work without opening the full app
 
-  @trigger
+  @trigger @planned
   Scenario: Emergency broadcast with confirmation
     Given I am about to send an emergency broadcast
     When I tap the send button
@@ -95,7 +95,7 @@ Feature: Emergency Broadcast
   # Alert Content and Delivery
   # ============================================================
 
-  @delivery
+  @delivery @planned
   Scenario: Alert message content
     Given I have triggered an emergency broadcast
     Then each trusted contact should receive:
@@ -106,21 +106,21 @@ Feature: Emergency Broadcast
       | sender_id  | My contact ID                          |
     And location should only be included if enabled
 
-  @delivery
+  @delivery @planned
   Scenario: Alert is encrypted end-to-end
     Given I send an emergency broadcast
     Then the alert should be encrypted with each contact's shared key
     And the relay should only see encrypted blobs
     And only intended recipients can read the alert
 
-  @delivery
+  @delivery @planned
   Scenario: Alert looks like normal sync traffic
     Given I send an emergency broadcast
     Then to the relay it should look like a card update
     And the message size should be padded to standard sizes
     And network observers cannot distinguish it from normal sync
 
-  @delivery
+  @delivery @planned
   Scenario: Alert delivery to multiple contacts
     Given I have 5 trusted contacts configured
     When I send an emergency broadcast
@@ -128,7 +128,7 @@ Feature: Emergency Broadcast
     And each gets individually encrypted message
     And delivery is attempted in parallel
 
-  @delivery
+  @delivery @planned
   Scenario: Alert delivery when offline
     Given I have no network connection
     When I send an emergency broadcast
@@ -140,7 +140,7 @@ Feature: Emergency Broadcast
   # Receiving Alerts
   # ============================================================
 
-  @receive
+  @receive @planned
   Scenario: Receive emergency alert notification
     Given Bob has me as a trusted contact for emergency broadcast
     When Bob sends an emergency broadcast
@@ -148,7 +148,7 @@ Feature: Emergency Broadcast
     And the notification should show "Emergency alert from Bob"
     And tapping should open the alert details
 
-  @receive
+  @receive @planned
   Scenario: Emergency alert displayed prominently
     Given I receive an emergency alert from Bob
     When I view the alert
@@ -157,14 +157,14 @@ Feature: Emergency Broadcast
     And if location was included, I should see a map link
     And the UI should clearly indicate this is an emergency
 
-  @receive
+  @receive @planned
   Scenario: Emergency alert sound and vibration
     Given I receive an emergency alert
     Then it should use emergency notification settings
     And it should override Do Not Disturb (if system allows)
     And it should use distinct sound/vibration pattern
 
-  @receive
+  @receive @planned
   Scenario: Emergency alert history
     Given I have received emergency alerts in the past
     When I view my contact with that person
@@ -175,14 +175,14 @@ Feature: Emergency Broadcast
   # Location Handling
   # ============================================================
 
-  @location
+  @location @planned
   Scenario: Location disabled by default
     Given I am configuring emergency broadcast
     Then location sharing should be OFF by default
     And I should see a privacy notice about location
     And enabling requires explicit confirmation
 
-  @location
+  @location @planned
   Scenario: Include location when enabled
     Given I have enabled location sharing for alerts
     When I send an emergency broadcast
@@ -190,7 +190,7 @@ Feature: Emergency Broadcast
     And location should be approximate (city-level) not exact
     And location should be encrypted with the message
 
-  @location
+  @location @planned
   Scenario: Location unavailable
     Given I have enabled location sharing
     But location services are disabled or unavailable
@@ -203,7 +203,7 @@ Feature: Emergency Broadcast
   # Integration with Other Features
   # ============================================================
 
-  @integration
+  @integration @planned
   Scenario: Emergency broadcast before panic shred
     Given I have configured both emergency broadcast and panic widget
     When I trigger panic shred
@@ -211,7 +211,7 @@ Feature: Emergency Broadcast
     And panic shred has its own notification mechanism (pre-signed)
     And these are separate features for different scenarios
 
-  @integration
+  @integration @planned
   Scenario: Emergency broadcast from duress mode
     Given I am in duress mode (unlocked with duress PIN)
     When I try to send an emergency broadcast
@@ -219,7 +219,7 @@ Feature: Emergency Broadcast
     But it should go to contacts in the decoy profile
     And real trusted contacts should not receive alerts from duress mode
 
-  @integration
+  @integration @planned
   Scenario: Emergency broadcast works in Tor mode
     Given Tor mode is enabled
     When I send an emergency broadcast
@@ -230,14 +230,14 @@ Feature: Emergency Broadcast
   # Edge Cases
   # ============================================================
 
-  @edge
+  @edge @planned
   Scenario: No trusted contacts configured
     Given I have not configured any trusted contacts
     When I try to send an emergency broadcast
     Then I should be prompted to configure contacts first
     And no alert should be sent
 
-  @edge
+  @edge @planned
   Scenario: All trusted contacts offline
     Given all my trusted contacts are offline
     When I send an emergency broadcast
@@ -245,7 +245,7 @@ Feature: Emergency Broadcast
     And contacts will receive when they come online
     And I should see "Alerts sent - delivery pending"
 
-  @edge
+  @edge @planned
   Scenario: Accidental alert cancellation
     Given I triggered an emergency broadcast by mistake
     And alerts are queued but not yet sent
@@ -253,13 +253,13 @@ Feature: Emergency Broadcast
     Then queued alerts should be cancelled
     And I should see confirmation of cancellation
 
-  @edge
+  @edge @planned
   Scenario: Blocked contact in trusted list
     Given I have blocked a contact who was in my trusted list
     Then they should be automatically removed from trusted list
     And they should not receive emergency broadcasts
 
-  @edge
+  @edge @planned
   Scenario: Rate limiting emergency broadcasts
     Given I have sent an emergency broadcast
     When I try to send another within 1 minute

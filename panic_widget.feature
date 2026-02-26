@@ -25,7 +25,7 @@ Feature: Panic Button Widget
   # Widget Setup
   # ============================================================
 
-  @setup @ios
+  @setup @ios @planned
   Scenario: Add panic widget on iOS
     Given I am on iOS
     When I add a Vauchi widget to my home screen
@@ -33,7 +33,7 @@ Feature: Panic Button Widget
     And the widget should have a neutral appearance
     And the widget should not be labeled "Panic" or "Emergency"
 
-  @setup @android
+  @setup @android @planned
   Scenario: Add panic widget on Android
     Given I am on Android
     When I add a Vauchi widget to my home screen
@@ -41,14 +41,14 @@ Feature: Panic Button Widget
     And I should also see a Quick Settings tile option
     And widgets should have neutral appearance
 
-  @setup
+  @setup @planned
   Scenario: Widget requires authentication on setup
     Given I am adding a panic widget
     When I configure the widget
     Then I should authenticate with my app PIN or biometric
     And this confirms I have access to the app
 
-  @setup
+  @setup @planned
   Scenario: Configure widget confirmation mode
     Given I am setting up the panic widget
     Then I should be able to choose:
@@ -62,7 +62,7 @@ Feature: Panic Button Widget
   # Panic Trigger
   # ============================================================
 
-  @trigger
+  @trigger @planned
   Scenario: Trigger panic via widget with confirmation
     Given I have the panic widget on my home screen
     And confirmation mode is "Tap + Confirm"
@@ -71,7 +71,7 @@ Feature: Panic Button Widget
     And I should have 5 seconds to confirm or cancel
     And the dialog should have minimal text for speed
 
-  @trigger
+  @trigger @planned
   Scenario: Trigger panic via widget with long press
     Given I have the panic widget on my home screen
     And confirmation mode is "Long Press"
@@ -79,14 +79,14 @@ Feature: Panic Button Widget
     Then panic shred should trigger immediately
     And no additional confirmation should be required
 
-  @trigger
+  @trigger @planned
   Scenario: Trigger panic via widget with double tap
     Given I have the panic widget on my home screen
     And confirmation mode is "Double Tap"
     When I double-tap the widget
     Then panic shred should trigger immediately
 
-  @trigger @android
+  @trigger @android @planned
   Scenario: Trigger panic via Quick Settings tile
     Given I am on Android
     And I have added the Vauchi Quick Settings tile
@@ -98,7 +98,7 @@ Feature: Panic Button Widget
   # Panic Shred Execution
   # ============================================================
 
-  @shred
+  @shred @planned
   Scenario: Widget triggers full panic shred
     Given I have triggered panic via the widget
     Then the panic shred process should execute per emergency_shred.feature
@@ -106,14 +106,14 @@ Feature: Panic Button Widget
     And all cryptographic keys should be destroyed
     And all local data should be wiped
 
-  @shred
+  @shred @planned
   Scenario: Widget shred sends pre-signed notifications
     Given I have triggered panic via the widget
     Then pre-signed deletion notices should be sent to contacts
     And pre-signed purge requests should be sent to relays
     And this happens before key destruction
 
-  @shred
+  @shred @planned
   Scenario: Widget shred completes quickly
     Given I have triggered panic via the widget
     Then the shred should complete within 5 seconds
@@ -124,7 +124,7 @@ Feature: Panic Button Widget
   # Visual Design
   # ============================================================
 
-  @design
+  @design @planned
   Scenario: Widget has neutral appearance
     Given I have the panic widget on my home screen
     Then the widget should blend with other widgets
@@ -132,14 +132,14 @@ Feature: Panic Button Widget
     And it should not be labeled "Panic", "Emergency", or "Shred"
     And suggested labels include "V" or app icon only
 
-  @design
+  @design @planned
   Scenario: Widget does not reveal purpose to observers
     Given someone is looking at my home screen
     When they see the Vauchi widget
     Then they should not be able to determine it triggers data destruction
     And it should look like a normal app shortcut
 
-  @design
+  @design @planned
   Scenario: Confirmation dialog is minimal
     Given I have tapped the widget with confirmation mode enabled
     When the confirmation dialog appears
@@ -151,7 +151,7 @@ Feature: Panic Button Widget
   # Authentication
   # ============================================================
 
-  @auth
+  @auth @planned
   Scenario: Widget works without app unlock
     Given the app is locked
     When I trigger the panic widget
@@ -159,14 +159,14 @@ Feature: Panic Button Widget
     And panic shred should proceed immediately
     And this is intentional for emergency scenarios
 
-  @auth
+  @auth @planned
   Scenario: Widget respects device lock state
     Given my device is locked
     When I trigger the panic widget (if visible on lock screen)
     Then the widget should still function
     And panic shred should proceed
 
-  @auth
+  @auth @planned
   Scenario: Widget setup requires authentication
     Given I want to add or configure the panic widget
     Then I should authenticate first
@@ -176,7 +176,7 @@ Feature: Panic Button Widget
   # Edge Cases
   # ============================================================
 
-  @edge
+  @edge @planned
   Scenario: Accidental widget tap with confirmation
     Given confirmation mode is "Tap + Confirm"
     When I accidentally tap the widget
@@ -184,14 +184,14 @@ Feature: Panic Button Widget
     And if I don't confirm, nothing happens
     And the dialog should auto-dismiss
 
-  @edge
+  @edge @planned
   Scenario: Widget trigger while app is open
     Given the app is currently open
     When I trigger the panic widget
     Then panic shred should still proceed
     And the app should close and data should be destroyed
 
-  @edge
+  @edge @planned
   Scenario: Widget trigger with no network
     Given I have no network connection
     When I trigger the panic widget
@@ -199,7 +199,7 @@ Feature: Panic Button Widget
     And pre-signed messages should be queued
     And shred report should note notifications pending
 
-  @edge
+  @edge @planned
   Scenario: Remove panic widget
     Given I have the panic widget on my home screen
     When I remove the widget
@@ -207,7 +207,7 @@ Feature: Panic Button Widget
     And this does not affect app functionality
     And I can add it again later
 
-  @edge
+  @edge @planned
   Scenario: Multiple devices with widget
     Given I have the panic widget on multiple devices
     When I trigger panic on one device
@@ -219,21 +219,21 @@ Feature: Panic Button Widget
   # Platform-Specific Behavior
   # ============================================================
 
-  @ios
+  @ios @planned
   Scenario: iOS widget uses App Intents
     Given I am on iOS
     Then the panic widget should use App Intents framework
     And it should work via Widget Extensions
     And it should support lock screen placement (iOS 16+)
 
-  @android
+  @android @planned
   Scenario: Android widget uses AppWidgetProvider
     Given I am on Android
     Then the panic widget should use AppWidgetProvider
     And Quick Settings tile should use TileService
     And both should support direct action without opening app
 
-  @android
+  @android @planned
   Scenario: Android widget survives app kill
     Given the app process has been killed
     When I trigger the Android panic widget

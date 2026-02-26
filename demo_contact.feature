@@ -17,7 +17,7 @@ Feature: Demo Contact
   # Demo Contact Appearance
   # ============================================================
 
-  @demo-appear
+  @demo-appear @implemented
   Scenario: Demo contact appears for users with no contacts
     Given I have no real contacts
     When I complete the onboarding process
@@ -25,13 +25,13 @@ Feature: Demo Contact
     And the contact should be marked as "Demo"
     And the contact card should contain helpful tips
 
-  @demo-appear
+  @demo-appear @implemented
   Scenario: Demo contact does not appear if user has contacts
     Given I already have real contacts
     When I complete the onboarding process
     Then no demo contact should be created
 
-  @demo-appear
+  @demo-appear @implemented
   Scenario: Demo contact is visually distinct
     Given the demo contact exists
     When I view my contacts list
@@ -42,7 +42,7 @@ Feature: Demo Contact
   # Demo Updates
   # ============================================================
 
-  @demo-updates
+  @demo-updates @implemented
   Scenario: Demo contact sends periodic updates
     Given the demo contact exists
     And I have been using the app for some time
@@ -50,7 +50,7 @@ Feature: Demo Contact
     Then I should receive an update notification
     And the update should contain a new tip or feature explanation
 
-  @demo-updates
+  @demo-updates @implemented
   Scenario: Demo updates demonstrate the update flow
     Given the demo contact exists
     When I receive a demo update
@@ -58,7 +58,7 @@ Feature: Demo Contact
     And the contact card should show updated content
     And this demonstrates how real updates work
 
-  @demo-updates
+  @demo-updates @implemented
   Scenario: Demo update shows before/after diff
     Given the demo contact exists
     And I view a demo update for the first time
@@ -69,7 +69,7 @@ Feature: Demo Contact
   # Demo Contact Content
   # ============================================================
 
-  @demo-content
+  @demo-content @implemented
   Scenario: Demo contact has rotating tips
     Given the demo contact exists
     Then the contact card should contain helpful content:
@@ -79,7 +79,7 @@ Feature: Demo Contact
       | updates | How updates work |
       | recovery | What happens if you lose your phone |
 
-  @demo-content
+  @demo-content @implemented
   Scenario: Demo tips change over time
     Given the demo contact exists
     When I check the demo contact later
@@ -90,21 +90,21 @@ Feature: Demo Contact
   # Demo Contact Dismissal
   # ============================================================
 
-  @demo-dismiss
+  @demo-dismiss @implemented
   Scenario: Demo contact can be manually dismissed
     Given the demo contact exists
     When I choose to dismiss the demo contact
     Then the demo contact should be removed
     And I can restore it from Settings if needed
 
-  @demo-dismiss
+  @demo-dismiss @implemented
   Scenario: Demo contact auto-removes after first real exchange
     Given the demo contact exists
     When I complete an exchange with a real contact
     Then the demo contact should be automatically removed
     And a message should explain the demo has ended
 
-  @demo-dismiss
+  @demo-dismiss @implemented
   Scenario: Demo contact can be restored from settings
     Given the demo contact was dismissed
     When I go to Settings > Help > Show Demo Contact
@@ -115,14 +115,14 @@ Feature: Demo Contact
   # Demo Contact Privacy
   # ============================================================
 
-  @demo-privacy
+  @demo-privacy @planned
   Scenario: Demo contact is local only
     Given the demo contact exists
     Then no data is sent to any server for the demo
     And the demo contact is stored locally
     And demo updates are generated locally
 
-  @demo-privacy
+  @demo-privacy @planned
   Scenario: Demo contact does not count as real contact
     Given the demo contact exists
     When I check my contact count
@@ -133,14 +133,14 @@ Feature: Demo Contact
   # Persistence
   # ============================================================
 
-  @demo-persistence
+  @demo-persistence @implemented
   Scenario: Demo contact state persists across app restarts
     Given the demo contact exists
     When I force quit and relaunch the app
     Then the demo contact should still be present
     And update history should be preserved
 
-  @demo-persistence
+  @demo-persistence @implemented
   Scenario: Dismissal persists across app restarts
     Given I have dismissed the demo contact
     When I force quit and relaunch the app
@@ -150,7 +150,7 @@ Feature: Demo Contact
   # Edge Cases
   # ============================================================
 
-  @demo-edge
+  @demo-edge @planned
   Scenario: Demo contact handles no network gracefully
     Given the demo contact exists
     And the device is offline
@@ -158,7 +158,7 @@ Feature: Demo Contact
     Then the update should still work
     And no network error should be shown
 
-  @demo-edge
+  @demo-edge @planned
   Scenario: Demo contact does not interfere with real contacts
     Given I have the demo contact
     And I add a real contact

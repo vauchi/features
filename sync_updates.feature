@@ -16,7 +16,7 @@ Feature: Sync and Updates
 
   # Update Propagation
 
-  @propagation
+  @propagation @implemented
   Scenario: Update propagates to online contacts
     Given Bob is online and connected
     And Bob can see my phone field
@@ -24,7 +24,7 @@ Feature: Sync and Updates
     Then Bob should receive the update within 30 seconds
     And Bob's view of my contact card should show "555-2222"
 
-  @propagation
+  @propagation @implemented
   Scenario: Update queued for offline contacts
     Given Carol is offline
     And Carol can see my email field
@@ -32,14 +32,14 @@ Feature: Sync and Updates
     Then the update should be queued for Carol
     And my local sync state should show "pending for Carol"
 
-  @propagation
+  @propagation @implemented
   Scenario: Queued updates delivered when contact comes online
     Given there is a pending update for Carol
     When Carol comes online
     Then Carol should receive the queued update
     And my sync state should show Carol as "synced"
 
-  @propagation
+  @propagation @implemented
   Scenario: Multiple updates coalesced for offline contact
     Given Carol is offline
     When I make 5 changes to my contact card
@@ -49,7 +49,7 @@ Feature: Sync and Updates
 
   # Receiving Updates
 
-  @receive
+  @receive @planned
   Scenario: Receive contact card update
     Given Bob has my contact card
     When Bob updates his phone number
@@ -58,7 +58,7 @@ Feature: Sync and Updates
     And my view of Bob's contact should show the new phone number
     And I should see a notification "Bob updated their contact info"
 
-  @receive
+  @receive @planned
   Scenario: Receive update while offline
     Given I am offline
     And Bob updates his phone number
@@ -66,7 +66,7 @@ Feature: Sync and Updates
     Then I should receive Bob's update
     And my contacts should be current
 
-  @receive
+  @receive @planned
   Scenario: Update only visible fields
     Given Bob has updated a field I cannot see
     When sync occurs
@@ -75,7 +75,7 @@ Feature: Sync and Updates
 
   # Relay-Based Sync
 
-  @relay
+  @relay @implemented
   Scenario: Sync via WebSocket relay
     Given Bob and I are both online
     When I update my contact card
@@ -83,14 +83,14 @@ Feature: Sync and Updates
     And Bob should receive the update
     And the update should remain end-to-end encrypted
 
-  @relay
+  @relay @implemented
   Scenario: Relay routes by recipient ID
     Given Bob is connected to the relay
     When I send an update for Bob
     Then the relay should route it by Bob's recipient ID
     And Bob should receive the update
 
-  @relay
+  @relay @implemented
   Scenario: Relay stores updates for offline contacts
     Given Bob is offline
     When I update my contact card
@@ -99,7 +99,7 @@ Feature: Sync and Updates
 
   # Conflict Resolution
 
-  @conflict
+  @conflict @implemented
   Scenario: Last-write-wins for single field
     Given I have synced my contact card to Device A and Device B
     When I update my phone on Device A at time T1
@@ -107,7 +107,7 @@ Feature: Sync and Updates
     Then the phone value from Device B should win
     And both devices should converge to the same value
 
-  @conflict
+  @conflict @implemented
   Scenario: Concurrent updates to different fields
     Given I have synced my contact card to Device A and Device B
     When I update my phone on Device A
@@ -115,7 +115,7 @@ Feature: Sync and Updates
     Then both updates should be preserved
     And both devices should have the new phone and email
 
-  @conflict
+  @conflict @implemented
   Scenario: LWW merge for complex changes
     Given I have made offline changes on Device A
     And I have made different offline changes on Device B
@@ -126,14 +126,14 @@ Feature: Sync and Updates
 
   # Sync Status
 
-  @status
+  @status @implemented
   Scenario: View sync status for all contacts
     When I open the sync status screen
     Then I should see a list of all contacts
     And each contact should show "synced" or "pending"
     And pending contacts should show number of queued updates
 
-  @status
+  @status @implemented
   Scenario: View detailed sync status for a contact
     Given I have pending updates for Carol
     When I view Carol's sync details
@@ -141,7 +141,7 @@ Feature: Sync and Updates
     And I should see how many updates are pending
     And I should see the reason for pending status (offline/unreachable)
 
-  @status
+  @status @implemented
   Scenario: Manual sync trigger
     Given sync is paused or delayed
     When I tap "Sync Now"
@@ -150,7 +150,7 @@ Feature: Sync and Updates
 
   # Sync Reliability
 
-  @reliability
+  @reliability @implemented
   Scenario: Retry failed sync with exponential backoff
     Given a sync attempt to Bob fails
     Then retry should be scheduled in 2 seconds
@@ -158,14 +158,14 @@ Feature: Sync and Updates
     And if that fails, retry in 8 seconds
     And maximum retry interval should be 5 minutes
 
-  @reliability
+  @reliability @implemented
   Scenario: Sync survives app restart
     Given I have pending updates to send
     When I restart the application
     Then pending updates should be preserved
     And sync should resume automatically
 
-  @reliability
+  @reliability @implemented
   Scenario: Sync survives device reboot
     Given I have pending updates to send
     When my device reboots
@@ -175,21 +175,21 @@ Feature: Sync and Updates
 
   # Bandwidth and Efficiency
 
-  @efficiency
+  @efficiency @planned
   Scenario: Only changed fields transmitted
     Given I have a contact card with 10 fields
     When I update only my phone number
     Then only the phone field delta should be transmitted
     And the full contact card should not be sent
 
-  @efficiency
+  @efficiency @planned
   Scenario: Merkle tree for efficient sync detection
     Given Bob and I have been synced
     When we reconnect after a period offline
     Then Merkle tree comparison should detect changes
     And only changed data should be transmitted
 
-  @efficiency
+  @efficiency @planned
   Scenario: Compression of sync payloads
     Given I am sending an update
     Then the payload should be compressed before encryption
@@ -197,7 +197,7 @@ Feature: Sync and Updates
 
   # Sync Settings
 
-  @settings
+  @settings @planned
   Scenario: Configure sync over WiFi only
     Given I have enabled "WiFi only" sync
     When I am on cellular data
@@ -205,14 +205,14 @@ Feature: Sync and Updates
     And updates should be queued
     And I should see "Sync paused - waiting for WiFi"
 
-  @settings
+  @settings @planned
   Scenario: Disable background sync
     Given I have disabled background sync
     When the app is in the background
     Then no sync should occur
     And sync should only run when app is open
 
-  @settings
+  @settings @planned
   Scenario: Configure sync frequency
     Given I have set sync frequency to "every hour"
     Then sync should run at most once per hour
@@ -220,21 +220,21 @@ Feature: Sync and Updates
 
   # Security in Sync
 
-  @security
+  @security @implemented
   Scenario: All sync traffic is encrypted
     Given I am syncing with Bob
     When updates are transmitted
     Then all payloads should be encrypted with our shared key
     And relay nodes should only see encrypted blobs
 
-  @security
+  @security @implemented
   Scenario: Verify update signatures
     Given I receive an update claiming to be from Bob
     Then I should verify the update signature with Bob's public key
     And unsigned updates should be rejected
     And updates signed by wrong key should be rejected
 
-  @security
+  @security @implemented
   Scenario: Reject replay attacks
     Given an attacker captures an old update from Bob
     When the attacker replays it to me
@@ -243,21 +243,21 @@ Feature: Sync and Updates
 
   # Multi-device Sync
 
-  @multi-device
+  @multi-device @implemented
   Scenario: Sync my own contact card across my devices
     Given I have Device A and Device B linked to my identity
     When I update my contact card on Device A
     Then Device B should receive the update
     And my contact card should be identical on both devices
 
-  @multi-device
+  @multi-device @implemented
   Scenario: Contact updates reach all my devices
     Given I have Device A and Device B linked
     And Bob updates his contact card
     Then both Device A and Device B should receive Bob's update
     And my view of Bob should be consistent across devices
 
-  @multi-device
+  @multi-device @implemented
   Scenario: New device receives full state
     Given I have an existing contact card and contacts on Device A
     When I link new Device C
@@ -267,14 +267,14 @@ Feature: Sync and Updates
 
   # Edge Cases
 
-  @edge-case
+  @edge-case @planned
   Scenario: Handle contact deletion during sync
     Given Bob deletes me from his contacts
     When I try to sync an update to Bob
     Then Bob should not receive my updates
     And I should eventually be notified that Bob removed me
 
-  @edge-case
+  @edge-case @planned
   Scenario: Handle identity key change
     Given Bob has rotated his identity keys
     When I try to sync with Bob
@@ -282,7 +282,7 @@ Feature: Sync and Updates
     And I should be prompted to re-verify Bob
     And sync should pause until verified
 
-  @edge-case
+  @edge-case @planned
   Scenario: Large sync queue handling
     Given I have been offline for a long time
     And 100 contacts have sent updates
@@ -293,7 +293,7 @@ Feature: Sync and Updates
 
   # Clock Skew Handling (Added 2026-01-21)
 
-  @edge-case @clock-skew
+  @edge-case @clock-skew @planned
   Scenario: Sync handles clock skew between devices
     Given Device A's clock is 1 hour ahead
     And Device B has the correct time
@@ -302,14 +302,14 @@ Feature: Sync and Updates
     And timestamp-based resolution should not give unfair advantage
     And both devices should converge to the same state
 
-  @edge-case @clock-skew
+  @edge-case @clock-skew @planned
   Scenario: Extreme clock skew detection
     Given Device A's clock is set to year 2100
     When Device A sends an update
     Then the system should detect the unrealistic timestamp
     And version vector ordering should still work correctly
 
-  @edge-case @concurrent
+  @edge-case @concurrent @planned
   Scenario: Detect truly concurrent updates
     Given Device A and Device B are offline
     And Device A updates field X at logical time 1
@@ -319,7 +319,7 @@ Feature: Sync and Updates
     And deterministic tie-breaker should be applied
     And both devices should converge to the same winner
 
-  @edge-case @network
+  @edge-case @network @planned
   Scenario: Network partition during sync
     Given Device A and Device B are syncing
     When network connection drops mid-sync

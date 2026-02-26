@@ -15,7 +15,7 @@ Feature: Contact Card Management
 
   # Adding Contact Fields
 
-  @add-field @phone
+  @add-field @phone @implemented
   Scenario: Add a phone number field
     Given I am viewing my contact card
     When I add a new field of type "phone"
@@ -25,7 +25,7 @@ Feature: Contact Card Management
     Then my contact card should have a phone field labeled "Mobile"
     And the phone field should have value "+1-555-123-4567"
 
-  @add-field @email
+  @add-field @email @implemented
   Scenario: Add an email field
     Given I am viewing my contact card
     When I add a new field of type "email"
@@ -35,7 +35,7 @@ Feature: Contact Card Management
     Then my contact card should have an email field labeled "Work"
     And the email field should have value "alice@company.com"
 
-  @add-field @social
+  @add-field @social @implemented
   Scenario Outline: Add social media fields
     Given I am viewing my contact card
     When I add a new field of type "<social_type>"
@@ -54,7 +54,7 @@ Feature: Contact Card Management
       | social_github     | GitHub     | alicesmith         |
       | social_facebook   | Facebook   | alice.smith.123    |
 
-  @add-field @address
+  @add-field @address @implemented
   Scenario: Add a physical address field
     Given I am viewing my contact card
     When I add a new field of type "address"
@@ -64,7 +64,7 @@ Feature: Contact Card Management
     Then my contact card should have an address field labeled "Home"
     And the address field should have value "123 Main St, City, ST 12345"
 
-  @add-field @website
+  @add-field @website @implemented
   Scenario: Add a website field
     Given I am viewing my contact card
     When I add a new field of type "website"
@@ -73,7 +73,7 @@ Feature: Contact Card Management
     And I save the field
     Then my contact card should have a website field labeled "Personal Site"
 
-  @add-field @custom
+  @add-field @custom @implemented
   Scenario: Add a custom field
     Given I am viewing my contact card
     When I add a new field of type "custom"
@@ -84,7 +84,7 @@ Feature: Contact Card Management
 
   # Field Validation
 
-  @validation @phone
+  @validation @phone @implemented
   Scenario Outline: Phone number validation
     Given I am adding a phone field
     When I enter "<phone_number>" as the value
@@ -99,7 +99,7 @@ Feature: Contact Card Management
       | not-a-phone       | fail     | Please enter a valid phone number |
       |                   | fail     | Phone number is required          |
 
-  @validation @email
+  @validation @email @implemented
   Scenario Outline: Email validation
     Given I am adding an email field
     When I enter "<email>" as the value
@@ -114,7 +114,7 @@ Feature: Contact Card Management
       | @example.com          | fail   |
       | alice@               | fail   |
 
-  @validation @size
+  @validation @size @implemented
   Scenario: Field value size limit
     Given I am adding a field
     When I enter a value exceeding 1000 characters
@@ -123,7 +123,7 @@ Feature: Contact Card Management
 
   # Editing Contact Fields
 
-  @edit-field
+  @edit-field @implemented
   Scenario: Edit an existing field value
     Given my contact card has a phone field "Mobile" with value "+1-555-123-4567"
     When I edit the "Mobile" phone field
@@ -132,7 +132,7 @@ Feature: Contact Card Management
     Then the "Mobile" phone field should have value "+1-555-999-8888"
     And the last modified timestamp should be updated
 
-  @edit-field
+  @edit-field @implemented
   Scenario: Edit a field label
     Given my contact card has an email field labeled "Work"
     When I edit the label to "Office"
@@ -140,7 +140,7 @@ Feature: Contact Card Management
     Then the email field should be labeled "Office"
     And the value should remain unchanged
 
-  @edit-field
+  @edit-field @implemented
   Scenario: Cancel editing preserves original values
     Given my contact card has a phone field "Mobile" with value "+1-555-123-4567"
     When I edit the "Mobile" phone field
@@ -150,21 +150,21 @@ Feature: Contact Card Management
 
   # Removing Contact Fields
 
-  @remove-field
+  @remove-field @implemented
   Scenario: Remove a field from contact card
     Given my contact card has a phone field "Mobile"
     When I remove the "Mobile" phone field
     And I confirm the removal
     Then my contact card should not have a field labeled "Mobile"
 
-  @remove-field
+  @remove-field @implemented
   Scenario: Cancel field removal
     Given my contact card has a phone field "Mobile"
     When I attempt to remove the "Mobile" phone field
     And I cancel the removal
     Then my contact card should still have the "Mobile" phone field
 
-  @remove-field
+  @remove-field @implemented
   Scenario: Remove field updates contacts
     Given my contact card has a phone field "Mobile" visible to contact "Bob"
     And Bob has my contact card
@@ -174,21 +174,21 @@ Feature: Contact Card Management
 
   # Display Name Management
 
-  @display-name
+  @display-name @implemented
   Scenario: Update display name
     Given my display name is "Alice Smith"
     When I change my display name to "Alice S."
     And I save the changes
     Then my contact card should have display name "Alice S."
 
-  @display-name
+  @display-name @implemented
   Scenario: Display name cannot be empty
     Given my display name is "Alice Smith"
     When I try to change my display name to ""
     Then I should see an error "Display name cannot be empty"
     And my display name should remain "Alice Smith"
 
-  @display-name
+  @display-name @implemented
   Scenario: Display name length limit
     Given I am editing my display name
     When I enter a name longer than 100 characters
@@ -196,21 +196,21 @@ Feature: Contact Card Management
 
   # Avatar Management
 
-  @avatar
+  @avatar @implemented
   Scenario: Add avatar to contact card
     Given my contact card has no avatar
     When I add an avatar image
     Then my contact card should display the avatar
     And the avatar should be under 256KB
 
-  @avatar
+  @avatar @implemented
   Scenario: Avatar image too large
     Given I am adding an avatar
     When I select an image larger than 256KB
     Then I should see an error "Avatar too large"
     And the avatar should not be saved
 
-  @avatar
+  @avatar @implemented
   Scenario: Remove avatar from contact card
     Given my contact card has an avatar
     When I remove the avatar
@@ -218,21 +218,21 @@ Feature: Contact Card Management
 
   # Contact Card Limits
 
-  @limits
+  @limits @implemented
   Scenario: Maximum number of fields
     Given my contact card has 24 fields
     When I try to add another field
     Then the field should be added successfully
     And my contact card should have 25 fields
 
-  @limits
+  @limits @implemented
   Scenario: Exceed maximum fields
     Given my contact card has 25 fields
     When I try to add another field
     Then I should see an error "Maximum number of fields reached"
     And the field should not be added
 
-  @limits
+  @limits @implemented
   Scenario: Contact card size limit
     Given my contact card is approaching the 64KB limit
     When I try to add a field that would exceed the limit
@@ -241,13 +241,13 @@ Feature: Contact Card Management
 
   # Ordering Fields
 
-  @ordering
+  @ordering @implemented
   Scenario: Reorder contact fields
     Given my contact card has fields in order: "Mobile", "Email", "Twitter"
     When I drag "Twitter" to the first position
     Then my contact card fields should be in order: "Twitter", "Mobile", "Email"
 
-  @ordering
+  @ordering @implemented
   Scenario: Field order persists after restart
     Given I have reordered my fields to: "Twitter", "Mobile", "Email"
     When I restart the application
@@ -255,14 +255,14 @@ Feature: Contact Card Management
 
   # Social Network Registry Configuration
 
-  @social-registry
+  @social-registry @implemented
   Scenario: Load social network configurations from remote repository
     Given the app has network connectivity
     When I open the social field options
     Then the app should fetch the social network config from GitHub
     And I should see available networks including "Twitter", "GitHub", "LinkedIn"
 
-  @social-registry @offline
+  @social-registry @offline @implemented
   Scenario: Use cached social network config when offline
     Given I have previously loaded the social network config
     And the app has no network connectivity
@@ -270,7 +270,7 @@ Feature: Contact Card Management
     Then I should see the cached list of social networks
     And I should be able to add social fields normally
 
-  @social-registry @validation
+  @social-registry @validation @implemented
   Scenario Outline: Validate social network username format
     Given the social network config has been loaded
     When I add a social field for "<network>"
@@ -286,14 +286,14 @@ Feature: Contact Card Management
       | github   | octocat               | pass   |                                  |
       | github   | -invalid              | fail   | Invalid GitHub username format   |
 
-  @social-registry @profile-url
+  @social-registry @profile-url @implemented
   Scenario: Generate profile URL from social field
     Given I have a social field for "github" with value "octocat"
     When I view the field details
     Then I should see the profile URL "https://github.com/octocat"
     And I should be able to open the profile link
 
-  @social-registry @verification
+  @social-registry @verification @implemented
   Scenario: View verification workflow for social network
     Given the social network config has been loaded
     When I view the verification options for "twitter"
@@ -304,14 +304,14 @@ Feature: Contact Card Management
       | Post the message as a tweet from your account     |
       | Paste the tweet URL to verify ownership           |
 
-  @social-registry @verification
+  @social-registry @verification @implemented
   Scenario: View help text for finding social network ID
     Given I am adding a social field for "mastodon"
     When I tap the help icon
     Then I should see instructions on how to find my Mastodon handle
     And the instructions should mention "Your full handle like @user@instance.social"
 
-  @social-registry @config-update
+  @social-registry @config-update @implemented
   Scenario: Update social network config on app launch
     Given the cached config is older than 24 hours
     And the app has network connectivity
@@ -319,7 +319,7 @@ Feature: Contact Card Management
     Then the social network config should be refreshed in the background
     And new networks should be available when I add a social field
 
-  @social-registry @custom-network
+  @social-registry @custom-network @implemented
   Scenario: Add unlisted social network as custom field
     Given the social network config is loaded
     And "Signal" is not in the config

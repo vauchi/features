@@ -15,7 +15,7 @@ Feature: Contact Card Exchange
 
   # QR Code Exchange
 
-  @qr-code
+  @qr-code @implemented
   Scenario: Generate exchange QR code
     Given Alice wants to share her contact card
     When Alice selects "Share Contact"
@@ -25,7 +25,7 @@ Feature: Contact Card Exchange
     And the QR code should contain a one-time exchange token
     And the QR code should contain an audio challenge seed
 
-  @qr-code
+  @qr-code @implemented
   Scenario: QR code expiration
     Given Alice has generated an exchange QR code
     When 5 minutes have passed
@@ -33,7 +33,7 @@ Feature: Contact Card Exchange
     And Alice should be prompted to generate a new one
     And scanning the expired QR code should fail
 
-  @qr-code @qr-mutual
+  @qr-code @qr-mutual @implemented
   Scenario: Successful QR code exchange with proximity
     Given Alice is displaying her exchange QR code
     And Bob is displaying his exchange QR code
@@ -45,7 +45,7 @@ Feature: Contact Card Exchange
     And Alice should receive Bob's contact card
     And both should see "Exchange Successful"
 
-  @qr-code @proximity-fail
+  @qr-code @proximity-fail @implemented
   Scenario: QR code exchange blocked without proximity
     Given Alice is displaying her exchange QR code
     And Bob is scanning remotely via screenshot
@@ -57,7 +57,7 @@ Feature: Contact Card Exchange
 
   # Mutual QR Code Exchange
 
-  @qr-mutual
+  @qr-mutual @implemented
   Scenario: Mutual QR exchange with bidirectional scanning
     Given Alice and Bob both want to exchange contact cards
     When Alice initiates a mutual QR exchange
@@ -70,7 +70,7 @@ Feature: Contact Card Exchange
     And both should receive each other's contact cards
     And both should see "Exchange Successful"
 
-  @qr-mutual @forward-secrecy
+  @qr-mutual @forward-secrecy @implemented
   Scenario: Mutual QR uses fresh ephemeral keys for forward secrecy
     Given Alice initiates a mutual QR exchange
     When Alice's QR code is generated
@@ -78,7 +78,7 @@ Feature: Contact Card Exchange
     And the ephemeral key should differ from Alice's identity exchange key
     And a new exchange generates a different ephemeral key each time
 
-  @qr-mutual
+  @qr-mutual @implemented
   Scenario: Mutual QR rejects expired peer QR code
     Given Alice has initiated a mutual QR exchange
     And Bob's QR code was generated more than 5 minutes ago
@@ -86,14 +86,14 @@ Feature: Contact Card Exchange
     Then the exchange should fail with "QRExpired" error
     And Alice should see "QR code has expired"
 
-  @qr-mutual @self-exchange
+  @qr-mutual @self-exchange @implemented
   Scenario: Mutual QR prevents self-exchange
     Given Alice has initiated a mutual QR exchange
     When Alice scans her own QR code
     Then the exchange should fail with "SelfExchange" error
     And Alice should see "Cannot exchange with yourself"
 
-  @qr-mutual
+  @qr-mutual @implemented
   Scenario: Default QR exchange uses mutual flow
     Given Alice initiates a QR exchange
     Then the exchange should use the mutual QR flow
@@ -102,7 +102,7 @@ Feature: Contact Card Exchange
 
   # Bluetooth Low Energy (BLE) Exchange
 
-  @ble @mobile
+  @ble @mobile @planned
   Scenario: Discover nearby Vauchi users via BLE
     Given Alice has BLE enabled
     And Bob has BLE enabled and is within 2 meters
@@ -110,7 +110,7 @@ Feature: Contact Card Exchange
     Then Alice should see Bob in the nearby users list
     And the signal strength should indicate close proximity
 
-  @ble @mobile
+  @ble @mobile @planned
   Scenario: Initiate BLE exchange
     Given Alice sees Bob in the nearby users list
     And Bob is within 2 meters (verified by RSSI)
@@ -119,7 +119,7 @@ Feature: Contact Card Exchange
     Then contact cards should be exchanged over BLE
     And both should see "Exchange Successful"
 
-  @ble @mobile @proximity-fail
+  @ble @mobile @proximity-fail @planned
   Scenario: BLE exchange blocked when too far
     Given Alice sees Bob in the nearby users list
     But Bob is more than 2 meters away
@@ -127,7 +127,7 @@ Feature: Contact Card Exchange
     Then the exchange should be blocked
     And Alice should see "Move closer to exchange"
 
-  @ble @mobile
+  @ble @mobile @planned
   Scenario: BLE exchange with relay attack prevention
     Given an attacker is relaying BLE signals
     And Alice attempts to exchange with what appears to be Bob
@@ -136,7 +136,7 @@ Feature: Contact Card Exchange
     And the exchange should be blocked
     And Alice should see "Security verification failed"
 
-  @ble @forward-secrecy
+  @ble @forward-secrecy @planned
   Scenario: BLE exchange uses fresh ephemeral keys
     Given Alice and Bob are exchanging via BLE
     When both devices generate BLE exchange payloads
@@ -145,14 +145,14 @@ Feature: Contact Card Exchange
     And symmetric DH key agreement should produce matching shared secrets
     And forward secrecy should be established
 
-  @ble @mobile
+  @ble @mobile @planned
   Scenario: BLE exchange rejects expired payload
     Given Alice has initiated a BLE exchange
     And Bob's BLE payload was generated more than 60 seconds ago
     When Alice receives Bob's expired BLE payload
     Then the exchange should fail with "BleExpired" error
 
-  @ble @mobile @self-exchange
+  @ble @mobile @self-exchange @planned
   Scenario: BLE exchange prevents self-exchange
     Given Alice has initiated a BLE exchange
     When Alice's device discovers its own BLE advertisement
@@ -160,7 +160,7 @@ Feature: Contact Card Exchange
 
   # NFC Active Exchange (phone-to-phone tap)
 
-  @nfc @active @mobile
+  @nfc @active @mobile @implemented
   Scenario: NFC active exchange between two phones
     Given Alice and Bob both have NFC-capable devices
     When Alice initiates an NFC exchange
@@ -171,7 +171,7 @@ Feature: Contact Card Exchange
     And both should receive each other's contact cards
     And both should see "Exchange Successful"
 
-  @nfc @active @forward-secrecy
+  @nfc @active @forward-secrecy @implemented
   Scenario: NFC active uses fresh ephemeral keys for forward secrecy
     Given Alice initiates an NFC exchange
     When the NFC payload is generated
@@ -179,7 +179,7 @@ Feature: Contact Card Exchange
     And the ephemeral key should differ from Alice's identity exchange key
     And the payload should be exactly 174 bytes with "VNFC" magic
 
-  @nfc @active
+  @nfc @active @implemented
   Scenario: NFC payload expires after 60 seconds
     Given Alice has generated an NFC exchange payload
     When 60 seconds have passed since generation
@@ -187,13 +187,13 @@ Feature: Contact Card Exchange
     And scanning the expired payload should fail
     And Alice should need to regenerate the payload
 
-  @nfc @active @self-exchange
+  @nfc @active @self-exchange @implemented
   Scenario: NFC exchange prevents self-exchange
     Given Alice has initiated an NFC exchange
     When Alice's device receives its own NFC payload
     Then the exchange should fail with "SelfExchange" error
 
-  @nfc @active @cross-platform
+  @nfc @active @cross-platform @implemented
   Scenario Outline: NFC active exchange platform compatibility
     Given Alice is using <platform_a>
     And Bob is using <platform_b>
@@ -206,7 +206,7 @@ Feature: Contact Card Exchange
       | iOS        | Android    | succeed (iOS as reader)             |
       | iOS        | iOS        | fail — both cannot do HCE, use QR   |
 
-  @nfc @active
+  @nfc @active @implemented
   Scenario: NFC tap too brief to complete exchange
     Given Alice and Bob are attempting an NFC exchange
     When the devices are tapped together too briefly
@@ -216,7 +216,7 @@ Feature: Contact Card Exchange
 
   # Exchange Protocol Security
 
-  @security @exchange
+  @security @exchange @implemented
   Scenario: X3DH key agreement during exchange
     Given Alice and Bob are performing an exchange
     When the exchange is initiated
@@ -224,7 +224,7 @@ Feature: Contact Card Exchange
     And the shared secret should be unique to Alice and Bob
     And the contact cards should be encrypted with the shared secret
 
-  @security @exchange
+  @security @exchange @implemented
   Scenario: Exchange creates mutual keys
     Given Alice and Bob have completed an exchange
     Then Alice should have an encryption key for communicating with Bob
@@ -232,7 +232,7 @@ Feature: Contact Card Exchange
     And these keys should be derived from the same shared secret
     And forward secrecy should be established via ratcheting
 
-  @security @exchange
+  @security @exchange @implemented
   Scenario: Exchange verifies identity
     Given Alice and Bob are completing an exchange
     When contact cards are received
@@ -242,7 +242,7 @@ Feature: Contact Card Exchange
 
   # Exchange States and Errors
 
-  @exchange-state
+  @exchange-state @implemented
   Scenario: Incomplete exchange recovery
     Given Alice and Bob are mid-exchange
     When Alice's device loses connectivity
@@ -250,7 +250,7 @@ Feature: Contact Card Exchange
     And both should see "Exchange interrupted"
     And the exchange should be resumable for 60 seconds
 
-  @exchange-state
+  @exchange-state @implemented
   Scenario: Resume interrupted exchange
     Given an exchange between Alice and Bob was interrupted
     And less than 60 seconds have passed
@@ -258,21 +258,21 @@ Feature: Contact Card Exchange
     Then the exchange should automatically resume
     And complete successfully
 
-  @exchange-state
+  @exchange-state @implemented
   Scenario: Exchange timeout after interruption
     Given an exchange between Alice and Bob was interrupted
     And 60 seconds have passed
     Then the exchange session should expire
     And both should need to start a new exchange
 
-  @exchange-error
+  @exchange-error @implemented
   Scenario: Handle malformed QR code
     Given Alice is scanning a QR code
     When the QR code contains invalid data
     Then Alice should see "Invalid QR code"
     And no exchange should be attempted
 
-  @exchange-error
+  @exchange-error @implemented
   Scenario: Handle non-Vauchi QR code
     Given Alice is scanning a QR code
     When the QR code is not from Vauchi
@@ -281,7 +281,7 @@ Feature: Contact Card Exchange
 
   # Duplicate and Existing Contacts
 
-  @duplicate
+  @duplicate @implemented
   Scenario: Exchange with existing contact
     Given Alice already has Bob in her contacts
     When Alice and Bob perform another exchange
@@ -289,7 +289,7 @@ Feature: Contact Card Exchange
     And Alice should be asked "Update contact?"
     And the existing contact should not be duplicated
 
-  @duplicate
+  @duplicate @implemented
   Scenario: Update existing contact via exchange
     Given Alice has Bob in her contacts with phone "555-1111"
     And Bob has updated his phone to "555-2222"
@@ -297,7 +297,7 @@ Feature: Contact Card Exchange
     And Alice chooses to update the contact
     Then Alice's contact for Bob should show phone "555-2222"
 
-  @duplicate
+  @duplicate @implemented
   Scenario: Keep existing contact without update
     Given Alice has Bob in her contacts with phone "555-1111"
     And Bob has updated his phone to "555-2222"
@@ -307,7 +307,7 @@ Feature: Contact Card Exchange
 
   # Audio Proximity Verification Details
 
-  @audio @proximity
+  @audio @proximity @planned
   Scenario: Ultrasonic audio handshake process
     Given Alice is displaying a QR code
     And Bob has scanned the QR code
@@ -318,14 +318,14 @@ Feature: Contact Card Exchange
     And Alice's device should verify the response
     And both devices should confirm proximity
 
-  @audio @proximity
+  @audio @proximity @planned
   Scenario: Audio verification works in noisy environment
     Given there is ambient noise in the environment
     When Alice and Bob perform audio proximity verification
     Then the ultrasonic frequencies should not be affected
     And verification should succeed
 
-  @audio @proximity
+  @audio @proximity @planned
   Scenario: Audio verification on devices without ultrasonic support
     Given Bob's device cannot emit ultrasonic audio
     When Bob scans Alice's QR code
@@ -335,7 +335,7 @@ Feature: Contact Card Exchange
 
   # Cross-Platform Exchange
 
-  @cross-platform
+  @cross-platform @planned
   Scenario Outline: Exchange between different platforms
     Given Alice is using <platform_a>
     And Bob is using <platform_b>
@@ -351,7 +351,7 @@ Feature: Contact Card Exchange
       | Desktop    | iOS        |
       | Desktop    | Android    |
 
-  @cross-platform @desktop
+  @cross-platform @desktop @planned
   Scenario: Desktop exchange without audio (requires confirmation)
     Given Alice is using desktop without microphone
     And Bob is using mobile
@@ -363,14 +363,14 @@ Feature: Contact Card Exchange
 
   # Edge Cases (Added 2026-01-21)
 
-  @edge-case @self-exchange
+  @edge-case @self-exchange @planned
   Scenario: Cannot exchange with yourself
     Given Alice has generated an exchange QR code
     When Alice scans her own QR code
     Then the exchange should fail with "SelfExchange" error
     And Alice should see "Cannot exchange with yourself"
 
-  @edge-case @duplicate
+  @edge-case @duplicate @implemented
   Scenario: Same QR scanned twice by same person
     Given Alice has generated an exchange QR code
     And Bob has scanned it and completed exchange
@@ -378,7 +378,7 @@ Feature: Contact Card Exchange
     Then Bob should see "Already connected with Alice"
     And no duplicate contact should be created
 
-  @edge-case @network
+  @edge-case @network @planned
   Scenario: Network failure during key exchange
     Given Alice and Bob are mid-exchange
     When the network drops during X3DH handshake
@@ -386,7 +386,7 @@ Feature: Contact Card Exchange
     And no partial state should be stored
     And exchange should require a fresh start
 
-  @edge-case @prekey
+  @edge-case @prekey @planned
   Scenario: Exchange with stale prekey
     Given Alice's prekey bundle is cached by Bob
     When Alice has rotated her prekeys since Bob cached them
@@ -396,7 +396,7 @@ Feature: Contact Card Exchange
     And the exchange should be retried
 
 
-  @privacy @consent
+  @privacy @consent @planned
   Scenario: Deny exchange request
     Given Alice sees Bob in the nearby list
     When Alice sends an exchange request to Bob
@@ -404,7 +404,7 @@ Feature: Contact Card Exchange
     Then Alice should see "Exchange declined"
     And no contact cards or keys should be shared
 
-  @privacy @consent
+  @privacy @consent @planned
   Scenario: Blocked user attempts exchange
     Given Alice has previously blocked "Eve"
     When Eve scans Alice's exchange QR code
@@ -414,14 +414,14 @@ Feature: Contact Card Exchange
 
   # Hardware & Resource Constraints
 
-  @hardware @battery
+  @hardware @battery @planned
   Scenario: Exchange blocked on low battery
     Given Alice's device battery is below 5%
     When Alice attempts to initiate an exchange
     Then Alice should see "Battery too low for secure exchange"
     And the QR code should not be generated
 
-  @hardware @storage
+  @hardware @storage @planned
   Scenario: Exchange fails due to full storage
     Given Bob's device has zero available storage
     When Bob scans Alice's QR code
@@ -430,7 +430,7 @@ Feature: Contact Card Exchange
 
   # Multi-User / Group Dynamics
 
-  @multi-user @proximity
+  @multi-user @proximity @planned
   Scenario: Simultaneous QR scans (Group mode)
     Given Alice is displaying a "Group Exchange" QR code
     And Bob and Charlie are both scanning it simultaneously
@@ -441,7 +441,7 @@ Feature: Contact Card Exchange
 
   # Identity & Spoofing
 
-  @security @spoofing
+  @security @spoofing @implemented
   Scenario: Identity mismatch detection
     Given Alice's QR code contains Public Key A
     When Alice's device attempts to sign the exchange with Private Key B
@@ -450,7 +450,7 @@ Feature: Contact Card Exchange
 
   # Time & Synchronization
 
-  @edge-case @clock-drift
+  @edge-case @clock-drift @planned
   Scenario: Exchange fails with significant clock drift
     Given Alice's system clock is 1 hour behind real time
     And Bob's clock is accurate

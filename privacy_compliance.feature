@@ -15,7 +15,7 @@ Feature: Privacy Compliance
   # Data Export
   # ============================================================
 
-  @export
+  @export @implemented
   Scenario: Export all my data
     When I go to Settings > Privacy > Export My Data
     And I confirm the export
@@ -23,7 +23,7 @@ Feature: Privacy Compliance
     And the file should contain all my personal data
     And the file should be in a machine-readable format (JSON)
 
-  @export
+  @export @implemented
   Scenario: Export includes all data types
     When I export my data
     Then the export should include:
@@ -38,14 +38,14 @@ Feature: Privacy Compliance
     And the export should NOT include contacts' private keys
     And the export should be encrypted with my key
 
-  @export
+  @export @implemented
   Scenario: Export requires authentication
     Given I request a data export
     Then I should be required to authenticate (PIN/biometric)
     And the export file should be encrypted
     And a notification should be sent to all my devices
 
-  @export
+  @export @implemented
   Scenario: Export works offline
     Given I am offline
     When I export my data
@@ -56,7 +56,7 @@ Feature: Privacy Compliance
   # Data Deletion
   # ============================================================
 
-  @deletion
+  @deletion @implemented
   Scenario: Delete my account
     When I go to Settings > Privacy > Delete Account
     And I confirm deletion by typing "DELETE"
@@ -66,7 +66,7 @@ Feature: Privacy Compliance
     And my contacts should be notified I'm gone
     And I should return to the welcome screen
 
-  @deletion
+  @deletion @implemented
   Scenario: Deletion is thorough
     When I delete my account
     Then all local data should be wiped
@@ -75,7 +75,7 @@ Feature: Privacy Compliance
     And database should be wiped
     And no personal data should remain on device
 
-  @deletion
+  @deletion @implemented
   Scenario: Deletion notifies contacts
     Given Alice has my contact
     When I delete my account
@@ -83,7 +83,7 @@ Feature: Privacy Compliance
     And my card in Alice's contacts should be marked "Account deleted"
     And Alice should be unable to send me updates
 
-  @deletion
+  @deletion @implemented
   Scenario: Grace period before permanent deletion
     When I request account deletion
     Then I should be told there is a 7-day grace period
@@ -91,7 +91,7 @@ Feature: Privacy Compliance
     And after 7 days deletion should be permanent
     And I should receive reminder notifications
 
-  @deletion
+  @deletion @implemented
   Scenario: Cancel deletion during grace period
     Given I requested account deletion 3 days ago
     When I go to Settings > Privacy
@@ -99,7 +99,7 @@ Feature: Privacy Compliance
     And I should be able to cancel
     And canceling should restore my account fully
 
-  @deletion
+  @deletion @implemented
   Scenario: Delete specific contacts
     Given I have a contact Bob
     When I delete Bob from my contacts
@@ -111,7 +111,7 @@ Feature: Privacy Compliance
   # Consent
   # ============================================================
 
-  @consent
+  @consent @implemented
   Scenario: Consent collected on first launch
     Given I am launching the app for the first time
     When I reach the terms screen
@@ -120,14 +120,14 @@ Feature: Privacy Compliance
     And my consent should be recorded with timestamp
     And I cannot proceed without agreeing
 
-  @consent
+  @consent @implemented
   Scenario: View what I consented to
     When I go to Settings > Privacy > Consent
     Then I should see what I consented to
     And I should see when I consented
     And I should see the version of terms I agreed to
 
-  @consent
+  @consent @implemented
   Scenario: Consent for optional features
     Given I want to enable usage telemetry
     When I toggle the telemetry option
@@ -135,7 +135,7 @@ Feature: Privacy Compliance
     And I should explicitly consent
     And I should be able to withdraw consent later
 
-  @consent
+  @consent @implemented
   Scenario: Withdraw consent for telemetry
     Given I previously consented to telemetry
     When I disable telemetry in settings
@@ -143,7 +143,7 @@ Feature: Privacy Compliance
     And I should be offered to delete already collected data
     And my withdrawal should be recorded
 
-  @consent
+  @consent @implemented
   Scenario: Re-consent required for major changes
     Given I consented to version 1.0 of privacy policy
     When version 2.0 introduces new data collection
@@ -155,14 +155,14 @@ Feature: Privacy Compliance
   # Privacy Information
   # ============================================================
 
-  @transparency
+  @transparency @implemented
   Scenario: View privacy policy in app
     When I go to Settings > Privacy Policy
     Then I should see the full privacy policy
     And it should be in my language if available
     And it should be understandable (no legal jargon)
 
-  @transparency
+  @transparency @implemented
   Scenario: View what data is stored locally
     When I go to Settings > Privacy > My Data
     Then I should see a summary of stored data:
@@ -173,14 +173,14 @@ Feature: Privacy Compliance
       | Settings | Your preferences |
     And I should see that data is E2E encrypted
 
-  @transparency
+  @transparency @implemented
   Scenario: View what data is on relays
     When I go to Settings > Privacy > Relay Data
     Then I should see pending messages on relays
     And I should see their expiration dates
     And I should be able to delete them early
 
-  @transparency
+  @transparency @implemented
   Scenario: Understand E2E encryption
     When I go to Settings > Privacy > How Your Data Is Protected
     Then I should see an explanation of E2E encryption
@@ -191,21 +191,21 @@ Feature: Privacy Compliance
   # Data Retention
   # ============================================================
 
-  @retention
+  @retention @implemented
   Scenario: Relay data expires automatically
     Given I sent an update via relay
     When 30 days pass without delivery
     Then the update should be automatically deleted from the relay
     And no personal data should persist on relays beyond TTL
 
-  @retention
+  @retention @implemented
   Scenario: Local data persists until deleted
     Given I have contacts and settings
     Then local data should persist indefinitely
     Until I explicitly delete it
     And no automatic purging should occur without my consent
 
-  @retention
+  @retention @implemented
   Scenario: View data retention settings
     When I go to Settings > Privacy > Data Retention
     Then I should see:
@@ -219,21 +219,21 @@ Feature: Privacy Compliance
   # Third-Party Sharing
   # ============================================================
 
-  @sharing
+  @sharing @planned
   Scenario: No data sold to third parties
     Then Vauchi should never sell personal data
     And no advertising profiles should be created
     And no data should be shared for marketing
     And this should be stated in the privacy policy
 
-  @sharing
+  @sharing @planned
   Scenario: No tracking across apps
     Then Vauchi should not track users across apps
     And no device fingerprinting should occur
     And no advertising IDs should be used
     And no third-party analytics without consent
 
-  @sharing
+  @sharing @planned
   Scenario: Relay operators cannot access content
     Given I use a third-party relay
     Then the relay operator should not be able to read my data
@@ -244,14 +244,14 @@ Feature: Privacy Compliance
   # Privacy Controls
   # ============================================================
 
-  @controls
+  @controls @planned
   Scenario: Control visibility of my data
     When I go to Settings > Privacy > Visibility
     Then I should be able to configure who sees what
     And I should have granular control per field
     And I should be able to hide from specific contacts
 
-  @controls
+  @controls @planned
   Scenario: Disable read receipts
     When I go to Settings > Privacy > Read Receipts
     And I disable read receipts
@@ -259,7 +259,7 @@ Feature: Privacy Compliance
     And I should not see when they read mine
     And this preference should be respected
 
-  @controls
+  @controls @planned
   Scenario: Limit metadata exposure
     When I go to Settings > Privacy > Minimize Metadata
     Then I should be able to enable enhanced privacy
@@ -270,14 +270,14 @@ Feature: Privacy Compliance
   # Audit & Verification
   # ============================================================
 
-  @audit
+  @audit @planned
   Scenario: View access log
     When I go to Settings > Privacy > Access Log
     Then I should see when my data was accessed
     And I should see which devices accessed it
     And I should see export/deletion events
 
-  @audit
+  @audit @planned
   Scenario: Verify no unexpected data access
     Given I have one device
     When I view the access log
@@ -285,7 +285,7 @@ Feature: Privacy Compliance
     And no unexpected access should appear
     And I should be able to report suspicious activity
 
-  @audit
+  @audit @planned
   Scenario: Open source verification
     Then Vauchi's source code should be publicly available
     And users should be able to verify privacy claims
@@ -295,7 +295,7 @@ Feature: Privacy Compliance
   # Enhanced GDPR Compliance (P16)
   # ============================================================
 
-  @deletion @relay
+  @deletion @relay @implemented
   Scenario: Relay notified on account deletion
     Given I have pending messages on a relay
     When I delete my account
@@ -303,14 +303,14 @@ Feature: Privacy Compliance
     And all my mailbox data should be purged within 24 hours
     And the relay should return a confirmation receipt
 
-  @consent @versioning
+  @consent @versioning @implemented
   Scenario: Consent records include policy version
     Given I consented to privacy policy version "1.0"
     When I view my consent records
     Then each record should show the policy version
     And re-consent should be triggered on version change
 
-  @export @enhanced
+  @export @enhanced @implemented
   Scenario: Export includes device list and recovery config
     Given I have 2 linked devices and recovery configured
     When I export my data
@@ -323,14 +323,14 @@ Feature: Privacy Compliance
   # Crypto-Shredding
   # ============================================================
 
-  @crypto-shredding @deletion
+  @crypto-shredding @deletion @implemented
   Scenario: Card updates use per-contact content encryption key
     Given Alice has exchanged cards with Bob
     When Alice updates her contact card
     Then the update is encrypted with a new content encryption key
     And the previous content encryption key is no longer valid
 
-  @crypto-shredding @deletion
+  @crypto-shredding @deletion @implemented
   Scenario: Account deletion destroys all content encryption keys
     Given Alice has exchanged cards with Bob and Carol
     When Alice deletes her account
@@ -338,14 +338,14 @@ Feature: Privacy Compliance
     And Bob's copy of Alice's card becomes permanently unreadable
     And Carol's copy of Alice's card becomes permanently unreadable
 
-  @crypto-shredding @deletion
+  @crypto-shredding @deletion @implemented
   Scenario: Crypto-shredding renders card unreadable without key
     Given Bob has Alice's card encrypted with a content encryption key
     When Alice's content encryption key is destroyed
     Then Bob cannot decrypt Alice's card
     And the encrypted card data is computationally irrecoverable
 
-  @crypto-shredding @deletion
+  @crypto-shredding @deletion @implemented
   Scenario: Contact display name is protected by crypto-shredding
     Given Bob has Alice's card with display name "Alice Smith"
     When Alice's content encryption key is destroyed
@@ -356,42 +356,42 @@ Feature: Privacy Compliance
   # Revocation Protocol
   # ============================================================
 
-  @revocation @deletion
+  @revocation @deletion @implemented
   Scenario: Account deletion sends revocation signal to all contacts
     Given Alice has exchanged cards with Bob and Carol
     When Alice deletes her account
     Then Bob receives an authenticated revocation signal from Alice
     And Carol receives an authenticated revocation signal from Alice
 
-  @revocation @deletion @security
+  @revocation @deletion @security @implemented
   Scenario: Revocation signal is cryptographically authenticated
     Given Bob receives a revocation signal claiming to be from Alice
     When Bob verifies the signal's Ed25519 signature
     Then the signature matches Alice's stored public key
     And Bob removes Alice's card and encryption keys
 
-  @revocation @deletion @security
+  @revocation @deletion @security @implemented
   Scenario: Spoofed revocation signal is rejected
     Given Bob receives a revocation signal claiming to be from Alice
     When the signature does not match Alice's public key
     Then Bob rejects the revocation signal
     And Alice's card remains unchanged
 
-  @revocation @deletion @relay
+  @revocation @deletion @relay @implemented
   Scenario: Offline contact receives revocation on reconnect
     Given Alice deleted her account while Bob was offline
     When Bob reconnects to the relay within 30 days
     Then Bob receives the revocation signal
     And Alice's card is removed from Bob's device
 
-  @revocation @security
+  @revocation @security @planned
   Scenario: Card update arriving after revocation is discarded
     Given Bob has processed a revocation signal from Alice
     When a card update from Alice arrives on the relay
     Then Bob discards the update
     And no data for Alice is re-created
 
-  @revocation @security
+  @revocation @security @planned
   Scenario: Replayed revocation for re-established contact is rejected
     Given Alice previously revoked her account
     And Alice created a new account and re-exchanged cards with Bob
@@ -403,7 +403,7 @@ Feature: Privacy Compliance
   # Multi-Device Deletion
   # ============================================================
 
-  @deletion @sync
+  @deletion @sync @implemented
   Scenario: Account deletion propagates across all user devices
     Given Alice has devices A, B, and C
     When Alice schedules account deletion from device A
@@ -415,7 +415,7 @@ Feature: Privacy Compliance
   # Relay Purge
   # ============================================================
 
-  @deletion @relay
+  @deletion @relay @implemented
   Scenario: Account deletion purges all relay data including recovery proofs
     Given Alice has stored blobs and recovery proofs on the relay
     When Alice deletes her account
@@ -423,7 +423,7 @@ Feature: Privacy Compliance
     And all device sync messages for Alice are deleted
     And Alice's recovery proof is deleted
 
-  @deletion @relay @command
+  @deletion @relay @command @implemented
   Scenario: Execute deletion after grace period sends revocations and purge
     Given I scheduled account deletion 8 days ago
     And I have contacts Alice and Bob
@@ -433,14 +433,14 @@ Feature: Privacy Compliance
     And the relay should receive a purge request
     And all local keys and data should be destroyed
 
-  @deletion @relay @command
+  @deletion @relay @command @implemented
   Scenario: Execute deletion requires grace period to have elapsed
     Given I scheduled account deletion 2 days ago
     When I try to execute the account deletion
     Then the execution should fail with a grace period error
     And no data should be destroyed
 
-  @deletion @relay @command @emergency
+  @deletion @relay @command @emergency @implemented
   Scenario: Panic shred immediately destroys all data and notifies contacts
     Given I have contacts Alice and Bob
     When I execute a panic shred

@@ -16,27 +16,27 @@ Feature: Contact Recovery
   # Configuration
   # ============================================================
 
-  @recovery @configuration
+  @recovery @configuration @implemented
   Scenario: Default recovery threshold
     When a new identity is created
     Then the default recovery threshold should be 3 vouchers
     And the default verification threshold should be 2 mutual contacts
 
-  @recovery @configuration
+  @recovery @configuration @implemented
   Scenario: Configure recovery threshold
     Given I have an identity
     When I set my recovery threshold to 5 vouchers
     Then my recovery threshold should be 5
     And contacts will need 5 vouchers to verify my recovery
 
-  @recovery @configuration
+  @recovery @configuration @implemented
   Scenario: Configure verification threshold
     Given I have an identity
     When I set my verification threshold to 3 mutual contacts
     Then recoveries I receive will require 3 mutual contact vouchers
     And recoveries with fewer mutual vouchers will show a warning
 
-  @recovery @configuration
+  @recovery @configuration @implemented
   Scenario: Recovery threshold limits
     Given I have an identity
     When I try to set my recovery threshold to 0
@@ -48,27 +48,27 @@ Feature: Contact Recovery
   # Trusted Contacts for Recovery
   # ============================================================
 
-  @recovery @trust
+  @recovery @trust @implemented
   Scenario: New contacts are not recovery-trusted by default
     Given Alice has exchanged contacts with Bob
     Then Bob should not be marked as recovery-trusted
     And Alice should have 0 recovery-trusted contacts
 
-  @recovery @trust
+  @recovery @trust @implemented
   Scenario: Mark contact as trusted for recovery
     Given Alice has exchanged contacts with Bob
     When Alice marks Bob as trusted for recovery
     Then Bob should appear as recovery-trusted in Alice's contact list
     And Alice should have 1 recovery-trusted contact
 
-  @recovery @trust
+  @recovery @trust @implemented
   Scenario: Remove recovery trust from contact
     Given Alice has marked Bob as recovery-trusted
     When Alice removes recovery trust from Bob
     Then Bob should not be marked as recovery-trusted
     And Alice should have 0 recovery-trusted contacts
 
-  @recovery @trust
+  @recovery @trust @implemented
   Scenario: Trust state syncs across linked devices
     Given Alice has two linked devices
     And Alice has exchanged contacts with Bob
@@ -76,14 +76,14 @@ Feature: Contact Recovery
     And device 1 syncs with device 2
     Then Bob should be recovery-trusted on device 2
 
-  @recovery @trust
+  @recovery @trust @implemented
   Scenario: Trust state is private to the user
     Given Alice has marked Bob as recovery-trusted
     Then Bob should not know he is marked as recovery-trusted
     And no trust information is shared during contact exchange
     And no trust information is included in sync updates to contacts
 
-  @recovery @trust
+  @recovery @trust @implemented
   Scenario: Only trusted contacts can provide valid vouchers
     Given Alice has 5 contacts: Bob, Charlie, Dave, Eve, and Frank
     And Alice has marked Bob, Charlie, and Dave as recovery-trusted
@@ -93,7 +93,7 @@ Feature: Contact Recovery
     And Alice tries to add Eve's voucher to her recovery proof
     Then the voucher should be rejected because Eve is not recovery-trusted
 
-  @recovery @trust
+  @recovery @trust @implemented
   Scenario: Recovery succeeds with trusted vouchers only
     Given Alice has marked Bob, Charlie, and Dave as recovery-trusted
     And Alice's recovery threshold is 3
@@ -105,7 +105,7 @@ Feature: Contact Recovery
     Then Alice's recovery proof should be valid
     And the proof contains 3 trusted vouchers
 
-  @recovery @trust
+  @recovery @trust @implemented
   Scenario: Insufficient trusted vouchers even with untrusted vouchers available
     Given Alice has 5 contacts
     And Alice has marked only Bob and Charlie as recovery-trusted
@@ -116,7 +116,7 @@ Feature: Contact Recovery
     And the recovery proof has 2 of 3 required vouchers
     And the recovery threshold is not met
 
-  @recovery @trust
+  @recovery @trust @implemented
   Scenario: Warning when trusted contacts below threshold
     Given Alice's recovery threshold is 3
     And Alice has only 2 recovery-trusted contacts
@@ -127,7 +127,7 @@ Feature: Contact Recovery
       Mark 1 more contact as trusted to enable social recovery.
       """
 
-  @recovery @trust
+  @recovery @trust @implemented
   Scenario: Warning when removing trust drops below threshold
     Given Alice has recovery threshold of 3
     And Alice has exactly 3 recovery-trusted contacts: Bob, Charlie, Dave
@@ -138,14 +138,14 @@ Feature: Contact Recovery
       If you lose your device, you may not be able to recover.
       """
 
-  @recovery @trust
+  @recovery @trust @implemented
   Scenario: Blocked contact cannot be recovery-trusted
     Given Alice has blocked Bob
     When Alice tries to mark Bob as recovery-trusted
     Then the operation should fail
     And Alice should see "Blocked contacts cannot be trusted for recovery"
 
-  @recovery @trust
+  @recovery @trust @implemented
   Scenario: Removing trust does not affect other contact properties
     Given Alice has marked Bob as recovery-trusted
     And Alice has verified Bob's fingerprint
@@ -159,7 +159,7 @@ Feature: Contact Recovery
   # Identity Loss and New Identity Creation
   # ============================================================
 
-  @recovery @identity
+  @recovery @identity @planned
   Scenario: Create new identity after device loss
     Given Alice had an identity with public key "pk_old"
     And Alice had contacts Bob, Charlie, John, Betty, and David
@@ -170,7 +170,7 @@ Feature: Contact Recovery
     And Alice has no contacts on the new device
     And Alice can initiate recovery claiming "pk_old"
 
-  @recovery @identity
+  @recovery @identity @planned
   Scenario: Remember old identity fingerprint
     Given Alice had an identity with fingerprint "ABCD-1234-EFGH-5678"
     When Alice creates a new identity on a new device
@@ -181,7 +181,7 @@ Feature: Contact Recovery
   # In-Person Vouching Process
   # ============================================================
 
-  @recovery @vouching
+  @recovery @vouching @planned
   Scenario: Generate recovery claim QR code
     Given Alice has a new identity with public key "pk_new"
     And Alice claims her old identity was "pk_old"
@@ -193,7 +193,7 @@ Feature: Contact Recovery
       | new_pk     | pk_new         |
       | timestamp  | current_time   |
 
-  @recovery @vouching
+  @recovery @vouching @planned
   Scenario: Voucher recognizes old contact
     Given Bob has Alice as a contact with public key "pk_old"
     When Bob scans Alice's recovery QR code claiming "pk_old"
@@ -201,14 +201,14 @@ Feature: Contact Recovery
     And Bob's app shows Alice's stored display name and photo
     And Bob is prompted to verify this is really Alice in person
 
-  @recovery @vouching
+  @recovery @vouching @planned
   Scenario: Voucher does not recognize the claimed identity
     Given Bob does not have "pk_old" as a contact
     When Bob scans a recovery QR code claiming "pk_old"
     Then Bob's app shows "Unknown identity - you have no contact with this public key"
     And Bob cannot create a voucher
 
-  @recovery @vouching
+  @recovery @vouching @planned
   Scenario: Create voucher after in-person verification
     Given Bob has Alice as a contact with public key "pk_old"
     And Bob scans Alice's recovery QR code for "pk_old" -> "pk_new"
@@ -223,14 +223,14 @@ Feature: Contact Recovery
       | signature   | Ed25519 signature of above fields    |
     And the voucher is sent to Alice's new identity
 
-  @recovery @vouching
+  @recovery @vouching @planned
   Scenario: Voucher establishes contact with new identity
     Given Bob vouches for Alice's recovery from "pk_old" to "pk_new"
     Then Bob's contact record for Alice is updated to "pk_new"
     And a new key exchange is initiated between Bob and Alice
     And Bob and Alice can communicate using the new shared key
 
-  @recovery @vouching
+  @recovery @vouching @planned
   Scenario: Collect multiple vouchers from trusted contacts
     Given Alice has recovery threshold of 3
     And Alice has marked Bob, Charlie, and Betty as recovery-trusted
@@ -247,7 +247,7 @@ Feature: Contact Recovery
   # Recovery Proof Creation and Distribution
   # ============================================================
 
-  @recovery @proof
+  @recovery @proof @implemented
   Scenario: Create recovery proof when threshold met
     Given Alice has recovery threshold of 3
     And Alice has marked Bob, Charlie, and Betty as recovery-trusted
@@ -260,7 +260,7 @@ Feature: Contact Recovery
       | threshold | 3                                  |
       | vouchers  | [Bob's voucher, Charlie's voucher, Betty's voucher] |
 
-  @recovery @proof
+  @recovery @proof @implemented
   Scenario: Upload recovery proof to relay
     Given Alice has a valid recovery proof
     When Alice uploads the recovery proof
@@ -268,14 +268,14 @@ Feature: Contact Recovery
     And the relay does not learn Alice's identity
     And the proof is retrievable by anyone who knows old_pk
 
-  @recovery @proof
+  @recovery @proof @implemented
   Scenario: Recovery proof expiration
     Given Alice uploads a recovery proof
     Then the proof has a default expiration of 90 days
     And after 90 days the relay deletes the proof
     And Alice must create a new proof if needed
 
-  @recovery @proof
+  @recovery @proof @implemented
   Scenario: Continue collecting vouchers after threshold
     Given Alice has recovery threshold of 3
     And Alice has created a recovery proof with 3 vouchers
@@ -288,7 +288,7 @@ Feature: Contact Recovery
   # Discovery by Other Contacts
   # ============================================================
 
-  @recovery @discovery
+  @recovery @discovery @implemented
   Scenario: Contact discovers recovery proof via relay
     Given Alice has uploaded a recovery proof
     And John has Alice as a contact with public key "pk_old"
@@ -297,7 +297,7 @@ Feature: Contact Recovery
     And John's app finds the recovery proof for "pk_old"
     And John is notified about Alice's recovery claim
 
-  @recovery @discovery
+  @recovery @discovery @implemented
   Scenario: Batch query for recovery proofs
     Given John has 50 contacts
     When John's app checks for recovery proofs
@@ -305,7 +305,7 @@ Feature: Contact Recovery
     And the relay cannot determine which specific contact John is checking
     And John receives any matching recovery proofs
 
-  @recovery @discovery
+  @recovery @discovery @implemented
   Scenario: No recovery proof found
     Given John has Alice as a contact
     And Alice has not uploaded a recovery proof
@@ -316,7 +316,7 @@ Feature: Contact Recovery
   # Verification - Mutual Contacts
   # ============================================================
 
-  @recovery @verification @mutual
+  @recovery @verification @mutual @planned
   Scenario: Verify recovery with mutual contacts
     Given John has verification threshold of 2 mutual contacts
     And John has Alice as a contact
@@ -336,7 +336,7 @@ Feature: Contact Recovery
       """
     And John is warned that verification threshold is not met
 
-  @recovery @verification @mutual
+  @recovery @verification @mutual @planned
   Scenario: Automatic verification with sufficient mutual contacts
     Given John has verification threshold of 2 mutual contacts
     And John has Alice, Bob, and Charlie as contacts
@@ -355,7 +355,7 @@ Feature: Contact Recovery
       """
     And John can confidently accept the recovery
 
-  @recovery @verification @mutual
+  @recovery @verification @mutual @planned
   Scenario: High trust with many mutual contacts
     Given Eve has verification threshold of 2 mutual contacts
     And Eve knows Alice, Bob, Charlie, Betty, and David
@@ -367,7 +367,7 @@ Feature: Contact Recovery
   # Verification - Isolated Contacts (David's Case)
   # ============================================================
 
-  @recovery @verification @isolated
+  @recovery @verification @isolated @planned
   Scenario: Isolated contact receives recovery proof
     Given David has verification threshold of 2 mutual contacts
     And David has Alice as his only contact
@@ -390,7 +390,7 @@ Feature: Contact Recovery
       you're not part of. But it could also be an impersonator.
       """
 
-  @recovery @verification @isolated
+  @recovery @verification @isolated @planned
   Scenario: Isolated contact options
     Given David receives a recovery proof with no mutual contact vouchers
     Then David is presented with options:
@@ -401,7 +401,7 @@ Feature: Contact Recovery
       | Reject                 | Safe     | Decline the recovery                  |
       | Remind Me Later        | Neutral  | Check again in 7 days                 |
 
-  @recovery @verification @isolated
+  @recovery @verification @isolated @planned
   Scenario: Isolated contact accepts with warning
     Given David has no mutual contacts with the vouchers
     When David chooses "Accept Anyway"
@@ -416,7 +416,7 @@ Feature: Contact Recovery
       """
     And David must confirm to proceed
 
-  @recovery @verification @isolated
+  @recovery @verification @isolated @planned
   Scenario: Isolated contact verifies out of band
     Given David has no mutual contacts with the vouchers
     When David chooses "Verify Another Way"
@@ -431,7 +431,7 @@ Feature: Contact Recovery
       """
     And David can mark as verified after out-of-band confirmation
 
-  @recovery @verification @isolated
+  @recovery @verification @isolated @planned
   Scenario: Isolated contact meets in person and vouches
     Given David has no mutual contacts with the vouchers
     When David chooses "Meet Alice in Person"
@@ -445,7 +445,7 @@ Feature: Contact Recovery
   # Acceptance and Reconnection
   # ============================================================
 
-  @recovery @acceptance
+  @recovery @acceptance @planned
   Scenario: Accept recovery and reconnect
     Given John accepts Alice's recovery
     Then John's contact record for Alice is updated:
@@ -455,7 +455,7 @@ Feature: Contact Recovery
     And John and Alice establish a new shared secret
     And the old shared secret is discarded
 
-  @recovery @acceptance
+  @recovery @acceptance @planned
   Scenario: Contact card is refreshed after recovery
     Given John accepts Alice's recovery
     And the new key exchange completes
@@ -463,7 +463,7 @@ Feature: Contact Recovery
     Then John receives Alice's updated contact card
     And John's stored card for Alice is refreshed
 
-  @recovery @acceptance
+  @recovery @acceptance @planned
   Scenario: Reject recovery
     Given John receives Alice's recovery proof
     When John rejects the recovery
@@ -471,7 +471,7 @@ Feature: Contact Recovery
     And John is not notified again for this recovery proof
     And John can manually reconsider later in settings
 
-  @recovery @acceptance
+  @recovery @acceptance @planned
   Scenario: Remind me later
     Given John receives Alice's recovery proof
     When John chooses "Remind Me Later"
@@ -483,21 +483,21 @@ Feature: Contact Recovery
   # Edge Cases and Security
   # ============================================================
 
-  @recovery @security
+  @recovery @security @planned
   Scenario: Reject recovery from unknown identity
     Given John receives a recovery proof for "pk_unknown"
     And John does not have "pk_unknown" as a contact
     Then the recovery proof is ignored
     And no notification is shown
 
-  @recovery @security
+  @recovery @security @planned
   Scenario: Reject recovery with insufficient vouchers
     Given Alice has recovery threshold of 3
     And Alice has only collected 2 vouchers
     When Alice tries to create a recovery proof
     Then the operation fails with "Insufficient vouchers (2 of 3 required)"
 
-  @recovery @security
+  @recovery @security @planned
   Scenario: Reject duplicate vouchers
     Given Alice is collecting vouchers
     And Bob has already vouched for Alice
@@ -505,14 +505,14 @@ Feature: Contact Recovery
     Then the duplicate voucher is rejected
     And Alice still has 1 voucher from Bob
 
-  @recovery @security
+  @recovery @security @planned
   Scenario: Voucher timestamp validation
     Given Alice generates a recovery claim at time T
     When Bob vouches 48 hours later
     Then the voucher is rejected as expired
     And Alice must generate a fresh recovery claim
 
-  @recovery @security
+  @recovery @security @planned
   Scenario: Detect conflicting recovery claims
     Given Alice uploads a recovery proof for "pk_old" -> "pk_new_1"
     When an attacker uploads a recovery proof for "pk_old" -> "pk_new_2"
@@ -526,7 +526,7 @@ Feature: Contact Recovery
       This may indicate an attack. Verify with Alice directly.
       """
 
-  @recovery @security
+  @recovery @security @planned
   Scenario: Revoke recovery proof
     Given Alice has uploaded a recovery proof
     And Alice later recovers her old device
@@ -534,13 +534,13 @@ Feature: Contact Recovery
     Then the recovery proof is invalidated
     And contacts are notified the recovery was revoked
 
-  @recovery @security
+  @recovery @security @planned
   Scenario: Cannot vouch for own recovery
     Given Alice claims recovery from "pk_old" to "pk_new"
     When Alice tries to vouch for herself (using pk_new)
     Then the self-voucher is rejected
 
-  @recovery @security
+  @recovery @security @planned
   Scenario: Voucher must have existing relationship
     Given Eve does not have Alice as a contact
     When Eve tries to scan Alice's recovery QR code
@@ -551,7 +551,7 @@ Feature: Contact Recovery
   # Data Recovery Limitations
   # ============================================================
 
-  @recovery @limitations
+  @recovery @limitations @planned
   Scenario: What is recovered
     Given John accepts Alice's recovery
     Then the following is recovered:
@@ -560,7 +560,7 @@ Feature: Contact Recovery
       | Ability to communicate  | Yes       |
       | Alice's contact card    | Yes (re-sent by Alice) |
 
-  @recovery @limitations
+  @recovery @limitations @planned
   Scenario: What is NOT recovered
     Given John accepts Alice's recovery
     Then the following is NOT recovered:
@@ -575,7 +575,7 @@ Feature: Contact Recovery
   # Multi-Device Considerations
   # ============================================================
 
-  @recovery @multi-device
+  @recovery @multi-device @planned
   Scenario: Recovery when user has multiple devices
     Given Alice has 2 devices linked
     And Alice loses device 1 but still has device 2
@@ -583,7 +583,7 @@ Feature: Contact Recovery
     And Alice can revoke device 1 from device 2
     And contacts are notified of device revocation
 
-  @recovery @multi-device
+  @recovery @multi-device @planned
   Scenario: Recovery after losing all devices
     Given Alice had 2 linked devices
     And Alice loses both devices
@@ -595,21 +595,21 @@ Feature: Contact Recovery
   # Relay Behavior
   # ============================================================
 
-  @recovery @relay
+  @recovery @relay @planned
   Scenario: Relay stores recovery proof privately
     Given Alice uploads a recovery proof
     Then the relay stores the proof under hash(pk_old)
     And the relay cannot read the proof contents (not encrypted, but opaque)
     And the relay does not learn Alice's identity or contacts
 
-  @recovery @relay
+  @recovery @relay @planned
   Scenario: Relay returns recovery proof on query
     Given Alice has uploaded a recovery proof
     When any client queries for hash(pk_old)
     Then the relay returns the recovery proof
     And the relay does not log who queried
 
-  @recovery @relay
+  @recovery @relay @planned
   Scenario: Relay handles proof expiration
     Given Alice uploaded a recovery proof 91 days ago
     And the proof expiration is 90 days
@@ -617,7 +617,7 @@ Feature: Contact Recovery
     Then the relay returns "not found"
     And Alice must create a new recovery proof if needed
 
-  @recovery @relay
+  @recovery @relay @planned
   Scenario: Relay rate limits recovery queries
     Given a client makes 1000 recovery proof queries in 1 minute
     Then the relay rate limits the client

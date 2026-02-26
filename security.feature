@@ -14,21 +14,21 @@ Feature: Security
 
   # End-to-End Encryption
 
-  @e2e
+  @e2e @implemented
   Scenario: Contact cards are encrypted at rest
     Given I have a contact card stored locally
     Then the contact card should be encrypted with XChaCha20-Poly1305
     And the encryption key should be derived from my master key
     And plaintext contact data should never be written to disk
 
-  @e2e
+  @e2e @implemented
   Scenario: Contact cards are encrypted in transit
     Given I am sending an update to Bob
     Then the update should be encrypted with our shared key
     And relay nodes should only see encrypted blobs
     And no plaintext should leave my device
 
-  @e2e
+  @e2e @implemented
   Scenario: Shared key derivation via X3DH
     Given I am establishing a connection with Bob
     When X3DH key exchange completes
@@ -36,7 +36,7 @@ Feature: Security
     And the shared secret should be unique to us
     And the shared secret should be unpredictable to observers
 
-  @e2e
+  @e2e @implemented
   Scenario: Forward secrecy via Double Ratchet
     Given Bob and I have an established shared key
     When we exchange multiple updates
@@ -46,28 +46,28 @@ Feature: Security
 
   # Private Key Protection
 
-  @keys
+  @keys @implemented
   Scenario: Private keys stored in secure enclave
     Given my device has a secure enclave
     Then my private keys should be stored in the secure enclave
     And private keys should never be extractable
     And cryptographic operations should happen within the enclave
 
-  @keys
+  @keys @implemented
   Scenario: Private keys on devices without secure enclave
     Given my device has no secure enclave
     Then private keys should be encrypted with device-specific key
     And the encrypted keys should be stored in app-private storage
     And memory containing keys should be locked from swapping
 
-  @keys
+  @keys @implemented
   Scenario: Private key memory protection
     Given cryptographic operations are in progress
     When the operation completes
     Then sensitive key material should be zeroed in memory
     And garbage collection should not leak key material
 
-  @keys
+  @keys @implemented
   Scenario: Private keys never exported in plaintext
     Given I am exporting my identity backup
     Then the backup should be encrypted with my password
@@ -76,7 +76,7 @@ Feature: Security
 
   # Authentication & Verification
 
-  @auth
+  @auth @implemented
   Scenario: Contact card signatures verified
     Given I receive a contact card from Bob
     When I process the contact card
@@ -84,14 +84,14 @@ Feature: Security
     And unsigned cards should be rejected
     And cards signed by wrong key should be rejected
 
-  @auth
+  @auth @implemented
   Scenario: Update signatures verified
     Given I receive an update from Bob
     When I process the update
     Then I should verify the signature matches Bob's identity
     And updates with invalid signatures should be rejected
 
-  @auth
+  @auth @implemented
   Scenario: Man-in-the-middle detection during exchange
     Given I am exchanging contacts with Bob
     And an attacker is attempting MITM
@@ -100,7 +100,7 @@ Feature: Security
     And the exchange should be aborted
     And I should see a security warning
 
-  @auth
+  @auth @implemented
   Scenario: Verify contact fingerprint manually
     Given I have Bob in my contacts
     When I view Bob's security details
@@ -110,7 +110,7 @@ Feature: Security
 
   # Attack Prevention
 
-  @attacks
+  @attacks @implemented
   Scenario: Replay attack prevention
     Given an attacker captures an encrypted update
     When the attacker replays the update later
@@ -118,7 +118,7 @@ Feature: Security
     And the replayed update should be rejected
     And a security event should be logged
 
-  @attacks
+  @attacks @implemented
   Scenario: Relay attack prevention on BLE
     Given an attacker is relaying BLE signals
     When I attempt proximity-verified exchange
@@ -126,7 +126,7 @@ Feature: Security
     And the exchange should be blocked
     And I should see "Possible relay attack detected"
 
-  @attacks
+  @attacks @implemented
   Scenario: QR code screenshot attack prevention
     Given someone screenshots my exchange QR code
     When they try to scan it remotely
@@ -134,7 +134,7 @@ Feature: Security
     And the exchange should be blocked
     And my contact should not be shared
 
-  @attacks
+  @attacks @implemented
   Scenario: Brute force protection on backup password
     Given an attacker has my encrypted backup
     When they attempt to brute force the password
@@ -142,7 +142,7 @@ Feature: Security
     And each attempt should take significant time
     And a strong password should be practically uncrackable
 
-  @attacks
+  @attacks @implemented
   Scenario: Server cannot access plaintext
     Given my data passes through relay nodes
     Then relay nodes should only see encrypted blobs
@@ -151,7 +151,7 @@ Feature: Security
 
   # Data Protection
 
-  @data
+  @data @planned
   Scenario: Sensitive data classification
     Given I have various types of data
     Then private keys should be classified as "highly sensitive"
@@ -159,21 +159,21 @@ Feature: Security
     And public keys should be classified as "semi-public"
     And each classification should have appropriate protections
 
-  @data
+  @data @planned
   Scenario: Local database encryption
     Given I have local data storage
     Then the database should use SQLCipher
     And the database encryption key should be protected
     And database files should be unreadable without the key
 
-  @data
+  @data @planned
   Scenario: Memory dump protection
     Given sensitive data is in memory
     Then memory should be protected from dumps
     And crash reports should not contain sensitive data
     And debugging should not expose sensitive data
 
-  @data
+  @data @planned
   Scenario: Secure deletion of data
     Given I delete a contact
     When the deletion is processed
@@ -183,7 +183,7 @@ Feature: Security
 
   # Access Control
 
-  @access
+  @access @planned
   Scenario: App lock with biometrics
     Given I have enabled app lock
     When I open Vauchi
@@ -191,7 +191,7 @@ Feature: Security
     And only successful authentication should grant access
     And data should remain encrypted until authenticated
 
-  @access
+  @access @planned
   Scenario: App lock with PIN
     Given I have enabled PIN lock
     When I open Vauchi
@@ -199,14 +199,14 @@ Feature: Security
     And incorrect PIN should deny access
     And multiple failures should trigger lockout
 
-  @access
+  @access @planned
   Scenario: Auto-lock on background
     Given I have auto-lock enabled
     When the app goes to background for 5 minutes
     Then the app should lock automatically
     And reopening should require authentication
 
-  @access
+  @access @planned
   Scenario: Screen capture prevention
     Given Vauchi is displaying sensitive data
     Then screenshots should be blocked
@@ -215,7 +215,7 @@ Feature: Security
 
   # Audit & Logging
 
-  @audit
+  @audit @planned
   Scenario: Security events logged
     Given a security-relevant event occurs
     Then the event should be logged locally
@@ -223,7 +223,7 @@ Feature: Security
     And logs should not contain sensitive data
     And logs should be available for security review
 
-  @audit
+  @audit @planned
   Scenario: View security log
     When I access the security log
     Then I should see recent security events
@@ -231,7 +231,7 @@ Feature: Security
     And I should see blocked contacts
     And I should see signature verification failures
 
-  @audit
+  @audit @planned
   Scenario: Export security log
     Given I need to investigate a security issue
     When I export the security log
@@ -241,14 +241,14 @@ Feature: Security
 
   # Security Notifications
 
-  @notifications
+  @notifications @planned
   Scenario: Notification on suspicious activity
     Given suspicious activity is detected
     Then I should receive an in-app notification
     And the notification should describe the activity
     And I should have options to review or dismiss
 
-  @notifications
+  @notifications @planned
   Scenario: Notification on contact key change
     Given Bob's identity key has changed
     When I detect the change
@@ -256,7 +256,7 @@ Feature: Security
     And sync with Bob should pause
     And I should be prompted to re-verify Bob
 
-  @notifications
+  @notifications @planned
   Scenario: Notification on blocked exchange attempt
     Given I have blocked Eve
     When Eve attempts to exchange contacts
@@ -265,7 +265,7 @@ Feature: Security
 
   # Cryptographic Details
 
-  @crypto
+  @crypto @planned
   Scenario: Correct algorithms used
     Then identity signatures should use Ed25519
     And key exchange should use X25519
@@ -273,14 +273,14 @@ Feature: Security
     And key derivation should use Argon2id
     And hashing should use SHA-256
 
-  @crypto
+  @crypto @planned
   Scenario: Sufficient key lengths
     Then Ed25519 keys should be 256 bits
     And X25519 keys should be 256 bits
     And symmetric keys should be 256 bits
     And random values should use cryptographically secure RNG
 
-  @crypto
+  @crypto @planned
   Scenario: No weak cryptography
     Then MD5 should not be used anywhere
     And SHA1 should not be used for security

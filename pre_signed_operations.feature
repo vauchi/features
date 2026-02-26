@@ -16,7 +16,7 @@ Feature: Pre-signed Operations
   # Pre-signed Message Generation
   # ============================================================
 
-  @generation
+  @generation @planned
   Scenario: Pre-signed messages created at identity setup
     When I create a new identity
     Then pre-signed shred messages should be generated
@@ -24,7 +24,7 @@ Feature: Pre-signed Operations
     And the messages should include an account deletion notice
     And the messages should be stored locally
 
-  @generation
+  @generation @planned
   Scenario: Pre-signed purge request contains required fields
     Given pre-signed messages have been generated
     When I inspect the purge request
@@ -33,7 +33,7 @@ Feature: Pre-signed Operations
     And it should contain a one-time purge token (32 bytes)
     And it should contain a timestamp
 
-  @generation
+  @generation @planned
   Scenario: Pre-signed deletion notice contains required fields
     Given pre-signed messages have been generated
     When I inspect the deletion notice
@@ -42,7 +42,7 @@ Feature: Pre-signed Operations
     And it should contain the deletion stage
     And it should contain a timestamp
 
-  @generation
+  @generation @planned
   Scenario: Deletion notice stages
     Given pre-signed messages have been generated
     Then the deletion notice should support stages:
@@ -55,14 +55,14 @@ Feature: Pre-signed Operations
   # Storage
   # ============================================================
 
-  @storage
+  @storage @planned
   Scenario: Pre-signed messages stored unencrypted
     Given pre-signed messages have been generated
     Then the messages should be stored without encryption
     And this ensures they remain accessible after SMK destruction
     And the storage file should be in the data directory
 
-  @storage
+  @storage @planned
   Scenario: Pre-signed messages survive app restarts
     Given pre-signed messages have been generated
     When I restart the application
@@ -73,7 +73,7 @@ Feature: Pre-signed Operations
   # Refresh
   # ============================================================
 
-  @refresh
+  @refresh @planned
   Scenario: Refresh pre-signed messages periodically
     Given pre-signed messages were generated a week ago
     When the refresh mechanism runs
@@ -81,7 +81,7 @@ Feature: Pre-signed Operations
     And the purge token should be different from the previous one
     And the old messages should be replaced
 
-  @refresh
+  @refresh @planned
   Scenario: Refresh generates new purge token for replay prevention
     Given I have existing pre-signed messages with purge token A
     When I refresh the pre-signed messages
@@ -92,19 +92,19 @@ Feature: Pre-signed Operations
   # Cryptographic Verification
   # ============================================================
 
-  @crypto
+  @crypto @planned
   Scenario: Relay can verify purge request signature
     Given I have a pre-signed purge request
     Then the signature should be valid over (public_key || purge_token || timestamp)
     And the relay should accept the signature using my public key
 
-  @crypto
+  @crypto @planned
   Scenario: Contact can verify deletion notice signature
     Given I have a pre-signed deletion notice
     Then the signature should be valid over the serialized notice
     And contacts should accept the signature using my public key
 
-  @crypto
+  @crypto @planned
   Scenario: Tampered pre-signed message is rejected
     Given I have a pre-signed purge request
     When the purge token is modified
@@ -115,14 +115,14 @@ Feature: Pre-signed Operations
   # Integration with Panic Shred
   # ============================================================
 
-  @panic
+  @panic @planned
   Scenario: Pre-signed messages used during panic shred
     Given I trigger a panic shred
     Then the pre-signed purge request should be sent to the relay
     And the pre-signed deletion notice should be broadcast to contacts
     And these messages should be sent BEFORE keys are destroyed
 
-  @panic
+  @panic @planned
   Scenario: Pre-signed messages remain valid after key destruction
     Given panic shred has destroyed my signing keys
     Then contacts who received the deletion notice can still verify it

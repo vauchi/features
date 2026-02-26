@@ -20,13 +20,13 @@ Feature: Visibility Control
 
   # Default Visibility
 
-  @default
+  @default @implemented
   Scenario: New fields default to visible to all contacts
     When I add a new phone field "Mobile" with value "+1-555-333-3333"
     Then the visibility for "Mobile" should be "all contacts"
     And Bob, Carol, and Dave should all be able to see the "Mobile" field
 
-  @default
+  @default @implemented
   Scenario: New contacts see default-visible fields
     Given all my fields are set to "visible to all"
     When I exchange contacts with "Eve"
@@ -34,7 +34,7 @@ Feature: Visibility Control
 
   # Setting Individual Visibility
 
-  @individual
+  @individual @implemented
   Scenario: Hide a field from a specific contact
     Given my "Personal" phone is visible to all
     When I set "Personal" phone visibility to hide from "Dave"
@@ -42,7 +42,7 @@ Feature: Visibility Control
     And Carol should see my "Personal" phone
     But Dave should not see my "Personal" phone
 
-  @individual
+  @individual @implemented
   Scenario: Show a field only to specific contacts
     Given my "Work" phone is visible to all
     When I set "Work" phone visibility to "only Bob and Carol"
@@ -50,7 +50,7 @@ Feature: Visibility Control
     And Carol should see my "Work" phone
     But Dave should not see my "Work" phone
 
-  @individual
+  @individual @implemented
   Scenario: Make a field private (visible to none)
     Given my "Personal" email is visible to all
     When I set "Personal" email visibility to "no one"
@@ -60,14 +60,14 @@ Feature: Visibility Control
 
   # Group Visibility
 
-  @groups
+  @groups @planned
   Scenario: Create a visibility group
     When I create a visibility group named "Close Friends"
     And I add "Bob" and "Carol" to "Close Friends"
     Then "Close Friends" should contain Bob and Carol
     And "Close Friends" should not contain Dave
 
-  @groups
+  @groups @planned
   Scenario: Apply visibility group to a field
     Given I have a visibility group "Work Contacts" containing Carol and Dave
     When I set "Work" email visibility to group "Work Contacts"
@@ -75,7 +75,7 @@ Feature: Visibility Control
     And Dave should see my "Work" email
     But Bob should not see my "Work" email
 
-  @groups
+  @groups @planned
   Scenario: Add contact to group updates their visibility
     Given "Work" email is visible only to group "Work Contacts"
     And Bob is not in "Work Contacts"
@@ -83,7 +83,7 @@ Feature: Visibility Control
     Then Bob should now see my "Work" email
     And Bob should receive an update with the "Work" email field
 
-  @groups
+  @groups @planned
   Scenario: Remove contact from group updates their visibility
     Given "Work" email is visible only to group "Work Contacts"
     And Carol is in "Work Contacts"
@@ -93,7 +93,7 @@ Feature: Visibility Control
 
   # Visibility Changes Propagation
 
-  @propagation
+  @propagation @planned
   Scenario: Granting visibility sends update to contact
     Given my "Personal" phone is hidden from Dave
     And Dave is online
@@ -101,7 +101,7 @@ Feature: Visibility Control
     Then Dave should receive an encrypted update
     And Dave should now see my "Personal" phone number
 
-  @propagation
+  @propagation @planned
   Scenario: Revoking visibility sends update to contact
     Given my "Personal" phone is visible to Dave
     And Dave is online
@@ -110,7 +110,7 @@ Feature: Visibility Control
     And my "Personal" phone should be removed from Dave's view
     And Dave should see the updated contact card
 
-  @propagation
+  @propagation @planned
   Scenario: Visibility change when contact is offline
     Given my "Personal" phone is visible to Dave
     And Dave is offline
@@ -122,14 +122,14 @@ Feature: Visibility Control
 
   # Visibility and New Contacts
 
-  @new-contact
+  @new-contact @planned
   Scenario: Set visibility before exchange
     Given I have marked "Personal" phone as "exchange with explicit consent only"
     When I exchange contacts with "Eve"
     Then I should be prompted to choose visibility for Eve
     And Eve should only see fields I approve
 
-  @new-contact
+  @new-contact @planned
   Scenario: Apply template visibility to new contact
     Given I have a visibility template "Professional"
     And "Professional" template shows only work fields
@@ -141,14 +141,14 @@ Feature: Visibility Control
 
   # Visibility Rules Persistence
 
-  @persistence
+  @persistence @planned
   Scenario: Visibility settings persist after app restart
     Given I have set custom visibility for multiple fields
     When I restart the application
     Then all visibility settings should be preserved
     And Bob, Carol, and Dave should see the same fields as before
 
-  @persistence
+  @persistence @planned
   Scenario: Visibility settings sync across my devices
     Given I have custom visibility settings on Device A
     When I link Device B to my identity
@@ -157,14 +157,14 @@ Feature: Visibility Control
 
   # Visibility Verification
 
-  @verification
+  @verification @implemented
   Scenario: View what a specific contact can see
     Given I have various visibility settings
     When I select "View as Bob"
     Then I should see my contact card as Bob sees it
     And hidden fields should not be displayed
 
-  @verification
+  @verification @implemented
   Scenario: Visibility audit shows all contacts for a field
     Given my "Personal" phone has custom visibility
     When I view visibility details for "Personal" phone
@@ -173,14 +173,14 @@ Feature: Visibility Control
 
   # Edge Cases
 
-  @edge-cases
+  @edge-cases @planned
   Scenario: Delete contact removes their visibility rules
     Given I have custom visibility rules for Dave
     When I delete Dave from my contacts
     Then all visibility rules for Dave should be removed
     And if I later re-add Dave, default visibility should apply
 
-  @edge-cases
+  @edge-cases @planned
   Scenario: Block contact removes all their visibility
     Given Dave can see all my fields
     When I block Dave
@@ -188,7 +188,7 @@ Feature: Visibility Control
     And Dave should receive an update with an empty contact card
     And Dave should not receive future updates
 
-  @edge-cases
+  @edge-cases @planned
   Scenario: Unblock contact restores previous visibility
     Given I have blocked Dave
     And Dave previously could see my "Work" fields
@@ -198,7 +198,7 @@ Feature: Visibility Control
 
   # Privacy Protection
 
-  @privacy
+  @privacy @planned
   Scenario: Contact cannot determine hidden field existence
     Given I have a "Personal" phone hidden from Dave
     When Dave views my contact card
@@ -206,14 +206,14 @@ Feature: Visibility Control
     And Dave should have no indication that the field exists
     And the data sent to Dave should not contain the hidden field
 
-  @privacy
+  @privacy @planned
   Scenario: Encrypted updates reveal nothing about hidden fields
     Given I have fields hidden from Dave
     When I update a field that Dave cannot see
     Then Dave should not receive any update
     And no network traffic should go to Dave for this update
 
-  @privacy
+  @privacy @planned
   Scenario: Visibility changes are atomic
     Given I am making multiple visibility changes
     When I save the changes
@@ -223,14 +223,14 @@ Feature: Visibility Control
 
   # Bulk Operations
 
-  @bulk
+  @bulk @planned
   Scenario: Set visibility for all fields at once
     Given I have 10 contact fields
     When I select "Set all to visible for Bob only"
     Then all 10 fields should be visible only to Bob
     And other contacts should not see any fields
 
-  @bulk
+  @bulk @planned
   Scenario: Reset all visibility to default
     Given I have various custom visibility settings
     When I select "Reset all to default"

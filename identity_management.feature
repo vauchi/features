@@ -14,7 +14,7 @@ Feature: Identity Management
 
   # First Launch & Identity Creation
 
-  @first-launch
+  @first-launch @implemented
   Scenario: Create new identity on first launch
     Given I am launching Vauchi for the first time
     When the application initializes
@@ -23,7 +23,7 @@ Feature: Identity Management
     And the private keys should be stored in secure storage
     And I should see the identity setup screen
 
-  @first-launch
+  @first-launch @implemented
   Scenario: Set display name during identity setup
     Given I have just created a new identity
     And I am on the identity setup screen
@@ -32,7 +32,7 @@ Feature: Identity Management
     Then my contact card should have display name "Alice Smith"
     And I should be taken to the main screen
 
-  @first-launch
+  @first-launch @implemented
   Scenario: Display name validation
     Given I am on the identity setup screen
     When I try to set an empty display name
@@ -41,7 +41,7 @@ Feature: Identity Management
 
   # Identity Backup & Recovery
 
-  @backup
+  @backup @implemented
   Scenario: Create encrypted identity backup
     Given I have an existing identity
     And I am on the settings screen
@@ -52,14 +52,14 @@ Feature: Identity Management
     And the backup should contain my master seed
     And the backup should be encrypted with my password
 
-  @backup
+  @backup @implemented
   Scenario: Backup password requirements
     Given I am creating an identity backup
     When I enter password "weak"
     Then I should see an error about password requirements
     And the backup should not be created
 
-  @backup
+  @backup @implemented
   Scenario Outline: Password strength validation
     Given I am creating an identity backup
     When I enter password "<password>"
@@ -73,7 +73,7 @@ Feature: Identity Management
       | MyP@ssw0rd        | medium   | allowed     |
       | C0mpl3x!P@$$w0rd  | strong   | allowed     |
 
-  @recovery
+  @recovery @implemented
   Scenario: Restore identity from backup
     Given I am launching Vauchi for the first time
     And I have a valid backup file
@@ -84,7 +84,7 @@ Feature: Identity Management
     And my keypairs should be regenerated from the master seed
     And I should see my previous display name
 
-  @recovery
+  @recovery @implemented
   Scenario: Restore with incorrect password
     Given I am restoring from backup
     When I enter an incorrect password
@@ -92,7 +92,7 @@ Feature: Identity Management
     And my identity should not be restored
     And I should be able to retry
 
-  @recovery
+  @recovery @implemented
   Scenario: Restore corrupted backup
     Given I am restoring from backup
     And the backup file is corrupted
@@ -102,21 +102,21 @@ Feature: Identity Management
 
   # Identity Security
 
-  @security
+  @security @implemented
   Scenario: Private keys never exposed in logs
     Given I have an existing identity
     When any operation involving private keys occurs
     Then private key material should never appear in logs
     And private key material should never appear in crash reports
 
-  @security
+  @security @implemented
   Scenario: Secure memory handling for keys
     Given I am performing cryptographic operations
     When the operation completes
     Then sensitive key material should be zeroed in memory
     And the memory should not be swappable to disk
 
-  @security
+  @security @implemented
   Scenario: Identity verification via public key fingerprint
     Given I have an existing identity
     When I view my identity details
@@ -126,7 +126,7 @@ Feature: Identity Management
 
   # Multi-device Identity
 
-  @multi-device
+  @multi-device @planned
   Scenario: Generate device linking QR code
     Given I have an existing identity on Device A
     When I select "Link New Device"
@@ -134,7 +134,7 @@ Feature: Identity Management
     And the QR code should contain encrypted device linking data
     And the QR code should expire after 5 minutes
 
-  @multi-device
+  @multi-device @planned
   Scenario: Link second device successfully
     Given I have an existing identity on Device A
     And Device A is displaying a device linking QR code
@@ -145,7 +145,7 @@ Feature: Identity Management
     And both devices should share the same public key
     And both devices should appear in my linked devices list
 
-  @multi-device
+  @multi-device @planned
   Scenario: Device linking requires proximity
     Given I have a device linking QR code
     When someone scans the QR code from a remote location

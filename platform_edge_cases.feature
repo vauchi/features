@@ -12,7 +12,7 @@ Feature: Platform-Specific Edge Cases
   # iOS Edge Cases
   # ============================================================
 
-  @ios @background
+  @ios @background @planned
   Scenario: Sync survives background termination
     Given I am syncing updates on iOS
     When iOS terminates the app in background
@@ -21,7 +21,7 @@ Feature: Platform-Specific Edge Cases
     Then syncs should resume automatically
     And no data should be lost
 
-  @ios @background
+  @ios @background @planned
   Scenario: Background task completes before termination
     Given I started a sync operation on iOS
     When the app moves to background
@@ -29,7 +29,7 @@ Feature: Platform-Specific Edge Cases
     And the sync should complete if possible
     And state should be saved before termination
 
-  @ios @memory
+  @ios @memory @planned
   Scenario: Handle low memory warning on iOS
     Given the app is using significant memory on iOS
     When iOS sends a memory warning
@@ -37,7 +37,7 @@ Feature: Platform-Specific Edge Cases
     And the app should release non-essential data
     And core functionality should continue working
 
-  @ios @permissions
+  @ios @permissions @planned
   Scenario: Handle camera permission revoked on iOS
     Given I previously granted camera permission on iOS
     When I revoke camera permission in Settings
@@ -46,7 +46,7 @@ Feature: Platform-Specific Edge Cases
     And there should be a button to open Settings
     And the app should not crash
 
-  @ios @permissions
+  @ios @permissions @planned
   Scenario: Handle notification permission denied on iOS
     Given I denied notification permission on iOS
     When a contact updates their card
@@ -54,7 +54,7 @@ Feature: Platform-Specific Edge Cases
     And I should see updates when I open the app
     And I should be gently prompted to enable notifications
 
-  @ios @keychain
+  @ios @keychain @planned
   Scenario: Keychain access after device restore on iOS
     Given I restored my iPhone from backup
     When I open Vauchi
@@ -62,7 +62,7 @@ Feature: Platform-Specific Edge Cases
     Or I should be prompted to restore from backup
     And I should not be locked out of my identity
 
-  @ios @extension
+  @ios @extension @planned
   Scenario: Share extension works on iOS
     Given I am in another app with contact info
     When I use the iOS share sheet
@@ -70,7 +70,7 @@ Feature: Platform-Specific Edge Cases
     And I can share data to Vauchi
     And sharing should work even if main app not running
 
-  @ios @handoff
+  @ios @handoff @planned
   Scenario: Handoff between iOS devices
     Given I am editing my card on iPhone
     When I open Vauchi on my iPad
@@ -82,7 +82,7 @@ Feature: Platform-Specific Edge Cases
   # Android Edge Cases
   # ============================================================
 
-  @android @memory
+  @android @memory @planned
   Scenario: Handle onTrimMemory on Android
     Given the Android system is under memory pressure
     When Android calls onTrimMemory(LEVEL_LOW)
@@ -90,7 +90,7 @@ Feature: Platform-Specific Edge Cases
     And images should be released from memory
     And core data should be preserved
 
-  @android @memory
+  @android @memory @planned
   Scenario: Handle process killed for memory on Android
     Given Android kills the app process
     When I return to the app
@@ -98,7 +98,7 @@ Feature: Platform-Specific Edge Cases
     And unsaved changes should be preserved
     And I should see where I left off
 
-  @android @battery
+  @android @battery @planned
   Scenario: Handle doze mode on Android
     Given the Android device enters doze mode
     When a sync is scheduled
@@ -106,7 +106,7 @@ Feature: Platform-Specific Edge Cases
     And it should respect doze restrictions
     And critical updates should use high-priority FCM
 
-  @android @battery
+  @android @battery @planned
   Scenario: Handle battery saver on Android
     Given battery saver is enabled on Android
     When background sync is due
@@ -114,7 +114,7 @@ Feature: Platform-Specific Edge Cases
     And the user should be informed
     And critical functionality should still work
 
-  @android @permissions
+  @android @permissions @planned
   Scenario: Handle runtime permission denied on Android
     Given I denied camera permission on Android
     When I try to scan a QR code
@@ -122,7 +122,7 @@ Feature: Platform-Specific Edge Cases
     And there should be an option to request permission again
     And I should not be asked repeatedly if I chose "Don't ask again"
 
-  @android @storage
+  @android @storage @planned
   Scenario: Handle scoped storage on Android 11+
     Given I am on Android 11 or later
     When I export my data
@@ -130,7 +130,7 @@ Feature: Platform-Specific Edge Cases
     And files should go to Downloads or app-specific directory
     And I should be able to share the export
 
-  @android @split
+  @android @split @planned
   Scenario: Handle split APK installation on Android
     Given the app was installed via split APKs (Play Store)
     When I use native features (camera, crypto)
@@ -138,7 +138,7 @@ Feature: Platform-Specific Edge Cases
     And the app should not crash
     And features should work correctly
 
-  @android @backup
+  @android @backup @planned
   Scenario: Android auto-backup handles sensitive data
     Given Android auto-backup is enabled
     Then encryption keys should be excluded from backup
@@ -149,14 +149,14 @@ Feature: Platform-Specific Edge Cases
   # Desktop Edge Cases
   # ============================================================
 
-  @desktop @webview
+  @desktop @webview @planned
   Scenario: WebView security on desktop
     Given the desktop app uses WebView
     Then JavaScript should not access filesystem directly
     And external links should open in system browser
     And WebView should have secure defaults (no eval, CSP)
 
-  @desktop @multi-window
+  @desktop @multi-window @planned
   Scenario: Handle multiple windows on desktop
     Given the app is open in one window
     When I try to open another instance
@@ -164,7 +164,7 @@ Feature: Platform-Specific Edge Cases
     Or windows should sync state in real-time
     And data conflicts should be prevented
 
-  @desktop @crash
+  @desktop @crash @planned
   Scenario: Recovery after crash on desktop
     Given the desktop app crashed unexpectedly
     When I relaunch the app
@@ -172,7 +172,7 @@ Feature: Platform-Specific Edge Cases
     And it should offer to restore last state
     And unsaved changes should be preserved if possible
 
-  @desktop @url-scheme
+  @desktop @url-scheme @planned
   Scenario: Handle vauchi:// URL scheme on desktop
     Given I click a vauchi:// link
     When the desktop app is not running
@@ -180,7 +180,7 @@ Feature: Platform-Specific Edge Cases
     And the link should be processed
     And the appropriate action should occur
 
-  @desktop @tray
+  @desktop @tray @planned
   Scenario: System tray behavior on desktop
     Given the app is minimized to system tray
     When a contact update arrives
@@ -188,7 +188,7 @@ Feature: Platform-Specific Edge Cases
     And clicking the tray icon should restore the app
     And the app should not consume CPU while minimized
 
-  @desktop @theme
+  @desktop @theme @planned
   Scenario: Respect system theme on desktop
     Given the system is set to dark mode
     When I open the app
@@ -200,7 +200,7 @@ Feature: Platform-Specific Edge Cases
   # TUI Edge Cases
   # ============================================================
 
-  @tui @terminal
+  @tui @terminal @planned
   Scenario: Handle terminal resize
     Given I am using the TUI app
     When I resize my terminal window
@@ -208,7 +208,7 @@ Feature: Platform-Specific Edge Cases
     And no content should be cut off
     And the app should remain usable
 
-  @tui @terminal
+  @tui @terminal @planned
   Scenario: Handle SSH disconnection
     Given I am using Vauchi TUI over SSH
     When the SSH connection drops
@@ -216,7 +216,7 @@ Feature: Platform-Specific Edge Cases
     And when I reconnect, state should be preserved
     And no data should be lost
 
-  @tui @encoding
+  @tui @encoding @planned
   Scenario: Handle non-UTF8 terminal
     Given my terminal has limited character support
     When I view contacts with unicode names
@@ -228,7 +228,7 @@ Feature: Platform-Specific Edge Cases
   # Cross-Platform Edge Cases
   # ============================================================
 
-  @cross-platform @time
+  @cross-platform @time @planned
   Scenario: Handle clock skew
     Given my device clock is 1 hour behind
     When I sync with contacts
@@ -236,7 +236,7 @@ Feature: Platform-Specific Edge Cases
     And message ordering should be correct
     And no sync loops should occur
 
-  @cross-platform @time
+  @cross-platform @time @planned
   Scenario: Handle timezone change
     Given I change timezone while app is running
     When I view timestamps
@@ -244,7 +244,7 @@ Feature: Platform-Specific Edge Cases
     And relative times should be correct
     And no duplicate notifications should occur
 
-  @cross-platform @upgrade
+  @cross-platform @upgrade @planned
   Scenario: Handle app upgrade
     Given I have data from version 1.0
     When I upgrade to version 2.0
@@ -252,7 +252,7 @@ Feature: Platform-Specific Edge Cases
     And no data should be lost
     And the user should not need to reconfigure
 
-  @cross-platform @downgrade
+  @cross-platform @downgrade @planned
   Scenario: Prevent data loss on downgrade
     Given I accidentally downgraded to an older version
     When the older version cannot read newer data format
@@ -260,7 +260,7 @@ Feature: Platform-Specific Edge Cases
     And I should be told to upgrade
     And data should not be corrupted
 
-  @cross-platform @locale
+  @cross-platform @locale @planned
   Scenario: Handle locale change
     Given I change my device language
     When I open the app
@@ -268,7 +268,7 @@ Feature: Platform-Specific Edge Cases
     And formatting should follow new locale
     And no restart should be required
 
-  @cross-platform @interrupt
+  @cross-platform @interrupt @planned
   Scenario: Handle sync interruption
     Given a sync is in progress
     When the app is killed mid-sync
@@ -276,7 +276,7 @@ Feature: Platform-Specific Edge Cases
     And sync should resume on next launch
     And no data corruption should occur
 
-  @cross-platform @restore
+  @cross-platform @restore @planned
   Scenario: Handle device migration
     Given I am setting up a new device
     When I restore from backup
@@ -288,7 +288,7 @@ Feature: Platform-Specific Edge Cases
   # Crash Recovery and Resilience (P18)
   # ============================================================
 
-  @cross-platform @crash-recovery
+  @cross-platform @crash-recovery @planned
   Scenario: Sync state persisted atomically
     Given a batch sync of 50 items is in progress
     When the app crashes after processing 25 items
@@ -296,7 +296,7 @@ Feature: Platform-Specific Edge Cases
     And on restart, sync should resume from item 26
     And no items should be duplicated or orphaned
 
-  @android @battery
+  @android @battery @planned
   Scenario: WorkManager respects battery optimization
     Given the Android device is in battery saver mode
     When a background sync is scheduled via WorkManager

@@ -16,7 +16,7 @@ Feature: Noise Protocol Inner Encryption
   # Handshake
   # ============================================================
 
-  @handshake
+  @handshake @planned
   Scenario: Noise NK handshake with relay
     Given I know the relay's static X25519 public key
     When I initiate a Noise NK handshake
@@ -24,13 +24,13 @@ Feature: Noise Protocol Inner Encryption
     And the relay should respond with its handshake reply
     And a shared transport session should be established
 
-  @handshake
+  @handshake @planned
   Scenario: V2 connection uses magic bytes prefix
     When I initiate a v2 connection to the relay
     Then the first message should start with bytes [0x00, 'V', '2']
     And the handshake message should follow the magic prefix
 
-  @handshake
+  @handshake @planned
   Scenario: Handshake fails with wrong relay key
     Given I have an incorrect public key for the relay
     When I attempt the Noise NK handshake
@@ -38,28 +38,28 @@ Feature: Noise Protocol Inner Encryption
     And no transport session should be established
     And I should see a security error
 
-  @handshake
+  @handshake @planned
   Scenario: Relay public key parsed from URL fragment
     Given the relay URL is "wss://relay.example.com#<base64url-encoded-32-byte-key>"
     When I parse the relay's Noise public key
     Then I should extract the 32-byte X25519 public key from the URL fragment
     And the key should be base64url-decoded
 
-  @handshake
+  @handshake @planned
   Scenario: URL without fragment has no Noise key
     Given the relay URL is "wss://relay.example.com"
     When I try to parse a Noise public key
     Then parsing should return None
     And the connection should proceed without Noise encryption
 
-  @handshake
+  @handshake @planned
   Scenario: Invalid Noise key in URL fragment is rejected
     Given the relay URL has an invalid base64 fragment
     When I try to parse a Noise public key
     Then parsing should fail
     And I should see a key format error
 
-  @handshake
+  @handshake @planned
   Scenario: Wrong-length key in URL fragment is rejected
     Given the relay URL fragment decodes to fewer than 32 bytes
     When I try to parse a Noise public key
@@ -70,7 +70,7 @@ Feature: Noise Protocol Inner Encryption
   # Transport Encryption
   # ============================================================
 
-  @transport
+  @transport @planned
   Scenario: Messages encrypted after handshake
     Given a Noise transport session is established
     When I send a message through the transport
@@ -78,14 +78,14 @@ Feature: Noise Protocol Inner Encryption
     And a 16-byte MAC should be appended
     And the ciphertext should be different from the plaintext
 
-  @transport
+  @transport @planned
   Scenario: Messages decrypted by recipient
     Given a Noise transport session is established
     When the relay sends me an encrypted message
     Then I should decrypt it successfully
     And the plaintext should match what the relay sent
 
-  @transport
+  @transport @planned
   Scenario: Corrupted ciphertext is detected
     Given a Noise transport session is established
     When I receive a message with corrupted ciphertext
@@ -93,7 +93,7 @@ Feature: Noise Protocol Inner Encryption
     And I should see an integrity error
     And the message should be discarded
 
-  @transport
+  @transport @planned
   Scenario: Sequential messages use advancing nonces
     Given a Noise transport session is established
     When I send multiple messages
@@ -104,14 +104,14 @@ Feature: Noise Protocol Inner Encryption
   # Noise Pattern Properties
   # ============================================================
 
-  @pattern
+  @pattern @planned
   Scenario: Noise NK provides initiator anonymity
     Given the Noise pattern is "Noise_NK_25519_ChaChaPoly_BLAKE2s"
     Then the initiator (client) should remain anonymous to passive observers
     And only the relay's static key is authenticated
     And the client does not reveal its static key
 
-  @pattern
+  @pattern @planned
   Scenario: Defense-in-depth layering
     Given TLS is the outer transport encryption
     And Noise is the inner transport encryption
@@ -123,7 +123,7 @@ Feature: Noise Protocol Inner Encryption
   # Backward Compatibility
   # ============================================================
 
-  @compat
+  @compat @planned
   Scenario: Client connects to relay without Noise support
     Given the relay does not support v2 protocol
     When I connect to the relay
@@ -131,7 +131,7 @@ Feature: Noise Protocol Inner Encryption
     And sync should proceed normally
     And I should be informed that inner encryption is not active
 
-  @compat
+  @compat @planned
   Scenario: Relay optionally requires Noise for v2+ clients
     Given the relay is configured to require Noise encryption
     When a client connects without the v2 magic prefix

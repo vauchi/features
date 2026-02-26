@@ -16,14 +16,14 @@ Feature: Remote Content Updates
   # Manifest Fetching
   # ===========================================
 
-  @manifest
+  @manifest @implemented
   Scenario: Fetch content manifest on app launch
     Given the app has not checked for updates today
     When the app launches
     Then the app should fetch the manifest from the content server
     And the manifest should be cached locally
 
-  @manifest @offline
+  @manifest @offline @implemented
   Scenario: Use cached manifest when offline
     Given the app has a cached manifest from a previous session
     And the device is offline
@@ -31,7 +31,7 @@ Feature: Remote Content Updates
     Then the app should use the cached manifest
     And no network requests should be made for content
 
-  @manifest @interval
+  @manifest @interval @implemented
   Scenario: Respect update check interval
     Given the app checked for updates 30 minutes ago
     And the update check interval is 1 hour
@@ -39,7 +39,7 @@ Feature: Remote Content Updates
     Then the app should not fetch the manifest
     And the app should use cached content
 
-  @manifest @interval
+  @manifest @interval @implemented
   Scenario: Check for updates when interval elapsed
     Given the app checked for updates 2 hours ago
     And the update check interval is 1 hour
@@ -50,7 +50,7 @@ Feature: Remote Content Updates
   # Version Comparison
   # ===========================================
 
-  @version
+  @version @implemented
   Scenario: Detect available updates
     Given the cached manifest has networks version "1.0.0"
     And the remote manifest has networks version "1.1.0"
@@ -58,14 +58,14 @@ Feature: Remote Content Updates
     Then the update status should indicate updates are available
     And networks should be listed as updateable
 
-  @version
+  @version @implemented
   Scenario: No updates when versions match
     Given the cached manifest has networks version "1.0.0"
     And the remote manifest has networks version "1.0.0"
     When the app checks for updates
     Then the update status should indicate no updates available
 
-  @version @compatibility
+  @version @compatibility @implemented
   Scenario: Skip updates requiring newer app version
     Given the app version is "1.0.0"
     And the remote manifest has networks version "2.0.0" requiring app version "1.5.0"
@@ -73,7 +73,7 @@ Feature: Remote Content Updates
     Then networks should not be listed as updateable
     And a warning should be logged about version incompatibility
 
-  @version @compatibility
+  @version @compatibility @implemented
   Scenario: Apply updates compatible with current app version
     Given the app version is "1.2.0"
     And the remote manifest has locales version "1.5.0" requiring app version "1.0.0"
@@ -84,7 +84,7 @@ Feature: Remote Content Updates
   # Content Download
   # ===========================================
 
-  @download
+  @download @planned
   Scenario: Download updated content file
     Given the remote manifest has networks version "1.1.0"
     And the cached networks version is "1.0.0"
@@ -93,14 +93,14 @@ Feature: Remote Content Updates
     And the networks file should be saved to the cache
     And the cached manifest should be updated
 
-  @download @checksum
+  @download @checksum @implemented
   Scenario: Verify content checksum before saving
     Given the remote manifest specifies checksum "sha256:abc123" for networks
     When the app downloads the networks file
     And the downloaded file has checksum "sha256:abc123"
     Then the file should be saved to cache successfully
 
-  @download @checksum @security
+  @download @checksum @security @implemented
   Scenario: Reject content with mismatched checksum
     Given the remote manifest specifies checksum "sha256:abc123" for networks
     When the app downloads the networks file
@@ -109,7 +109,7 @@ Feature: Remote Content Updates
     And an integrity error should be reported
     And the app should continue using cached content
 
-  @download @size
+  @download @size @planned
   Scenario: Reject content exceeding size limit
     Given the maximum content size is 5 MB
     And the remote networks file is 10 MB
@@ -121,7 +121,7 @@ Feature: Remote Content Updates
   # Fallback Behavior
   # ===========================================
 
-  @fallback @offline
+  @fallback @offline @planned
   Scenario: Use bundled content when cache is empty and offline
     Given the content cache is empty
     And the device is offline
@@ -129,7 +129,7 @@ Feature: Remote Content Updates
     Then the app should return bundled networks
     And the networks list should not be empty
 
-  @fallback
+  @fallback @planned
   Scenario: Use cached content when download fails
     Given the app has cached networks version "1.0.0"
     And the content server returns an error
@@ -137,7 +137,7 @@ Feature: Remote Content Updates
     Then the app should continue using cached networks
     And no data should be lost
 
-  @fallback
+  @fallback @planned
   Scenario: Content resolution order
     Given the cache has networks version "1.1.0"
     And bundled networks is version "1.0.0"
@@ -148,28 +148,28 @@ Feature: Remote Content Updates
   # User Settings
   # ===========================================
 
-  @settings
+  @settings @planned
   Scenario: Disable remote updates via settings
     Given the user has disabled remote content updates
     When the app launches
     Then no manifest fetch should be attempted
     And the app should use bundled content only
 
-  @settings
+  @settings @planned
   Scenario: Enable remote updates via settings
     Given the user has enabled remote content updates
     And the device is online
     When the app launches
     Then the app should check for updates according to the interval
 
-  @settings
+  @settings @planned
   Scenario: Manual update check
     Given the user is on the settings page
     When the user triggers a manual update check
     Then the app should immediately check for updates
     And the update status should be displayed to the user
 
-  @settings
+  @settings @planned
   Scenario: Apply updates manually
     Given updates are available for networks and locales
     When the user triggers apply updates
@@ -180,7 +180,7 @@ Feature: Remote Content Updates
   # Networks Content
   # ===========================================
 
-  @networks
+  @networks @planned
   Scenario: New social network appears after update
     Given the cached networks does not include "threads"
     And the remote networks includes "threads" social network
@@ -188,7 +188,7 @@ Feature: Remote Content Updates
     Then "threads" should appear in the social networks list
     And users should be able to add Threads profiles
 
-  @networks
+  @networks @planned
   Scenario: Updated network URL template
     Given the cached networks has Twitter URL "https://twitter.com/{handle}"
     And the remote networks has Twitter URL "https://x.com/{handle}"
@@ -199,7 +199,7 @@ Feature: Remote Content Updates
   # Locales Content
   # ===========================================
 
-  @locales
+  @locales @planned
   Scenario: Download locale for user's language
     Given the user's language is "de"
     And the remote manifest has German locale version "1.1.0"
@@ -207,14 +207,14 @@ Feature: Remote Content Updates
     Then only the German locale file should be downloaded
     And other locale files should not be downloaded
 
-  @locales
+  @locales @planned
   Scenario: Fallback to English when locale unavailable
     Given the user's language is "ja"
     And the remote manifest does not include Japanese locale
     When the app requests locale strings
     Then the app should return English locale strings
 
-  @locales
+  @locales @planned
   Scenario: New translation string after update
     Given the cached English locale is version "1.0.0"
     And the remote English locale version "1.1.0" includes new string "settings.theme"
@@ -225,14 +225,14 @@ Feature: Remote Content Updates
   # Help Content
   # ===========================================
 
-  @help
+  @help @planned
   Scenario: Updated FAQ content
     Given the cached help has 5 FAQ entries
     And the remote help has 7 FAQ entries
     When the app applies updates
     Then the help section should show 7 FAQ entries
 
-  @help
+  @help @planned
   Scenario: Help content in user's language
     Given the user's language is "fr"
     And the remote manifest has French help content
@@ -244,14 +244,14 @@ Feature: Remote Content Updates
   # Themes Content
   # ===========================================
 
-  @themes
+  @themes @planned
   Scenario: New theme available after update
     Given the cached themes only includes "default"
     And the remote themes includes "catppuccin-mocha"
     When the app applies updates
     Then "catppuccin-mocha" should appear in theme selection
 
-  @themes
+  @themes @planned
   Scenario: Apply downloaded theme
     Given the user has downloaded the "catppuccin-mocha" theme
     When the user selects "catppuccin-mocha" theme
@@ -261,20 +261,20 @@ Feature: Remote Content Updates
   # Privacy
   # ===========================================
 
-  @privacy
+  @privacy @planned
   Scenario: No user identification in requests
     When the app fetches the manifest
     Then the request should not include user identifiers
     And the request should not include device identifiers
     And only the app version should be sent in user-agent
 
-  @privacy @tor
+  @privacy @tor @planned
   Scenario: Content fetched via Tor when configured
     Given the user has configured Tor proxy
     When the app fetches content updates
     Then all requests should route through the Tor proxy
 
-  @privacy
+  @privacy @planned
   Scenario: HTTPS only
     Given the content URL is "http://vauchi.app/app-files"
     When the app attempts to fetch content
@@ -285,7 +285,7 @@ Feature: Remote Content Updates
   # Error Handling
   # ===========================================
 
-  @error
+  @error @planned
   Scenario: Network timeout during manifest fetch
     Given the content server takes longer than 30 seconds to respond
     When the app attempts to fetch the manifest
@@ -293,14 +293,14 @@ Feature: Remote Content Updates
     And the app should use cached content
     And the error should be logged
 
-  @error
+  @error @planned
   Scenario: Invalid manifest JSON
     Given the content server returns malformed JSON
     When the app attempts to parse the manifest
     Then a parse error should be reported
     And the app should use cached content
 
-  @error
+  @error @planned
   Scenario: Exponential backoff on repeated failures
     Given the content server has failed 3 times
     When the app attempts to check for updates
@@ -311,14 +311,14 @@ Feature: Remote Content Updates
   # Atomic Updates
   # ===========================================
 
-  @atomic
+  @atomic @planned
   Scenario: Atomic cache writes
     Given the app is downloading a large content file
     When the download is interrupted at 50%
     Then the cache should not contain partial data
     And the previous cached version should remain intact
 
-  @atomic
+  @atomic @planned
   Scenario: Rollback on update failure
     Given updates are available for networks and locales
     And networks download succeeds
@@ -331,7 +331,7 @@ Feature: Remote Content Updates
   # Selective Downloads (Bandwidth Optimization)
   # ===========================================
 
-  @selective @locale
+  @selective @locale @planned
   Scenario: Download only selected language
     Given the user's language is set to English
     And German, French, Spanish locales are available remotely
@@ -340,7 +340,7 @@ Feature: Remote Content Updates
     And French locale should not be downloaded
     And Spanish locale should not be downloaded
 
-  @selective @theme
+  @selective @theme @planned
   Scenario: Download only selected theme
     Given the user has default dark theme
     And Catppuccin, Dracula, Nord themes are available remotely
@@ -349,7 +349,7 @@ Feature: Remote Content Updates
     And Dracula theme should not be downloaded
     And Nord theme should not be downloaded
 
-  @selective @bundled
+  @selective @bundled @planned
   Scenario: Bundled content available without download
     Given the device is offline
     And no content has been downloaded
@@ -359,7 +359,7 @@ Feature: Remote Content Updates
     And default light theme should be available
     And the app should function normally
 
-  @selective @indicator
+  @selective @indicator @planned
   Scenario: Show download indicator for unavailable content
     Given German locale is not downloaded
     And Catppuccin Mocha theme is not downloaded
@@ -370,7 +370,7 @@ Feature: Remote Content Updates
     Then Catppuccin Mocha should show a download indicator
     And default themes should show as available (bundled)
 
-  @selective @background
+  @selective @background @planned
   Scenario: Only update actively used content in background
     Given the user has German locale selected and downloaded
     And the user has Catppuccin Mocha theme selected and downloaded
@@ -381,14 +381,14 @@ Feature: Remote Content Updates
     And French, Spanish locales should not be downloaded
     And Dracula, Nord themes should not be downloaded
 
-  @selective @size
+  @selective @size @planned
   Scenario: Show download size before downloading
     Given Catppuccin Mocha theme is 1.5 KB
     When the user taps on Catppuccin Mocha theme
     Then the app should show "Download ~1.5 KB?"
     And the user should see Download and Cancel options
 
-  @selective @offline-pack
+  @selective @offline-pack @planned
   Scenario: Download content pack for offline use
     Given the user wants to use the app offline
     When the user selects "Download for offline" in settings
@@ -396,7 +396,7 @@ Feature: Remote Content Updates
     And the user should see options to download all themes
     And the user should see current download size
 
-  @selective @cleanup
+  @selective @cleanup @planned
   Scenario: Clean up unused downloaded content
     Given the user downloaded German locale 45 days ago
     And the user's current language is English
@@ -405,7 +405,7 @@ Feature: Remote Content Updates
     Then German locale should be removed from cache
     And English locale should remain (actively used)
 
-  @selective @cancel
+  @selective @cancel @planned
   Scenario: Cancel download in progress
     Given the user initiated download of Japanese locale
     And the download is 50% complete

@@ -17,7 +17,7 @@ Feature: Open Contact Info in External Applications
   # Phone Number Actions
   # ============================================================
 
-  @phone @tel
+  @phone @tel @implemented
   Scenario: Tap phone number opens dialer
     Given Bob has a phone field "Mobile" with value "+1-555-123-4567"
     When I view Bob's contact details
@@ -25,13 +25,13 @@ Feature: Open Contact Info in External Applications
     Then the system dialer should open
     And the number "+1-555-123-4567" should be pre-filled
 
-  @phone @tel
+  @phone @tel @implemented
   Scenario: Phone number with international format
     Given Bob has a phone field "International" with value "+44 20 7946 0958"
     When I tap on the phone number
     Then the system dialer should open with "tel:+442079460958"
 
-  @phone @tel
+  @phone @tel @implemented
   Scenario Outline: Various phone number formats are normalized for dialer
     Given Bob has a phone field with value "<display_value>"
     When I tap on the phone number
@@ -44,7 +44,7 @@ Feature: Open Contact Info in External Applications
       | 555.123.4567      | tel:555.123.4567      |
       | +44 20 7946 0958  | tel:+442079460958     |
 
-  @phone @sms
+  @phone @sms @implemented
   Scenario: Long press phone number shows action menu
     Given Bob has a phone field "Mobile" with value "+1-555-123-4567"
     When I long-press on the phone number
@@ -54,7 +54,7 @@ Feature: Open Contact Info in External Applications
       | Send SMS         |
       | Copy to Clipboard|
 
-  @phone @sms
+  @phone @sms @implemented
   Scenario: Send SMS to phone number
     Given Bob has a phone field "Mobile" with value "+1-555-123-4567"
     When I long-press on the phone number
@@ -66,7 +66,7 @@ Feature: Open Contact Info in External Applications
   # Email Actions
   # ============================================================
 
-  @email @mailto
+  @email @mailto @implemented
   Scenario: Tap email opens mail client
     Given Bob has an email field "Work" with value "bob@company.com"
     When I view Bob's contact details
@@ -74,13 +74,13 @@ Feature: Open Contact Info in External Applications
     Then the default mail application should open
     And the "To" field should be "bob@company.com"
 
-  @email @mailto
+  @email @mailto @implemented
   Scenario: Email with special characters
     Given Bob has an email field with value "bob+work@company.com"
     When I tap on the email
     Then the mail client should open with properly encoded URI "mailto:bob+work@company.com"
 
-  @email @mailto
+  @email @mailto @implemented
   Scenario: Long press email shows action menu
     Given Bob has an email field "Work" with value "bob@company.com"
     When I long-press on the email
@@ -93,26 +93,26 @@ Feature: Open Contact Info in External Applications
   # Website Actions
   # ============================================================
 
-  @website @https
+  @website @https @implemented
   Scenario: Tap website opens browser
     Given Bob has a website field "Personal" with value "https://bobsmith.com"
     When I tap on the website
     Then the default web browser should open
     And it should navigate to "https://bobsmith.com"
 
-  @website @https
+  @website @https @implemented
   Scenario: Website without protocol prefix
     Given Bob has a website field with value "bobsmith.com"
     When I tap on the website
     Then the browser should open with "https://bobsmith.com"
 
-  @website @http
+  @website @http @implemented
   Scenario: HTTP website preserves protocol
     Given Bob has a website field with value "http://legacy-site.com"
     When I tap on the website
     Then the browser should open with "http://legacy-site.com"
 
-  @website
+  @website @implemented
   Scenario: Long press website shows action menu
     Given Bob has a website field with value "https://bobsmith.com"
     When I long-press on the website
@@ -126,7 +126,7 @@ Feature: Open Contact Info in External Applications
   # Social Media Actions
   # ============================================================
 
-  @social @profile-url
+  @social @profile-url @implemented
   Scenario Outline: Tap social media opens profile
     Given Bob has a social field "<network>" with value "<username>"
     And the social network registry provides profile URL template "<url_template>"
@@ -141,7 +141,7 @@ Feature: Open Contact Info in External Applications
       | instagram | bob.smith   | https://instagram.com/{username}    | https://instagram.com/bob.smith      |
       | mastodon  | @bob@mas.to | https://{instance}/@{user}          | https://mas.to/@bob                  |
 
-  @social @deep-link @android
+  @social @deep-link @android @implemented
   Scenario: Social media opens native app if installed (Android)
     Given I am using the Android app
     And the Twitter app is installed
@@ -150,7 +150,7 @@ Feature: Open Contact Info in External Applications
     Then the Twitter app should open to Bob's profile
     And the browser should not open
 
-  @social @deep-link @ios
+  @social @deep-link @ios @implemented
   Scenario: Social media opens native app if installed (iOS)
     Given I am using the iOS app
     And the Instagram app is installed
@@ -158,7 +158,7 @@ Feature: Open Contact Info in External Applications
     When I tap on the social field
     Then the Instagram app should open to Bob's profile
 
-  @social @fallback
+  @social @fallback @implemented
   Scenario: Social media falls back to browser when app not installed
     Given the Twitter app is not installed
     And Bob has a social field "twitter" with value "@bobsmith"
@@ -166,7 +166,7 @@ Feature: Open Contact Info in External Applications
     Then the web browser should open
     And it should navigate to "https://twitter.com/bobsmith"
 
-  @social
+  @social @implemented
   Scenario: Long press social field shows action menu
     Given Bob has a social field "github" with value "bobsmith"
     When I long-press on the social field
@@ -181,28 +181,28 @@ Feature: Open Contact Info in External Applications
   # Address Actions
   # ============================================================
 
-  @address @maps
+  @address @maps @implemented
   Scenario: Tap address opens maps application
     Given Bob has an address field "Home" with value "123 Main St, San Francisco, CA 94102"
     When I tap on the address
     Then the default maps application should open
     And it should show the location "123 Main St, San Francisco, CA 94102"
 
-  @address @maps @android
+  @address @maps @android @implemented
   Scenario: Address opens Google Maps on Android
     Given I am using the Android app
     And Bob has an address field with value "123 Main St, City, ST 12345"
     When I tap on the address
     Then the intent should use "geo:0,0?q=123+Main+St,+City,+ST+12345"
 
-  @address @maps @ios
+  @address @maps @ios @implemented
   Scenario: Address opens Apple Maps on iOS
     Given I am using the iOS app
     And Bob has an address field with value "123 Main St, City, ST 12345"
     When I tap on the address
     Then Maps app should open with the address query
 
-  @address @maps @desktop
+  @address @maps @desktop @implemented
   Scenario: Address opens web maps on desktop
     Given I am using the desktop app
     And Bob has an address field with value "123 Main St, City, ST 12345"
@@ -210,7 +210,7 @@ Feature: Open Contact Info in External Applications
     Then the browser should open with a maps URL
     And the address should be URL-encoded in the query
 
-  @address
+  @address @implemented
   Scenario: Long press address shows action menu
     Given Bob has an address field with value "123 Main St, City"
     When I long-press on the address
@@ -221,7 +221,7 @@ Feature: Open Contact Info in External Applications
       | Copy Address       |
       | Share              |
 
-  @address @directions
+  @address @directions @implemented
   Scenario: Get directions to address
     Given Bob has an address field with value "123 Main St, City"
     When I long-press on the address
@@ -233,33 +233,33 @@ Feature: Open Contact Info in External Applications
   # Custom Field Actions
   # ============================================================
 
-  @custom @heuristic
+  @custom @heuristic @implemented
   Scenario: Custom field with phone-like value offers call
     Given Bob has a custom field "Signal" with value "+1-555-987-6543"
     When I tap on the custom field
     Then the system should detect it as a phone number
     And the dialer should open with the number
 
-  @custom @heuristic
+  @custom @heuristic @implemented
   Scenario: Custom field with email-like value offers email
     Given Bob has a custom field "Alternate" with value "bob.alt@email.com"
     When I tap on the custom field
     Then the system should detect it as an email
     And the mail client should open
 
-  @custom @heuristic
+  @custom @heuristic @implemented
   Scenario: Custom field with URL-like value offers browser
     Given Bob has a custom field "Portfolio" with value "https://portfolio.bob.com"
     When I tap on the custom field
     Then the browser should open with the URL
 
-  @custom @no-action
+  @custom @no-action @implemented
   Scenario: Custom field with plain text shows copy option
     Given Bob has a custom field "Notes" with value "Met at conference"
     When I tap on the custom field
     Then only the copy to clipboard action should be available
 
-  @custom
+  @custom @implemented
   Scenario: Long press custom field shows contextual menu
     Given Bob has a custom field "Signal" with value "+1-555-987-6543"
     When I long-press on the custom field
@@ -273,7 +273,7 @@ Feature: Open Contact Info in External Applications
   # Error Handling
   # ============================================================
 
-  @error @no-handler
+  @error @no-handler @planned
   Scenario: No application available for action
     Given Bob has an email field with value "bob@company.com"
     And no email application is configured on the device
@@ -281,7 +281,7 @@ Feature: Open Contact Info in External Applications
     Then I should see a message "No email app available"
     And I should be offered to copy the email to clipboard
 
-  @error @no-handler @android
+  @error @no-handler @android @planned
   Scenario: No handler found shows fallback on Android
     Given I am using the Android app
     And Bob has a phone field with value "+1-555-123-4567"
@@ -290,7 +290,7 @@ Feature: Open Contact Info in External Applications
     Then I should see "No app available to handle this action"
     And the number should be copied to clipboard automatically
 
-  @error @no-handler @ios
+  @error @no-handler @ios @planned
   Scenario: canOpenURL returns false on iOS
     Given I am using the iOS app
     And Bob has a phone field with value "+1-555-123-4567"
@@ -299,14 +299,14 @@ Feature: Open Contact Info in External Applications
     Then I should see "Cannot open phone dialer"
     And I should be offered to copy the number
 
-  @error @malformed
+  @error @malformed @planned
   Scenario: Malformed phone number shows error
     Given Bob has a phone field with value "not-a-valid-number"
     When I tap on the phone field
     Then I should see "Invalid phone number format"
     And the value should be copied to clipboard as fallback
 
-  @error @network
+  @error @network @planned
   Scenario: Network error when opening social profile
     Given Bob has a social field "twitter" with value "@bobsmith"
     And the device has no network connectivity
@@ -318,35 +318,35 @@ Feature: Open Contact Info in External Applications
   # Cross-Platform Consistency
   # ============================================================
 
-  @platform @android
+  @platform @android @planned
   Scenario: Android uses Intent system
     Given I am using the Android app
     When I tap on any actionable contact field
     Then an Intent with ACTION_VIEW should be created
     And the appropriate URI scheme should be used
 
-  @platform @ios
+  @platform @ios @planned
   Scenario: iOS uses openURL environment
     Given I am using the iOS app
     When I tap on any actionable contact field
     Then openURL should be called with the appropriate URL
     And the system should handle app routing
 
-  @platform @desktop
+  @platform @desktop @planned
   Scenario: Desktop uses Tauri opener plugin
     Given I am using the desktop app
     When I tap on any actionable contact field
     Then the Tauri opener plugin should be invoked
     And the system default application should open
 
-  @platform @cli
+  @platform @cli @planned
   Scenario: CLI uses open crate
     Given I am using the CLI
     And I view Bob's contact details
     When I select to open a contact field
     Then the open crate should launch the system handler
 
-  @platform @tui
+  @platform @tui @planned
   Scenario: TUI offers to open in external app
     Given I am using the TUI
     And I view Bob's contact details
@@ -358,21 +358,21 @@ Feature: Open Contact Info in External Applications
   # Accessibility
   # ============================================================
 
-  @a11y
+  @a11y @planned
   Scenario: Actionable fields are announced as buttons
     Given Bob has multiple contact fields
     When a screen reader focuses on an email field
     Then it should announce "bob@company.com, email, button"
     And it should indicate the action "double tap to compose email"
 
-  @a11y
+  @a11y @planned
   Scenario: Action menu is accessible
     Given Bob has a phone field
     When I activate the context menu via accessibility action
     Then the action menu should be announced
     And each option should be focusable and labeled
 
-  @a11y @keyboard
+  @a11y @keyboard @planned
   Scenario: Keyboard navigation on desktop
     Given I am using the desktop app with keyboard
     And I am viewing Bob's contact details
@@ -385,21 +385,21 @@ Feature: Open Contact Info in External Applications
   # Visual Feedback
   # ============================================================
 
-  @ui
+  @ui @planned
   Scenario: Actionable fields show tap affordance
     Given Bob has multiple contact fields
     When I view Bob's contact details
     Then actionable fields should have a subtle indicator
     And they should show hover/press feedback on interaction
 
-  @ui
+  @ui @planned
   Scenario: Brief loading indicator when opening external app
     Given Bob has an email field
     When I tap on the email
     Then a brief loading indicator should appear
     And it should dismiss when the external app opens
 
-  @ui
+  @ui @planned
   Scenario: Confirmation toast after copy to clipboard
     Given Bob has a phone field
     When I long-press and select "Copy to Clipboard"
@@ -410,7 +410,7 @@ Feature: Open Contact Info in External Applications
   # Security
   # ============================================================
 
-  @security
+  @security @planned
   Scenario: URLs are validated before opening
     Given Bob has a website field with value "javascript:alert(1)"
     When I tap on the website
@@ -418,14 +418,14 @@ Feature: Open Contact Info in External Applications
     And the browser should not open
     And I should see "Invalid URL"
 
-  @security
+  @security @planned
   Scenario: Only safe URI schemes are allowed
     Given Bob has a custom field with value "file:///etc/passwd"
     When I tap on the field
     Then the file: scheme should be blocked
     And I should see "This action is not supported"
 
-  @security
+  @security @planned
   Scenario: Allowed URI schemes whitelist
     Then the following URI schemes should be allowed:
       | scheme  | purpose              |

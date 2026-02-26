@@ -17,7 +17,7 @@ Feature: Tor Mode
 
   # Opt-in Default State
 
-  @opt-in @default
+  @opt-in @default @planned
   Scenario: Tor mode is disabled by default
     Given I have just installed the app
     When I check Privacy settings
@@ -25,7 +25,7 @@ Feature: Tor Mode
     And connections should use direct networking
     And no Tor components should be loaded
 
-  @opt-in @default
+  @opt-in @default @planned
   Scenario: Tor mode not mentioned in basic onboarding
     Given I am going through initial app setup
     Then Tor mode should not be part of basic setup
@@ -34,7 +34,7 @@ Feature: Tor Mode
 
   # Enabling Tor Mode
 
-  @settings
+  @settings @planned
   Scenario: Enable Tor mode from settings
     Given Tor mode is disabled
     When I navigate to Privacy settings
@@ -43,7 +43,7 @@ Feature: Tor Mode
     And I should see a confirmation "Connections will be routed through Tor"
     And the Tor circuit should be established
 
-  @settings
+  @settings @planned
   Scenario: Disable Tor mode
     Given Tor mode is enabled
     When I disable "Tor mode"
@@ -51,7 +51,7 @@ Feature: Tor Mode
     And connections should use direct networking
     And I should see a warning about reduced privacy
 
-  @settings
+  @settings @planned
   Scenario: Tor mode persists across app restarts
     Given Tor mode is enabled
     When I close and reopen the app
@@ -60,7 +60,7 @@ Feature: Tor Mode
 
   # Connection Behavior
 
-  @connection
+  @connection @planned
   Scenario: Relay connections use Tor when enabled
     Given Tor mode is enabled
     And a Tor circuit is established
@@ -68,7 +68,7 @@ Feature: Tor Mode
     Then the connection should go through Tor
     And the relay should see a Tor exit node IP, not my real IP
 
-  @connection
+  @connection @planned
   Scenario: Connect to relay .onion address
     Given Tor mode is enabled
     And the relay provides a .onion address
@@ -77,7 +77,7 @@ Feature: Tor Mode
     And the connection should stay within the Tor network
     And no exit node should be used
 
-  @connection
+  @connection @planned
   Scenario: Fallback to clearnet relay if .onion unavailable
     Given Tor mode is enabled
     And the relay's .onion address is unreachable
@@ -85,7 +85,7 @@ Feature: Tor Mode
     Then I should connect via Tor to the clearnet address
     And I should see a notice "Using Tor exit node (no .onion available)"
 
-  @connection
+  @connection @planned
   Scenario: Connection fails gracefully without Tor
     Given Tor mode is enabled
     And Tor network is unreachable
@@ -96,7 +96,7 @@ Feature: Tor Mode
 
   # Circuit Management
 
-  @circuit
+  @circuit @planned
   Scenario: Establish new Tor circuit
     Given Tor mode is enabled
     When I request a new circuit
@@ -104,14 +104,14 @@ Feature: Tor Mode
     And I should get a new exit node IP
     And existing connections should be migrated
 
-  @circuit
+  @circuit @planned
   Scenario: Automatic circuit rotation
     Given Tor mode is enabled
     And a circuit has been active for 10 minutes
     Then a new circuit should be established automatically
     And the old circuit should be closed gracefully
 
-  @circuit
+  @circuit @planned
   Scenario: View current circuit info
     Given Tor mode is enabled
     And a circuit is established
@@ -122,21 +122,21 @@ Feature: Tor Mode
 
   # Performance
 
-  @performance
+  @performance @planned
   Scenario: User warned about Tor latency
     Given Tor mode is disabled
     When I try to enable Tor mode
     Then I should see a notice "Tor adds latency to connections"
     And I should be asked to confirm
 
-  @performance
+  @performance @planned
   Scenario: Sync works despite Tor latency
     Given Tor mode is enabled
     When I sync with the relay
     Then sync should complete successfully
     And timeout should be extended for Tor latency
 
-  @performance
+  @performance @planned
   Scenario: Background sync respects Tor mode
     Given Tor mode is enabled
     And background sync is configured
@@ -146,7 +146,7 @@ Feature: Tor Mode
 
   # Privacy Guarantees
 
-  @privacy-guarantee
+  @privacy-guarantee @planned
   Scenario: Real IP never leaked when Tor enabled
     Given Tor mode is enabled
     When any network operation occurs
@@ -154,7 +154,7 @@ Feature: Tor Mode
     And DNS queries should go through Tor
     And WebRTC should be disabled
 
-  @privacy-guarantee
+  @privacy-guarantee @planned
   Scenario: Tor mode does not affect E2E encryption
     Given Tor mode is enabled
     When I receive an update from a contact
@@ -162,7 +162,7 @@ Feature: Tor Mode
     And Tor provides transport privacy, not content privacy
     And decryption should work normally
 
-  @privacy-guarantee
+  @privacy-guarantee @planned
   Scenario: Local operations work without Tor
     Given Tor mode is enabled
     But Tor network is unavailable
@@ -172,7 +172,7 @@ Feature: Tor Mode
 
   # Bootstrap and Onboarding
 
-  @onboarding
+  @onboarding @planned
   Scenario: Tor mode option shown during setup
     Given I am setting up a new identity
     When I reach the privacy options step
@@ -180,7 +180,7 @@ Feature: Tor Mode
     And the option should explain benefits and tradeoffs
     And I should be able to skip and configure later
 
-  @bootstrap
+  @bootstrap @planned
   Scenario: Tor bootstrap progress shown
     Given Tor mode is enabled
     And Tor is not yet connected
@@ -189,7 +189,7 @@ Feature: Tor Mode
     And I should see percentage complete
     And I should be able to use local features while bootstrapping
 
-  @bootstrap
+  @bootstrap @planned
   Scenario: Tor bootstrap failure handling
     Given Tor mode is enabled
     And Tor cannot connect (network blocked)
@@ -203,7 +203,7 @@ Feature: Tor Mode
 
   # Bridges (for censored networks)
 
-  @bridges
+  @bridges @planned
   Scenario: Configure Tor bridges
     Given Tor mode is enabled
     And direct Tor access is blocked
@@ -211,7 +211,7 @@ Feature: Tor Mode
     Then bridges should be used for Tor connection
     And I should be able to connect despite blocking
 
-  @bridges
+  @bridges @planned
   Scenario: Request bridges from BridgeDB
     Given Tor mode is enabled
     And I don't have bridge addresses
@@ -219,7 +219,7 @@ Feature: Tor Mode
     Then the app should help me get bridges from BridgeDB
     And bridges should be saved for future use
 
-  @bridges
+  @bridges @planned
   Scenario: Pluggable transports support
     Given Tor is blocked in my region
     When I configure obfs4 bridges
@@ -228,7 +228,7 @@ Feature: Tor Mode
 
   # Status Indicators
 
-  @status
+  @status @planned
   Scenario: Tor status indicator in app
     Given Tor mode is enabled
     Then I should see a Tor status indicator
@@ -238,7 +238,7 @@ Feature: Tor Mode
       | Connected    | Green     |
       | Disconnected | Red       |
 
-  @status
+  @status @planned
   Scenario: Tor status in sync screen
     Given Tor mode is enabled
     When I view the sync status
@@ -247,7 +247,7 @@ Feature: Tor Mode
 
   # Edge Cases
 
-  @edge-cases
+  @edge-cases @planned
   Scenario: Tor mode with no network
     Given Tor mode is enabled
     And device has no network connectivity
@@ -255,7 +255,7 @@ Feature: Tor Mode
     Then I should see "No network connection"
     And Tor should not be blamed for the failure
 
-  @edge-cases
+  @edge-cases @planned
   Scenario: Switch networks while Tor active
     Given Tor mode is enabled
     And I am connected via WiFi
@@ -263,7 +263,7 @@ Feature: Tor Mode
     Then Tor circuit should be re-established
     And sync should resume automatically
 
-  @edge-cases
+  @edge-cases @planned
   Scenario: Tor mode and battery saver
     Given Tor mode is enabled
     And device enters battery saver mode

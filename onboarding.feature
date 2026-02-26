@@ -12,7 +12,7 @@ Feature: Onboarding Experience
   # First Launch
   # ============================================================
 
-  @first-launch
+  @first-launch @planned
   Scenario: Welcome screen on first launch
     Given I have never used Vauchi before
     When I launch the app
@@ -20,7 +20,7 @@ Feature: Onboarding Experience
     And it should briefly explain Vauchi's value proposition
     And there should be a "Get Started" button
 
-  @first-launch
+  @first-launch @planned
   Scenario: Value proposition is clear
     Given I am on the welcome screen
     Then I should understand:
@@ -30,7 +30,7 @@ Feature: Onboarding Experience
       | Why | Your contacts always have your current info |
     And the explanation should take less than 30 seconds to read
 
-  @first-launch
+  @first-launch @planned
   Scenario: Skip to restore for existing users
     Given I am on the welcome screen
     And I have a backup from another device
@@ -38,7 +38,7 @@ Feature: Onboarding Experience
     Then I should be guided to restore my identity
     And I should not go through new user onboarding
 
-  @first-launch
+  @first-launch @planned
   Scenario: Link to existing device
     Given I am on the welcome screen
     And I have Vauchi on another device
@@ -51,7 +51,7 @@ Feature: Onboarding Experience
   # Card Creation
   # ============================================================
 
-  @card-creation
+  @card-creation @planned
   Scenario: Guided card creation wizard
     Given I tapped "Get Started"
     When I reach the card creation step
@@ -60,7 +60,7 @@ Feature: Onboarding Experience
     And it should suggest common fields to add
     And I should be able to skip optional fields
 
-  @card-creation
+  @card-creation @planned
   Scenario: Minimum viable card
     Given I am creating my card
     When I enter just my name
@@ -68,7 +68,7 @@ Feature: Onboarding Experience
     And I should see "You can add more later"
     And I should not feel pressured to complete everything
 
-  @card-creation
+  @card-creation @planned
   Scenario: Quick add phone and email
     Given I am creating my card
     When I enter my name
@@ -76,7 +76,7 @@ Feature: Onboarding Experience
     And adding them should take one tap each
     And I should be able to skip
 
-  @card-creation
+  @card-creation @planned
   Scenario: Card preview before finishing
     Given I have entered my card information
     When I reach the preview step
@@ -84,7 +84,7 @@ Feature: Onboarding Experience
     And I should be able to go back and edit
     And I should see a "Looks good!" button
 
-  @card-creation
+  @card-creation @planned
   Scenario: Suggest display name variations
     Given I entered my full name "Alexandra Johnson"
     When I reach the display name step
@@ -96,7 +96,7 @@ Feature: Onboarding Experience
   # Security Explanation
   # ============================================================
 
-  @security
+  @security @planned
   Scenario: Simple security explanation
     Given I am in the onboarding flow
     When I reach the security step
@@ -104,14 +104,14 @@ Feature: Onboarding Experience
     And it should NOT use technical jargon
     And it should convey "Only you and your contacts can see your info"
 
-  @security
+  @security @planned
   Scenario: Visual encryption explanation
     Given I am on the security step
     Then I should see a visual diagram
     And it should show: your phone ↔ their phone (no cloud in middle)
     And the message should be clear without reading text
 
-  @security
+  @security @planned
   Scenario: Backup prompt
     Given I have created my identity
     When onboarding continues
@@ -119,7 +119,7 @@ Feature: Onboarding Experience
     And I should understand why backup matters
     And I should be able to "Remind me later"
 
-  @security
+  @security @planned
   Scenario: Recovery setup prompt
     Given I completed basic onboarding
     When I am prompted about recovery
@@ -131,7 +131,7 @@ Feature: Onboarding Experience
   # First Exchange
   # ============================================================
 
-  @first-exchange
+  @first-exchange @planned
   Scenario: Prompt for first exchange
     Given I completed card creation
     When I reach the main screen for the first time
@@ -139,7 +139,7 @@ Feature: Onboarding Experience
     And it should say "Ready to exchange? Find someone nearby"
     And there should be a large QR code button
 
-  @first-exchange
+  @first-exchange @planned
   Scenario: First exchange tutorial
     Given I tap the exchange button for the first time
     When the exchange screen opens
@@ -147,14 +147,14 @@ Feature: Onboarding Experience
     And it should explain "Show your code, scan theirs"
     And it should mention this is an in-person thing
 
-  @first-exchange
+  @first-exchange @planned
   Scenario: Exchange success celebration
     Given I complete my first exchange
     Then I should see a celebration moment
     And it should explain "You'll see their updates automatically"
     And I should feel accomplished
 
-  @first-exchange
+  @first-exchange @planned
   Scenario: Empty state with guidance
     Given I have no contacts yet
     When I view the contacts list
@@ -166,7 +166,7 @@ Feature: Onboarding Experience
   # Demo Contact
   # ============================================================
 
-  @demo
+  @demo @planned
   Scenario: Demo contact for solo users
     Given I completed onboarding
     And I have no contacts yet
@@ -175,7 +175,7 @@ Feature: Onboarding Experience
     And it should be clearly marked as demo
     And I can delete it anytime
 
-  @demo
+  @demo @planned
   Scenario: Demo contact updates demonstrate value
     Given I have the demo contact
     When I open the app later
@@ -184,7 +184,7 @@ Feature: Onboarding Experience
     And tapping should show the changed field
     And I should understand this is how real updates work
 
-  @demo
+  @demo @planned
   Scenario: Demo contact is dismissible
     Given I have the demo contact
     When I delete it
@@ -192,7 +192,7 @@ Feature: Onboarding Experience
     And I should not be pestered about it
     And I should still see onboarding tips elsewhere
 
-  @demo
+  @demo @planned
   Scenario: Demo contact removed after first real contact
     Given I have the demo contact
     When I complete my first real exchange
@@ -204,14 +204,14 @@ Feature: Onboarding Experience
   # Progress & Navigation
   # ============================================================
 
-  @progress
+  @progress @planned
   Scenario: Onboarding progress indicator
     Given I am in the onboarding flow
     Then I should see my progress (step 2 of 4)
     And I should know how much is left
     And completed steps should be checkmarked
 
-  @progress
+  @progress @planned
   Scenario: Can go back to previous steps
     Given I am on step 3 of onboarding
     When I tap the back button
@@ -219,14 +219,14 @@ Feature: Onboarding Experience
     And my entered data should be preserved
     And I should be able to change it
 
-  @progress
+  @progress @planned
   Scenario: Can skip optional steps
     Given I am on an optional onboarding step
     Then there should be a "Skip" or "Later" option
     And skipping should not break the flow
     And I should be reminded later in settings
 
-  @progress
+  @progress @planned
   Scenario: Exit and resume onboarding
     Given I am halfway through onboarding
     When I close the app
@@ -239,14 +239,14 @@ Feature: Onboarding Experience
   # Completion
   # ============================================================
 
-  @completion
+  @completion @planned
   Scenario: Onboarding completion
     Given I finish all onboarding steps
     Then I should see a completion message
     And I should be taken to the main app
     And the onboarding should not repeat on next launch
 
-  @completion
+  @completion @planned
   Scenario: What's next guidance
     Given I completed onboarding
     When I see the main screen
@@ -254,7 +254,7 @@ Feature: Onboarding Experience
     And hints should be dismissible
     And they should not be overwhelming
 
-  @completion
+  @completion @planned
   Scenario: Replay onboarding from settings
     Given I completed onboarding previously
     When I go to Settings > Help > Show Onboarding
@@ -266,7 +266,7 @@ Feature: Onboarding Experience
   # Time to Value
   # ============================================================
 
-  @ttv
+  @ttv @planned
   Scenario: Complete onboarding in under 2 minutes
     Given I am a new user
     When I go through the minimal onboarding path
@@ -274,7 +274,7 @@ Feature: Onboarding Experience
     And I should have a functional card
     And I should be ready to exchange
 
-  @ttv
+  @ttv @planned
   Scenario: First exchange possible immediately
     Given I just completed onboarding
     When I find another Vauchi user
@@ -282,7 +282,7 @@ Feature: Onboarding Experience
     And no further setup should be required
     And the value should be apparent
 
-  @ttv
+  @ttv @planned
   Scenario: Value clear even without exchange
     Given I completed onboarding alone
     Then I should still understand the value proposition

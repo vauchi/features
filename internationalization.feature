@@ -12,7 +12,7 @@ Feature: Internationalization
   # Language Selection
   # ============================================================
 
-  @language
+  @language @planned
   Scenario: App uses system language by default
     Given my device is set to German
     When I open the app for the first time
@@ -20,7 +20,7 @@ Feature: Internationalization
     And all UI text should be translated
     And the language should not need manual configuration
 
-  @language
+  @language @planned
   Scenario: App falls back to English for unsupported languages
     Given my device is set to an unsupported language
     When I open the app
@@ -28,7 +28,7 @@ Feature: Internationalization
     And a notice should offer to help translate
     And all functionality should remain available
 
-  @language
+  @language @planned
   Scenario: Override system language in settings
     Given my device is set to English
     When I go to Settings > Language
@@ -37,7 +37,7 @@ Feature: Internationalization
     And this preference should persist
     And I should be able to return to system default
 
-  @language
+  @language @planned
   Scenario: Language change applies immediately
     Given the app is displaying in English
     When I change the language to Spanish
@@ -45,7 +45,7 @@ Feature: Internationalization
     And I should not need to restart the app
     And all screens should reflect the new language
 
-  @language
+  @language @planned
   Scenario: Available languages are listed
     When I view the language selection screen
     Then I should see a list of available languages
@@ -56,7 +56,7 @@ Feature: Internationalization
   # Supported Languages
   # ============================================================
 
-  @languages
+  @languages @planned
   Scenario Outline: Core languages are supported
     Given my device is set to <language>
     When I open the app
@@ -73,7 +73,7 @@ Feature: Internationalization
       | Italian    |
       | Portuguese |
 
-  @languages @future
+  @languages @future @planned
   Scenario Outline: Extended language support
     Given my device is set to <language>
     When I open the app
@@ -95,7 +95,7 @@ Feature: Internationalization
   # Right-to-Left (RTL) Support
   # ============================================================
 
-  @rtl
+  @rtl @planned
   Scenario: RTL layout for Arabic
     Given my device is set to Arabic
     When I open the app
@@ -103,7 +103,7 @@ Feature: Internationalization
     And text should align to the right
     And navigation should flow right-to-left
 
-  @rtl
+  @rtl @planned
   Scenario: RTL layout for Hebrew
     Given my device is set to Hebrew
     When I open the app
@@ -111,7 +111,7 @@ Feature: Internationalization
     And icons that indicate direction should be mirrored
     And the app should feel natural for RTL users
 
-  @rtl
+  @rtl @planned
   Scenario: Mixed LTR and RTL content
     Given my device is set to Arabic
     And a contact has an English name and Arabic notes
@@ -120,7 +120,7 @@ Feature: Internationalization
     And the layout should handle mixed content gracefully
     And email addresses should remain LTR
 
-  @rtl
+  @rtl @planned
   Scenario: RTL icons are mirrored appropriately
     Given my device is set to Arabic
     When I view the app
@@ -132,7 +132,7 @@ Feature: Internationalization
   # Locale-Aware Formatting
   # ============================================================
 
-  @locale @dates
+  @locale @dates @planned
   Scenario: Dates formatted according to locale
     Given my device is set to German (Germany)
     When I view a date in the app
@@ -140,14 +140,14 @@ Feature: Internationalization
     And not as "January 21, 2026"
     And the format should follow German conventions
 
-  @locale @dates
+  @locale @dates @planned
   Scenario: Relative dates are localized
     Given my device is set to French
     When I view "last updated 2 days ago"
     Then it should display as "mis à jour il y a 2 jours"
     And relative time expressions should be natural
 
-  @locale @numbers
+  @locale @numbers @planned
   Scenario: Numbers formatted according to locale
     Given my device is set to German
     When I view a number like 1234.56
@@ -155,7 +155,7 @@ Feature: Internationalization
     And thousand separators should follow locale conventions
     And decimal separators should follow locale conventions
 
-  @locale @phone
+  @locale @phone @planned
   Scenario: Phone numbers respect regional format
     Given I am viewing a contact with a phone number
     When the contact is from Germany
@@ -163,7 +163,7 @@ Feature: Internationalization
     And international format should be available
     And the format should be familiar to the user
 
-  @locale @currency
+  @locale @currency @planned
   Scenario: Currency displays correctly
     Given the app displays a donation amount
     When my device is set to German
@@ -174,7 +174,7 @@ Feature: Internationalization
   # Contact Card Content
   # ============================================================
 
-  @content
+  @content @planned
   Scenario: Contact names display in original script
     Given Bob has a contact named "田中太郎" (Japanese)
     When Bob views this contact
@@ -182,7 +182,7 @@ Feature: Internationalization
     And no transliteration should be forced
     And the name should be searchable
 
-  @content
+  @content @planned
   Scenario: Mixed-script contact cards
     Given a contact has:
       | Field | Value |
@@ -193,7 +193,7 @@ Feature: Internationalization
     Then each field should render in the appropriate direction
     And the card should be readable and well-formatted
 
-  @content
+  @content @planned
   Scenario: Input methods work for all languages
     Given I am editing my contact card
     When I type in Japanese using an IME
@@ -205,21 +205,21 @@ Feature: Internationalization
   # Search and Sorting
   # ============================================================
 
-  @search
+  @search @planned
   Scenario: Search works across scripts
     Given I have contacts with names in multiple scripts
     When I search for "田中"
     Then contacts with "田中" in their name should appear
     And the search should handle Unicode correctly
 
-  @search
+  @search @planned
   Scenario: Transliteration search
     Given I have a contact named "Müller"
     When I search for "Muller" (without umlaut)
     Then "Müller" should still be found
     And accented characters should match their base forms
 
-  @sorting
+  @sorting @planned
   Scenario: Contacts sorted according to locale
     Given my device is set to Swedish
     And I have contacts: Anders, Öberg, Ångström, Berg
@@ -227,7 +227,7 @@ Feature: Internationalization
     Then they should be sorted as: Anders, Berg, Ångström, Öberg
     And the sort order should follow Swedish collation rules
 
-  @sorting
+  @sorting @planned
   Scenario: CJK name sorting
     Given my device is set to Japanese
     And I have contacts with Japanese names
@@ -239,7 +239,7 @@ Feature: Internationalization
   # Error Messages and Help
   # ============================================================
 
-  @errors
+  @errors @planned
   Scenario: Error messages are translated
     Given my device is set to Spanish
     When an error occurs
@@ -247,7 +247,7 @@ Feature: Internationalization
     And the message should be culturally appropriate
     And technical terms should be localized
 
-  @help
+  @help @planned
   Scenario: Help content is translated
     Given my device is set to French
     When I access the Help section
@@ -255,7 +255,7 @@ Feature: Internationalization
     And screenshots should show French UI
     And links should point to French resources
 
-  @onboarding
+  @onboarding @planned
   Scenario: Onboarding is fully translated
     Given my device is set to German
     When I go through the onboarding flow
@@ -267,7 +267,7 @@ Feature: Internationalization
   # Pluralization and Grammar
   # ============================================================
 
-  @pluralization
+  @pluralization @planned
   Scenario Outline: Correct pluralization
     Given my device is set to <language>
     When I have <count> contacts
@@ -287,7 +287,7 @@ Feature: Internationalization
       | Arabic   | 2     | جهتا اتصال        |
       | Arabic   | 10    | ١٠ جهات اتصال     |
 
-  @grammar
+  @grammar @planned
   Scenario: Gender agreement in translations
     Given my device is set to French
     When the app refers to "your card"
@@ -299,7 +299,7 @@ Feature: Internationalization
   # Translation Quality
   # ============================================================
 
-  @quality
+  @quality @planned
   Scenario: No untranslated strings visible
     Given my device is set to a supported language
     When I navigate through all screens
@@ -307,7 +307,7 @@ Feature: Internationalization
     And all dynamic content placeholders should be filled
     And the UI should feel native
 
-  @quality
+  @quality @planned
   Scenario: Translations fit the UI
     Given my device is set to German
     When I view buttons and labels
@@ -315,7 +315,7 @@ Feature: Internationalization
     And buttons should not overflow
     And the layout should accommodate longer translations
 
-  @quality
+  @quality @planned
   Scenario: Consistent terminology
     Given I am using the app in French
     Then the same concept should use the same translation throughout
@@ -326,7 +326,7 @@ Feature: Internationalization
   # Translation Contribution
   # ============================================================
 
-  @contribution
+  @contribution @planned
   Scenario: Users can suggest translations
     Given I find a mistranslation
     When I long-press on the text (or use a menu option)
@@ -334,7 +334,7 @@ Feature: Internationalization
     And my suggestion should be submitted for review
     And I should see confirmation that it was received
 
-  @contribution
+  @contribution @planned
   Scenario: Community translation portal
     When I visit the translation contribution page
     Then I should see strings that need translation
@@ -345,21 +345,21 @@ Feature: Internationalization
   # Technical Requirements
   # ============================================================
 
-  @technical
+  @technical @planned
   Scenario: Locale files are complete
     Given the app is built
     Then each supported locale should have 100% string coverage
     And missing translations should fail the build
     And locale files should be validated for syntax
 
-  @technical
+  @technical @planned
   Scenario: No hardcoded strings in code
     Given I review the codebase
     Then all user-visible strings should use localization APIs
     And no strings should be hardcoded in code
     And string extraction should capture all text
 
-  @technical
+  @technical @planned
   Scenario: Locale data is bundled with app
     Given the user has no internet connection
     When they change the app language

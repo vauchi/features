@@ -27,7 +27,7 @@ Feature: Mesh Exchange Mode
   # Enabling Mesh Mode
   # ============================================================
 
-  @enable
+  @enable @planned
   Scenario: Enable mesh exchange mode
     Given I am in the exchange screen
     When I enable "Event Mode" (mesh exchange)
@@ -35,7 +35,7 @@ Feature: Mesh Exchange Mode
     And I should see nearby Vauchi users appear
     And a status indicator should show "Event Mode: Active"
 
-  @enable
+  @enable @planned
   Scenario: Mesh mode requires Bluetooth permission
     Given Bluetooth is not enabled or permitted
     When I try to enable mesh exchange
@@ -43,7 +43,7 @@ Feature: Mesh Exchange Mode
     And I should be asked for necessary permissions
     And mesh mode should only activate after permissions granted
 
-  @enable
+  @enable @planned
   Scenario: Mesh mode does not require internet
     Given I have no internet connection
     When I enable mesh exchange mode
@@ -51,7 +51,7 @@ Feature: Mesh Exchange Mode
     And I can discover and exchange with nearby users
     And no network errors should occur
 
-  @enable
+  @enable @planned
   Scenario: Mesh mode indicator
     Given mesh exchange mode is enabled
     Then I should see a visible indicator
@@ -65,7 +65,7 @@ Feature: Mesh Exchange Mode
   # Discovery
   # ============================================================
 
-  @discovery
+  @discovery @planned
   Scenario: Discover nearby Vauchi users
     Given mesh exchange mode is enabled
     And Bob also has mesh exchange enabled within BLE range
@@ -74,7 +74,7 @@ Feature: Mesh Exchange Mode
     And I should see a privacy-preserving identifier (not real name)
     And the list should update as users come and go
 
-  @discovery
+  @discovery @planned
   Scenario: Privacy-preserving discovery
     Given mesh exchange mode is enabled
     Then my BLE advertisement should not contain:
@@ -87,14 +87,14 @@ Feature: Mesh Exchange Mode
       | Vauchi service UUID  | Identify as Vauchi user    |
       | Random session ID    | Enable connection          |
 
-  @discovery
+  @discovery @planned
   Scenario: Discovery range limit
     Given mesh exchange mode is enabled
     Then only devices within BLE range (~10-30m) should be discoverable
     And this provides physical proximity verification
     And remote parties cannot participate in mesh exchange
 
-  @discovery
+  @discovery @planned
   Scenario: Multiple nearby users
     Given mesh exchange mode is enabled
     And 5 other users have mesh mode enabled nearby
@@ -106,7 +106,7 @@ Feature: Mesh Exchange Mode
   # Exchange Process
   # ============================================================
 
-  @exchange
+  @exchange @planned
   Scenario: Initiate mesh exchange
     Given I see Bob in my nearby users list
     When I tap on Bob's entry to exchange
@@ -114,14 +114,14 @@ Feature: Mesh Exchange Mode
     And the X3DH key exchange should proceed
     And both parties should see exchange progress
 
-  @exchange
+  @exchange @planned
   Scenario: Mesh exchange uses same crypto as QR exchange
     Given I am exchanging with Bob via mesh mode
     Then the cryptographic protocol should be identical to QR exchange
     And X3DH should establish the shared secret
     And the shared key should be derived the same way
 
-  @exchange
+  @exchange @planned
   Scenario: Mutual card exchange via mesh
     Given I have initiated mesh exchange with Bob
     When the exchange completes
@@ -129,14 +129,14 @@ Feature: Mesh Exchange Mode
     And Bob should have my contact card
     And both cards should be encrypted with our shared key
 
-  @exchange
+  @exchange @planned
   Scenario: Exchange confirmation
     Given mesh exchange with Bob completes
     Then I should see Bob's display name and card preview
     And I should be asked to confirm adding Bob
     And Bob should see the same confirmation for me
 
-  @exchange
+  @exchange @planned
   Scenario: Exchange timeout
     Given I have initiated mesh exchange with Bob
     And Bob's phone becomes unreachable (moved away, turned off)
@@ -149,21 +149,21 @@ Feature: Mesh Exchange Mode
   # Proximity Verification
   # ============================================================
 
-  @proximity
+  @proximity @planned
   Scenario: BLE range provides proximity verification
     Given I am exchanging via mesh mode
     Then BLE's limited range (~10-30m) provides physical proximity verification
     And this replaces the ultrasonic proximity check used in QR mode
     And both parties must be genuinely nearby
 
-  @proximity
+  @proximity @planned
   Scenario: Signal strength indicator
     Given I see Bob in my nearby users list
     Then I should see a signal strength indicator
     And stronger signal suggests closer proximity
     And this helps identify the correct person in crowded spaces
 
-  @proximity
+  @proximity @planned
   Scenario: Exchange fails if moved out of range
     Given I am mid-exchange with Bob
     When Bob moves out of BLE range
@@ -175,7 +175,7 @@ Feature: Mesh Exchange Mode
   # Event/Protest Scenarios
   # ============================================================
 
-  @event
+  @event @planned
   Scenario: Mass exchange at protest
     Given 50 people at a protest have mesh mode enabled
     When I look at my nearby users list
@@ -183,7 +183,7 @@ Feature: Mesh Exchange Mode
     And I can scroll through and select who to exchange with
     And the list should handle large numbers gracefully
 
-  @event
+  @event @planned
   Scenario: Quick successive exchanges
     Given I am at an event and want to exchange with many people
     When I complete an exchange with Bob
@@ -191,7 +191,7 @@ Feature: Mesh Exchange Mode
     And the discovery should continue running
     And I should see a running count of exchanges completed
 
-  @event
+  @event @planned
   Scenario: Battery conservation
     Given mesh mode is enabled
     And my battery is below 20%
@@ -199,7 +199,7 @@ Feature: Mesh Exchange Mode
     And I should be offered "Low Power Mode" with reduced scan frequency
     And mesh mode should remain functional but scan less often
 
-  @event
+  @event @planned
   Scenario: Exchange without verbal communication
     Given I am at a protest where speaking is risky
     When I initiate exchange with someone
@@ -211,28 +211,28 @@ Feature: Mesh Exchange Mode
   # Security Properties
   # ============================================================
 
-  @security
+  @security @planned
   Scenario: No relay or server involved
     Given I exchange with Bob via mesh mode
     Then no network requests should be made
     And no relay should be contacted
     And the exchange is purely peer-to-peer
 
-  @security
+  @security @planned
   Scenario: Mesh exchange provides deniability
     Given I exchange with Bob via mesh mode
     Then no server has a record of our exchange
     And only our two devices know we exchanged
     And this provides better metadata protection
 
-  @security
+  @security @planned
   Scenario: Session IDs prevent correlation
     Given I enable mesh mode at time T1
     And I disable and re-enable at time T2
     Then my BLE session ID should be different
     And observers cannot correlate my presence across sessions
 
-  @security
+  @security @planned
   Scenario: Replay attack prevention
     Given I completed an exchange with Bob
     When an attacker replays the BLE packets
@@ -244,7 +244,7 @@ Feature: Mesh Exchange Mode
   # Integration with Existing Features
   # ============================================================
 
-  @integration
+  @integration @planned
   Scenario: Mesh-exchanged contacts sync normally later
     Given I exchanged with Bob via mesh mode while offline
     When I later connect to the internet
@@ -252,14 +252,14 @@ Feature: Mesh Exchange Mode
     And future updates should work via relay
     And the mesh exchange doesn't affect ongoing sync
 
-  @integration
+  @integration @planned
   Scenario: Visibility rules apply to mesh exchanges
     Given I have configured visibility rules
     When I exchange with Bob via mesh mode
     Then Bob should receive my card filtered by visibility
     And the same rules apply as QR exchange
 
-  @integration
+  @integration @planned
   Scenario: Hidden contacts from mesh exchange
     Given I exchange with Bob via mesh mode
     When I later hide Bob's contact
@@ -270,7 +270,7 @@ Feature: Mesh Exchange Mode
   # Edge Cases
   # ============================================================
 
-  @edge
+  @edge @planned
   Scenario: Exchange with user already in contacts
     Given I already have Bob as a contact
     When I try to exchange with Bob via mesh mode
@@ -278,13 +278,13 @@ Feature: Mesh Exchange Mode
     And I should be offered to update or cancel
     And duplicate handling should work normally
 
-  @edge
+  @edge @planned
   Scenario: Self-discovery prevention
     Given mesh exchange mode is enabled
     Then my own device should not appear in my discovery list
     And I cannot exchange with myself
 
-  @edge
+  @edge @planned
   Scenario: Mesh mode on desktop
     Given I am using the desktop app
     When I try to enable mesh exchange
@@ -292,7 +292,7 @@ Feature: Mesh Exchange Mode
     And mesh mode should not be available
     And desktop should continue using QR exchange
 
-  @edge
+  @edge @planned
   Scenario: Airplane mode with Bluetooth
     Given my phone is in airplane mode
     But Bluetooth is enabled
@@ -300,7 +300,7 @@ Feature: Mesh Exchange Mode
     Then mesh mode should work normally
     And I can exchange without any network connectivity
 
-  @edge
+  @edge @planned
   Scenario: Mesh mode battery drain
     Given mesh exchange mode has been active for 1 hour
     Then the app should show a reminder "Event Mode still active"

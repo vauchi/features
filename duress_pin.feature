@@ -27,14 +27,14 @@ Feature: Duress PIN System
   # Setup and Configuration
   # ============================================================
 
-  @setup
+  @setup @planned
   Scenario: Duress PIN is opt-in and disabled by default
     Given I have just installed the app
     When I check Privacy settings
     Then duress PIN should be disabled
     And no decoy profile should exist
 
-  @setup
+  @setup @planned
   Scenario: Enable duress PIN in settings
     Given duress PIN is disabled
     When I navigate to Privacy settings
@@ -42,7 +42,7 @@ Feature: Duress PIN System
     Then I should be prompted to create a duress PIN
     And I should be prompted to set up a decoy profile
 
-  @setup
+  @setup @planned
   Scenario: Duress PIN must differ from normal PIN
     Given I am setting up a duress PIN
     And my normal PIN is "123456"
@@ -50,7 +50,7 @@ Feature: Duress PIN System
     Then the PIN should be rejected
     And I should see "Duress PIN must be different from your unlock PIN"
 
-  @setup
+  @setup @planned
   Scenario: Configure decoy contacts
     Given I have enabled duress PIN
     When I configure the decoy profile
@@ -58,7 +58,7 @@ Feature: Duress PIN System
     And I should be able to import from system contacts
     And the decoy contacts should be stored separately
 
-  @setup
+  @setup @planned
   Scenario: Configure trusted contacts for duress alerts
     Given I have enabled duress PIN
     When I configure duress alert recipients
@@ -70,7 +70,7 @@ Feature: Duress PIN System
   # Duress Unlock Behavior
   # ============================================================
 
-  @unlock
+  @unlock @planned
   Scenario: Duress PIN shows decoy contacts
     Given I have configured a duress PIN
     And I have configured decoy contacts
@@ -79,14 +79,14 @@ Feature: Duress PIN System
     And the real contacts should not be accessible
     And no visual indication of duress mode should be visible
 
-  @unlock
+  @unlock @planned
   Scenario: Normal PIN shows real contacts
     Given I have configured a duress PIN
     When I unlock the app with the normal PIN
     Then I should see my real contact list
     And the app should function normally
 
-  @unlock
+  @unlock @planned
   Scenario: Duress mode looks identical to normal mode
     Given I have configured a duress PIN with decoy contacts
     When I unlock with the duress PIN
@@ -94,7 +94,7 @@ Feature: Duress PIN System
     And all features should appear to work normally
     And no "duress mode" indicator should be visible anywhere
 
-  @unlock
+  @unlock @planned
   Scenario: Cannot access real contacts from duress mode
     Given I have unlocked with the duress PIN
     When I try to access hidden settings or contacts
@@ -105,7 +105,7 @@ Feature: Duress PIN System
   # Silent Alerts
   # ============================================================
 
-  @alert
+  @alert @planned
   Scenario: Duress unlock sends silent alert to trusted contacts
     Given I have configured trusted contacts for duress alerts
     When I unlock the app with the duress PIN
@@ -113,7 +113,7 @@ Feature: Duress PIN System
     And the alert should be sent via normal sync channel
     And no confirmation should be visible on my device
 
-  @alert
+  @alert @planned
   Scenario: Duress alert looks like normal sync traffic
     Given I have configured duress alerts
     When I unlock with the duress PIN
@@ -121,7 +121,7 @@ Feature: Duress PIN System
     And to the relay it should look like a normal card update
     And network observers cannot distinguish it from regular traffic
 
-  @alert
+  @alert @planned
   Scenario: Duress alert content
     Given I have configured trusted contacts for duress alerts
     When a duress alert is sent
@@ -129,7 +129,7 @@ Feature: Duress PIN System
     And the alert should include timestamp
     And the alert should NOT include location unless explicitly enabled
 
-  @alert
+  @alert @planned
   Scenario: Receiving a duress alert
     Given Bob has configured me as a duress alert recipient
     When Bob unlocks with his duress PIN
@@ -137,7 +137,7 @@ Feature: Duress PIN System
     And the notification should be clearly marked as urgent
     And I should see when the alert was triggered
 
-  @alert
+  @alert @planned
   Scenario: Duress alerts work offline
     Given I have configured duress alerts
     And I have no network connection
@@ -149,14 +149,14 @@ Feature: Duress PIN System
   # Decoy Profile Behavior
   # ============================================================
 
-  @decoy
+  @decoy @planned
   Scenario: Decoy profile has separate database
     Given I have configured a duress PIN
     Then the decoy contacts should be stored in a separate encrypted database
     And the decoy database should use the duress PIN for encryption
     And the real database should not be accessible with the duress PIN
 
-  @decoy
+  @decoy @planned
   Scenario: Decoy profile functions normally
     Given I am in duress mode
     When I view a decoy contact
@@ -164,7 +164,7 @@ Feature: Duress PIN System
     And I should be able to "edit" their visibility
     And changes should persist in the decoy database
 
-  @decoy
+  @decoy @planned
   Scenario: Exchanges in duress mode add to decoy profile
     Given I am in duress mode
     When I exchange contacts with someone
@@ -172,7 +172,7 @@ Feature: Duress PIN System
     And they should NOT be added to the real profile
     And they should receive my decoy card (if configured)
 
-  @decoy
+  @decoy @planned
   Scenario: Pre-populate decoy contacts
     Given I am setting up a duress PIN
     When I choose to auto-populate decoy contacts
@@ -184,21 +184,21 @@ Feature: Duress PIN System
   # Security Properties
   # ============================================================
 
-  @security
+  @security @planned
   Scenario: Real database cryptographically inaccessible in duress mode
     Given I have unlocked with the duress PIN
     Then the real database key should not be derivable
     And memory should not contain real database key
     And forensic analysis should not reveal real contacts
 
-  @security
+  @security @planned
   Scenario: Both databases use strong encryption
     Given I have configured a duress PIN
     Then the real database should use normal encryption
     And the decoy database should use separate encryption
     And each database key derived from respective PIN
 
-  @security
+  @security @planned
   Scenario: Duress PIN entry logged
     Given I have configured duress alerts
     When I unlock with the duress PIN
@@ -210,7 +210,7 @@ Feature: Duress PIN System
   # Edge Cases
   # ============================================================
 
-  @edge
+  @edge @planned
   Scenario: Disable duress PIN from settings
     Given I have configured a duress PIN
     When I navigate to Privacy settings in normal mode
@@ -219,21 +219,21 @@ Feature: Duress PIN System
     And duress alerts should be disabled
     And the duress PIN should no longer work
 
-  @edge
+  @edge @planned
   Scenario: Cannot disable duress PIN from duress mode
     Given I am in duress mode
     When I navigate to Privacy settings
     Then I should not see the option to disable duress PIN
     And I should not be able to access real settings
 
-  @edge
+  @edge @planned
   Scenario: Wrong PIN handling
     Given I have configured a duress PIN
     When I enter an incorrect PIN
     Then normal lockout behavior should apply
     And no indication of duress PIN existence should be shown
 
-  @edge
+  @edge @planned
   Scenario: Biometric unlock with duress
     Given I have configured a duress PIN
     And I have biometric unlock enabled
@@ -241,7 +241,7 @@ Feature: Duress PIN System
     And duress mode requires entering the duress PIN manually
     And this is by design (coercion typically involves PIN demand)
 
-  @edge
+  @edge @planned
   Scenario: App update preserves duress configuration
     Given I have configured a duress PIN and decoy profile
     When the app is updated

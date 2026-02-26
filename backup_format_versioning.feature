@@ -15,7 +15,7 @@ Feature: Backup Format Versioning
   # Current Format (v2)
   # ============================================================
 
-  @v2
+  @v2 @planned
   Scenario: New backups use v2 format
     Given I have an existing identity
     When I create an identity backup with password "SecureP@ssw0rd!"
@@ -23,7 +23,7 @@ Feature: Backup Format Versioning
     And the key should be derived using Argon2id
     And the data should be encrypted with XChaCha20-Poly1305
 
-  @v2
+  @v2 @planned
   Scenario: V2 backup uses OWASP-recommended Argon2id parameters
     When I create a v2 backup
     Then Argon2id should use memory cost 64 MB
@@ -31,14 +31,14 @@ Feature: Backup Format Versioning
     And Argon2id should use parallelism 4
     And the derived key should be 32 bytes
 
-  @v2
+  @v2 @planned
   Scenario: V2 backup includes salt
     When I create a v2 backup
     Then a random salt should be generated
     And the salt should follow the version tag byte and precede the ciphertext
     And the salt should be used for Argon2id key derivation
 
-  @v2
+  @v2 @planned
   Scenario: Restore v2 backup with correct password
     Given I have a v2 backup file
     When I restore the backup with the correct password
@@ -46,7 +46,7 @@ Feature: Backup Format Versioning
     And my master seed should be recovered
     And my display name should match the original
 
-  @v2
+  @v2 @planned
   Scenario: Restore v2 backup with wrong password
     Given I have a v2 backup file
     When I try to restore the backup with the wrong password
@@ -58,14 +58,14 @@ Feature: Backup Format Versioning
   # Legacy Format (v1)
   # ============================================================
 
-  @v1 @legacy
+  @v1 @legacy @planned
   Scenario: Legacy backups are still restorable
     Given I have a legacy (v1) backup file
     When I restore the backup with the correct password
     Then my identity should be fully restored
     And the legacy format should be auto-detected
 
-  @v1 @legacy
+  @v1 @legacy @planned
   Scenario: Legacy backup uses PBKDF2 key derivation
     Given I have a legacy backup file
     When the system decrypts it
@@ -73,7 +73,7 @@ Feature: Backup Format Versioning
     And PBKDF2 should use 100,000 iterations
     And decryption should use AES-256-GCM
 
-  @v1 @legacy
+  @v1 @legacy @planned
   Scenario: Legacy backup format auto-detection
     Given I have a backup file without a v2 version byte
     When I attempt to restore it
@@ -84,13 +84,13 @@ Feature: Backup Format Versioning
   # Version Detection
   # ============================================================
 
-  @detection
+  @detection @planned
   Scenario: Version byte identifies backup format
     Given I have a backup file
     When the first byte is 0x02
     Then the backup should be treated as v2 format
 
-  @detection
+  @detection @planned
   Scenario: Unknown version byte falls back to legacy
     Given I have a backup file
     When the first byte is not 0x02
@@ -101,7 +101,7 @@ Feature: Backup Format Versioning
   # Migration
   # ============================================================
 
-  @migration
+  @migration @planned
   Scenario: Restoring legacy backup and re-exporting creates v2
     Given I restore a legacy (v1) backup successfully
     When I create a new backup of the restored identity
@@ -113,21 +113,21 @@ Feature: Backup Format Versioning
   # Security Properties
   # ============================================================
 
-  @security
+  @security @planned
   Scenario: V2 provides stronger protection than v1
     Given v2 uses Argon2id (memory-hard, timing-resistant)
     And v1 uses PBKDF2 (CPU-only, parallelizable)
     Then v2 should be more resistant to GPU-based brute force attacks
     And v2 should be more resistant to ASIC-based attacks
 
-  @security
+  @security @planned
   Scenario: Backup contains only the master seed
     When I create a backup
     Then the backup should contain the encrypted master seed
     And all keypairs should be re-derivable from the seed
     And no plaintext key material should appear in the backup file
 
-  @security
+  @security @planned
   Scenario: Corrupted backup is detected
     Given I have a valid v2 backup file
     When the backup data is corrupted

@@ -14,7 +14,7 @@ Feature: Contacts Management
 
   # Viewing Contacts
 
-  @view
+  @view @implemented
   Scenario: View contacts list
     Given I have contacts "Bob", "Carol", and "Dave"
     When I open the contacts screen
@@ -22,7 +22,7 @@ Feature: Contacts Management
     And contacts should show their display names
     And contacts should show their avatars if available
 
-  @view
+  @view @implemented
   Scenario: View contact details
     Given I have contact "Bob" with phone "555-1234" and email "bob@test.com"
     When I tap on Bob's contact
@@ -31,14 +31,14 @@ Feature: Contacts Management
     And I should see Bob's email "bob@test.com"
     And I should see when we exchanged contacts
 
-  @view
+  @view @implemented
   Scenario: Contact shows only fields I can see
     Given Bob has hidden his personal phone from me
     When I view Bob's contact details
     Then I should not see Bob's personal phone
     And I should only see fields Bob has made visible to me
 
-  @view
+  @view @implemented
   Scenario: Empty contacts list
     Given I have no contacts
     When I open the contacts screen
@@ -47,33 +47,33 @@ Feature: Contacts Management
 
   # Searching and Filtering
 
-  @search
+  @search @implemented
   Scenario: Search contacts by name
     Given I have 50 contacts
     When I search for "Bob"
     Then I should see contacts with "Bob" in their name
     And other contacts should be filtered out
 
-  @search
+  @search @implemented
   Scenario: Search contacts by field value
     Given I have contacts with various phone numbers
     When I search for "555-1234"
     Then I should see contacts with that phone number
     And the matching field should be highlighted
 
-  @filter
+  @filter @implemented
   Scenario: Filter contacts by group
     Given I have contacts in groups "Work" and "Friends"
     When I filter by group "Work"
     Then I should only see contacts in the "Work" group
 
-  @filter
+  @filter @implemented
   Scenario: Sort contacts alphabetically
     Given I have contacts "Zara", "Alice", and "Mike"
     When I sort by name ascending
     Then contacts should appear in order: "Alice", "Mike", "Zara"
 
-  @filter
+  @filter @implemented
   Scenario: Sort contacts by recent interaction
     Given I exchanged with Bob yesterday and Carol today
     When I sort by recent interaction
@@ -81,13 +81,13 @@ Feature: Contacts Management
 
   # Contact Groups
 
-  @groups
+  @groups @planned
   Scenario: Create a contact group
     When I create a new group named "Family"
     Then the group "Family" should be created
     And the group should be empty initially
 
-  @groups
+  @groups @planned
   Scenario: Add contact to group
     Given I have a group "Family"
     And I have contact "Bob"
@@ -95,7 +95,7 @@ Feature: Contacts Management
     Then Bob should appear in the "Family" group
     And Bob should still appear in "All Contacts"
 
-  @groups
+  @groups @planned
   Scenario: Contact in multiple groups
     Given I have groups "Friends" and "Colleagues"
     And I have contact "Carol"
@@ -103,21 +103,21 @@ Feature: Contacts Management
     Then Carol should appear in "Friends"
     And Carol should appear in "Colleagues"
 
-  @groups
+  @groups @planned
   Scenario: Remove contact from group
     Given Bob is in group "Work"
     When I remove Bob from group "Work"
     Then Bob should not appear in the "Work" group
     But Bob should still be in my contacts
 
-  @groups
+  @groups @planned
   Scenario: Delete a group
     Given I have a group "Old Friends" with contacts
     When I delete the group "Old Friends"
     Then the group should be removed
     But the contacts should remain in my contact list
 
-  @groups
+  @groups @planned
   Scenario: Rename a group
     Given I have a group "Work"
     When I rename it to "Office"
@@ -126,7 +126,7 @@ Feature: Contacts Management
 
   # Removing Contacts
 
-  @remove
+  @remove @implemented
   Scenario: Remove a contact
     Given I have contact "Dave"
     When I remove Dave from my contacts
@@ -134,14 +134,14 @@ Feature: Contacts Management
     Then Dave should no longer appear in my contacts
     And Dave should no longer receive my updates
 
-  @remove
+  @remove @implemented
   Scenario: Cancel contact removal
     Given I have contact "Dave"
     When I attempt to remove Dave
     And I cancel the removal
     Then Dave should still be in my contacts
 
-  @remove
+  @remove @implemented
   Scenario: Remove contact cleans up visibility rules
     Given I have custom visibility rules for Dave
     When I remove Dave from my contacts
@@ -149,7 +149,7 @@ Feature: Contacts Management
 
   # Blocking Contacts
 
-  @block
+  @block @implemented
   Scenario: Block a contact
     Given I have contact "Eve" who is spamming updates
     When I block Eve
@@ -157,14 +157,14 @@ Feature: Contacts Management
     And Eve should not receive my updates
     And I should not receive updates from Eve
 
-  @block
+  @block @implemented
   Scenario: View blocked contacts
     Given I have blocked "Eve" and "Mallory"
     When I view my blocked contacts list
     Then I should see Eve and Mallory
     And I should have option to unblock each
 
-  @block
+  @block @implemented
   Scenario: Unblock a contact
     Given Eve is blocked
     When I unblock Eve
@@ -172,7 +172,7 @@ Feature: Contacts Management
     And Eve should be able to receive my updates again
     And I should receive updates from Eve again
 
-  @block
+  @block @implemented
   Scenario: Blocked contact cannot re-exchange
     Given Eve is blocked
     When Eve tries to exchange contacts with me
@@ -181,21 +181,21 @@ Feature: Contacts Management
 
   # Favorites
 
-  @favorites
+  @favorites @planned
   Scenario: Mark contact as favorite
     Given I have contact "Bob"
     When I mark Bob as favorite
     Then Bob should appear in my favorites section
     And Bob should have a favorite indicator
 
-  @favorites
+  @favorites @planned
   Scenario: Remove favorite
     Given Bob is a favorite contact
     When I remove Bob from favorites
     Then Bob should not appear in favorites section
     But Bob should still be in my contacts
 
-  @favorites
+  @favorites @planned
   Scenario: Favorites appear first in list
     Given I have favorite "Bob" and non-favorite "Alice"
     When I view my contacts
@@ -203,26 +203,26 @@ Feature: Contacts Management
 
   # Contact Notes
 
-  @notes
+  @notes @implemented
   Scenario: Add personal note to contact
     Given I have contact "Carol"
     When I add note "Met at conference 2024"
     Then Carol should have the note attached
     And the note should only be visible to me
 
-  @notes
+  @notes @implemented
   Scenario: Edit contact note
     Given Carol has note "Met at conference 2024"
     When I edit the note to "Met at tech conference, works at Acme"
     Then Carol's note should be updated
 
-  @notes
+  @notes @implemented
   Scenario: Delete contact note
     Given Carol has a note
     When I delete Carol's note
     Then Carol should have no note attached
 
-  @notes
+  @notes @implemented
   Scenario: Notes are not shared with contact
     Given I have a note on Bob's contact
     When Bob views my contact card
@@ -230,28 +230,28 @@ Feature: Contacts Management
 
   # Contact Actions
 
-  @actions
+  @actions @planned
   Scenario: Copy phone number to clipboard
     Given Bob has phone "555-1234"
     When I long-press on Bob's phone number
     And I select "Copy"
     Then "555-1234" should be copied to clipboard
 
-  @actions
+  @actions @planned
   Scenario: Open email client
     Given Bob has email "bob@test.com"
     When I tap on Bob's email
     Then the email client should open
     And it should be addressed to "bob@test.com"
 
-  @actions
+  @actions @planned
   Scenario: Open social media link
     Given Bob has Twitter "@bobsmith"
     When I tap on Bob's Twitter
     Then the Twitter app or website should open
     And it should show Bob's profile
 
-  @actions
+  @actions @planned
   Scenario: Open address in maps
     Given Bob has address "123 Main St, City"
     When I tap on Bob's address
@@ -260,7 +260,7 @@ Feature: Contacts Management
 
   # Sharing Contact Info
 
-  @share @no-message
+  @share @no-message @planned
   Scenario: Share contact info externally
     Given Bob has phone "555-1234"
     When I select to share Bob's phone
@@ -268,7 +268,7 @@ Feature: Contacts Management
     And I should be able to share via system share sheet
     But no in-app messaging should be available
 
-  @share
+  @share @planned
   Scenario: Export contact to vCard
     Given I have contact Bob
     When I export Bob as vCard
@@ -277,14 +277,14 @@ Feature: Contacts Management
 
   # Contact List Limits
 
-  @limits
+  @limits @planned
   Scenario: Maximum contacts reached
     Given I have 9,999 contacts
     When I exchange with a new contact
     Then the exchange should succeed
     And I should have 10,000 contacts
 
-  @limits
+  @limits @planned
   Scenario: Exceed maximum contacts
     Given I have 10,000 contacts
     When I try to exchange with a new contact
@@ -293,14 +293,14 @@ Feature: Contacts Management
 
   # Merge Contacts
 
-  @merge
+  @merge @planned
   Scenario: Detect potential duplicate contacts
     Given I have "Bob Smith" and "Robert Smith" with same email
     When I view my contacts
     Then I should see a suggestion to merge duplicates
     And both contacts should be flagged
 
-  @merge
+  @merge @planned
   Scenario: Merge duplicate contacts
     Given I have identified duplicates "Bob Smith" and "Robert Smith"
     When I select to merge them
@@ -308,7 +308,7 @@ Feature: Contacts Management
     Then only "Bob Smith" should remain
     And all contact info should be preserved
 
-  @merge
+  @merge @planned
   Scenario: Dismiss duplicate suggestion
     Given I see a duplicate suggestion for Bob and Robert
     When I dismiss the suggestion

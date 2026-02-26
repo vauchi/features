@@ -22,21 +22,21 @@ Feature: Field Validation
 
   # Viewing Validation Status
 
-  @view-status
+  @view-status @implemented
   Scenario: View unvalidated field
     Given no one has validated Bob's Twitter profile
     When I view Bob's contact card
     Then the Twitter field should show validation score 0
     And the field should be marked as "unverified"
 
-  @view-status
+  @view-status @implemented
   Scenario: View partially validated field
     Given 2 contacts have validated Bob's Twitter profile
     When I view Bob's contact card
     Then the Twitter field should show validation score 2
     And the field should be marked as "partially verified"
 
-  @view-status
+  @view-status @implemented
   Scenario: View highly validated field
     Given 5 or more contacts have validated Bob's Twitter profile
     When I view Bob's contact card
@@ -45,7 +45,7 @@ Feature: Field Validation
 
   # Validating Social Profiles
 
-  @validate @social
+  @validate @social @implemented
   Scenario: Validate a contact's social profile
     Given I am viewing Bob's contact card
     And Bob has a Twitter profile "@bob_smith"
@@ -55,20 +55,20 @@ Feature: Field Validation
     And Bob's Twitter validation score should increase by 1
     And Bob should be notified that I validated their profile
 
-  @validate
+  @validate @planned
   Scenario: Cannot validate own field
     Given I have a Twitter field "@alice_wonder"
     When I view my own contact card
     Then I should not see a "Verify" option on my Twitter field
 
-  @validate
+  @validate @planned
   Scenario: Cannot validate same field twice
     Given I have already validated Bob's Twitter profile
     When I view Bob's contact card
     Then the Twitter field should show "You verified this"
     And the "Verify" button should be disabled
 
-  @validate
+  @validate @planned
   Scenario: Revoke validation
     Given I have validated Bob's Twitter profile
     When I tap "Revoke verification" on the Twitter field
@@ -78,7 +78,7 @@ Feature: Field Validation
 
   # Email Validation
 
-  @validate @email
+  @validate @email @implemented
   Scenario: Validate a contact's email address
     Given Bob has an email field "bob@example.com"
     When I tap "Verify" on the email field
@@ -86,7 +86,7 @@ Feature: Field Validation
     Then my validation should be recorded
     And Bob's email validation score should increase by 1
 
-  @validate @email
+  @validate @email @implemented
   Scenario: Email validation shows trust level
     Given Bob's email has 3 validations
     When I view Bob's contact card
@@ -94,7 +94,7 @@ Feature: Field Validation
 
   # Phone Validation
 
-  @validate @phone
+  @validate @phone @implemented
   Scenario: Validate a contact's phone number
     Given Bob has a phone field "+1-555-123-4567"
     When I tap "Verify" on the phone field
@@ -102,7 +102,7 @@ Feature: Field Validation
     Then my validation should be recorded
     And Bob's phone validation score should increase by 1
 
-  @validate @phone
+  @validate @phone @implemented
   Scenario: Phone validation persists when email changes
     Given Bob's phone has 5 validations
     When Bob updates his email address
@@ -110,14 +110,14 @@ Feature: Field Validation
 
   # Website Validation
 
-  @validate @website
+  @validate @website @planned
   Scenario: Validate a contact's website
     Given Bob has a website field "https://bob.dev"
     When I tap "Verify" on the website field
     And I confirm "I recognize this as Bob's website"
     Then my validation should be recorded
 
-  @validate @website
+  @validate @website @planned
   Scenario: Website validation requires exact URL match
     Given Bob's website "https://bob.dev" has 5 validations
     When Bob changes his website to "https://bob.dev/new"
@@ -125,7 +125,7 @@ Feature: Field Validation
 
   # Address Validation
 
-  @validate @address
+  @validate @address @planned
   Scenario: Validate a contact's address
     Given Bob has an address field "123 Main St"
     When I tap "Verify" on the address field
@@ -134,7 +134,7 @@ Feature: Field Validation
 
   # Custom Field Validation
 
-  @validate @custom
+  @validate @custom @planned
   Scenario: Validate a custom field
     Given Bob has a custom field "signal" with value "bob.42"
     When I tap "Verify" on the custom field
@@ -143,7 +143,7 @@ Feature: Field Validation
 
   # Multiple Field Types
 
-  @multiple @all-types
+  @multiple @all-types @implemented
   Scenario: Each field type has independent validation
     Given Bob has fields with the following validations:
       | type    | name    | validations |
@@ -159,21 +159,21 @@ Feature: Field Validation
 
   # Validation Propagation
 
-  @propagation
+  @propagation @planned
   Scenario: Validation is stored locally
     Given I validate Bob's Twitter profile
     Then the validation should be stored in my local database
     And the validation should be linked to Bob's contact ID
     And the validation should include my signature
 
-  @propagation
+  @propagation @planned
   Scenario: Validation count syncs from contacts
     Given Bob has 3 validations for his Twitter profile
     When Bob updates his contact card
     Then I should receive the updated validation count
     And I should see "3 people verified this"
 
-  @propagation
+  @propagation @planned
   Scenario: Validation details are privacy-preserving
     Given Bob has 3 validations for his Twitter profile
     When I view the validation details
@@ -182,7 +182,7 @@ Feature: Field Validation
 
   # Trust Levels
 
-  @trust-levels
+  @trust-levels @implemented
   Scenario Outline: Validation score determines trust level
     Given Bob's Twitter profile has <count> validations
     When I view Bob's contact card
@@ -196,7 +196,7 @@ Feature: Field Validation
       | 2-4   | partial confidence | light green  |
       | 5+    | high confidence    | green        |
 
-  @trust-levels
+  @trust-levels @implemented
   Scenario: Trust level considers validator relationship
     Given Bob's Twitter profile has 2 validations
     And one validator is my direct contact "Carol"
@@ -206,7 +206,7 @@ Feature: Field Validation
 
   # Multiple Social Profiles
 
-  @multiple
+  @multiple @implemented
   Scenario: Each social field has independent validation
     Given Bob has Twitter "@bob_smith" with 3 validations
     And Bob has GitHub "bobsmith" with 1 validation
@@ -215,7 +215,7 @@ Feature: Field Validation
     And GitHub should show validation score 1
     And each field should have its own verify button
 
-  @multiple
+  @multiple @implemented
   Scenario: Validate multiple profiles for same contact
     Given Bob has Twitter and GitHub profiles
     When I validate Bob's Twitter profile
@@ -225,7 +225,7 @@ Feature: Field Validation
 
   # Validation on Profile Changes
 
-  @profile-change
+  @profile-change @planned
   Scenario: Validation resets when field value changes
     Given Bob's Twitter "@bob_smith" has 5 validations
     When Bob changes his Twitter to "@bob_new_handle"
@@ -233,7 +233,7 @@ Feature: Field Validation
     And previous validators should be notified of the change
     And they should be prompted to re-verify
 
-  @profile-change
+  @profile-change @planned
   Scenario: Validation persists when other fields change
     Given Bob's Twitter "@bob_smith" has 5 validations
     When Bob updates his email address
@@ -241,20 +241,20 @@ Feature: Field Validation
 
   # Edge Cases
 
-  @edge-cases
+  @edge-cases @planned
   Scenario: Validation for contact with no fields
     Given Bob has no contact fields
     When I view Bob's contact card
     Then I should not see any validation options
 
-  @edge-cases
+  @edge-cases @planned
   Scenario: New contact inherits existing validations
     Given Bob has Twitter with 3 validations from others
     When I add Bob as a new contact
     Then I should see Bob's Twitter with validation score 3
     And I should be able to add my own validation
 
-  @edge-cases
+  @edge-cases @planned
   Scenario: Blocked contact's validation is ignored
     Given I have blocked "Mallory"
     And Mallory has validated Bob's Twitter profile
@@ -263,14 +263,14 @@ Feature: Field Validation
 
   # Validation Incentives
 
-  @incentives
+  @incentives @planned
   Scenario: View my validation contributions
     Given I have validated 10 fields for various contacts
     When I view my validation history
     Then I should see a list of fields I've validated
     And I should see when I validated each one
 
-  @incentives
+  @incentives @planned
   Scenario: Receive notification when validation is appreciated
     Given I validated Bob's Twitter profile
     When a new contact adds Bob and sees my validation
@@ -279,20 +279,20 @@ Feature: Field Validation
 
   # Security
 
-  @security
+  @security @planned
   Scenario: Validations are cryptographically signed
     Given I validate Bob's Twitter profile
     Then my validation should be signed with my identity key
     And Bob should be able to verify the signature
     And tampering with the validation should be detectable
 
-  @security
+  @security @planned
   Scenario: Cannot forge validations
     Given an attacker tries to create fake validations
     Then the system should reject unsigned validations
     And the system should reject validations with invalid signatures
 
-  @security
+  @security @planned
   Scenario: Sybil attack resistance
     Given an attacker creates multiple fake identities
     And they all validate a malicious profile
@@ -307,14 +307,14 @@ Feature: Field Validation
   # profiles by authenticating with the social network directly.
   # This provides stronger verification than crowd-sourced validation.
 
-  @oauth @low-priority
+  @oauth @low-priority @planned
   Scenario: View OAuth verification option for supported networks
     Given the social network "github" supports OAuth verification
     When I view my GitHub social field
     Then I should see a "Verify with GitHub" option
     And I should see this provides "cryptographic proof" of ownership
 
-  @oauth @low-priority
+  @oauth @low-priority @planned
   Scenario: Initiate OAuth verification flow
     Given I have a GitHub social field with value "octocat"
     When I tap "Verify with GitHub"
@@ -322,7 +322,7 @@ Feature: Field Validation
     And the app should request minimal permissions (read-only profile)
     And my Vauchi identity should NOT be shared with GitHub
 
-  @oauth @low-priority
+  @oauth @low-priority @planned
   Scenario: Complete OAuth verification successfully
     Given I initiated OAuth verification for GitHub
     When I authorize the app on GitHub
@@ -331,7 +331,7 @@ Feature: Field Validation
     And the verification should include a cryptographic proof
     And contacts should see a special "verified" badge
 
-  @oauth @low-priority
+  @oauth @low-priority @planned
   Scenario: OAuth verification fails due to username mismatch
     Given I have a GitHub field with value "octocat"
     When I complete OAuth verification
@@ -340,7 +340,7 @@ Feature: Field Validation
     And I should see "Username does not match your profile"
     And no verification badge should be added
 
-  @oauth @low-priority
+  @oauth @low-priority @planned
   Scenario: OAuth verified profile shows stronger trust indicator
     Given Bob's GitHub is OAuth verified
     And Bob's Twitter has 5 crowd-sourced validations
@@ -349,7 +349,7 @@ Feature: Field Validation
     And Twitter should show "Verified by 5 contacts" (high trust)
     And OAuth verification should rank higher than crowd validation
 
-  @oauth @low-priority
+  @oauth @low-priority @planned
   Scenario: OAuth verification is privacy-preserving
     Given I complete OAuth verification for Twitter
     Then Twitter should NOT receive my Vauchi identity
@@ -357,7 +357,7 @@ Feature: Field Validation
     And only my username confirmation should be stored
     And the OAuth token should be discarded after verification
 
-  @oauth @low-priority
+  @oauth @low-priority @planned
   Scenario: Supported OAuth providers
     When I view OAuth verification options
     Then I should see support for:
@@ -370,14 +370,14 @@ Feature: Field Validation
       | Mastodon  | OAuth 2.0     |
     And unsupported networks should only offer crowd validation
 
-  @oauth @low-priority
+  @oauth @low-priority @planned
   Scenario: Re-verification required after username change
     Given my GitHub field is OAuth verified
     When I change my GitHub username from "octocat" to "newname"
     Then the OAuth verification should be invalidated
     And I should be prompted to re-verify with the new username
 
-  @oauth @low-priority
+  @oauth @low-priority @planned
   Scenario: OAuth verification without network account
     Given I want to verify a GitHub profile
     But I don't have a GitHub account

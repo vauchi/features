@@ -15,35 +15,35 @@ Feature: App Theming
   # Theme Selection
   # ===========================================
 
-  @selection
+  @selection @planned
   Scenario: Default theme on fresh install
     Given this is a fresh app installation
     When the app launches
     Then the "default" dark theme should be applied
     And the theme should respect system dark/light mode preference
 
-  @selection
+  @selection @planned
   Scenario: Select theme from settings
     Given the user is on the settings page
     When the user navigates to "Appearance"
     Then the user should see a list of available themes
     And the current theme should be indicated
 
-  @selection
+  @selection @planned
   Scenario: Preview theme before applying
     Given the user is viewing theme options
     When the user taps on "Catppuccin Mocha"
     Then the app should preview the theme colors
     And the user should see "Apply" and "Cancel" options
 
-  @selection
+  @selection @planned
   Scenario: Apply selected theme
     Given the user has previewed "Catppuccin Mocha" theme
     When the user confirms the theme selection
     Then the theme should be saved to settings
     And the theme should persist after app restart
 
-  @selection
+  @selection @planned
   Scenario: Theme persists across sessions
     Given the user has selected "Nord" theme
     When the user closes and reopens the app
@@ -53,7 +53,7 @@ Feature: App Theming
   # Catppuccin Themes
   # ===========================================
 
-  @catppuccin
+  @catppuccin @planned
   Scenario Outline: Catppuccin flavor themes available
     Given themes have been downloaded from remote content
     When the user views available themes
@@ -67,35 +67,35 @@ Feature: App Theming
       | Macchiato  |
       | Mocha      |
 
-  @catppuccin @dark
+  @catppuccin @dark @planned
   Scenario: Apply Catppuccin Mocha (dark)
     When the user applies "Catppuccin Mocha" theme
     Then the background primary color should be "#1e1e2e"
     And the text primary color should be "#cdd6f4"
     And the accent color should be "#89b4fa"
 
-  @catppuccin @dark
+  @catppuccin @dark @planned
   Scenario: Apply Catppuccin Macchiato (dark)
     When the user applies "Catppuccin Macchiato" theme
     Then the background primary color should be "#24273a"
     And the text primary color should be "#cad3f5"
     And the accent color should be "#8aadf4"
 
-  @catppuccin @dark
+  @catppuccin @dark @planned
   Scenario: Apply Catppuccin Frappé (dark)
     When the user applies "Catppuccin Frappé" theme
     Then the background primary color should be "#303446"
     And the text primary color should be "#c6d0f5"
     And the accent color should be "#8caaee"
 
-  @catppuccin @light
+  @catppuccin @light @planned
   Scenario: Apply Catppuccin Latte (light)
     When the user applies "Catppuccin Latte" theme
     Then the background primary color should be "#eff1f5"
     And the text primary color should be "#4c4f69"
     And the accent color should be "#1e66f5"
 
-  @catppuccin @accent
+  @catppuccin @accent @planned
   Scenario: Catppuccin themes use consistent semantic colors
     When the user applies any Catppuccin theme
     Then the success color should use the "green" palette color
@@ -106,33 +106,33 @@ Feature: App Theming
   # Other Open Source Themes
   # ===========================================
 
-  @dracula
+  @dracula @planned
   Scenario: Dracula theme available
     Given themes have been downloaded from remote content
     When the user views available themes
     Then "Dracula" should be listed as an option
 
-  @dracula
+  @dracula @planned
   Scenario: Apply Dracula theme
     When the user applies "Dracula" theme
     Then the background primary color should be "#282a36"
     And the text primary color should be "#f8f8f2"
     And the accent color should be "#bd93f9"
 
-  @nord
+  @nord @planned
   Scenario: Nord theme available
     Given themes have been downloaded from remote content
     When the user views available themes
     Then "Nord" should be listed as an option
 
-  @nord
+  @nord @planned
   Scenario: Apply Nord theme
     When the user applies "Nord" theme
     Then the background primary color should be "#2e3440"
     And the text primary color should be "#eceff4"
     And the accent color should be "#88c0d0"
 
-  @solarized
+  @solarized @planned
   Scenario Outline: Solarized themes available
     Given themes have been downloaded from remote content
     When the user views available themes
@@ -143,21 +143,21 @@ Feature: App Theming
       | Dark    |
       | Light   |
 
-  @solarized @dark
+  @solarized @dark @planned
   Scenario: Apply Solarized Dark theme
     When the user applies "Solarized Dark" theme
     Then the background primary color should be "#002b36"
     And the text primary color should be "#839496"
     And the accent color should be "#268bd2"
 
-  @solarized @light
+  @solarized @light @planned
   Scenario: Apply Solarized Light theme
     When the user applies "Solarized Light" theme
     Then the background primary color should be "#fdf6e3"
     And the text primary color should be "#657b83"
     And the accent color should be "#268bd2"
 
-  @gruvbox
+  @gruvbox @planned
   Scenario Outline: Gruvbox themes available
     Given themes have been downloaded from remote content
     When the user views available themes
@@ -168,7 +168,7 @@ Feature: App Theming
       | Dark    |
       | Light   |
 
-  @gruvbox @dark
+  @gruvbox @dark @planned
   Scenario: Apply Gruvbox Dark theme
     When the user applies "Gruvbox Dark" theme
     Then the background primary color should be "#282828"
@@ -179,19 +179,19 @@ Feature: App Theming
   # System Integration
   # ===========================================
 
-  @system
+  @system @planned
   Scenario: Follow system dark/light mode
     Given the user has selected "System" theme preference
     When the system switches to light mode
     Then the app should apply the light variant of the selected theme
 
-  @system
+  @system @planned
   Scenario: Override system preference
     Given the system is in light mode
     And the user has explicitly selected "Catppuccin Mocha" (dark)
     Then the app should use dark theme regardless of system setting
 
-  @system @auto
+  @system @auto @planned
   Scenario: Auto theme with Catppuccin
     Given the user has selected "Catppuccin (Auto)" theme
     When the system is in dark mode
@@ -203,20 +203,20 @@ Feature: App Theming
   # Accessibility
   # ===========================================
 
-  @accessibility @contrast
+  @accessibility @contrast @planned
   Scenario: High contrast mode overrides theme
     Given the user has enabled high contrast mode
     When any theme is applied
     Then contrast ratios should meet WCAG AAA standards
     And focus indicators should be more prominent
 
-  @accessibility @contrast
+  @accessibility @contrast @planned
   Scenario: Theme colors meet minimum contrast
     When any theme is applied
     Then text on background should have at least 4.5:1 contrast ratio
     And large text should have at least 3:1 contrast ratio
 
-  @accessibility
+  @accessibility @planned
   Scenario: Theme respects reduced motion setting
     Given the user has enabled reduced motion
     When a theme is applied
@@ -227,7 +227,7 @@ Feature: App Theming
   # Cross-Platform Consistency
   # ===========================================
 
-  @platform @ios
+  @platform @ios @planned
   Scenario: Theme applies on iOS
     Given the user is on iOS
     When the user applies "Catppuccin Mocha" theme
@@ -235,7 +235,7 @@ Feature: App Theming
     And status bar should adapt to theme brightness
     And system UI elements should harmonize with theme
 
-  @platform @android
+  @platform @android @planned
   Scenario: Theme applies on Android
     Given the user is on Android
     When the user applies "Catppuccin Mocha" theme
@@ -243,7 +243,7 @@ Feature: App Theming
     And navigation bar should use theme colors
     And Material components should use theme colors
 
-  @platform @desktop
+  @platform @desktop @planned
   Scenario: Theme applies on Desktop
     Given the user is on Desktop
     When the user applies "Catppuccin Mocha" theme
@@ -254,7 +254,7 @@ Feature: App Theming
   # Theme Schema
   # ===========================================
 
-  @schema
+  @schema @planned
   Scenario: Theme file contains required colors
     Given a valid theme file
     Then the theme should define "bg-primary" color
@@ -269,12 +269,12 @@ Feature: App Theming
     And the theme should define "warning" color
     And the theme should define "border" color
 
-  @schema
+  @schema @planned
   Scenario: Theme file specifies light/dark mode
     Given a valid theme file
     Then the theme should specify whether it is "light" or "dark"
 
-  @schema
+  @schema @planned
   Scenario: Invalid theme file rejected
     Given a theme file missing required "accent" color
     When the app attempts to load the theme
@@ -285,14 +285,14 @@ Feature: App Theming
   # Remote Theme Updates
   # ===========================================
 
-  @remote
+  @remote @planned
   Scenario: New theme available after content update
     Given the user has not previously seen "Tokyo Night" theme
     And the remote themes include "Tokyo Night"
     When the app applies content updates
     Then "Tokyo Night" should appear in theme selection
 
-  @remote
+  @remote @planned
   Scenario: Theme update with existing selection
     Given the user has selected "Catppuccin Mocha"
     And a new version of Catppuccin themes is available
@@ -300,7 +300,7 @@ Feature: App Theming
     Then the updated theme colors should be applied
     And the user's theme selection should be preserved
 
-  @remote @fallback
+  @remote @fallback @planned
   Scenario: Bundled themes always available
     Given the content cache is empty
     And the device is offline
@@ -312,7 +312,7 @@ Feature: App Theming
   # Accent Color Customization
   # ===========================================
 
-  @accent @future
+  @accent @future @planned
   Scenario: Choose accent color within theme
     Given the user has selected "Catppuccin Mocha" theme
     When the user opens accent color options
@@ -322,7 +322,7 @@ Feature: App Theming
       | green     | teal     | sky    | sapphire |
       | blue      | lavender |        |          |
 
-  @accent @future
+  @accent @future @planned
   Scenario: Custom accent color persists
     Given the user has selected "Catppuccin Mocha" with "mauve" accent
     When the user closes and reopens the app
@@ -332,14 +332,14 @@ Feature: App Theming
   # QR Code Theming
   # ===========================================
 
-  @qr
+  @qr @planned
   Scenario: QR code remains readable in any theme
     When any theme is applied
     Then QR codes should display with high contrast
     And QR code background should be white or near-white
     And QR code foreground should be black or near-black
 
-  @qr
+  @qr @planned
   Scenario: QR code container matches theme
     When the user views their QR code
     Then the QR code container should use theme background
