@@ -5,6 +5,17 @@
 
 Gherkin scenarios defining Vauchi behavior. Each scenario should have corresponding tests.
 
+## Lifecycle Tags
+
+Every scenario is tagged with its implementation status:
+
+- `@implemented` — has passing tests in the test suite
+- `@planned` — specced but not yet implemented
+- `@wip` — actively being implemented (temporary, feature branches only)
+
+Use `grep -c '@implemented' *.feature` to get live implementation counts.
+Ideas and brainstorming live in `_private/features/ideas/` (not in this repo).
+
 ## Status Overview
 
 | Feature | Scenarios | Implemented | Priority | Notes |

@@ -21,7 +21,22 @@ These are the source of truth for TDD - shared by Rust, iOS, Android, and deskto
 - Use standard Gherkin syntax: `Feature`, `Scenario`, `Given/When/Then`
 - Keep scenarios focused and atomic
 - Use `Background` for shared setup
-- Tag scenarios: `@wip`, `@security`, `@slow` as appropriate
+- Tag scenarios with domain tags (`@security`, `@slow`) as appropriate
+
+## Lifecycle Tags (MANDATORY)
+
+Every `Scenario` and `Scenario Outline` must have exactly one lifecycle tag:
+
+| Tag | Meaning | When to use |
+|-----|---------|-------------|
+| `@implemented` | Has passing tests | Scenario verified by test suite |
+| `@planned` | Specced, not yet implemented | Default for new scenarios |
+| `@wip` | Actively being implemented | During a feature branch |
+
+- New scenarios default to `@planned`
+- When tests are written and passing, change to `@implemented`
+- `@wip` is temporary — must resolve to `@implemented` or `@planned` before merge
+- Lifecycle tags go on the same line as domain tags: `@security @implemented`
 
 ## Adding New Features
 
