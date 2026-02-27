@@ -339,14 +339,14 @@ Feature: Open Contact Info in External Applications
     Then the Tauri opener plugin should be invoked
     And the system default application should open
 
-  @platform @cli @planned
+  @platform @cli @implemented
   Scenario: CLI uses open crate
     Given I am using the CLI
     And I view Bob's contact details
     When I select to open a contact field
     Then the open crate should launch the system handler
 
-  @platform @tui @planned
+  @platform @tui @implemented
   Scenario: TUI offers to open in external app
     Given I am using the TUI
     And I view Bob's contact details
@@ -410,7 +410,7 @@ Feature: Open Contact Info in External Applications
   # Security
   # ============================================================
 
-  @security @planned
+  @security @implemented
   Scenario: URLs are validated before opening
     Given Bob has a website field with value "javascript:alert(1)"
     When I tap on the website
@@ -418,14 +418,14 @@ Feature: Open Contact Info in External Applications
     And the browser should not open
     And I should see "Invalid URL"
 
-  @security @planned
+  @security @implemented
   Scenario: Only safe URI schemes are allowed
     Given Bob has a custom field with value "file:///etc/passwd"
     When I tap on the field
     Then the file: scheme should be blocked
     And I should see "This action is not supported"
 
-  @security @planned
+  @security @implemented
   Scenario: Allowed URI schemes whitelist
     Then the following URI schemes should be allowed:
       | scheme  | purpose              |
