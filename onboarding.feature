@@ -12,7 +12,7 @@ Feature: Onboarding Experience
   # First Launch
   # ============================================================
 
-  @first-launch @planned
+  @first-launch @implemented
   Scenario: Welcome screen on first launch
     Given I have never used Vauchi before
     When I launch the app
@@ -30,7 +30,7 @@ Feature: Onboarding Experience
       | Why | Your contacts always have your current info |
     And the explanation should take less than 30 seconds to read
 
-  @first-launch @planned
+  @first-launch @implemented
   Scenario: Skip to restore for existing users
     Given I am on the welcome screen
     And I have a backup from another device
@@ -38,7 +38,7 @@ Feature: Onboarding Experience
     Then I should be guided to restore my identity
     And I should not go through new user onboarding
 
-  @first-launch @planned
+  @first-launch @implemented
   Scenario: Link to existing device
     Given I am on the welcome screen
     And I have Vauchi on another device
@@ -51,7 +51,7 @@ Feature: Onboarding Experience
   # Card Creation
   # ============================================================
 
-  @card-creation @planned
+  @card-creation @implemented
   Scenario: Guided card creation wizard
     Given I tapped "Get Started"
     When I reach the card creation step
@@ -139,7 +139,7 @@ Feature: Onboarding Experience
     And it should say "Ready to exchange? Find someone nearby"
     And there should be a large QR code button
 
-  @first-exchange @planned
+  @first-exchange @implemented
   Scenario: First exchange tutorial
     Given I tap the exchange button for the first time
     When the exchange screen opens
@@ -166,7 +166,7 @@ Feature: Onboarding Experience
   # Demo Contact
   # ============================================================
 
-  @demo @planned
+  @demo @implemented
   Scenario: Demo contact for solo users
     Given I completed onboarding
     And I have no contacts yet
@@ -266,7 +266,7 @@ Feature: Onboarding Experience
   # Time to Value
   # ============================================================
 
-  @ttv @planned
+  @ttv @implemented
   Scenario: Complete onboarding in under 2 minutes
     Given I am a new user
     When I go through the minimal onboarding path

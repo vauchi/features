@@ -159,21 +159,21 @@ Feature: Security
     And public keys should be classified as "semi-public"
     And each classification should have appropriate protections
 
-  @data @planned
+  @data @implemented
   Scenario: Local database encryption
     Given I have local data storage
     Then the database should use SQLCipher
     And the database encryption key should be protected
     And database files should be unreadable without the key
 
-  @data @planned
+  @data @implemented
   Scenario: Memory dump protection
     Given sensitive data is in memory
     Then memory should be protected from dumps
     And crash reports should not contain sensitive data
     And debugging should not expose sensitive data
 
-  @data @planned
+  @data @implemented
   Scenario: Secure deletion of data
     Given I delete a contact
     When the deletion is processed
@@ -215,7 +215,7 @@ Feature: Security
 
   # Audit & Logging
 
-  @audit @planned
+  @audit @implemented
   Scenario: Security events logged
     Given a security-relevant event occurs
     Then the event should be logged locally
@@ -231,7 +231,7 @@ Feature: Security
     And I should see blocked contacts
     And I should see signature verification failures
 
-  @audit @planned
+  @audit @implemented
   Scenario: Export security log
     Given I need to investigate a security issue
     When I export the security log
@@ -265,7 +265,7 @@ Feature: Security
 
   # Cryptographic Details
 
-  @crypto @planned
+  @crypto @implemented
   Scenario: Correct algorithms used
     Then identity signatures should use Ed25519
     And key exchange should use X25519
@@ -273,14 +273,14 @@ Feature: Security
     And key derivation should use Argon2id
     And hashing should use SHA-256
 
-  @crypto @planned
+  @crypto @implemented
   Scenario: Sufficient key lengths
     Then Ed25519 keys should be 256 bits
     And X25519 keys should be 256 bits
     And symmetric keys should be 256 bits
     And random values should use cryptographically secure RNG
 
-  @crypto @planned
+  @crypto @implemented
   Scenario: No weak cryptography
     Then MD5 should not be used anywhere
     And SHA1 should not be used for security

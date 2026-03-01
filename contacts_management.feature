@@ -181,21 +181,21 @@ Feature: Contacts Management
 
   # Favorites
 
-  @favorites @planned
+  @favorites @implemented
   Scenario: Mark contact as favorite
     Given I have contact "Bob"
     When I mark Bob as favorite
     Then Bob should appear in my favorites section
     And Bob should have a favorite indicator
 
-  @favorites @planned
+  @favorites @implemented
   Scenario: Remove favorite
     Given Bob is a favorite contact
     When I remove Bob from favorites
     Then Bob should not appear in favorites section
     But Bob should still be in my contacts
 
-  @favorites @planned
+  @favorites @implemented
   Scenario: Favorites appear first in list
     Given I have favorite "Bob" and non-favorite "Alice"
     When I view my contacts
@@ -268,7 +268,7 @@ Feature: Contacts Management
     And I should be able to share via system share sheet
     But no in-app messaging should be available
 
-  @share @planned
+  @share @implemented
   Scenario: Export contact to vCard
     Given I have contact Bob
     When I export Bob as vCard
@@ -293,7 +293,7 @@ Feature: Contacts Management
 
   # Merge Contacts
 
-  @merge @planned
+  @merge @implemented
   Scenario: Detect potential duplicate contacts
     Given I have "Bob Smith" and "Robert Smith" with same email
     When I view my contacts

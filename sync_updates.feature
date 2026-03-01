@@ -49,7 +49,7 @@ Feature: Sync and Updates
 
   # Receiving Updates
 
-  @receive @planned
+  @receive @implemented
   Scenario: Receive contact card update
     Given Bob has my contact card
     When Bob updates his phone number
@@ -66,7 +66,7 @@ Feature: Sync and Updates
     Then I should receive Bob's update
     And my contacts should be current
 
-  @receive @planned
+  @receive @implemented
   Scenario: Update only visible fields
     Given Bob has updated a field I cannot see
     When sync occurs
@@ -175,7 +175,7 @@ Feature: Sync and Updates
 
   # Bandwidth and Efficiency
 
-  @efficiency @planned
+  @efficiency @implemented
   Scenario: Only changed fields transmitted
     Given I have a contact card with 10 fields
     When I update only my phone number
@@ -267,7 +267,7 @@ Feature: Sync and Updates
 
   # Edge Cases
 
-  @edge-case @planned
+  @edge-case @implemented
   Scenario: Handle contact deletion during sync
     Given Bob deletes me from his contacts
     When I try to sync an update to Bob
@@ -282,7 +282,7 @@ Feature: Sync and Updates
     And I should be prompted to re-verify Bob
     And sync should pause until verified
 
-  @edge-case @planned
+  @edge-case @implemented
   Scenario: Large sync queue handling
     Given I have been offline for a long time
     And 100 contacts have sent updates
@@ -293,7 +293,7 @@ Feature: Sync and Updates
 
   # Clock Skew Handling (Added 2026-01-21)
 
-  @edge-case @clock-skew @planned
+  @edge-case @clock-skew @implemented
   Scenario: Sync handles clock skew between devices
     Given Device A's clock is 1 hour ahead
     And Device B has the correct time
@@ -302,14 +302,14 @@ Feature: Sync and Updates
     And timestamp-based resolution should not give unfair advantage
     And both devices should converge to the same state
 
-  @edge-case @clock-skew @planned
+  @edge-case @clock-skew @implemented
   Scenario: Extreme clock skew detection
     Given Device A's clock is set to year 2100
     When Device A sends an update
     Then the system should detect the unrealistic timestamp
     And version vector ordering should still work correctly
 
-  @edge-case @concurrent @planned
+  @edge-case @concurrent @implemented
   Scenario: Detect truly concurrent updates
     Given Device A and Device B are offline
     And Device A updates field X at logical time 1
@@ -319,7 +319,7 @@ Feature: Sync and Updates
     And deterministic tie-breaker should be applied
     And both devices should converge to the same winner
 
-  @edge-case @network @planned
+  @edge-case @network @implemented
   Scenario: Network partition during sync
     Given Device A and Device B are syncing
     When network connection drops mid-sync

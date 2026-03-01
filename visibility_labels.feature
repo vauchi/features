@@ -232,7 +232,7 @@ Feature: Visibility Labels
 
   # Labels are Local
 
-  @local-only @planned
+  @local-only @implemented
   Scenario: Labels are not shared with contacts
     Given I have Bob in label "Annoying People"
     When Bob views my contact information
@@ -246,7 +246,7 @@ Feature: Visibility Labels
     Then Bob should not receive any label information
     And my labels should remain private to me
 
-  @local-only @planned
+  @local-only @implemented
   Scenario: Labels sync across my own devices only
     Given I have labels on Device A
     When I link Device B to my identity
@@ -279,7 +279,7 @@ Feature: Visibility Labels
 
   # Label Visibility Templates
 
-  @template @planned
+  @template @implemented
   Scenario: Configure default fields for a label
     Given I have a label "Professional"
     When I configure "Professional" to show only work fields by default
@@ -299,7 +299,7 @@ Feature: Visibility Labels
 
   # Edge Cases
 
-  @edge-cases @planned
+  @edge-cases @implemented
   Scenario: Delete contact removes from all labels
     Given Dave is in labels "Friends" and "Colleagues"
     When I delete Dave from my contacts
@@ -328,7 +328,7 @@ Feature: Visibility Labels
     Then "Future Team" should be displayed
     And I should be able to configure its visibility settings
 
-  @edge-cases @planned
+  @edge-cases @implemented
   Scenario: Maximum number of labels
     Given I have created 50 labels
     When I try to create another label

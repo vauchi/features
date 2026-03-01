@@ -60,14 +60,14 @@ Feature: Visibility Control
 
   # Group Visibility
 
-  @groups @planned
+  @groups @implemented
   Scenario: Create a visibility group
     When I create a visibility group named "Close Friends"
     And I add "Bob" and "Carol" to "Close Friends"
     Then "Close Friends" should contain Bob and Carol
     And "Close Friends" should not contain Dave
 
-  @groups @planned
+  @groups @implemented
   Scenario: Apply visibility group to a field
     Given I have a visibility group "Work Contacts" containing Carol and Dave
     When I set "Work" email visibility to group "Work Contacts"
@@ -75,7 +75,7 @@ Feature: Visibility Control
     And Dave should see my "Work" email
     But Bob should not see my "Work" email
 
-  @groups @planned
+  @groups @implemented
   Scenario: Add contact to group updates their visibility
     Given "Work" email is visible only to group "Work Contacts"
     And Bob is not in "Work Contacts"
@@ -83,7 +83,7 @@ Feature: Visibility Control
     Then Bob should now see my "Work" email
     And Bob should receive an update with the "Work" email field
 
-  @groups @planned
+  @groups @implemented
   Scenario: Remove contact from group updates their visibility
     Given "Work" email is visible only to group "Work Contacts"
     And Carol is in "Work Contacts"
@@ -93,7 +93,7 @@ Feature: Visibility Control
 
   # Visibility Changes Propagation
 
-  @propagation @planned
+  @propagation @implemented
   Scenario: Granting visibility sends update to contact
     Given my "Personal" phone is hidden from Dave
     And Dave is online
@@ -101,7 +101,7 @@ Feature: Visibility Control
     Then Dave should receive an encrypted update
     And Dave should now see my "Personal" phone number
 
-  @propagation @planned
+  @propagation @implemented
   Scenario: Revoking visibility sends update to contact
     Given my "Personal" phone is visible to Dave
     And Dave is online
@@ -110,7 +110,7 @@ Feature: Visibility Control
     And my "Personal" phone should be removed from Dave's view
     And Dave should see the updated contact card
 
-  @propagation @planned
+  @propagation @implemented
   Scenario: Visibility change when contact is offline
     Given my "Personal" phone is visible to Dave
     And Dave is offline
@@ -129,7 +129,7 @@ Feature: Visibility Control
     Then I should be prompted to choose visibility for Eve
     And Eve should only see fields I approve
 
-  @new-contact @planned
+  @new-contact @implemented
   Scenario: Apply template visibility to new contact
     Given I have a visibility template "Professional"
     And "Professional" template shows only work fields
@@ -141,7 +141,7 @@ Feature: Visibility Control
 
   # Visibility Rules Persistence
 
-  @persistence @planned
+  @persistence @implemented
   Scenario: Visibility settings persist after app restart
     Given I have set custom visibility for multiple fields
     When I restart the application
@@ -173,7 +173,7 @@ Feature: Visibility Control
 
   # Edge Cases
 
-  @edge-cases @planned
+  @edge-cases @implemented
   Scenario: Delete contact removes their visibility rules
     Given I have custom visibility rules for Dave
     When I delete Dave from my contacts
@@ -206,7 +206,7 @@ Feature: Visibility Control
     And Dave should have no indication that the field exists
     And the data sent to Dave should not contain the hidden field
 
-  @privacy @planned
+  @privacy @implemented
   Scenario: Encrypted updates reveal nothing about hidden fields
     Given I have fields hidden from Dave
     When I update a field that Dave cannot see
@@ -223,14 +223,14 @@ Feature: Visibility Control
 
   # Bulk Operations
 
-  @bulk @planned
+  @bulk @implemented
   Scenario: Set visibility for all fields at once
     Given I have 10 contact fields
     When I select "Set all to visible for Bob only"
     Then all 10 fields should be visible only to Bob
     And other contacts should not see any fields
 
-  @bulk @planned
+  @bulk @implemented
   Scenario: Reset all visibility to default
     Given I have various custom visibility settings
     When I select "Reset all to default"

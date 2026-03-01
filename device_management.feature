@@ -101,7 +101,7 @@ Feature: Device Management
 
   # Viewing Linked Devices
 
-  @view @planned
+  @view @implemented
   Scenario: View list of linked devices
     Given I have 3 linked devices
     When I go to Settings > Linked Devices
@@ -110,7 +110,7 @@ Feature: Device Management
     And each should show last sync time
     And the current device should be marked
 
-  @view @planned
+  @view @implemented
   Scenario: View device details
     Given I have linked "iPhone 15 Pro" as Device B
     When I view details for Device B
@@ -119,7 +119,7 @@ Feature: Device Management
     And I should see when it was linked
     And I should see last activity time
 
-  @view @planned
+  @view @implemented
   Scenario: Rename a device
     Given Device B is named "iPhone 15 Pro"
     When I rename Device B to "Work Phone"
@@ -128,7 +128,7 @@ Feature: Device Management
 
   # Unlinking Devices
 
-  @unlink @planned
+  @unlink @implemented
   Scenario: Unlink a device remotely
     Given Device B is linked
     When I select "Remove Device" for Device B on Device A
@@ -146,14 +146,14 @@ Feature: Device Management
     And Device B should return to initial setup
     And my data should be removed from Device B
 
-  @unlink @planned
+  @unlink @implemented
   Scenario: Unlinked device data wiped
     Given Device B has been unlinked
     Then all identity data should be deleted from Device B
     And all contact data should be deleted
     And Device B should show the welcome screen
 
-  @unlink @planned
+  @unlink @implemented
   Scenario: Cannot unlink last device
     Given Device A is my only linked device
     When I try to unlink Device A
@@ -233,7 +233,7 @@ Feature: Device Management
     Then Device A should respect WiFi-only
     But Device B should sync on any connection
 
-  @settings @planned
+  @settings @implemented
   Scenario: Some settings sync across devices
     Given I update my display name on Device A
     Then the display name should sync to Device B

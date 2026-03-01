@@ -102,7 +102,7 @@ Feature: Contact Card Exchange
 
   # Bluetooth Low Energy (BLE) Exchange
 
-  @ble @mobile @planned
+  @ble @mobile @implemented
   Scenario: Discover nearby Vauchi users via BLE
     Given Alice has BLE enabled
     And Bob has BLE enabled and is within 2 meters
@@ -110,7 +110,7 @@ Feature: Contact Card Exchange
     Then Alice should see Bob in the nearby users list
     And the signal strength should indicate close proximity
 
-  @ble @mobile @planned
+  @ble @mobile @implemented
   Scenario: Initiate BLE exchange
     Given Alice sees Bob in the nearby users list
     And Bob is within 2 meters (verified by RSSI)
@@ -119,7 +119,7 @@ Feature: Contact Card Exchange
     Then contact cards should be exchanged over BLE
     And both should see "Exchange Successful"
 
-  @ble @mobile @proximity-fail @planned
+  @ble @mobile @proximity-fail @implemented
   Scenario: BLE exchange blocked when too far
     Given Alice sees Bob in the nearby users list
     But Bob is more than 2 meters away
@@ -127,7 +127,7 @@ Feature: Contact Card Exchange
     Then the exchange should be blocked
     And Alice should see "Move closer to exchange"
 
-  @ble @mobile @planned
+  @ble @mobile @implemented
   Scenario: BLE exchange with relay attack prevention
     Given an attacker is relaying BLE signals
     And Alice attempts to exchange with what appears to be Bob
@@ -136,7 +136,7 @@ Feature: Contact Card Exchange
     And the exchange should be blocked
     And Alice should see "Security verification failed"
 
-  @ble @forward-secrecy @planned
+  @ble @forward-secrecy @implemented
   Scenario: BLE exchange uses fresh ephemeral keys
     Given Alice and Bob are exchanging via BLE
     When both devices generate BLE exchange payloads
@@ -145,14 +145,14 @@ Feature: Contact Card Exchange
     And symmetric DH key agreement should produce matching shared secrets
     And forward secrecy should be established
 
-  @ble @mobile @planned
+  @ble @mobile @implemented
   Scenario: BLE exchange rejects expired payload
     Given Alice has initiated a BLE exchange
     And Bob's BLE payload was generated more than 60 seconds ago
     When Alice receives Bob's expired BLE payload
     Then the exchange should fail with "BleExpired" error
 
-  @ble @mobile @self-exchange @planned
+  @ble @mobile @self-exchange @implemented
   Scenario: BLE exchange prevents self-exchange
     Given Alice has initiated a BLE exchange
     When Alice's device discovers its own BLE advertisement
@@ -351,7 +351,7 @@ Feature: Contact Card Exchange
       | Desktop    | iOS        |
       | Desktop    | Android    |
 
-  @cross-platform @desktop @planned
+  @cross-platform @desktop @implemented
   Scenario: Desktop exchange without audio (requires confirmation)
     Given Alice is using desktop without microphone
     And Bob is using mobile
@@ -363,7 +363,7 @@ Feature: Contact Card Exchange
 
   # Edge Cases (Added 2026-01-21)
 
-  @edge-case @self-exchange @planned
+  @edge-case @self-exchange @implemented
   Scenario: Cannot exchange with yourself
     Given Alice has generated an exchange QR code
     When Alice scans her own QR code
@@ -378,7 +378,7 @@ Feature: Contact Card Exchange
     Then Bob should see "Already connected with Alice"
     And no duplicate contact should be created
 
-  @edge-case @network @planned
+  @edge-case @network @implemented
   Scenario: Network failure during key exchange
     Given Alice and Bob are mid-exchange
     When the network drops during X3DH handshake
