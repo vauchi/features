@@ -125,7 +125,7 @@ Feature: Message Delivery Guarantees
   # Retry and Recovery
   # ============================================================
 
-  @retry @planned
+  @retry @implemented
   Scenario: Automatic retry on transient failure
     Given I send an update
     And the relay is temporarily unreachable
@@ -134,7 +134,7 @@ Feature: Message Delivery Guarantees
     And retries should use exponential backoff
     And I should not need to manually intervene
 
-  @retry @planned
+  @retry @implemented
   Scenario: Manual retry option
     Given an update failed to send
     When I view the failed update
@@ -142,7 +142,7 @@ Feature: Message Delivery Guarantees
     And tapping retry should attempt redelivery
     And I should see the attempt status
 
-  @retry @planned
+  @retry @implemented
   Scenario: Retry queue persists across app restarts
     Given I have updates queued for retry
     When I close and reopen the app
@@ -150,7 +150,7 @@ Feature: Message Delivery Guarantees
     And retries should resume automatically
     And no updates should be lost
 
-  @retry @planned
+  @retry @implemented
   Scenario: Give up after maximum retries
     Given an update has failed repeatedly
     When maximum retry attempts are exhausted
@@ -162,7 +162,7 @@ Feature: Message Delivery Guarantees
   # Offline Behavior
   # ============================================================
 
-  @offline @planned
+  @offline @implemented
   Scenario: Queue updates while offline
     Given I am offline
     When I update my contact card
@@ -170,7 +170,7 @@ Feature: Message Delivery Guarantees
     And I should see "Will send when online"
     And my local card should reflect the change
 
-  @offline @planned
+  @offline @implemented
   Scenario: Sync queue when coming online
     Given I made 3 updates while offline
     When I come back online
@@ -178,7 +178,7 @@ Feature: Message Delivery Guarantees
     And they should be sent in order
     And I should see confirmation for each
 
-  @offline @planned
+  @offline @implemented
   Scenario: Receive pending updates when coming online
     Given contacts updated their cards while I was offline
     When I come online
@@ -186,7 +186,7 @@ Feature: Message Delivery Guarantees
     And updates should be applied in order
     And I should see a summary of changes
 
-  @offline @planned
+  @offline @implemented
   Scenario: Offline indicator
     Given I am offline
     Then the app should show an offline indicator
@@ -197,7 +197,7 @@ Feature: Message Delivery Guarantees
   # Multi-Device Delivery
   # ============================================================
 
-  @multi-device @planned
+  @multi-device @implemented
   Scenario: Update delivered to all linked devices
     Given Bob has 3 linked devices
     When I update my contact card
@@ -205,7 +205,7 @@ Feature: Message Delivery Guarantees
     And each device should acknowledge receipt
     And my delivery status should show "Delivered to all devices"
 
-  @multi-device @planned
+  @multi-device @implemented
   Scenario: Partial delivery to devices
     Given Bob has a phone and tablet
     And Bob's tablet is offline
@@ -214,7 +214,7 @@ Feature: Message Delivery Guarantees
     And remain pending for Bob's tablet
     And status should show "Delivered to 1 of 2 devices"
 
-  @multi-device @planned
+  @multi-device @implemented
   Scenario: Device comes online later
     Given I sent an update to Bob
     And Bob's phone received it but his tablet was offline
@@ -226,7 +226,7 @@ Feature: Message Delivery Guarantees
   # Delivery Order
   # ============================================================
 
-  @ordering @planned
+  @ordering @implemented
   Scenario: Updates applied in order
     Given I update my phone number to A
     And then I update it to B
@@ -235,7 +235,7 @@ Feature: Message Delivery Guarantees
     And Bob should see the final value B
     And intermediate state A may flash briefly or not at all
 
-  @ordering @planned
+  @ordering @implemented
   Scenario: Out-of-order delivery handled gracefully
     Given network conditions cause out-of-order delivery
     When updates arrive out of order
@@ -247,14 +247,14 @@ Feature: Message Delivery Guarantees
   # Delivery Transparency
   # ============================================================
 
-  @transparency @planned
+  @transparency @implemented
   Scenario: View delivery history
     When I open Settings > Delivery Status
     Then I should see a history of sent updates
     And each entry should show: recipient, time, status
     And I should be able to see details for each
 
-  @transparency @planned
+  @transparency @implemented
   Scenario: Debug connectivity issues
     Given deliveries are failing
     When I view diagnostics
@@ -262,7 +262,7 @@ Feature: Message Delivery Guarantees
     And I should see network quality indicators
     And I should see suggested actions
 
-  @transparency @planned
+  @transparency @implemented
   Scenario: Understand why delivery failed
     Given an update failed to deliver
     When I view the failure details
@@ -274,7 +274,7 @@ Feature: Message Delivery Guarantees
   # Privacy in Delivery
   # ============================================================
 
-  @privacy @planned
+  @privacy @implemented
   Scenario: Delivery receipts are optional
     Given I value privacy over delivery confirmation
     When I disable delivery receipts in settings
@@ -282,14 +282,14 @@ Feature: Message Delivery Guarantees
     And contacts should not know when I received updates
     And the relay should not track my online status
 
-  @privacy @planned
+  @privacy @implemented
   Scenario: Read receipts are never sent
     Given I receive an update from Alice
     Then Alice should not know when I read the update
     And there should be no "seen" indicators
     And only delivery (not read) status is tracked
 
-  @privacy @planned
+  @privacy @implemented
   Scenario: Delivery metadata is minimal
     Given an update is delivered via relay
     Then the relay should log minimal metadata
@@ -300,7 +300,7 @@ Feature: Message Delivery Guarantees
   # Error Handling
   # ============================================================
 
-  @errors @planned
+  @errors @implemented
   Scenario: Handle relay unavailable gracefully
     Given all relays are unreachable
     When I try to send an update
@@ -308,7 +308,7 @@ Feature: Message Delivery Guarantees
     And the update should be queued for retry
     And I should not lose my changes
 
-  @errors @planned
+  @errors @implemented
   Scenario: Handle recipient key rotation
     Given Bob rotated his keys (got a new device)
     When I try to send an update
@@ -316,7 +316,7 @@ Feature: Message Delivery Guarantees
     And I should be prompted to verify Bob's new key
     And delivery should proceed after verification
 
-  @errors @planned
+  @errors @implemented
   Scenario: Handle quota exceeded
     Given the relay storage quota is exceeded
     When I try to send an update
