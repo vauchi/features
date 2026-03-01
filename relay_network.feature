@@ -337,7 +337,7 @@ Feature: Relay Network
     And transferred blobs should be removed from relay A
     And relay A should record where blobs were sent
 
-  @federation @wip @phase3 @planned
+  @federation @phase3 @planned
   Scenario: Peer relay discovery
     Given a relay node starts up
     When it queries the relay registry
@@ -345,7 +345,7 @@ Feature: Relay Network
     And it should establish peer connections
     And it should exchange capacity information periodically
 
-  @federation @wip @phase3 @planned
+  @federation @phase3 @planned
   Scenario: Relay registry for peer discovery
     Given multiple relay nodes exist
     Then there should be a registry of known relays
@@ -353,7 +353,7 @@ Feature: Relay Network
     And relays should self-register on startup
     And the registry should remove unresponsive relays
 
-  @federation @wip @phase2 @planned
+  @federation @phase2 @planned
   Scenario: Client queries multiple relays for messages
     Given my messages may be on relay A or B
     When I sync for pending messages
@@ -393,7 +393,7 @@ Feature: Relay Network
     And it should deregister from the relay registry
     And clients should be directed to other relays
 
-  @federation @wip @phase3 @planned
+  @federation @phase3 @planned
   Scenario: Load balancing across relay network
     Given the relay network has varying capacity
     When a new blob needs to be stored
@@ -403,7 +403,7 @@ Feature: Relay Network
 
   # Federation Security
 
-  @federation @security @wip @phase4 @planned
+  @federation @security @phase4 @planned
   Scenario: Only authorized relays can join federation
     Given the relay federation uses mutual TLS
     When an unknown relay tries to join
