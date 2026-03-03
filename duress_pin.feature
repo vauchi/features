@@ -27,14 +27,14 @@ Feature: Duress PIN System
   # Setup and Configuration
   # ============================================================
 
-  @setup @planned
+  @setup @implemented
   Scenario: Duress PIN is opt-in and disabled by default
     Given I have just installed the app
     When I check Privacy settings
     Then duress PIN should be disabled
     And no decoy profile should exist
 
-  @setup @planned
+  @setup @implemented
   Scenario: Enable duress PIN in settings
     Given duress PIN is disabled
     When I navigate to Privacy settings
@@ -42,7 +42,7 @@ Feature: Duress PIN System
     Then I should be prompted to create a duress PIN
     And I should be prompted to set up a decoy profile
 
-  @setup @planned
+  @setup @implemented
   Scenario: Duress PIN must differ from normal PIN
     Given I am setting up a duress PIN
     And my normal PIN is "123456"
@@ -50,7 +50,7 @@ Feature: Duress PIN System
     Then the PIN should be rejected
     And I should see "Duress PIN must be different from your unlock PIN"
 
-  @setup @planned
+  @setup @implemented
   Scenario: Configure decoy contacts
     Given I have enabled duress PIN
     When I configure the decoy profile
@@ -58,7 +58,7 @@ Feature: Duress PIN System
     And I should be able to import from system contacts
     And the decoy contacts should be stored separately
 
-  @setup @planned
+  @setup @implemented
   Scenario: Configure trusted contacts for duress alerts
     Given I have enabled duress PIN
     When I configure duress alert recipients
@@ -210,7 +210,7 @@ Feature: Duress PIN System
   # Edge Cases
   # ============================================================
 
-  @edge @planned
+  @edge @implemented
   Scenario: Disable duress PIN from settings
     Given I have configured a duress PIN
     When I navigate to Privacy settings in normal mode

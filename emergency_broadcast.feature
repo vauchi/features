@@ -26,7 +26,7 @@ Feature: Emergency Broadcast
   # Setup and Configuration
   # ============================================================
 
-  @setup @planned
+  @setup @implemented
   Scenario: Configure emergency broadcast contacts
     Given I am in the app settings
     When I navigate to "Emergency Broadcast"
@@ -34,7 +34,7 @@ Feature: Emergency Broadcast
     And I should be able to select up to 10 trusted contacts
     And selected contacts will receive alerts when triggered
 
-  @setup @planned
+  @setup @implemented
   Scenario: Configure alert message
     Given I am configuring emergency broadcast
     When I set up my alert message
@@ -42,7 +42,7 @@ Feature: Emergency Broadcast
     Or I can write a custom message (max 500 chars)
     And the message is stored encrypted locally
 
-  @setup @planned
+  @setup @implemented
   Scenario: Configure location sharing for alerts
     Given I am configuring emergency broadcast
     When I configure location settings
@@ -50,7 +50,7 @@ Feature: Emergency Broadcast
     And I can enable "Include last known location in alerts"
     And I understand this reduces privacy for safety
 
-  @setup @planned
+  @setup @implemented
   Scenario: Emergency broadcast is opt-in
     Given I have just installed the app
     When I check settings
