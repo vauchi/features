@@ -273,7 +273,7 @@ Feature: Open Contact Info in External Applications
   # Error Handling
   # ============================================================
 
-  @error @no-handler @planned
+  @error @no-handler @implemented
   Scenario: No application available for action
     Given Bob has an email field with value "bob@company.com"
     And no email application is configured on the device
@@ -306,7 +306,7 @@ Feature: Open Contact Info in External Applications
     Then I should see "Invalid phone number format"
     And the value should be copied to clipboard as fallback
 
-  @error @network @planned
+  @error @network @implemented
   Scenario: Network error when opening social profile
     Given Bob has a social field "twitter" with value "@bobsmith"
     And the device has no network connectivity
@@ -332,7 +332,7 @@ Feature: Open Contact Info in External Applications
     Then openURL should be called with the appropriate URL
     And the system should handle app routing
 
-  @platform @desktop @planned
+  @platform @desktop @implemented
   Scenario: Desktop uses Tauri opener plugin
     Given I am using the desktop app
     When I tap on any actionable contact field
@@ -358,21 +358,21 @@ Feature: Open Contact Info in External Applications
   # Accessibility
   # ============================================================
 
-  @a11y @planned
+  @a11y @implemented
   Scenario: Actionable fields are announced as buttons
     Given Bob has multiple contact fields
     When a screen reader focuses on an email field
     Then it should announce "bob@company.com, email, button"
     And it should indicate the action "double tap to compose email"
 
-  @a11y @planned
+  @a11y @implemented
   Scenario: Action menu is accessible
     Given Bob has a phone field
     When I activate the context menu via accessibility action
     Then the action menu should be announced
     And each option should be focusable and labeled
 
-  @a11y @keyboard @planned
+  @a11y @keyboard @implemented
   Scenario: Keyboard navigation on desktop
     Given I am using the desktop app with keyboard
     And I am viewing Bob's contact details
@@ -399,7 +399,7 @@ Feature: Open Contact Info in External Applications
     Then a brief loading indicator should appear
     And it should dismiss when the external app opens
 
-  @ui @planned
+  @ui @implemented
   Scenario: Confirmation toast after copy to clipboard
     Given Bob has a phone field
     When I long-press and select "Copy to Clipboard"
