@@ -226,12 +226,13 @@ Feature: Duress PIN System
     Then I should not see the option to disable duress PIN
     And I should not be able to access real settings
 
-  @edge @planned
+  @edge @implemented
   Scenario: Wrong PIN handling
     Given I have configured a duress PIN
     When I enter an incorrect PIN
     Then normal lockout behavior should apply
     And no indication of duress PIN existence should be shown
+    # promoted_to: cli/!58, tui/!65, desktop/!97
 
   @edge @planned
   Scenario: Biometric unlock with duress
@@ -241,10 +242,11 @@ Feature: Duress PIN System
     And duress mode requires entering the duress PIN manually
     And this is by design (coercion typically involves PIN demand)
 
-  @edge @planned
+  @edge @implemented
   Scenario: App update preserves duress configuration
     Given I have configured a duress PIN and decoy profile
     When the app is updated
     Then duress PIN should remain configured
     And decoy contacts should be preserved
     And trusted alert contacts should remain set
+    # Inherent: SQLite storage persists across updates
