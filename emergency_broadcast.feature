@@ -83,7 +83,8 @@ Feature: Emergency Broadcast
     Then the alert should be sent to trusted contacts
     And this should work without opening the full app
 
-  @trigger @planned
+  @trigger @implemented
+  # promoted_to: tui!67, desktop!99
   Scenario: Emergency broadcast with confirmation
     Given I am about to send an emergency broadcast
     When I tap the send button
@@ -259,7 +260,8 @@ Feature: Emergency Broadcast
     Then they should be automatically removed from trusted list
     And they should not receive emergency broadcasts
 
-  @edge @planned
+  @edge @implemented
+  # promoted_to: tui!67
   Scenario: Rate limiting emergency broadcasts
     Given I have sent an emergency broadcast
     When I try to send another within 1 minute
