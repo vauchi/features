@@ -385,14 +385,14 @@ Feature: Open Contact Info in External Applications
   # Visual Feedback
   # ============================================================
 
-  @ui @planned
+  @ui @implemented
   Scenario: Actionable fields show tap affordance
     Given Bob has multiple contact fields
     When I view Bob's contact details
     Then actionable fields should have a subtle indicator
     And they should show hover/press feedback on interaction
 
-  @ui @planned
+  @ui @implemented
   Scenario: Brief loading indicator when opening external app
     Given Bob has an email field
     When I tap on the email
