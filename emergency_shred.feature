@@ -17,7 +17,7 @@ Feature: Emergency Shred
   # Soft Shred (Phase 1) — Scheduled Deletion
   # ============================================================
 
-  @soft @planned
+  @soft @implemented
   Scenario: Soft shred schedules deletion with grace period
     When I initiate a soft shred
     Then account deletion should be scheduled
@@ -25,7 +25,7 @@ Feature: Emergency Shred
     And I should receive a shred token
     And my data should remain accessible during the grace period
 
-  @soft @planned
+  @soft @implemented
   Scenario: Cancel soft shred during grace period
     Given I have initiated a soft shred
     And the grace period has not expired
@@ -33,7 +33,7 @@ Feature: Emergency Shred
     Then the scheduled deletion should be cancelled
     And my account should continue functioning normally
 
-  @soft @planned
+  @soft @implemented
   Scenario: Soft shred cannot proceed before grace period expires
     Given I have initiated a soft shred
     And the grace period has not expired
@@ -45,7 +45,7 @@ Feature: Emergency Shred
   # Hard Shred (Phase 2) — Irreversible Destruction
   # ============================================================
 
-  @hard @planned
+  @hard @implemented
   Scenario: Hard shred after grace period
     Given I have initiated a soft shred
     And the 7-day grace period has expired
@@ -57,14 +57,14 @@ Feature: Emergency Shred
     And WAL and SHM files should be deleted
     And key files should be securely overwritten and removed
 
-  @hard @planned
+  @hard @implemented
   Scenario: Hard shred requires valid shred token
     Given I have initiated a soft shred
     And the grace period has expired
     When I try to execute hard shred with an invalid token
     Then the operation should be rejected
 
-  @hard @planned
+  @hard @implemented
   Scenario: Hard shred sends network notifications before destruction
     Given I execute a hard shred
     Then relay purge requests should be sent BEFORE key destruction
@@ -75,7 +75,7 @@ Feature: Emergency Shred
   # Panic Shred (Phase 3) — Immediate Emergency Wipe
   # ============================================================
 
-  @panic @planned
+  @panic @implemented
   Scenario: Panic shred destroys everything immediately
     When I trigger a panic shred
     Then there should be NO grace period
@@ -84,7 +84,7 @@ Feature: Emergency Shred
     And then all cryptographic keys should be destroyed immediately
     And all local data should be wiped
 
-  @panic @planned
+  @panic @implemented
   Scenario: Panic shred follows sign-before-destroy pattern
     When I trigger a panic shred
     Then pre-signed purge requests should be sent first
@@ -92,7 +92,7 @@ Feature: Emergency Shred
     And ONLY THEN should keys be destroyed
     And this order ensures contacts and relays receive valid notifications
 
-  @panic @planned
+  @panic @implemented
   Scenario: Panic shred when network is unavailable
     Given I have no network connection
     When I trigger a panic shred
@@ -104,7 +104,7 @@ Feature: Emergency Shred
   # Shred Report
   # ============================================================
 
-  @report @planned
+  @report @implemented
   Scenario: Shred report tracks what was destroyed
     When a shred operation completes
     Then I should receive a shred report listing:
@@ -115,7 +115,7 @@ Feature: Emergency Shred
       | Key files         | Destroyed |
     And each item should show whether destruction succeeded
 
-  @report @planned
+  @report @implemented
   Scenario: Shred verification audits completeness
     When a shred operation completes
     Then a verification pass should confirm:
@@ -129,14 +129,14 @@ Feature: Emergency Shred
   # Secure Overwrite
   # ============================================================
 
-  @secure @planned
+  @secure @implemented
   Scenario: Files are overwritten with zeros before deletion
     When a shred destroys the identity file
     Then the file should be overwritten with zero bytes
     And only then should the file be deleted from the filesystem
     And this prevents recovery via disk forensics
 
-  @secure @planned
+  @secure @implemented
   Scenario: Database WAL and SHM files are cleaned up
     Given the SQLite database has WAL and SHM journal files
     When a shred destroys the database
@@ -148,7 +148,7 @@ Feature: Emergency Shred
   # Edge Cases
   # ============================================================
 
-  @edge @planned
+  @edge @implemented
   Scenario: Shred with no contacts
     Given I have no contacts
     When I trigger a hard shred

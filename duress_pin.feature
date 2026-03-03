@@ -105,7 +105,7 @@ Feature: Duress PIN System
   # Silent Alerts
   # ============================================================
 
-  @alert @planned
+  @alert @implemented
   Scenario: Duress unlock sends silent alert to trusted contacts
     Given I have configured trusted contacts for duress alerts
     When I unlock the app with the duress PIN
@@ -113,7 +113,7 @@ Feature: Duress PIN System
     And the alert should be sent via normal sync channel
     And no confirmation should be visible on my device
 
-  @alert @planned
+  @alert @implemented
   Scenario: Duress alert looks like normal sync traffic
     Given I have configured duress alerts
     When I unlock with the duress PIN
@@ -121,7 +121,7 @@ Feature: Duress PIN System
     And to the relay it should look like a normal card update
     And network observers cannot distinguish it from regular traffic
 
-  @alert @planned
+  @alert @implemented
   Scenario: Duress alert content
     Given I have configured trusted contacts for duress alerts
     When a duress alert is sent
@@ -137,7 +137,7 @@ Feature: Duress PIN System
     And the notification should be clearly marked as urgent
     And I should see when the alert was triggered
 
-  @alert @planned
+  @alert @implemented
   Scenario: Duress alerts work offline
     Given I have configured duress alerts
     And I have no network connection
