@@ -81,48 +81,54 @@ Feature: Contacts Management
 
   # Contact Groups
 
-  @groups @planned
+  @groups @implemented
   Scenario: Create a contact group
     When I create a new group named "Family"
     Then the group "Family" should be created
     And the group should be empty initially
+    # promoted_to: tui!TBD, desktop!TBD
 
-  @groups @planned
+  @groups @implemented
   Scenario: Add contact to group
     Given I have a group "Family"
     And I have contact "Bob"
     When I add Bob to group "Family"
     Then Bob should appear in the "Family" group
     And Bob should still appear in "All Contacts"
+    # promoted_to: tui!TBD, desktop!TBD
 
-  @groups @planned
+  @groups @implemented
   Scenario: Contact in multiple groups
     Given I have groups "Friends" and "Colleagues"
     And I have contact "Carol"
     When I add Carol to both groups
     Then Carol should appear in "Friends"
     And Carol should appear in "Colleagues"
+    # promoted_to: tui!TBD, desktop!TBD
 
-  @groups @planned
+  @groups @implemented
   Scenario: Remove contact from group
     Given Bob is in group "Work"
     When I remove Bob from group "Work"
     Then Bob should not appear in the "Work" group
     But Bob should still be in my contacts
+    # promoted_to: tui!TBD, desktop!TBD
 
-  @groups @planned
+  @groups @implemented
   Scenario: Delete a group
     Given I have a group "Old Friends" with contacts
     When I delete the group "Old Friends"
     Then the group should be removed
     But the contacts should remain in my contact list
+    # promoted_to: tui!TBD, desktop!TBD
 
-  @groups @planned
+  @groups @implemented
   Scenario: Rename a group
     Given I have a group "Work"
     When I rename it to "Office"
     Then the group should be named "Office"
     And all contacts in it should remain
+    # promoted_to: tui!TBD, desktop!TBD
 
   # Removing Contacts
 
