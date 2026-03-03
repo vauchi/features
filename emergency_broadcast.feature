@@ -61,7 +61,7 @@ Feature: Emergency Broadcast
   # Triggering Alerts
   # ============================================================
 
-  @trigger @planned
+  @trigger @implemented
   Scenario: Send emergency broadcast from app
     Given I have configured emergency broadcast contacts
     When I navigate to the emergency broadcast screen
@@ -106,21 +106,21 @@ Feature: Emergency Broadcast
       | sender_id  | My contact ID                          |
     And location should only be included if enabled
 
-  @delivery @planned
+  @delivery @implemented
   Scenario: Alert is encrypted end-to-end
     Given I send an emergency broadcast
     Then the alert should be encrypted with each contact's shared key
     And the relay should only see encrypted blobs
     And only intended recipients can read the alert
 
-  @delivery @planned
+  @delivery @implemented
   Scenario: Alert looks like normal sync traffic
     Given I send an emergency broadcast
     Then to the relay it should look like a card update
     And the message size should be padded to standard sizes
     And network observers cannot distinguish it from normal sync
 
-  @delivery @planned
+  @delivery @implemented
   Scenario: Alert delivery to multiple contacts
     Given I have 5 trusted contacts configured
     When I send an emergency broadcast
@@ -253,7 +253,7 @@ Feature: Emergency Broadcast
     Then queued alerts should be cancelled
     And I should see confirmation of cancellation
 
-  @edge @planned
+  @edge @implemented
   Scenario: Blocked contact in trusted list
     Given I have blocked a contact who was in my trusted list
     Then they should be automatically removed from trusted list

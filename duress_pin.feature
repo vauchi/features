@@ -70,7 +70,7 @@ Feature: Duress PIN System
   # Duress Unlock Behavior
   # ============================================================
 
-  @unlock @planned
+  @unlock @implemented
   Scenario: Duress PIN shows decoy contacts
     Given I have configured a duress PIN
     And I have configured decoy contacts
@@ -79,14 +79,14 @@ Feature: Duress PIN System
     And the real contacts should not be accessible
     And no visual indication of duress mode should be visible
 
-  @unlock @planned
+  @unlock @implemented
   Scenario: Normal PIN shows real contacts
     Given I have configured a duress PIN
     When I unlock the app with the normal PIN
     Then I should see my real contact list
     And the app should function normally
 
-  @unlock @planned
+  @unlock @implemented
   Scenario: Duress mode looks identical to normal mode
     Given I have configured a duress PIN with decoy contacts
     When I unlock with the duress PIN
@@ -94,7 +94,7 @@ Feature: Duress PIN System
     And all features should appear to work normally
     And no "duress mode" indicator should be visible anywhere
 
-  @unlock @planned
+  @unlock @implemented
   Scenario: Cannot access real contacts from duress mode
     Given I have unlocked with the duress PIN
     When I try to access hidden settings or contacts
@@ -149,14 +149,14 @@ Feature: Duress PIN System
   # Decoy Profile Behavior
   # ============================================================
 
-  @decoy @planned
+  @decoy @implemented
   Scenario: Decoy profile has separate database
     Given I have configured a duress PIN
     Then the decoy contacts should be stored in a separate encrypted database
     And the decoy database should use the duress PIN for encryption
     And the real database should not be accessible with the duress PIN
 
-  @decoy @planned
+  @decoy @implemented
   Scenario: Decoy profile functions normally
     Given I am in duress mode
     When I view a decoy contact
@@ -219,7 +219,7 @@ Feature: Duress PIN System
     And duress alerts should be disabled
     And the duress PIN should no longer work
 
-  @edge @planned
+  @edge @implemented
   Scenario: Cannot disable duress PIN from duress mode
     Given I am in duress mode
     When I navigate to Privacy settings
