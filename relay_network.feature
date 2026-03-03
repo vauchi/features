@@ -130,12 +130,13 @@ Feature: Relay Network
     And I should see current network health
     And contribution should always be voluntary
 
-  @contribution @planned
+  @contribution @implemented
   Scenario: No special privileges for contributors
     Given I am running a relay node
     Then I should not get priority routing
     And I should not get extra storage
     And all users should be treated equally
+    # promoted_to: relay (all clients treated equally, no contributor concept)
 
   # Relay Network Health
 
@@ -213,7 +214,7 @@ Feature: Relay Network
   # Client Identity Verification (Relay Authentication Phase 1)
   # Implemented in relay!28 + core!88
 
-  @protocol @authentication @planned
+  @protocol @authentication @implemented
   Scenario: Client authenticates with Ed25519 signature
     Given I have an identity with an Ed25519 signing key
     When I connect to the relay
@@ -221,49 +222,56 @@ Feature: Relay Network
     And the handshake should include my public key in hex encoding
     And the relay should verify the signature before accepting me
     And my routing should use my verified public key as client_id
+    # promoted_to: relay (handler/verify.rs, handler/connection.rs)
 
-  @protocol @authentication @planned
+  @protocol @authentication @implemented
   Scenario: Invalid signature rejected by relay
     Given an attacker sends a handshake with a forged signature
     When the relay verifies the handshake
     Then the relay should reject the connection
     And the attacker should not receive any routed messages
+    # promoted_to: relay (handler/verify.rs)
 
-  @protocol @authentication @planned
+  @protocol @authentication @implemented
   Scenario: Client ID mismatch rejected
     Given an attacker signs with key A but claims client_id of key B
     When the relay verifies the handshake
     Then the relay should detect the mismatch
     And the connection should be rejected
+    # promoted_to: relay (handler/connection.rs:168)
 
-  @protocol @authentication @planned
+  @protocol @authentication @implemented
   Scenario: Nonce replay attack prevented
     Given an attacker captures a valid signed handshake
     When the attacker replays the exact same handshake
     Then the relay should detect the nonce was already used
     And the replayed handshake should be rejected
+    # promoted_to: relay (handler/nonce.rs)
 
-  @protocol @authentication @planned
+  @protocol @authentication @implemented
   Scenario: Expired timestamp rejected
     Given an attacker replays a handshake with a stale timestamp
     When the relay checks the timestamp
     Then the relay should reject handshakes older than 60 seconds
     And the connection should not be established
+    # promoted_to: relay (handler/verify.rs:45)
 
-  @protocol @authentication @planned
+  @protocol @authentication @implemented
   Scenario: Unauthenticated clients still accepted (backward compatibility)
     Given a legacy client without signature support
     When the client sends a handshake without auth fields
     Then the relay should accept the connection
     And routing should work as before
     And no authentication should be enforced
+    # promoted_to: relay (handler/connection.rs:161)
 
-  @protocol @authentication @planned
+  @protocol @authentication @implemented
   Scenario: Routing token mode unaffected by authentication
     Given I am using a routing token for anonymous access
     When I connect to the relay with a routing token
     Then no signature verification should be required
     And the routing token should work as before
+    # promoted_to: relay (handler/connection.rs:201)
 
   @protocol @planned
   Scenario: Relay gossip protocol
@@ -418,9 +426,10 @@ Feature: Relay Network
     And the receiving relay should verify integrity
     And corrupted blobs should be rejected
 
-  @federation @security @phase1 @planned
+  @federation @security @phase1 @implemented
   Scenario: Relay cannot read offloaded blobs
     Given relay A offloads encrypted blobs to relay B
     Then relay B receives the same encrypted data
     And neither relay can decrypt the content
     And the E2E encryption is preserved
+    # promoted_to: relay (E2E encryption is client-side, relay stores opaque blobs)
