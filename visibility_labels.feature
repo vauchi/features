@@ -349,3 +349,53 @@ Feature: Visibility Labels
     When I view the unlabeled contacts list
     Then I should see all contacts not assigned to any label
     And I should be able to bulk-assign them
+
+  # ============================================================
+  # Display Name Overrides
+  # ============================================================
+
+  @display-name-override @planned
+  Scenario: Per-group display name override
+    Given I have a group "Business"
+    When I set the display name override to "Dr. Egloff"
+    Then contacts in "Business" should see my name as "Dr. Egloff"
+    When I clear the display name override
+    Then contacts in "Business" should see my default name
+
+  # ============================================================
+  # Two-Mode Visibility
+  # ============================================================
+
+  @two-mode @planned
+  Scenario: No-group mode visibility
+    Given I have no groups
+    And I have an email field "work@example.com"
+    When I mark the email field as shown
+    Then all contacts should see the email field
+
+  @two-mode @planned
+  Scenario: Groups mode visibility
+    Given I have a group "Family"
+    And I have a phone field "+1234567890"
+    When I assign the phone field to "Family"
+    Then Family contacts should see the phone field
+    And ungrouped contacts should not see the phone field
+
+  # ============================================================
+  # Group Transitions
+  # ============================================================
+
+  @transition @planned
+  Scenario: Transition from groups to no-group mode
+    Given I have a group "Friends" with phone field visible
+    When I delete the "Friends" group
+    Then the phone field should be marked as shown
+    And I should be in no-group visibility mode
+
+  @transition @planned
+  Scenario: Transition from no-group to groups mode
+    Given I have no groups
+    And I have an email field marked as shown
+    When I create a group "Family"
+    Then the email field should still be marked as shown on the card
+    And I should be prompted to assign shown fields to groups

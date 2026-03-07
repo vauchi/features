@@ -201,6 +201,68 @@ Feature: Onboarding Experience
     And focus should shift to real contacts
 
   # ============================================================
+  # 9-Step Onboarding Flow
+  # ============================================================
+
+  @default-name @planned
+  Scenario: User enters default name during onboarding
+    Given I am on the default name step
+    When I enter "Alice Johnson"
+    Then my identity should be created with display name "Alice Johnson"
+    And I should see name suggestions
+      | suggestion       |
+      | Alice            |
+      | Alic             |
+      | A. Johnson       |
+
+  @skip-gate @planned
+  Scenario: User skips onboarding after entering name
+    Given I am on the onboarding skip gate step
+    Then I should see what I will miss
+      | feature       |
+      | Groups        |
+      | Contact info  |
+      | Card preview  |
+    When I choose "Skip to finish"
+    Then I should be on the security explanation step
+    And I should have no groups
+    And I should have no contact fields
+
+  @groups-setup @planned
+  Scenario: User creates groups during onboarding
+    Given I am on the groups setup step
+    Then I should see suggested groups
+      | group      |
+      | Family     |
+      | Friends    |
+      | Coworkers  |
+      | Business   |
+    When I select "Family" and "Friends"
+    And I set the name for "Friends" to "Matt"
+    And I advance to the next step
+    Then I should have 2 groups
+    And the "Friends" group should have name override "Matt"
+
+  @contact-info @planned
+  Scenario: User adds contact info with no-group visibility
+    Given I have no groups
+    And I am on the contact info step
+    When I add an email field "work@example.com" with label "Work"
+    Then the field should be hidden by default
+    When I toggle the field to shown
+    Then the field should be visible to all contacts
+
+  @contact-info @groups @planned
+  Scenario: User adds contact info with per-group visibility
+    Given I have groups "Family" and "Friends"
+    And I am on the contact info step
+    When I add a phone field "+1234567890" with label "Mobile"
+    Then the field should be hidden by default
+    When I assign the field to group "Family"
+    Then the field should be visible to Family contacts
+    And the field should not be visible to Friends contacts
+
+  # ============================================================
   # Progress & Navigation
   # ============================================================
 
