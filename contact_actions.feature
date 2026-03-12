@@ -333,10 +333,10 @@ Feature: Open Contact Info in External Applications
     And the system should handle app routing
 
   @platform @desktop @implemented
-  Scenario: Desktop uses Tauri opener plugin
-    Given I am using the desktop app
+  Scenario: Desktop opens URL via system handler
+    Given I am using a desktop app
     When I tap on any actionable contact field
-    Then the Tauri opener plugin should be invoked
+    Then the platform system handler should be invoked
     And the system default application should open
 
   @platform @cli @implemented
