@@ -16,9 +16,11 @@ include:
       - '/ci-templates/lint-docs.yml'
       - '/ci-templates/mr-rules.yml'
       - '/ci-templates/reuse.yml'
+      - '/ci-templates/badges.yml'
 
 stages:
   - lint
+  - deploy
 
 # Override shared template to exclude ideas/ directory from naming check.
 # Idea files don't need date prefixes — they're informal brainstorming docs.
@@ -119,3 +121,10 @@ lint:structure:
       done
 
       echo "Structure checks passed!"
+
+# ============================================================
+# Deploy Stage — Badge Pages
+# ============================================================
+
+pages:
+  extends: .badges-pages

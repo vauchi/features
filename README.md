@@ -1,6 +1,8 @@
 <!-- SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me> -->
 <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
 
+[![REUSE](https://api.reuse.software/badge/gitlab.com/vauchi/features)](https://api.reuse.software/info/gitlab.com/vauchi/features)
+
 # Feature Scenarios
 
 Gherkin scenarios defining Vauchi behavior. Each scenario should have corresponding tests.
