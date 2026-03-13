@@ -158,7 +158,7 @@ Feature: Open Contact Info in External Applications
     When I tap on the social field
     Then the Instagram app should open to Bob's profile
 
-  @social @fallback @implemented
+  @social @fallback
   Scenario: Social media falls back to browser when app not installed
     Given the Twitter app is not installed
     And Bob has a social field "twitter" with value "@bobsmith"
@@ -188,14 +188,14 @@ Feature: Open Contact Info in External Applications
     Then the default maps application should open
     And it should show the location "123 Main St, San Francisco, CA 94102"
 
-  @address @maps @android @implemented
+  @address @maps @android
   Scenario: Address opens Google Maps on Android
     Given I am using the Android app
     And Bob has an address field with value "123 Main St, City, ST 12345"
     When I tap on the address
     Then the intent should use "geo:0,0?q=123+Main+St,+City,+ST+12345"
 
-  @address @maps @ios @implemented
+  @address @maps @ios
   Scenario: Address opens Apple Maps on iOS
     Given I am using the iOS app
     And Bob has an address field with value "123 Main St, City, ST 12345"
