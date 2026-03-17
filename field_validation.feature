@@ -2,11 +2,15 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+# Simplified 2026-03-17: Community trust scoring removed (Principle 1 —
+# builds a social graph of who-validated-whom). Replaced with
+# self-attestation + optional OAuth verification only.
+
 @validation @trust
 Feature: Field Validation
   As a Vauchi user
-  I want to verify that contact fields belong to my contacts
-  So that I can trust the information they share is authentic
+  I want to mark my own fields as verified and optionally prove ownership
+  So that contacts can see which of my fields I stand behind
 
   Background:
     Given I have an existing identity as "Alice"
@@ -16,296 +20,82 @@ Feature: Field Validation
       | social  | twitter  | @bob_smith           |
       | email   | work     | bob@example.com      |
       | phone   | mobile   | +1-555-123-4567      |
-      | website | blog     | https://bob.dev      |
-      | address | home     | 123 Main St, City    |
-      | custom  | signal   | bob.42               |
 
-  # Viewing Validation Status
+  # ============================================================
+  # Self-Attestation (owner marks their own fields)
+  # ============================================================
 
-  @view-status @implemented
-  Scenario: View unvalidated field
-    Given no one has validated Bob's Twitter profile
+  @self-attest @planned
+  Scenario: Mark my own field as self-attested
+    Given I have a phone field "+1-555-000-0000"
+    When I tap "Mark as verified" on my phone field
+    Then the field should show a self-attested badge
+    And contacts who have my card should see the badge
+
+  @self-attest @planned
+  Scenario: Self-attestation is per-field
+    Given I have self-attested my phone field
+    But I have not self-attested my email field
+    When Bob views my contact card
+    Then my phone should show "self-verified"
+    And my email should show "unverified"
+
+  @self-attest @planned
+  Scenario: Self-attestation resets when field value changes
+    Given I have self-attested my phone field
+    When I change my phone number
+    Then the self-attestation badge should be removed
+    And I should need to re-attest the new value
+
+  @self-attest @planned
+  Scenario: Remove self-attestation
+    Given I have self-attested my email field
+    When I tap "Remove verification" on my email field
+    Then the self-attestation badge should be removed
+
+  # ============================================================
+  # Viewing Verification Status
+  # ============================================================
+
+  @view-status @planned
+  Scenario: View unverified field
+    Given Bob has not verified any of his fields
     When I view Bob's contact card
-    Then the Twitter field should show validation score 0
-    And the field should be marked as "unverified"
+    Then all fields should show as "unverified"
 
-  @view-status @implemented
-  Scenario: View partially validated field
-    Given 2 contacts have validated Bob's Twitter profile
+  @view-status @planned
+  Scenario: View self-attested field
+    Given Bob has self-attested his Twitter profile
     When I view Bob's contact card
-    Then the Twitter field should show validation score 2
-    And the field should be marked as "partially verified"
+    Then the Twitter field should show "self-verified"
 
-  @view-status @implemented
-  Scenario: View highly validated field
-    Given 5 or more contacts have validated Bob's Twitter profile
+  @view-status @planned
+  Scenario: View OAuth-verified field
+    Given Bob has OAuth-verified his GitHub profile
     When I view Bob's contact card
-    Then the Twitter field should show validation score 5+
-    And the field should be marked as "verified"
+    Then the GitHub field should show "verified by GitHub"
+    And this should rank higher than self-attestation
 
-  # Validating Social Profiles
-
-  @validate @social @implemented
-  Scenario: Validate a contact's social profile
-    Given I am viewing Bob's contact card
-    And Bob has a Twitter profile "@bob_smith"
-    When I tap "Verify" on the Twitter field
-    And I confirm "I recognize this as Bob's Twitter account"
-    Then my validation should be recorded
-    And Bob's Twitter validation score should increase by 1
-    And Bob should be notified that I validated their profile
-
-  @validate @planned
-  Scenario: Cannot validate own field
-    Given I have a Twitter field "@alice_wonder"
-    When I view my own contact card
-    Then I should not see a "Verify" option on my Twitter field
-
-  @validate @planned
-  Scenario: Cannot validate same field twice
-    Given I have already validated Bob's Twitter profile
-    When I view Bob's contact card
-    Then the Twitter field should show "You verified this"
-    And the "Verify" button should be disabled
-
-  @validate @planned
-  Scenario: Revoke validation
-    Given I have validated Bob's Twitter profile
-    When I tap "Revoke verification" on the Twitter field
-    And I confirm the revocation
-    Then my validation should be removed
-    And Bob's Twitter validation score should decrease by 1
-
-  # Email Validation
-
-  @validate @email @implemented
-  Scenario: Validate a contact's email address
-    Given Bob has an email field "bob@example.com"
-    When I tap "Verify" on the email field
-    And I confirm "I recognize this as Bob's email"
-    Then my validation should be recorded
-    And Bob's email validation score should increase by 1
-
-  @validate @email @implemented
-  Scenario: Email validation shows trust level
-    Given Bob's email has 3 validations
-    When I view Bob's contact card
-    Then the email field should show trust level "partial confidence"
-
-  # Phone Validation
-
-  @validate @phone @implemented
-  Scenario: Validate a contact's phone number
-    Given Bob has a phone field "+1-555-123-4567"
-    When I tap "Verify" on the phone field
-    And I confirm "I recognize this as Bob's phone"
-    Then my validation should be recorded
-    And Bob's phone validation score should increase by 1
-
-  @validate @phone @implemented
-  Scenario: Phone validation persists when email changes
-    Given Bob's phone has 5 validations
-    When Bob updates his email address
-    Then Bob's phone validation count should remain 5
-
-  # Website Validation
-
-  @validate @website @planned
-  Scenario: Validate a contact's website
-    Given Bob has a website field "https://bob.dev"
-    When I tap "Verify" on the website field
-    And I confirm "I recognize this as Bob's website"
-    Then my validation should be recorded
-
-  @validate @website @planned
-  Scenario: Website validation requires exact URL match
-    Given Bob's website "https://bob.dev" has 5 validations
-    When Bob changes his website to "https://bob.dev/new"
-    Then the validation count should reset to 0
-
-  # Address Validation
-
-  @validate @address @planned
-  Scenario: Validate a contact's address
-    Given Bob has an address field "123 Main St"
-    When I tap "Verify" on the address field
-    And I confirm "I've been to this address for Bob"
-    Then my validation should be recorded
-
-  # Custom Field Validation
-
-  @validate @custom @planned
-  Scenario: Validate a custom field
-    Given Bob has a custom field "signal" with value "bob.42"
-    When I tap "Verify" on the custom field
-    And I confirm "I recognize this Signal handle as Bob's"
-    Then my validation should be recorded
-
-  # Multiple Field Types
-
-  @multiple @all-types @implemented
-  Scenario: Each field type has independent validation
-    Given Bob has fields with the following validations:
-      | type    | name    | validations |
-      | social  | twitter | 5           |
-      | email   | work    | 3           |
-      | phone   | mobile  | 2           |
-      | website | blog    | 0           |
-    When I view Bob's contact card
-    Then Twitter should show "verified" (high confidence)
-    And email should show "partial confidence"
-    And phone should show "low confidence"
-    And website should show "unverified"
-
+  # ============================================================
   # Validation Propagation
+  # ============================================================
 
   @propagation @planned
-  Scenario: Validation is stored locally
-    Given I validate Bob's Twitter profile
-    Then the validation should be stored in my local database
-    And the validation should be linked to Bob's contact ID
-    And the validation should include my signature
+  Scenario: Self-attestation syncs to contacts
+    Given I self-attest my phone field
+    When my card updates sync to Bob
+    Then Bob should see my phone field as "self-verified"
 
   @propagation @planned
-  Scenario: Validation count syncs from contacts
-    Given Bob has 3 validations for his Twitter profile
-    When Bob updates his contact card
-    Then I should receive the updated validation count
-    And I should see "3 people verified this"
-
-  @propagation @planned
-  Scenario: Validation details are privacy-preserving
-    Given Bob has 3 validations for his Twitter profile
-    When I view the validation details
-    Then I should see the count of validations
-    But I should NOT see who validated (unless they are my contacts)
-
-  # Trust Levels
-
-  @trust-levels @implemented
-  Scenario Outline: Validation score determines trust level
-    Given Bob's Twitter profile has <count> validations
-    When I view Bob's contact card
-    Then the Twitter field should show trust level "<level>"
-    And the visual indicator should be "<indicator>"
-
-    Examples:
-      | count | level              | indicator    |
-      | 0     | unverified         | grey         |
-      | 1     | low confidence     | yellow       |
-      | 2-4   | partial confidence | light green  |
-      | 5+    | high confidence    | green        |
-
-  @trust-levels @implemented
-  Scenario: Trust level considers validator relationship
-    Given Bob's Twitter profile has 2 validations
-    And one validator is my direct contact "Carol"
-    When I view Bob's contact card
-    Then the Twitter field should show "Verified by Carol and 1 other"
-    And validations from my contacts should be weighted higher
-
-  # Multiple Social Profiles
-
-  @multiple @implemented
-  Scenario: Each social field has independent validation
-    Given Bob has Twitter "@bob_smith" with 3 validations
-    And Bob has GitHub "bobsmith" with 1 validation
-    When I view Bob's contact card
-    Then Twitter should show validation score 3
-    And GitHub should show validation score 1
-    And each field should have its own verify button
-
-  @multiple @implemented
-  Scenario: Validate multiple profiles for same contact
-    Given Bob has Twitter and GitHub profiles
-    When I validate Bob's Twitter profile
-    And I validate Bob's GitHub profile
-    Then both validations should be recorded separately
-    And both profiles should show my verification
-
-  # Validation on Profile Changes
-
-  @profile-change @planned
-  Scenario: Validation resets when field value changes
-    Given Bob's Twitter "@bob_smith" has 5 validations
-    When Bob changes his Twitter to "@bob_new_handle"
-    Then the validation count should reset to 0
-    And previous validators should be notified of the change
-    And they should be prompted to re-verify
-
-  @profile-change @planned
-  Scenario: Validation persists when other fields change
-    Given Bob's Twitter "@bob_smith" has 5 validations
-    When Bob updates his email address
-    Then Bob's Twitter validation count should remain 5
-
-  # Edge Cases
-
-  @edge-cases @planned
-  Scenario: Validation for contact with no fields
-    Given Bob has no contact fields
-    When I view Bob's contact card
-    Then I should not see any validation options
-
-  @edge-cases @planned
-  Scenario: New contact inherits existing validations
-    Given Bob has Twitter with 3 validations from others
-    When I add Bob as a new contact
-    Then I should see Bob's Twitter with validation score 3
-    And I should be able to add my own validation
-
-  @edge-cases @planned
-  Scenario: Blocked contact's validation is ignored
-    Given I have blocked "Mallory"
-    And Mallory has validated Bob's Twitter profile
-    When calculating Bob's Twitter validation score for me
-    Then Mallory's validation should not be counted
-
-  # Validation Incentives
-
-  @incentives @planned
-  Scenario: View my validation contributions
-    Given I have validated 10 fields for various contacts
-    When I view my validation history
-    Then I should see a list of fields I've validated
-    And I should see when I validated each one
-
-  @incentives @planned
-  Scenario: Receive notification when validation is appreciated
-    Given I validated Bob's Twitter profile
-    When a new contact adds Bob and sees my validation
-    Then I may receive a "validation was helpful" signal
-    And my reputation as a reliable validator may increase
-
-  # Security
-
-  @security @planned
-  Scenario: Validations are cryptographically signed
-    Given I validate Bob's Twitter profile
-    Then my validation should be signed with my identity key
-    And Bob should be able to verify the signature
-    And tampering with the validation should be detectable
-
-  @security @planned
-  Scenario: Cannot forge validations
-    Given an attacker tries to create fake validations
-    Then the system should reject unsigned validations
-    And the system should reject validations with invalid signatures
-
-  @security @planned
-  Scenario: Sybil attack resistance
-    Given an attacker creates multiple fake identities
-    And they all validate a malicious profile
-    When I view the validation score
-    Then validations from non-contacts should be weighted less
-    And validations from verified exchange contacts should be weighted more
+  Scenario: Attestation is cryptographically signed
+    Given I self-attest my email field
+    Then the attestation should be signed with my identity key
+    And contacts should be able to verify the signature
+    And tampering with the attestation should be detectable
 
   # ============================================================
-  # OAuth 2.0 Verification (LOW PRIORITY - Future Enhancement)
+  # OAuth 2.0 Verification (optional, stronger than self-attestation)
   # ============================================================
-  # Allows users to cryptographically prove ownership of social
-  # profiles by authenticating with the social network directly.
-  # This provides stronger verification than crowd-sourced validation.
 
   @oauth @low-priority @planned
   Scenario: View OAuth verification option for supported networks
@@ -343,11 +133,10 @@ Feature: Field Validation
   @oauth @low-priority @planned
   Scenario: OAuth verified profile shows stronger trust indicator
     Given Bob's GitHub is OAuth verified
-    And Bob's Twitter has 5 crowd-sourced validations
+    And Bob's Twitter is self-attested
     When I view Bob's contact card
     Then GitHub should show "Verified by GitHub" (highest trust)
-    And Twitter should show "Verified by 5 contacts" (high trust)
-    And OAuth verification should rank higher than crowd validation
+    And Twitter should show "Self-verified" (basic trust)
 
   @oauth @low-priority @planned
   Scenario: OAuth verification is privacy-preserving
@@ -368,7 +157,7 @@ Feature: Field Validation
       | LinkedIn  | OAuth 2.0     |
       | Discord   | OAuth 2.0     |
       | Mastodon  | OAuth 2.0     |
-    And unsupported networks should only offer crowd validation
+    And unsupported networks should only offer self-attestation
 
   @oauth @low-priority @planned
   Scenario: Re-verification required after username change
@@ -381,5 +170,5 @@ Feature: Field Validation
   Scenario: OAuth verification without network account
     Given I want to verify a GitHub profile
     But I don't have a GitHub account
-    Then I should still be able to use crowd-sourced validation
+    Then I should still be able to use self-attestation
     And OAuth verification should be shown as optional
