@@ -95,7 +95,7 @@ Feature: App Theming
     And the text primary color should be "#4c4f69"
     And the accent color should be "#1e66f5"
 
-  @catppuccin @accent @planned
+  @catppuccin @accent @implemented
   Scenario: Catppuccin themes use consistent semantic colors
     When the user applies any Catppuccin theme
     Then the success color should use the "green" palette color
@@ -106,33 +106,33 @@ Feature: App Theming
   # Other Open Source Themes
   # ===========================================
 
-  @dracula @planned
+  @dracula @implemented
   Scenario: Dracula theme available
     Given themes have been downloaded from remote content
     When the user views available themes
     Then "Dracula" should be listed as an option
 
-  @dracula @planned
+  @dracula @implemented
   Scenario: Apply Dracula theme
     When the user applies "Dracula" theme
     Then the background primary color should be "#282a36"
     And the text primary color should be "#f8f8f2"
     And the accent color should be "#bd93f9"
 
-  @nord @planned
+  @nord @implemented
   Scenario: Nord theme available
     Given themes have been downloaded from remote content
     When the user views available themes
     Then "Nord" should be listed as an option
 
-  @nord @planned
+  @nord @implemented
   Scenario: Apply Nord theme
     When the user applies "Nord" theme
     Then the background primary color should be "#2e3440"
     And the text primary color should be "#eceff4"
     And the accent color should be "#88c0d0"
 
-  @solarized @planned
+  @solarized @implemented
   Scenario Outline: Solarized themes available
     Given themes have been downloaded from remote content
     When the user views available themes
@@ -143,7 +143,7 @@ Feature: App Theming
       | Dark    |
       | Light   |
 
-  @solarized @dark @planned
+  @solarized @dark @implemented
   Scenario: Apply Solarized Dark theme
     When the user applies "Solarized Dark" theme
     Then the background primary color should be "#002b36"
@@ -157,7 +157,7 @@ Feature: App Theming
     And the text primary color should be "#657b83"
     And the accent color should be "#268bd2"
 
-  @gruvbox @planned
+  @gruvbox @implemented
   Scenario Outline: Gruvbox themes available
     Given themes have been downloaded from remote content
     When the user views available themes
@@ -168,7 +168,7 @@ Feature: App Theming
       | Dark    |
       | Light   |
 
-  @gruvbox @dark @planned
+  @gruvbox @dark @implemented
   Scenario: Apply Gruvbox Dark theme
     When the user applies "Gruvbox Dark" theme
     Then the background primary color should be "#282828"
@@ -210,7 +210,7 @@ Feature: App Theming
     Then contrast ratios should meet WCAG AAA standards
     And focus indicators should be more prominent
 
-  @accessibility @contrast @planned
+  @accessibility @contrast @implemented
   Scenario: Theme colors meet minimum contrast
     When any theme is applied
     Then text on background should have at least 4.5:1 contrast ratio
@@ -254,7 +254,7 @@ Feature: App Theming
   # Theme Schema
   # ===========================================
 
-  @schema @planned
+  @schema @implemented
   Scenario: Theme file contains required colors
     Given a valid theme file
     Then the theme should define "bg-primary" color
@@ -269,12 +269,12 @@ Feature: App Theming
     And the theme should define "warning" color
     And the theme should define "border" color
 
-  @schema @planned
+  @schema @implemented
   Scenario: Theme file specifies light/dark mode
     Given a valid theme file
     Then the theme should specify whether it is "light" or "dark"
 
-  @schema @planned
+  @schema @implemented
   Scenario: Invalid theme file rejected
     Given a theme file missing required "accent" color
     When the app attempts to load the theme
