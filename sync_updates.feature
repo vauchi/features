@@ -326,3 +326,78 @@ Feature: Sync and Updates
     Then partial updates should not be committed
     And sync should resume from last checkpoint
     And no data corruption should occur
+
+  # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
+
+  @platform-edge-case @ios @background @planned
+  Scenario: Sync survives background termination
+    Given I am syncing updates on iOS
+    When iOS terminates the app in background
+    Then pending syncs should be saved to disk
+    And when I relaunch the app
+    Then syncs should resume automatically
+    And no data should be lost
+
+  @platform-edge-case @ios @background @planned
+  Scenario: Background task completes before termination
+    Given I started a sync operation on iOS
+    When the app moves to background
+    Then a background task should be requested
+    And the sync should complete if possible
+    And state should be saved before termination
+
+  @platform-edge-case @android @battery @planned
+  Scenario: Handle doze mode on Android
+    Given the Android device enters doze mode
+    When a sync is scheduled
+    Then sync should use WorkManager properly
+    And it should respect doze restrictions
+    And critical updates should use high-priority FCM
+
+  @platform-edge-case @android @battery @planned
+  Scenario: Handle battery saver on Android
+    Given battery saver is enabled on Android
+    When background sync is due
+    Then sync frequency should be reduced
+    And the user should be informed
+    And critical functionality should still work
+
+  @platform-edge-case @cross-platform @interrupt @planned
+  Scenario: Handle sync interruption
+    Given a sync is in progress
+    When the app is killed mid-sync
+    Then partial sync should be saved
+    And sync should resume on next launch
+    And no data corruption should occur
+
+  @platform-edge-case @cross-platform @crash-recovery @planned
+  Scenario: Sync state persisted atomically
+    Given a batch sync of 50 items is in progress
+    When the app crashes after processing 25 items
+    Then the checkpoint should record exactly 25 items synced
+    And on restart, sync should resume from item 26
+    And no items should be duplicated or orphaned
+
+  @platform-edge-case @android @battery @planned
+  Scenario: WorkManager respects battery optimization
+    Given the Android device is in battery saver mode
+    When a background sync is scheduled via WorkManager
+    Then sync frequency should be reduced to every 4 hours
+    And the sync should respect doze mode constraints
+    And critical notifications should still be delivered
+
+  @platform-edge-case @ios @permissions @planned
+  Scenario: Handle notification permission denied on iOS
+    Given I denied notification permission on iOS
+    When a contact updates their card
+    Then the update should still sync
+    And I should see updates when I open the app
+    And I should be gently prompted to enable notifications
+
+  @platform-edge-case @tui @terminal @planned
+  Scenario: Handle SSH disconnection
+    Given I am using Vauchi TUI over SSH
+    When the SSH connection drops
+    Then the app should save state before exit
+    And when I reconnect, state should be preserved
+    And no data should be lost

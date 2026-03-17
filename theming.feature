@@ -344,3 +344,13 @@ Feature: App Theming
     When the user views their QR code
     Then the QR code container should use theme background
     And the QR code itself should remain standard black-on-white
+
+  # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
+
+  @platform-edge-case @desktop @theme @planned
+  Scenario: Respect system theme on desktop
+    Given the system is set to dark mode
+    When I open the app
+    Then the app should use dark theme
+    And changing system theme should update app theme
+    And there should be an override option

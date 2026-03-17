@@ -319,3 +319,29 @@ Feature: Performance Requirements
     Then all 50 updates should be encrypted within 10 seconds
     And each update should use the correct per-contact key
     And the pipeline should not block the UI
+
+  # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
+
+  @platform-edge-case @ios @memory @planned
+  Scenario: Handle low memory warning on iOS
+    Given the app is using significant memory on iOS
+    When iOS sends a memory warning
+    Then the app should release cached images
+    And the app should release non-essential data
+    And core functionality should continue working
+
+  @platform-edge-case @android @memory @planned
+  Scenario: Handle onTrimMemory on Android
+    Given the Android system is under memory pressure
+    When Android calls onTrimMemory(LEVEL_LOW)
+    Then the app should release caches
+    And images should be released from memory
+    And core data should be preserved
+
+  @platform-edge-case @android @memory @planned
+  Scenario: Handle process killed for memory on Android
+    Given Android kills the app process
+    When I return to the app
+    Then the app should restore state
+    And unsaved changes should be preserved
+    And I should see where I left off

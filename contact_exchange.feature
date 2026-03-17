@@ -458,3 +458,21 @@ Feature: Contact Card Exchange
     Then the timestamped exchange token should be rejected
     And Alice should see "Check your device time settings"
 
+  # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
+
+  @platform-edge-case @cross-platform @time @planned
+  Scenario: Handle clock skew
+    Given my device clock is 1 hour behind
+    When I sync with contacts
+    Then timestamps should be handled correctly
+    And message ordering should be correct
+    And no sync loops should occur
+
+  @platform-edge-case @cross-platform @time @planned
+  Scenario: Handle timezone change
+    Given I change timezone while app is running
+    When I view timestamps
+    Then they should update to new timezone
+    And relative times should be correct
+    And no duplicate notifications should occur
+

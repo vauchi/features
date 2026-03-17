@@ -287,3 +287,19 @@ Feature: Security
     And DES/3DES should not be used
     And RSA should not be used (prefer Ed25519/X25519)
     And no custom cryptographic algorithms should be implemented
+
+  # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
+
+  @platform-edge-case @desktop @webview @planned
+  Scenario: WebView security on desktop
+    Given the desktop app uses WebView
+    Then JavaScript should not access filesystem directly
+    And external links should open in system browser
+    And WebView should have secure defaults (no eval, CSP)
+
+  @platform-edge-case @android @backup @planned
+  Scenario: Android auto-backup handles sensitive data
+    Given Android auto-backup is enabled
+    Then encryption keys should be excluded from backup
+    And backup should include safe data only
+    And restoration should prompt for re-authentication

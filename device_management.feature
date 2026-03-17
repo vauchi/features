@@ -363,3 +363,69 @@ Feature: Device Management
     When Device B scans the code within 5 minutes of real-world time
     Then the linking should succeed
     And the 5-minute expiry should be calculated using absolute UTC time, not local time
+
+  # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
+
+  @platform-edge-case @ios @keychain @planned
+  Scenario: Keychain access after device restore on iOS
+    Given I restored my iPhone from backup
+    When I open Vauchi
+    Then keychain items should be accessible
+    Or I should be prompted to restore from backup
+    And I should not be locked out of my identity
+
+  @platform-edge-case @cross-platform @upgrade @planned
+  Scenario: Handle app upgrade
+    Given I have data from version 1.0
+    When I upgrade to version 2.0
+    Then data migration should occur automatically
+    And no data should be lost
+    And the user should not need to reconfigure
+
+  @platform-edge-case @cross-platform @downgrade @planned
+  Scenario: Prevent data loss on downgrade
+    Given I accidentally downgraded to an older version
+    When the older version cannot read newer data format
+    Then a clear error should be shown
+    And I should be told to upgrade
+    And data should not be corrupted
+
+  @platform-edge-case @cross-platform @restore @planned
+  Scenario: Handle device migration
+    Given I am setting up a new device
+    When I restore from backup
+    Then my identity should be recoverable
+    And contacts should sync from relays
+    And the experience should be smooth
+
+  @platform-edge-case @android @storage @planned
+  Scenario: Handle scoped storage on Android 11+
+    Given I am on Android 11 or later
+    When I export my data
+    Then export should use proper storage APIs
+    And files should go to Downloads or app-specific directory
+    And I should be able to share the export
+
+  @platform-edge-case @android @split @planned
+  Scenario: Handle split APK installation on Android
+    Given the app was installed via split APKs (Play Store)
+    When I use native features (camera, crypto)
+    Then all required libraries should be present
+    And the app should not crash
+    And features should work correctly
+
+  @platform-edge-case @desktop @crash @planned
+  Scenario: Recovery after crash on desktop
+    Given the desktop app crashed unexpectedly
+    When I relaunch the app
+    Then the app should detect the previous crash
+    And it should offer to restore last state
+    And unsaved changes should be preserved if possible
+
+  @platform-edge-case @ios @handoff @planned
+  Scenario: Handoff between iOS devices
+    Given I am editing my card on iPhone
+    When I open Vauchi on my iPad
+    Then I should see option to continue on iPad
+    And my changes should be available
+    And I should not lose unsaved work

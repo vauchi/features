@@ -188,3 +188,78 @@ Feature: 5-Screen Navigation Architecture
       | FAQ             |
       | About           |
       | Support Us      |
+
+  # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
+
+  @platform-edge-case @desktop @multi-window @planned
+  Scenario: Handle multiple windows on desktop
+    Given the app is open in one window
+    When I try to open another instance
+    Then the existing window should be focused
+    Or windows should sync state in real-time
+    And data conflicts should be prevented
+
+  @platform-edge-case @desktop @url-scheme @planned
+  Scenario: Handle vauchi:// URL scheme on desktop
+    Given I click a vauchi:// link
+    When the desktop app is not running
+    Then the app should launch
+    And the link should be processed
+    And the appropriate action should occur
+
+  @platform-edge-case @desktop @tray @planned
+  Scenario: System tray behavior on desktop
+    Given the app is minimized to system tray
+    When a contact update arrives
+    Then a system notification should show
+    And clicking the tray icon should restore the app
+    And the app should not consume CPU while minimized
+
+  @platform-edge-case @tui @terminal @planned
+  Scenario: Handle terminal resize
+    Given I am using the TUI app
+    When I resize my terminal window
+    Then the UI should reflow correctly
+    And no content should be cut off
+    And the app should remain usable
+
+  @platform-edge-case @tui @encoding @planned
+  Scenario: Handle non-UTF8 terminal
+    Given my terminal has limited character support
+    When I view contacts with unicode names
+    Then the app should fallback gracefully
+    And names should still be readable
+    And the app should not crash
+
+  @platform-edge-case @ios @permissions @planned
+  Scenario: Handle camera permission revoked on iOS
+    Given I previously granted camera permission on iOS
+    When I revoke camera permission in Settings
+    And I try to scan a QR code
+    Then I should see a clear message about missing permission
+    And there should be a button to open Settings
+    And the app should not crash
+
+  @platform-edge-case @ios @extension @planned
+  Scenario: Share extension works on iOS
+    Given I am in another app with contact info
+    When I use the iOS share sheet
+    Then Vauchi should appear as an option
+    And I can share data to Vauchi
+    And sharing should work even if main app not running
+
+  @platform-edge-case @android @permissions @planned
+  Scenario: Handle runtime permission denied on Android
+    Given I denied camera permission on Android
+    When I try to scan a QR code
+    Then I should see an explanation of why permission is needed
+    And there should be an option to request permission again
+    And I should not be asked repeatedly if I chose "Don't ask again"
+
+  @platform-edge-case @cross-platform @locale @planned
+  Scenario: Handle locale change
+    Given I change my device language
+    When I open the app
+    Then the app should use the new language
+    And formatting should follow new locale
+    And no restart should be required
