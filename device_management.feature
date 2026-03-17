@@ -267,7 +267,7 @@ Feature: Device Management
     Then I should be able to link it using Device B
     And Device C should receive all my data
 
-  @recovery @planned
+  @recovery @implemented
   Scenario: Transfer primary device role
     Given Device A is my primary device
     When Device A is about to be replaced

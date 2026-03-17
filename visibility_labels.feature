@@ -239,7 +239,7 @@ Feature: Visibility Labels
     Then Bob should have no indication of any label
     And the label name should never be transmitted to Bob
 
-  @local-only @planned
+  @local-only @implemented
   Scenario: Labels exist only on my devices
     Given I have labels "Family", "Friends", and "Work"
     When Bob exchanges contacts with me
@@ -290,7 +290,7 @@ Feature: Visibility Labels
       | Personal phone | no      |
       | Personal email | no      |
 
-  @template @planned
+  @template @implemented
   Scenario: Apply label template to new contact
     Given I have a label "Professional" with configured visibility
     When I add Eve to label "Professional"
@@ -321,7 +321,7 @@ Feature: Visibility Labels
     Then Eve should not automatically be in "Friends" again
     And I should be prompted to assign labels if desired
 
-  @edge-cases @planned
+  @edge-cases @implemented
   Scenario: Label with no contacts still exists
     Given I have a label "Future Team" with no contacts
     When I view my labels
@@ -354,7 +354,7 @@ Feature: Visibility Labels
   # Display Name Overrides
   # ============================================================
 
-  @display-name-override @planned
+  @display-name-override @implemented
   Scenario: Per-group display name override
     Given I have a group "Business"
     When I set the display name override to "Dr. Egloff"

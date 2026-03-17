@@ -159,7 +159,7 @@ Feature: Contact Recovery
   # Identity Loss and New Identity Creation
   # ============================================================
 
-  @recovery @identity @planned
+  @recovery @identity @implemented
   Scenario: Create new identity after device loss
     Given Alice had an identity with public key "pk_old"
     And Alice had contacts Bob, Charlie, John, Betty, and David
@@ -170,7 +170,7 @@ Feature: Contact Recovery
     And Alice has no contacts on the new device
     And Alice can initiate recovery claiming "pk_old"
 
-  @recovery @identity @planned
+  @recovery @identity @implemented
   Scenario: Remember old identity fingerprint
     Given Alice had an identity with fingerprint "ABCD-1234-EFGH-5678"
     When Alice creates a new identity on a new device
@@ -181,7 +181,7 @@ Feature: Contact Recovery
   # In-Person Vouching Process
   # ============================================================
 
-  @recovery @vouching @planned
+  @recovery @vouching @implemented
   Scenario: Generate recovery claim QR code
     Given Alice has a new identity with public key "pk_new"
     And Alice claims her old identity was "pk_old"
@@ -208,7 +208,7 @@ Feature: Contact Recovery
     Then Bob's app shows "Unknown identity - you have no contact with this public key"
     And Bob cannot create a voucher
 
-  @recovery @vouching @planned
+  @recovery @vouching @implemented
   Scenario: Create voucher after in-person verification
     Given Bob has Alice as a contact with public key "pk_old"
     And Bob scans Alice's recovery QR code for "pk_old" -> "pk_new"
@@ -230,7 +230,7 @@ Feature: Contact Recovery
     And a new key exchange is initiated between Bob and Alice
     And Bob and Alice can communicate using the new shared key
 
-  @recovery @vouching @planned
+  @recovery @vouching @implemented
   Scenario: Collect multiple vouchers from trusted contacts
     Given Alice has recovery threshold of 3
     And Alice has marked Bob, Charlie, and Betty as recovery-trusted
@@ -316,7 +316,7 @@ Feature: Contact Recovery
   # Verification - Mutual Contacts
   # ============================================================
 
-  @recovery @verification @mutual @planned
+  @recovery @verification @mutual @implemented
   Scenario: Verify recovery with mutual contacts
     Given John has verification threshold of 2 mutual contacts
     And John has Alice as a contact
@@ -336,7 +336,7 @@ Feature: Contact Recovery
       """
     And John is warned that verification threshold is not met
 
-  @recovery @verification @mutual @planned
+  @recovery @verification @mutual @implemented
   Scenario: Automatic verification with sufficient mutual contacts
     Given John has verification threshold of 2 mutual contacts
     And John has Alice, Bob, and Charlie as contacts
@@ -355,7 +355,7 @@ Feature: Contact Recovery
       """
     And John can confidently accept the recovery
 
-  @recovery @verification @mutual @planned
+  @recovery @verification @mutual @implemented
   Scenario: High trust with many mutual contacts
     Given Eve has verification threshold of 2 mutual contacts
     And Eve knows Alice, Bob, Charlie, Betty, and David
@@ -445,7 +445,7 @@ Feature: Contact Recovery
   # Acceptance and Reconnection
   # ============================================================
 
-  @recovery @acceptance @planned
+  @recovery @acceptance @implemented
   Scenario: Accept recovery and reconnect
     Given John accepts Alice's recovery
     Then John's contact record for Alice is updated:
@@ -455,7 +455,7 @@ Feature: Contact Recovery
     And John and Alice establish a new shared secret
     And the old shared secret is discarded
 
-  @recovery @acceptance @planned
+  @recovery @acceptance @implemented
   Scenario: Contact card is refreshed after recovery
     Given John accepts Alice's recovery
     And the new key exchange completes
@@ -463,7 +463,7 @@ Feature: Contact Recovery
     Then John receives Alice's updated contact card
     And John's stored card for Alice is refreshed
 
-  @recovery @acceptance @planned
+  @recovery @acceptance @implemented
   Scenario: Reject recovery
     Given John receives Alice's recovery proof
     When John rejects the recovery
@@ -471,7 +471,7 @@ Feature: Contact Recovery
     And John is not notified again for this recovery proof
     And John can manually reconsider later in settings
 
-  @recovery @acceptance @planned
+  @recovery @acceptance @implemented
   Scenario: Remind me later
     Given John receives Alice's recovery proof
     When John chooses "Remind Me Later"
@@ -483,21 +483,21 @@ Feature: Contact Recovery
   # Edge Cases and Security
   # ============================================================
 
-  @recovery @security @planned
+  @recovery @security @implemented
   Scenario: Reject recovery from unknown identity
     Given John receives a recovery proof for "pk_unknown"
     And John does not have "pk_unknown" as a contact
     Then the recovery proof is ignored
     And no notification is shown
 
-  @recovery @security @planned
+  @recovery @security @implemented
   Scenario: Reject recovery with insufficient vouchers
     Given Alice has recovery threshold of 3
     And Alice has only collected 2 vouchers
     When Alice tries to create a recovery proof
     Then the operation fails with "Insufficient vouchers (2 of 3 required)"
 
-  @recovery @security @planned
+  @recovery @security @implemented
   Scenario: Reject duplicate vouchers
     Given Alice is collecting vouchers
     And Bob has already vouched for Alice
@@ -505,14 +505,14 @@ Feature: Contact Recovery
     Then the duplicate voucher is rejected
     And Alice still has 1 voucher from Bob
 
-  @recovery @security @planned
+  @recovery @security @implemented
   Scenario: Voucher timestamp validation
     Given Alice generates a recovery claim at time T
     When Bob vouches 48 hours later
     Then the voucher is rejected as expired
     And Alice must generate a fresh recovery claim
 
-  @recovery @security @planned
+  @recovery @security @implemented
   Scenario: Detect conflicting recovery claims
     Given Alice uploads a recovery proof for "pk_old" -> "pk_new_1"
     When an attacker uploads a recovery proof for "pk_old" -> "pk_new_2"
@@ -526,7 +526,7 @@ Feature: Contact Recovery
       This may indicate an attack. Verify with Alice directly.
       """
 
-  @recovery @security @planned
+  @recovery @security @implemented
   Scenario: Revoke recovery proof
     Given Alice has uploaded a recovery proof
     And Alice later recovers her old device
@@ -534,7 +534,7 @@ Feature: Contact Recovery
     Then the recovery proof is invalidated
     And contacts are notified the recovery was revoked
 
-  @recovery @security @planned
+  @recovery @security @implemented
   Scenario: Cannot vouch for own recovery
     Given Alice claims recovery from "pk_old" to "pk_new"
     When Alice tries to vouch for herself (using pk_new)

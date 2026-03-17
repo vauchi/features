@@ -96,7 +96,7 @@ Feature: Emergency Broadcast
   # Alert Content and Delivery
   # ============================================================
 
-  @delivery @planned
+  @delivery @implemented
   Scenario: Alert message content
     Given I have triggered an emergency broadcast
     Then each trusted contact should receive:
@@ -231,7 +231,7 @@ Feature: Emergency Broadcast
   # Edge Cases
   # ============================================================
 
-  @edge @planned
+  @edge @implemented
   Scenario: No trusted contacts configured
     Given I have not configured any trusted contacts
     When I try to send an emergency broadcast

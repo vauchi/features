@@ -198,7 +198,7 @@ Feature: Visibility Control
 
   # Privacy Protection
 
-  @privacy @planned
+  @privacy @implemented
   Scenario: Contact cannot determine hidden field existence
     Given I have a "Personal" phone hidden from Dave
     When Dave views my contact card

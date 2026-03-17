@@ -15,7 +15,7 @@ Feature: Help & FAQ System
   # FAQ Categories
   # ============================================================
 
-  @categories @planned
+  @categories @implemented
   Scenario: View FAQ categories
     When I open the Help section
     Then I should see the following categories:
@@ -28,7 +28,7 @@ Feature: Help & FAQ System
       | Features        |
     And each category should show its FAQ count
 
-  @categories @planned
+  @categories @implemented
   Scenario: Browse FAQs in a category
     When I select the "Privacy" category
     Then I should see only FAQs related to privacy and security
@@ -46,26 +46,26 @@ Feature: Help & FAQ System
   # FAQ Content
   # ============================================================
 
-  @content @planned
+  @content @implemented
   Scenario: View a specific FAQ
     When I open FAQ "faq-phone-lost"
     Then I should see the question about losing my phone
     And I should see the detailed answer
     And I should see related FAQs if any exist
 
-  @content @planned
+  @content @implemented
   Scenario: Related FAQs are linked
     Given I am viewing FAQ "faq-tracking"
     Then I should see related FAQs suggested
     And tapping a related FAQ should navigate to it
 
-  @content @planned
+  @content @implemented
   Scenario: All categories have at least one FAQ
     When I list all FAQ categories
     Then every category should have at least one FAQ entry
     And no FAQ should be uncategorized
 
-  @content @planned
+  @content @implemented
   Scenario: FAQ content covers core topics
     When I list all FAQs
     Then there should be FAQs covering:
@@ -89,19 +89,19 @@ Feature: Help & FAQ System
   # Search
   # ============================================================
 
-  @search @planned
+  @search @implemented
   Scenario: Search FAQs by keyword
     When I search for "encryption"
     Then I should see FAQs mentioning encryption
     And the results should be ranked by relevance
 
-  @search @planned
+  @search @implemented
   Scenario: Search with no results
     When I search for "xyznonexistent"
     Then I should see an empty result set
     And I should see a message indicating no FAQs matched
 
-  @search @planned
+  @search @implemented
   Scenario: Search is case-insensitive
     When I search for "RECOVERY"
     Then I should see the same results as searching for "recovery"
@@ -110,13 +110,13 @@ Feature: Help & FAQ System
   # Localization
   # ============================================================
 
-  @i18n @planned
+  @i18n @implemented
   Scenario: FAQs are shown in the user's language
     Given my locale is set to "de"
     When I view the FAQ list
     Then questions and answers should be displayed in German
 
-  @i18n @planned
+  @i18n @implemented
   Scenario Outline: FAQ localization for supported languages
     Given my locale is set to "<locale>"
     When I view FAQ "faq-tracking"
@@ -176,7 +176,7 @@ Feature: Help & FAQ System
   # Offline & Updates
   # ============================================================
 
-  @offline @planned
+  @offline @implemented
   Scenario: FAQs are available offline
     Given I have no network connection
     When I open the Help section

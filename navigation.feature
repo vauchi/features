@@ -14,7 +14,7 @@ Feature: 5-Screen Navigation Architecture
 
   # Navigation Bar
 
-  @navigation @planned
+  @navigation @implemented
   Scenario: Navigation shows 5 screens
     When I view the main screen
     Then I should see a navigation bar with 5 screens:
@@ -25,20 +25,20 @@ Feature: 5-Screen Navigation Architecture
       | Settings  | 4        |
       | Help      | 5        |
 
-  @navigation @planned
+  @navigation @implemented
   Scenario: Dynamic default screen with no contacts
     Given I have 0 contacts
     When I unlock the app
     Then the "MyInfo" screen should be active
     And I should see my contact card fields
 
-  @navigation @planned
+  @navigation @implemented
   Scenario: Dynamic default screen with contacts
     Given I have 1 or more contacts
     When I unlock the app
     Then the "Contacts" screen should be active
 
-  @navigation @planned
+  @navigation @implemented
   Scenario: Switching screens preserves state
     Given I am on the "Contacts" screen viewing Bob's details
     When I switch to the "MyInfo" screen
@@ -157,7 +157,7 @@ Feature: 5-Screen Navigation Architecture
 
   # Exchange — Post-Exchange Flow
 
-  @navigation @exchange @planned
+  @navigation @exchange @implemented
   Scenario: Exchange is accessible from navigation
     When I switch to the "Exchange" screen
     Then I should see the exchange interface

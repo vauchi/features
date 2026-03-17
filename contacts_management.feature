@@ -306,7 +306,7 @@ Feature: Contacts Management
     Then I should see a suggestion to merge duplicates
     And both contacts should be flagged
 
-  @merge @planned
+  @merge @implemented
   Scenario: Merge duplicate contacts
     Given I have identified duplicates "Bob Smith" and "Robert Smith"
     When I select to merge them
@@ -314,7 +314,7 @@ Feature: Contacts Management
     Then only "Bob Smith" should remain
     And all contact info should be preserved
 
-  @merge @planned
+  @merge @implemented
   Scenario: Dismiss duplicate suggestion
     Given I see a duplicate suggestion for Bob and Robert
     When I dismiss the suggestion

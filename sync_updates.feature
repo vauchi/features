@@ -58,7 +58,7 @@ Feature: Sync and Updates
     And my view of Bob's contact should show the new phone number
     And I should see a notification "Bob updated their contact info"
 
-  @receive @planned
+  @receive @implemented
   Scenario: Receive update while offline
     Given I am offline
     And Bob updates his phone number
@@ -182,14 +182,14 @@ Feature: Sync and Updates
     Then only the phone field delta should be transmitted
     And the full contact card should not be sent
 
-  @efficiency @planned
+  @efficiency @implemented
   Scenario: Merkle tree for efficient sync detection
     Given Bob and I have been synced
     When we reconnect after a period offline
     Then Merkle tree comparison should detect changes
     And only changed data should be transmitted
 
-  @efficiency @planned
+  @efficiency @implemented
   Scenario: Compression of sync payloads
     Given I am sending an update
     Then the payload should be compressed before encryption

@@ -15,7 +15,7 @@ Feature: App Theming
   # Theme Selection
   # ===========================================
 
-  @selection @planned
+  @selection @implemented
   Scenario: Default theme on fresh install
     Given this is a fresh app installation
     When the app launches
@@ -53,7 +53,7 @@ Feature: App Theming
   # Catppuccin Themes
   # ===========================================
 
-  @catppuccin @planned
+  @catppuccin @implemented
   Scenario Outline: Catppuccin flavor themes available
     Given themes have been downloaded from remote content
     When the user views available themes
@@ -67,28 +67,28 @@ Feature: App Theming
       | Macchiato  |
       | Mocha      |
 
-  @catppuccin @dark @planned
+  @catppuccin @dark @implemented
   Scenario: Apply Catppuccin Mocha (dark)
     When the user applies "Catppuccin Mocha" theme
     Then the background primary color should be "#1e1e2e"
     And the text primary color should be "#cdd6f4"
     And the accent color should be "#89b4fa"
 
-  @catppuccin @dark @planned
+  @catppuccin @dark @implemented
   Scenario: Apply Catppuccin Macchiato (dark)
     When the user applies "Catppuccin Macchiato" theme
     Then the background primary color should be "#24273a"
     And the text primary color should be "#cad3f5"
     And the accent color should be "#8aadf4"
 
-  @catppuccin @dark @planned
+  @catppuccin @dark @implemented
   Scenario: Apply Catppuccin Frappé (dark)
     When the user applies "Catppuccin Frappé" theme
     Then the background primary color should be "#303446"
     And the text primary color should be "#c6d0f5"
     And the accent color should be "#8caaee"
 
-  @catppuccin @light @planned
+  @catppuccin @light @implemented
   Scenario: Apply Catppuccin Latte (light)
     When the user applies "Catppuccin Latte" theme
     Then the background primary color should be "#eff1f5"

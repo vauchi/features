@@ -20,7 +20,7 @@ Feature: Onboarding Experience
     And it should briefly explain Vauchi's value proposition
     And there should be a "Get Started" button
 
-  @first-launch @planned
+  @first-launch @implemented
   Scenario: Value proposition is clear
     Given I am on the welcome screen
     Then I should understand:
@@ -60,7 +60,7 @@ Feature: Onboarding Experience
     And it should suggest common fields to add
     And I should be able to skip optional fields
 
-  @card-creation @planned
+  @card-creation @implemented
   Scenario: Minimum viable card
     Given I am creating my card
     When I enter just my name
@@ -76,7 +76,7 @@ Feature: Onboarding Experience
     And adding them should take one tap each
     And I should be able to skip
 
-  @card-creation @planned
+  @card-creation @implemented
   Scenario: Card preview before finishing
     Given I have entered my card information
     When I reach the preview step
@@ -96,7 +96,7 @@ Feature: Onboarding Experience
   # Security Explanation
   # ============================================================
 
-  @security @planned
+  @security @implemented
   Scenario: Simple security explanation
     Given I am in the onboarding flow
     When I reach the security step
@@ -111,7 +111,7 @@ Feature: Onboarding Experience
     And it should show: your phone ↔ their phone (no cloud in middle)
     And the message should be clear without reading text
 
-  @security @planned
+  @security @implemented
   Scenario: Backup prompt
     Given I have created my identity
     When onboarding continues
@@ -204,7 +204,7 @@ Feature: Onboarding Experience
   # 9-Step Onboarding Flow
   # ============================================================
 
-  @default-name @planned
+  @default-name @implemented
   Scenario: User enters default name during onboarding
     Given I am on the default name step
     When I enter "Alice Johnson"
@@ -215,7 +215,7 @@ Feature: Onboarding Experience
       | Alic             |
       | A. Johnson       |
 
-  @skip-gate @planned
+  @skip-gate @implemented
   Scenario: User skips onboarding after entering name
     Given I am on the onboarding skip gate step
     Then I should see what I will miss
@@ -228,7 +228,7 @@ Feature: Onboarding Experience
     And I should have no groups
     And I should have no contact fields
 
-  @groups-setup @planned
+  @groups-setup @implemented
   Scenario: User creates groups during onboarding
     Given I am on the groups setup step
     Then I should see suggested groups
@@ -243,7 +243,7 @@ Feature: Onboarding Experience
     Then I should have 2 groups
     And the "Friends" group should have name override "Matt"
 
-  @contact-info @planned
+  @contact-info @implemented
   Scenario: User adds contact info with no-group visibility
     Given I have no groups
     And I am on the contact info step
@@ -252,7 +252,7 @@ Feature: Onboarding Experience
     When I toggle the field to shown
     Then the field should be visible to all contacts
 
-  @contact-info @groups @planned
+  @contact-info @groups @implemented
   Scenario: User adds contact info with per-group visibility
     Given I have groups "Family" and "Friends"
     And I am on the contact info step
@@ -266,7 +266,7 @@ Feature: Onboarding Experience
   # Progress & Navigation
   # ============================================================
 
-  @progress @planned
+  @progress @implemented
   Scenario: Onboarding progress indicator
     Given I am in the onboarding flow
     Then I should see my progress (step 2 of 4)
@@ -281,7 +281,7 @@ Feature: Onboarding Experience
     And my entered data should be preserved
     And I should be able to change it
 
-  @progress @planned
+  @progress @implemented
   Scenario: Can skip optional steps
     Given I am on an optional onboarding step
     Then there should be a "Skip" or "Later" option
@@ -301,7 +301,7 @@ Feature: Onboarding Experience
   # Completion
   # ============================================================
 
-  @completion @planned
+  @completion @implemented
   Scenario: Onboarding completion
     Given I finish all onboarding steps
     Then I should see a completion message
