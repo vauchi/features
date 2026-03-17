@@ -300,7 +300,7 @@ Feature: App Theming
     Then the updated theme colors should be applied
     And the user's theme selection should be preserved
 
-  @remote @fallback @planned
+  @remote @fallback @implemented
   Scenario: Bundled themes always available
     Given the content cache is empty
     And the device is offline
