@@ -78,7 +78,7 @@ Feature: Noise Protocol Inner Encryption
     And a 16-byte MAC should be appended
     And the ciphertext should be different from the plaintext
 
-  @transport @planned
+  @transport @implemented
   Scenario: Messages decrypted by recipient
     Given a Noise transport session is established
     When the relay sends me an encrypted message
@@ -104,7 +104,7 @@ Feature: Noise Protocol Inner Encryption
   # Noise Pattern Properties
   # ============================================================
 
-  @pattern @planned
+  @pattern @implemented
   Scenario: Noise NK provides initiator anonymity
     Given the Noise pattern is "Noise_NK_25519_ChaChaPoly_BLAKE2s"
     Then the initiator (client) should remain anonymous to passive observers
