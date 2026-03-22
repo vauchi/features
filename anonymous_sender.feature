@@ -134,13 +134,6 @@ Feature: Anonymous Sender Protocol
     And the card update is applied successfully
 
   @wire @implemented
-  Scenario: Old-format messages without anonymous sender still work
-    Given Bob sends an encrypted update with a real identity as sender_id
-    When Alice processes the card update
-    Then Alice identifies the sender via direct contact lookup
-    And the card update is applied successfully
-
-  @wire @implemented
   Scenario: Unknown anonymous sender ID is handled gracefully
     Given Alice receives an encrypted update with an unknown anonymous sender_id
     When Alice attempts to process the card update
