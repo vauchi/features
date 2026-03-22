@@ -113,3 +113,36 @@ Feature: Anonymous Sender Protocol
     Given the HKDF context string is "Vauchi_AnonymousSender_v2"
     Then anonymous IDs should not collide with other HKDF-derived values
     And the context should be fixed and non-configurable
+
+  # ============================================================
+  # Wire Integration (SP-32 completion)
+  # ============================================================
+
+  @wire @implemented
+  Scenario: Outgoing messages use anonymous sender ID
+    Given Alice has a contact Bob with a shared key
+    When Alice sends an encrypted update to Bob
+    Then the sender_id field contains an anonymous ID, not Alice's identity
+    And the anonymous ID is derived from the shared key and current epoch
+
+  @wire @implemented
+  Scenario: Incoming messages with anonymous sender ID are resolved
+    Given Bob sends an encrypted update to Alice
+    And the sender_id contains Bob's anonymous ID
+    When Alice processes the card update
+    Then Alice identifies the sender as Bob
+    And the card update is applied successfully
+
+  @wire @implemented
+  Scenario: Old-format messages without anonymous sender still work
+    Given Bob sends an encrypted update with a real identity as sender_id
+    When Alice processes the card update
+    Then Alice identifies the sender via direct contact lookup
+    And the card update is applied successfully
+
+  @wire @implemented
+  Scenario: Unknown anonymous sender ID is handled gracefully
+    Given Alice receives an encrypted update with an unknown anonymous sender_id
+    When Alice attempts to process the card update
+    Then the sender cannot be resolved
+    And the update is skipped without crashing
