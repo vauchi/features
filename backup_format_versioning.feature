@@ -38,7 +38,7 @@ Feature: Backup Format Versioning
     And the salt should follow the version tag byte and precede the ciphertext
     And the salt should be used for Argon2id key derivation
 
-  @v2 @planned
+  @v2 @implemented
   Scenario: Restore v2 backup with correct password
     Given I have a v2 backup file
     When I restore the backup with the correct password
@@ -58,14 +58,14 @@ Feature: Backup Format Versioning
   # Legacy Format (v1)
   # ============================================================
 
-  @v1 @legacy @planned
+  @v1 @legacy @implemented
   Scenario: Legacy backups are still restorable
     Given I have a legacy (v1) backup file
     When I restore the backup with the correct password
     Then my identity should be fully restored
     And the legacy format should be auto-detected
 
-  @v1 @legacy @planned
+  @v1 @legacy @implemented
   Scenario: Legacy backup uses PBKDF2 key derivation
     Given I have a legacy backup file
     When the system decrypts it
@@ -73,7 +73,7 @@ Feature: Backup Format Versioning
     And PBKDF2 should use 100,000 iterations
     And decryption should use AES-256-GCM
 
-  @v1 @legacy @planned
+  @v1 @legacy @implemented
   Scenario: Legacy backup format auto-detection
     Given I have a backup file without a v2 version byte
     When I attempt to restore it
@@ -84,7 +84,7 @@ Feature: Backup Format Versioning
   # Version Detection
   # ============================================================
 
-  @detection @planned
+  @detection @implemented
   Scenario: Version byte identifies backup format
     Given I have a backup file
     When the first byte is 0x02

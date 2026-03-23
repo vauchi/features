@@ -115,14 +115,14 @@ Feature: Demo Contact
   # Demo Contact Privacy
   # ============================================================
 
-  @demo-privacy @planned
+  @demo-privacy @implemented
   Scenario: Demo contact is local only
     Given the demo contact exists
     Then no data is sent to any server for the demo
     And the demo contact is stored locally
     And demo updates are generated locally
 
-  @demo-privacy @planned
+  @demo-privacy @implemented
   Scenario: Demo contact does not count as real contact
     Given the demo contact exists
     When I check my contact count
@@ -150,7 +150,7 @@ Feature: Demo Contact
   # Edge Cases
   # ============================================================
 
-  @demo-edge @planned
+  @demo-edge @implemented
   Scenario: Demo contact handles no network gracefully
     Given the demo contact exists
     And the device is offline

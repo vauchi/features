@@ -370,7 +370,7 @@ Feature: Sync and Updates
     And sync should resume on next launch
     And no data corruption should occur
 
-  @platform-edge-case @cross-platform @crash-recovery @planned
+  @platform-edge-case @cross-platform @crash-recovery @implemented
   Scenario: Sync state persisted atomically
     Given a batch sync of 50 items is in progress
     When the app crashes after processing 25 items
@@ -394,7 +394,7 @@ Feature: Sync and Updates
     And I should see updates when I open the app
     And I should be gently prompted to enable notifications
 
-  @platform-edge-case @tui @terminal @planned
+  @platform-edge-case @tui @terminal @implemented
   Scenario: Handle SSH disconnection
     Given I am using Vauchi TUI over SSH
     When the SSH connection drops

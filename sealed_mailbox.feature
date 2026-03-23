@@ -24,7 +24,7 @@ Feature: Sealed Mailbox Tokens (SP-33)
   # Token Derivation
   # ============================================================
 
-  @derivation @planned
+  @derivation @implemented
   Scenario: Contact mailbox token derived from shared key
     Given Bob and I share a key from our exchange
     When I compute Bob's mailbox token for today
@@ -60,7 +60,7 @@ Feature: Sealed Mailbox Tokens (SP-33)
   # Registration and Routing
   # ============================================================
 
-  @registration @planned
+  @registration @implemented
   Scenario: Register mailbox tokens on connect
     Given I connect to the relay
     Then I should register mailbox tokens for current and previous day
@@ -82,7 +82,7 @@ Feature: Sealed Mailbox Tokens (SP-33)
     And the relay should store the blob under that token
     And the relay should not see Bob's identity
 
-  @routing @planned
+  @routing @implemented
   Scenario: Device sync routed by self-token
     Given I have 2 linked devices
     When device A sends a sync message
@@ -100,7 +100,7 @@ Feature: Sealed Mailbox Tokens (SP-33)
     And the relay observes token T2 on day N+1
     Then the relay should not be able to determine they belong to the same recipient
 
-  @privacy @planned
+  @privacy @implemented
   Scenario: Token set padded to hide contact count
     Given I have 50 contacts
     When I register tokens on connect
@@ -124,7 +124,7 @@ Feature: Sealed Mailbox Tokens (SP-33)
     Then the Noise NK handshake must complete before any messages
     And plaintext (v1) connections should be rejected
 
-  @cleanup @planned
+  @cleanup @implemented
   Scenario: AccountRevoked verified client-side
     Given Bob revokes his account
     When Alice receives the revocation via her mailbox token

@@ -48,7 +48,7 @@ Feature: Panic Button Widget
     Then I should authenticate with my app PIN or biometric
     And this confirms I have access to the app
 
-  @setup @planned
+  @setup @implemented
   Scenario: Configure widget confirmation mode
     Given I am setting up the panic widget
     Then I should be able to choose:
@@ -98,7 +98,7 @@ Feature: Panic Button Widget
   # Panic Shred Execution
   # ============================================================
 
-  @shred @planned
+  @shred @implemented
   Scenario: Widget triggers full panic shred
     Given I have triggered panic via the widget
     Then the panic shred process should execute per emergency_shred.feature
@@ -106,7 +106,7 @@ Feature: Panic Button Widget
     And all cryptographic keys should be destroyed
     And all local data should be wiped
 
-  @shred @planned
+  @shred @implemented
   Scenario: Widget shred sends pre-signed notifications
     Given I have triggered panic via the widget
     Then pre-signed deletion notices should be sent to contacts
@@ -139,7 +139,7 @@ Feature: Panic Button Widget
     Then they should not be able to determine it triggers data destruction
     And it should look like a normal app shortcut
 
-  @design @planned
+  @design @implemented
   Scenario: Confirmation dialog is minimal
     Given I have tapped the widget with confirmation mode enabled
     When the confirmation dialog appears
@@ -151,7 +151,7 @@ Feature: Panic Button Widget
   # Authentication
   # ============================================================
 
-  @auth @planned
+  @auth @implemented
   Scenario: Widget works without app unlock
     Given the app is locked
     When I trigger the panic widget
@@ -233,7 +233,7 @@ Feature: Panic Button Widget
     And Quick Settings tile should use TileService
     And both should support direct action without opening app
 
-  @android @planned
+  @android @implemented
   Scenario: Android widget survives app kill
     Given the app process has been killed
     When I trigger the Android panic widget

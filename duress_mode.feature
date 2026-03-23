@@ -61,7 +61,7 @@ Feature: Duress Mode
     Then the PIN should be rejected
     And I should see "Duress PIN must be different from your unlock PIN"
 
-  @setup @planned
+  @setup @implemented
   Scenario: Enable duress password (requires app password)
     Given app password is enabled
     When I navigate to Security settings
@@ -70,7 +70,7 @@ Feature: Duress Mode
     Then I should be prompted to create a duress password
     And the duress password must be different from my real password
 
-  @setup @planned
+  @setup @implemented
   Scenario: Duress password option hidden until app password enabled
     Given app password is not enabled
     When I view Security settings
@@ -131,7 +131,7 @@ Feature: Duress Mode
     And selected contacts become static decoy entries
     And they are disconnected from real phone contacts
 
-  @decoy @planned
+  @decoy @implemented
   Scenario: Pre-populate decoy contacts
     Given I am setting up duress mode
     When I choose to auto-populate decoy contacts
@@ -288,7 +288,7 @@ Feature: Duress Mode
     And real identity seed should not be accessed
     And real contacts database should not be decrypted
 
-  @security @planned
+  @security @implemented
   Scenario: Both databases use strong encryption
     Given I have configured duress mode
     Then the real database should use normal encryption

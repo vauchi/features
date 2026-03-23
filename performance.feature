@@ -12,7 +12,7 @@ Feature: Performance Requirements
   # Startup Time
   # ============================================================
 
-  @startup @planned
+  @startup @implemented
   Scenario: Cold start time
     Given the app is not in memory
     When I launch the app
@@ -63,7 +63,7 @@ Feature: Performance Requirements
     And only visible items should be in memory
     And the app should not become unresponsive
 
-  @contacts @search @planned
+  @contacts @search @implemented
   Scenario: Search performance with many contacts
     Given I have 1000 contacts
     When I type a search query
@@ -216,14 +216,14 @@ Feature: Performance Requirements
   # Storage Usage
   # ============================================================
 
-  @storage @planned
+  @storage @implemented
   Scenario: Reasonable storage footprint
     Given I have 100 contacts
     Then local storage should be under 50MB
     And database should be compacted periodically
     And caches should have size limits
 
-  @storage @planned
+  @storage @implemented
   Scenario: Handle low disk space
     Given device has less than 50MB free space
     When I try to sync updates
@@ -231,7 +231,7 @@ Feature: Performance Requirements
     And critical operations should still work
     And cache should be cleared automatically
 
-  @storage @planned
+  @storage @implemented
   Scenario: Clear cache option
     When I go to Settings > Storage > Clear Cache
     Then I should see how much space cache uses
@@ -250,14 +250,14 @@ Feature: Performance Requirements
     And images should be sized appropriately
     And thumbnails should be used in lists
 
-  @resources @planned
+  @resources @implemented
   Scenario: Efficient cryptographic operations
     Given I am performing crypto operations
     Then encryption should complete within 100ms
     And decryption should complete within 100ms
     And key operations should not block UI
 
-  @resources @planned
+  @resources @implemented
   Scenario: Efficient database queries
     Given I have 1000 contacts
     When I search or filter
@@ -296,7 +296,7 @@ Feature: Performance Requirements
   # Pagination and Batch Operations (P15)
   # ============================================================
 
-  @contacts @pagination @planned
+  @contacts @pagination @implemented
   Scenario: Batch contact loading with pagination
     Given I have 500 contacts
     When I load contacts in pages of 50
@@ -304,7 +304,7 @@ Feature: Performance Requirements
     And total memory usage should stay under 100MB
     And I should be able to navigate to any page
 
-  @sync @coalesce @planned
+  @sync @coalesce @implemented
   Scenario: Coalesce rapid edits before sync
     Given I edit my contact card 20 times in 10 seconds
     When the debounce timer expires
@@ -312,7 +312,7 @@ Feature: Performance Requirements
     And only 1 sync message should be sent
     And the final state should be correct
 
-  @sync @batch-encrypt @planned
+  @sync @batch-encrypt @implemented
   Scenario: Batch encryption for multi-contact sync
     Given I have 50 pending updates for different contacts
     When batch encryption runs
@@ -338,7 +338,7 @@ Feature: Performance Requirements
     And images should be released from memory
     And core data should be preserved
 
-  @platform-edge-case @android @memory @planned
+  @platform-edge-case @android @memory @implemented
   Scenario: Handle process killed for memory on Android
     Given Android kills the app process
     When I return to the app

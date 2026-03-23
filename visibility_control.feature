@@ -180,7 +180,7 @@ Feature: Visibility Control
     Then all visibility rules for Dave should be removed
     And if I later re-add Dave, default visibility should apply
 
-  @edge-cases @planned
+  @edge-cases @implemented
   Scenario: Block contact removes all their visibility
     Given Dave can see all my fields
     When I block Dave
@@ -213,7 +213,7 @@ Feature: Visibility Control
     Then Dave should not receive any update
     And no network traffic should go to Dave for this update
 
-  @privacy @planned
+  @privacy @implemented
   Scenario: Visibility changes are atomic
     Given I am making multiple visibility changes
     When I save the changes

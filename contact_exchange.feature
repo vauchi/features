@@ -396,7 +396,7 @@ Feature: Contact Card Exchange
     And the exchange should be retried
 
 
-  @privacy @consent @planned
+  @privacy @consent @implemented
   Scenario: Deny exchange request
     Given Alice sees Bob in the nearby list
     When Alice sends an exchange request to Bob
@@ -404,7 +404,7 @@ Feature: Contact Card Exchange
     Then Alice should see "Exchange declined"
     And no contact cards or keys should be shared
 
-  @privacy @consent @planned
+  @privacy @consent @implemented
   Scenario: Blocked user attempts exchange
     Given Alice has previously blocked "Eve"
     When Eve scans Alice's exchange QR code
@@ -414,14 +414,14 @@ Feature: Contact Card Exchange
 
   # Hardware & Resource Constraints
 
-  @hardware @battery @planned
+  @hardware @battery @implemented
   Scenario: Exchange blocked on low battery
     Given Alice's device battery is below 5%
     When Alice attempts to initiate an exchange
     Then Alice should see "Battery too low for secure exchange"
     And the QR code should not be generated
 
-  @hardware @storage @planned
+  @hardware @storage @implemented
   Scenario: Exchange fails due to full storage
     Given Bob's device has zero available storage
     When Bob scans Alice's QR code

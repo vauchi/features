@@ -193,7 +193,7 @@ Feature: Contact Recovery
       | new_pk     | pk_new         |
       | timestamp  | current_time   |
 
-  @recovery @vouching @planned
+  @recovery @vouching @implemented
   Scenario: Voucher recognizes old contact
     Given Bob has Alice as a contact with public key "pk_old"
     When Bob scans Alice's recovery QR code claiming "pk_old"
@@ -201,7 +201,7 @@ Feature: Contact Recovery
     And Bob's app shows Alice's stored display name and photo
     And Bob is prompted to verify this is really Alice in person
 
-  @recovery @vouching @planned
+  @recovery @vouching @implemented
   Scenario: Voucher does not recognize the claimed identity
     Given Bob does not have "pk_old" as a contact
     When Bob scans a recovery QR code claiming "pk_old"
@@ -223,7 +223,7 @@ Feature: Contact Recovery
       | signature   | Ed25519 signature of above fields    |
     And the voucher is sent to Alice's new identity
 
-  @recovery @vouching @planned
+  @recovery @vouching @implemented
   Scenario: Voucher establishes contact with new identity
     Given Bob vouches for Alice's recovery from "pk_old" to "pk_new"
     Then Bob's contact record for Alice is updated to "pk_new"
@@ -367,7 +367,7 @@ Feature: Contact Recovery
   # Verification - Isolated Contacts (David's Case)
   # ============================================================
 
-  @recovery @verification @isolated @planned
+  @recovery @verification @isolated @implemented
   Scenario: Isolated contact receives recovery proof
     Given David has verification threshold of 2 mutual contacts
     And David has Alice as his only contact
@@ -540,7 +540,7 @@ Feature: Contact Recovery
     When Alice tries to vouch for herself (using pk_new)
     Then the self-voucher is rejected
 
-  @recovery @security @planned
+  @recovery @security @implemented
   Scenario: Voucher must have existing relationship
     Given Eve does not have Alice as a contact
     When Eve tries to scan Alice's recovery QR code
@@ -602,7 +602,7 @@ Feature: Contact Recovery
     And the relay cannot read the proof contents (not encrypted, but opaque)
     And the relay does not learn Alice's identity or contacts
 
-  @recovery @relay @planned
+  @recovery @relay @implemented
   Scenario: Relay returns recovery proof on query
     Given Alice has uploaded a recovery proof
     When any client queries for hash(pk_old)
@@ -617,7 +617,7 @@ Feature: Contact Recovery
     Then the relay returns "not found"
     And Alice must create a new recovery proof if needed
 
-  @recovery @relay @planned
+  @recovery @relay @implemented
   Scenario: Relay rate limits recovery queries
     Given a client makes 1000 recovery proof queries in 1 minute
     Then the relay rate limits the client

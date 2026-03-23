@@ -196,7 +196,7 @@ Feature: Relay Network
 
   # Relay Protocol
 
-  @protocol @planned
+  @protocol @implemented
   Scenario: Relay node authentication
     Given I am connecting to a relay
     Then the relay should authenticate with a certificate
@@ -264,7 +264,7 @@ Feature: Relay Network
     And the routing token should work as before
     # promoted_to: relay (handler/connection.rs:201)
 
-  @protocol @planned
+  @protocol @implemented
   Scenario: Relay gossip protocol
     Given relay nodes are in the network
     Then they should gossip routing information
@@ -273,7 +273,7 @@ Feature: Relay Network
 
   # Fallback Behavior
 
-  @fallback @planned
+  @fallback @implemented
   Scenario: No relays available
     Given all relay nodes are unreachable
     When I try to send an update
@@ -299,7 +299,7 @@ Feature: Relay Network
     And I should be warned about potential delivery failures
     And the setting should be respected
 
-  @preferences @planned
+  @preferences @implemented
   Scenario: Prefer specific relay nodes
     Given I have trusted relay nodes
     When I configure preferred relays
@@ -344,7 +344,7 @@ Feature: Relay Network
     And it should establish peer connections
     And it should exchange capacity information periodically
 
-  @federation @phase3 @planned
+  @federation @phase3 @implemented
   Scenario: Relay registry for peer discovery
     Given multiple relay nodes exist
     Then there should be a registry of known relays
@@ -360,7 +360,7 @@ Feature: Relay Network
     And messages should be collected from all sources
     And duplicate messages should be deduplicated
 
-  @federation @phase1 @planned
+  @federation @phase1 @implemented
   Scenario: Relay includes forwarding hints
     Given relay A has offloaded blob X to relay B
     When the recipient queries relay A for messages

@@ -17,7 +17,7 @@ Feature: Tor Mode
 
   # Opt-in Default State
 
-  @opt-in @default @planned
+  @opt-in @default @implemented
   Scenario: Tor mode is disabled by default
     Given I have just installed the app
     When I check Privacy settings
@@ -25,7 +25,7 @@ Feature: Tor Mode
     And connections should use direct networking
     And no Tor components should be loaded
 
-  @opt-in @default @planned
+  @opt-in @default @implemented
   Scenario: Tor mode not mentioned in basic onboarding
     Given I am going through initial app setup
     Then Tor mode should not be part of basic setup
@@ -34,7 +34,7 @@ Feature: Tor Mode
 
   # Enabling Tor Mode
 
-  @settings @planned
+  @settings @implemented
   Scenario: Enable Tor mode from settings
     Given Tor mode is disabled
     When I navigate to Privacy settings
@@ -43,7 +43,7 @@ Feature: Tor Mode
     And I should see a confirmation "Connections will be routed through Tor"
     And the Tor circuit should be established
 
-  @settings @planned
+  @settings @implemented
   Scenario: Disable Tor mode
     Given Tor mode is enabled
     When I disable "Tor mode"
@@ -51,7 +51,7 @@ Feature: Tor Mode
     And connections should use direct networking
     And I should see a warning about reduced privacy
 
-  @settings @planned
+  @settings @implemented
   Scenario: Tor mode persists across app restarts
     Given Tor mode is enabled
     When I close and reopen the app
@@ -60,7 +60,7 @@ Feature: Tor Mode
 
   # Connection Behavior
 
-  @connection @planned
+  @connection @implemented
   Scenario: Relay connections use Tor when enabled
     Given Tor mode is enabled
     And a Tor circuit is established
@@ -68,7 +68,7 @@ Feature: Tor Mode
     Then the connection should go through Tor
     And the relay should see a Tor exit node IP, not my real IP
 
-  @connection @planned
+  @connection @implemented
   Scenario: Connect to relay .onion address
     Given Tor mode is enabled
     And the relay provides a .onion address
@@ -77,7 +77,7 @@ Feature: Tor Mode
     And the connection should stay within the Tor network
     And no exit node should be used
 
-  @connection @planned
+  @connection @implemented
   Scenario: Fallback to clearnet relay if .onion unavailable
     Given Tor mode is enabled
     And the relay's .onion address is unreachable
@@ -85,7 +85,7 @@ Feature: Tor Mode
     Then I should connect via Tor to the clearnet address
     And I should see a notice "Using Tor exit node (no .onion available)"
 
-  @connection @planned
+  @connection @implemented
   Scenario: Connection fails gracefully without Tor
     Given Tor mode is enabled
     And Tor network is unreachable
@@ -96,7 +96,7 @@ Feature: Tor Mode
 
   # Circuit Management
 
-  @circuit @planned
+  @circuit @implemented
   Scenario: Establish new Tor circuit
     Given Tor mode is enabled
     When I request a new circuit
@@ -104,14 +104,14 @@ Feature: Tor Mode
     And I should get a new exit node IP
     And existing connections should be migrated
 
-  @circuit @planned
+  @circuit @implemented
   Scenario: Automatic circuit rotation
     Given Tor mode is enabled
     And a circuit has been active for 10 minutes
     Then a new circuit should be established automatically
     And the old circuit should be closed gracefully
 
-  @circuit @planned
+  @circuit @implemented
   Scenario: View current circuit info
     Given Tor mode is enabled
     And a circuit is established
@@ -162,7 +162,7 @@ Feature: Tor Mode
     And Tor provides transport privacy, not content privacy
     And decryption should work normally
 
-  @privacy-guarantee @planned
+  @privacy-guarantee @implemented
   Scenario: Local operations work without Tor
     Given Tor mode is enabled
     But Tor network is unavailable
@@ -180,7 +180,7 @@ Feature: Tor Mode
     And the option should explain benefits and tradeoffs
     And I should be able to skip and configure later
 
-  @bootstrap @planned
+  @bootstrap @implemented
   Scenario: Tor bootstrap progress shown
     Given Tor mode is enabled
     And Tor is not yet connected
@@ -189,7 +189,7 @@ Feature: Tor Mode
     And I should see percentage complete
     And I should be able to use local features while bootstrapping
 
-  @bootstrap @planned
+  @bootstrap @implemented
   Scenario: Tor bootstrap failure handling
     Given Tor mode is enabled
     And Tor cannot connect (network blocked)
@@ -203,7 +203,7 @@ Feature: Tor Mode
 
   # Bridges (for censored networks)
 
-  @bridges @planned
+  @bridges @implemented
   Scenario: Configure Tor bridges
     Given Tor mode is enabled
     And direct Tor access is blocked
@@ -228,7 +228,7 @@ Feature: Tor Mode
 
   # Status Indicators
 
-  @status @planned
+  @status @implemented
   Scenario: Tor status indicator in app
     Given Tor mode is enabled
     Then I should see a Tor status indicator
@@ -238,7 +238,7 @@ Feature: Tor Mode
       | Connected    | Green     |
       | Disconnected | Red       |
 
-  @status @planned
+  @status @implemented
   Scenario: Tor status in sync screen
     Given Tor mode is enabled
     When I view the sync status
@@ -247,7 +247,7 @@ Feature: Tor Mode
 
   # Edge Cases
 
-  @edge-cases @planned
+  @edge-cases @implemented
   Scenario: Tor mode with no network
     Given Tor mode is enabled
     And device has no network connectivity

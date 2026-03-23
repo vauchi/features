@@ -126,7 +126,7 @@ Feature: Identity Management
 
   # Multi-device Identity
 
-  @multi-device @planned
+  @multi-device @implemented
   Scenario: Generate device linking QR code
     Given I have an existing identity on Device A
     When I select "Link New Device"
@@ -134,7 +134,7 @@ Feature: Identity Management
     And the QR code should contain encrypted device linking data
     And the QR code should expire after 5 minutes
 
-  @multi-device @planned
+  @multi-device @implemented
   Scenario: Link second device successfully
     Given I have an existing identity on Device A
     And Device A is displaying a device linking QR code

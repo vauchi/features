@@ -257,14 +257,14 @@ Feature: Contacts Management
 
   # Contact List Limits
 
-  @limits @planned
+  @limits @implemented
   Scenario: Maximum contacts reached
     Given I have 9,999 contacts
     When I exchange with a new contact
     Then the exchange should succeed
     And I should have 10,000 contacts
 
-  @limits @planned
+  @limits @implemented
   Scenario: Exceed maximum contacts
     Given I have 10,000 contacts
     When I try to exchange with a new contact

@@ -65,7 +65,7 @@ Feature: Mesh Exchange Mode
   # Discovery
   # ============================================================
 
-  @discovery @planned
+  @discovery @implemented
   Scenario: Discover nearby Vauchi users
     Given mesh exchange mode is enabled
     And Bob also has mesh exchange enabled within BLE range
@@ -136,7 +136,7 @@ Feature: Mesh Exchange Mode
     And I should be asked to confirm adding Bob
     And Bob should see the same confirmation for me
 
-  @exchange @planned
+  @exchange @implemented
   Scenario: Exchange timeout
     Given I have initiated mesh exchange with Bob
     And Bob's phone becomes unreachable (moved away, turned off)
@@ -232,7 +232,7 @@ Feature: Mesh Exchange Mode
     Then my BLE session ID should be different
     And observers cannot correlate my presence across sessions
 
-  @security @planned
+  @security @implemented
   Scenario: Replay attack prevention
     Given I completed an exchange with Bob
     When an attacker replays the BLE packets
@@ -270,7 +270,7 @@ Feature: Mesh Exchange Mode
   # Edge Cases
   # ============================================================
 
-  @edge @planned
+  @edge @implemented
   Scenario: Exchange with user already in contacts
     Given I already have Bob as a contact
     When I try to exchange with Bob via mesh mode

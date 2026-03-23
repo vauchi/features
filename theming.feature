@@ -22,14 +22,14 @@ Feature: App Theming
     Then the "default" dark theme should be applied
     And the theme should respect system dark/light mode preference
 
-  @selection @planned
+  @selection @implemented
   Scenario: Select theme from settings
     Given the user is on the settings page
     When the user navigates to "Appearance"
     Then the user should see a list of available themes
     And the current theme should be indicated
 
-  @selection @planned
+  @selection @implemented
   Scenario: Preview theme before applying
     Given the user is viewing theme options
     When the user taps on "Catppuccin Mocha"
@@ -179,19 +179,19 @@ Feature: App Theming
   # System Integration
   # ===========================================
 
-  @system @planned
+  @system @implemented
   Scenario: Follow system dark/light mode
     Given the user has selected "System" theme preference
     When the system switches to light mode
     Then the app should apply the light variant of the selected theme
 
-  @system @planned
+  @system @implemented
   Scenario: Override system preference
     Given the system is in light mode
     And the user has explicitly selected "Catppuccin Mocha" (dark)
     Then the app should use dark theme regardless of system setting
 
-  @system @auto @planned
+  @system @auto @implemented
   Scenario: Auto theme with Catppuccin
     Given the user has selected "Catppuccin (Auto)" theme
     When the system is in dark mode
@@ -203,7 +203,7 @@ Feature: App Theming
   # Accessibility
   # ===========================================
 
-  @accessibility @contrast @planned
+  @accessibility @contrast @implemented
   Scenario: High contrast mode overrides theme
     Given the user has enabled high contrast mode
     When any theme is applied
@@ -227,7 +227,7 @@ Feature: App Theming
   # Cross-Platform Consistency
   # ===========================================
 
-  @platform @ios @planned
+  @platform @ios @implemented
   Scenario: Theme applies on iOS
     Given the user is on iOS
     When the user applies "Catppuccin Mocha" theme
@@ -285,14 +285,14 @@ Feature: App Theming
   # Remote Theme Updates
   # ===========================================
 
-  @remote @planned
+  @remote @implemented
   Scenario: New theme available after content update
     Given the user has not previously seen "Tokyo Night" theme
     And the remote themes include "Tokyo Night"
     When the app applies content updates
     Then "Tokyo Night" should appear in theme selection
 
-  @remote @planned
+  @remote @implemented
   Scenario: Theme update with existing selection
     Given the user has selected "Catppuccin Mocha"
     And a new version of Catppuccin themes is available
@@ -312,7 +312,7 @@ Feature: App Theming
   # Accent Color Customization
   # ===========================================
 
-  @accent @future @planned
+  @accent @future @implemented
   Scenario: Choose accent color within theme
     Given the user has selected "Catppuccin Mocha" theme
     When the user opens accent color options
@@ -322,7 +322,7 @@ Feature: App Theming
       | green     | teal     | sky    | sapphire |
       | blue      | lavender |        |          |
 
-  @accent @future @planned
+  @accent @future @implemented
   Scenario: Custom accent color persists
     Given the user has selected "Catppuccin Mocha" with "mauve" accent
     When the user closes and reopens the app
@@ -332,14 +332,14 @@ Feature: App Theming
   # QR Code Theming
   # ===========================================
 
-  @qr @planned
+  @qr @implemented
   Scenario: QR code remains readable in any theme
     When any theme is applied
     Then QR codes should display with high contrast
     And QR code background should be white or near-white
     And QR code foreground should be black or near-black
 
-  @qr @planned
+  @qr @implemented
   Scenario: QR code container matches theme
     When the user views their QR code
     Then the QR code container should use theme background

@@ -299,7 +299,7 @@ Feature: Open Contact Info in External Applications
     Then I should see "Cannot open phone dialer"
     And I should be offered to copy the number
 
-  @error @malformed @planned
+  @error @malformed @implemented
   Scenario: Malformed phone number shows error
     Given Bob has a phone field with value "not-a-valid-number"
     When I tap on the phone field
