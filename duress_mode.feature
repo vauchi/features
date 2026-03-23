@@ -186,13 +186,12 @@ Feature: Duress Mode
     And no real network activity should occur
     And "Sync complete" should be shown
 
-  @behavior @planned
-  Scenario: Exchange in duress mode is fake
-    Given I am in duress mode
-    When I try to exchange contacts
-    Then a QR code should be displayed
-    But scanning it should not work
-    And no real exchange should occur
+  # Removed: "Exchange in duress mode is fake" — contradicted line 216
+  # ("Exchanges add to decoy profile"). For plausible deniability, the
+  # exchange must APPEAR to work. A coercer watching would notice a
+  # non-functional QR code. The correct behavior is at line 216: exchange
+  # works but adds to decoy profile only.
+  # See: audit 2026-03-23, finding H4.
 
   @behavior @planned
   Scenario: Edits in duress mode are discarded

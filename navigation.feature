@@ -211,7 +211,8 @@ Feature: 5-Screen Navigation Architecture
   Scenario: System tray behavior on desktop
     Given the app is minimized to system tray
     When a contact update arrives
-    Then a system notification should show
+    Then the update should be applied silently in the background
+    # No system notification — Principle 4: "no notifications designed to pull you back"
     And clicking the tray icon should restore the app
     And the app should not consume CPU while minimized
 

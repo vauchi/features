@@ -15,7 +15,7 @@ Feature: Mesh Exchange Mode
   PRINCIPLES ALIGNMENT:
   - Trust earned in person: Maintains physical proximity requirement
   - Offline-first: Extends offline capability to exchange
-  - Audited crypto only: Uses same X3DH/ring crypto as normal exchange
+  - Audited crypto only: Uses same X3DH crypto as normal exchange (ed25519-dalek, x25519-dalek)
   - Privacy is a right: No network means no network surveillance
   - Simplicity: Same UX as normal exchange; works offline
 

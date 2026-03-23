@@ -127,21 +127,9 @@ Feature: Privacy Compliance
     And I should see when I consented
     And I should see the version of terms I agreed to
 
-  @consent @implemented
-  Scenario: Consent for optional features
-    Given I want to enable usage telemetry
-    When I toggle the telemetry option
-    Then I should see exactly what data would be collected
-    And I should explicitly consent
-    And I should be able to withdraw consent later
-
-  @consent @implemented
-  Scenario: Withdraw consent for telemetry
-    Given I previously consented to telemetry
-    When I disable telemetry in settings
-    Then data collection should stop immediately
-    And I should be offered to delete already collected data
-    And my withdrawal should be recorded
+  # Telemetry scenarios removed — Principle 1 states "No tracking, analytics,
+  # or telemetry" (principles.md). Vauchi does not collect usage telemetry.
+  # See: audit 2026-03-23, finding C1.
 
   @consent @implemented
   Scenario: Re-consent required for major changes
@@ -231,7 +219,7 @@ Feature: Privacy Compliance
     Then Vauchi should not track users across apps
     And no device fingerprinting should occur
     And no advertising IDs should be used
-    And no third-party analytics without consent
+    And no third-party analytics at all
 
   @sharing @planned
   Scenario: Relay operators cannot access content

@@ -212,7 +212,7 @@ Feature: Onboarding Experience
     And I should see name suggestions
       | suggestion       |
       | Alice            |
-      | Alic             |
+      | Ali              |
       | A. Johnson       |
 
   @skip-gate @implemented

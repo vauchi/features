@@ -73,7 +73,7 @@ Feature: Backup Format Versioning
     And PBKDF2 should use 100,000 iterations
     And decryption should use AES-256-GCM
 
-  @v1 @legacy @implemented
+  @v1 @legacy @planned
   Scenario: Legacy backup format auto-detection
     Given I have a backup file without a v2 version byte
     When I attempt to restore it

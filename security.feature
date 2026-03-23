@@ -162,8 +162,8 @@ Feature: Security
   @data @implemented
   Scenario: Local database encryption
     Given I have local data storage
-    Then the database should use SQLCipher
-    And the database encryption key should be protected
+    Then the database should be encrypted with XChaCha20-Poly1305
+    And the encryption key (SMK) should be stored in platform secure storage
     And database files should be unreadable without the key
 
   @data @implemented
@@ -290,12 +290,16 @@ Feature: Security
 
   # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
 
-  @platform-edge-case @desktop @webview @planned
-  Scenario: WebView security on desktop
-    Given the desktop app uses WebView
-    Then JavaScript should not access filesystem directly
+  # WebView scenario removed — desktop app archived per ADR-027 (2026-03).
+  # Native apps (macOS SwiftUI, Linux GTK4, Linux Qt6, Windows WinUI3) do not use WebView.
+  # See: audit 2026-03-23, finding H2.
+
+  @platform-edge-case @desktop @planned
+  Scenario: Native desktop apps use platform secure storage
+    Given a native desktop app (macOS, Linux, Windows)
+    Then cryptographic keys should use platform keychain/keyring
     And external links should open in system browser
-    And WebView should have secure defaults (no eval, CSP)
+    And no embedded web content should execute
 
   @platform-edge-case @android @backup @planned
   Scenario: Android auto-backup handles sensitive data

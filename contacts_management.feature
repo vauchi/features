@@ -234,35 +234,9 @@ Feature: Contacts Management
     When Bob views my contact card
     Then Bob should not see my note about him
 
-  # Contact Actions
-
-  @actions @planned
-  Scenario: Copy phone number to clipboard
-    Given Bob has phone "555-1234"
-    When I long-press on Bob's phone number
-    And I select "Copy"
-    Then "555-1234" should be copied to clipboard
-
-  @actions @planned
-  Scenario: Open email client
-    Given Bob has email "bob@test.com"
-    When I tap on Bob's email
-    Then the email client should open
-    And it should be addressed to "bob@test.com"
-
-  @actions @planned
-  Scenario: Open social media link
-    Given Bob has Twitter "@bobsmith"
-    When I tap on Bob's Twitter
-    Then the Twitter app or website should open
-    And it should show Bob's profile
-
-  @actions @planned
-  Scenario: Open address in maps
-    Given Bob has address "123 Main St, City"
-    When I tap on Bob's address
-    Then the maps application should open
-    And it should show the location
+  # Contact Actions — moved to features/contact_actions.feature (canonical location).
+  # Removed duplicate scenarios that were @planned here but @implemented there.
+  # See: audit 2026-03-23, finding H9.
 
   # Sharing Contact Info
 

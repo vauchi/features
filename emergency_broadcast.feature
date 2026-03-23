@@ -104,7 +104,7 @@ Feature: Emergency Broadcast
       | type       | EMERGENCY_ALERT                        |
       | message    | My configured message                  |
       | timestamp  | Current time                           |
-      | sender_id  | My contact ID                          |
+      | sender_id  | Anonymous sender ID (SP-32, HKDF-derived) |
     And location should only be included if enabled
 
   @delivery @implemented
@@ -213,12 +213,14 @@ Feature: Emergency Broadcast
     And these are separate features for different scenarios
 
   @integration @planned
-  Scenario: Emergency broadcast from duress mode
+  Scenario: Emergency broadcast silently suppressed in duress mode
     Given I am in duress mode (unlocked with duress PIN)
     When I try to send an emergency broadcast
-    Then I should be able to trigger a broadcast
-    But it should go to contacts in the decoy profile
-    And real trusted contacts should not receive alerts from duress mode
+    Then the UI should show "broadcast sent" (plausible deniability)
+    But no actual broadcast should be sent to any contact
+    # Decoy contacts are not real — broadcasting to them is impossible.
+    # Sending to real contacts would reveal that duress mode is active.
+    # The only safe behavior is to suppress silently.
 
   @integration @planned
   Scenario: Emergency broadcast works in Tor mode
