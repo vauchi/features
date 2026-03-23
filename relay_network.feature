@@ -170,7 +170,7 @@ Feature: Relay Network
     Given a user is sending excessive traffic
     Then the relay should rate limit them
     And legitimate traffic should not be affected
-    And the rate limit should be per-anonymous-identifier
+    And the rate limit should be per-authenticated-identity
 
   @abuse @implemented
   Scenario: Storage limits per blob
@@ -195,14 +195,6 @@ Feature: Relay Network
     And the network should remain functional
 
   # Relay Protocol
-
-  @protocol @planned
-  Scenario: Relay protocol versioning
-    Given relays support protocol version 1.0
-    When version 1.1 is released
-    Then relays should support both versions
-    And clients should negotiate version
-    And upgrade path should be smooth
 
   @protocol @planned
   Scenario: Relay node authentication
@@ -257,13 +249,12 @@ Feature: Relay Network
     # promoted_to: relay (handler/verify.rs:45)
 
   @protocol @authentication @implemented
-  Scenario: Unauthenticated clients still accepted (backward compatibility)
-    Given a legacy client without signature support
-    When the client sends a handshake without auth fields
-    Then the relay should accept the connection
-    And routing should work as before
-    And no authentication should be enforced
-    # promoted_to: relay (handler/connection.rs:161)
+  Scenario: Plaintext connections are rejected
+    Given the relay requires Noise NK encryption
+    When a client connects without the Noise handshake
+    Then the connection should be rejected
+    And a warning should be logged
+    # promoted_to: relay (handler/connection.rs — Noise NK mandatory since v0.1, plaintext fallback removed SP-33)
 
   @protocol @authentication @implemented
   Scenario: Routing token mode unaffected by authentication
