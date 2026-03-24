@@ -161,10 +161,10 @@ Ideas and brainstorming live in `_private/features/ideas/` (not in this repo).
 - Manifest fetching, version comparison, fallback behavior
 - Code: `vauchi-core/src/content/`
 
-**tor_mode.feature**
-- Tor routing for relay connections
-- Bridge support for censored networks
-- .onion address support
+**IP privacy** (via OHTTP relay — see relay_network.feature)
+- Self-hosted OHTTP relay strips client IPs
+- Optional SOCKS5 proxy for ISP-level hiding
+- Timing obfuscation (jitter, padding)
 
 ### P3: Advanced Features (Post-Launch)
 

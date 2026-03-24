@@ -257,11 +257,11 @@ Feature: Remote Content Updates
     And the request should not include device identifiers
     And only the app version should be sent in user-agent
 
-  @privacy @tor @planned
-  Scenario: Content fetched via Tor when configured
-    Given the user has configured Tor proxy
+  @privacy @proxy @planned
+  Scenario: Content fetched via SOCKS5 proxy when configured
+    Given the user has configured a SOCKS5 proxy
     When the app fetches content updates
-    Then all requests should route through the Tor proxy
+    Then all requests should route through the configured proxy
 
   @privacy @planned
   Scenario: HTTPS only

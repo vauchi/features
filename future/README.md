@@ -12,7 +12,7 @@ This directory previously contained feature specifications for planned but not-y
 | Contact Recovery | _(listed but no spec existed)_ | P2 |
 | Duress Password | `docs/planning/problems/2026-01-26-duress-password/` | P3 |
 | Hidden Contacts | `docs/planning/problems/2026-01-26-hidden-contacts/` | P3 |
-| Tor Mode | `docs/planning/problems/2026-01-26-tor-mode/` | P3 |
+| OHTTP IP Privacy | `docs/planning/todo/2026-03-24-ohttp-ip-privacy-plan.md` | P3 |
 
 Gherkin `.feature` files will be written as part of the implementation planning phase for each problem, per the Problem to Solution Flow.
 

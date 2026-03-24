@@ -70,13 +70,13 @@ Feature: Relay Network
     And the relay should not know who the recipient is
     And metadata should be minimized
 
-  @privacy @implemented
-  Scenario: Tor support for relay access
+  @privacy @planned
+  Scenario: IP privacy via OHTTP relay
     Given I want maximum privacy
-    When I enable Tor mode
-    Then relay connections should go through Tor
-    And relay nodes should offer .onion addresses
-    And my IP should be hidden from relays
+    When I connect through the OHTTP relay
+    Then my IP address should be hidden from the vauchi relay
+    And the OHTTP relay should not see my request content
+    And I can optionally route through a SOCKS5 proxy for ISP-level hiding
 
   # Running a Relay Node
 

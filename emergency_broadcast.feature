@@ -216,11 +216,11 @@ Feature: Emergency Broadcast
     # The only safe behavior is to suppress silently.
 
   @integration @planned
-  Scenario: Emergency broadcast works in Tor mode
-    Given Tor mode is enabled
+  Scenario: Emergency broadcast works through OHTTP relay
+    Given OHTTP relay is configured
     When I send an emergency broadcast
-    Then the alert should be routed through Tor
-    And delivery may be slower but should still work
+    Then the alert should be routed through the OHTTP relay
+    And my IP should be hidden from the vauchi relay
   # ============================================================
   # Edge Cases
   # ============================================================
