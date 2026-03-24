@@ -1,13 +1,11 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @onboarding
 Feature: Onboarding Experience
   As a new Vauchi user
   I want a guided first experience
   So that I understand the app and create my identity easily
-
   # ============================================================
   # First Launch
   # ============================================================
@@ -24,10 +22,10 @@ Feature: Onboarding Experience
   Scenario: Value proposition is clear
     Given I am on the welcome screen
     Then I should understand:
-      | Point | Message |
-      | What | Contact cards that update automatically |
-      | How | Exchange QR codes in person |
-      | Why | Your contacts always have your current info |
+      | Point | Message                                     |
+      | What  | Contact cards that update automatically     |
+      | How   | Exchange QR codes in person                 |
+      | Why   | Your contacts always have your current info |
     And the explanation should take less than 30 seconds to read
 
   @first-launch @implemented
@@ -46,7 +44,6 @@ Feature: Onboarding Experience
     Then I should be guided through device linking
     And my identity should transfer
     And onboarding should skip card creation
-
   # ============================================================
   # Card Creation
   # ============================================================
@@ -91,7 +88,6 @@ Feature: Onboarding Experience
     Then I should see suggestions: "Alexandra", "Alex", "A. Johnson"
     And I should be able to pick one or type custom
     And I should understand this is what contacts see first
-
   # ============================================================
   # Security Explanation
   # ============================================================
@@ -126,7 +122,6 @@ Feature: Onboarding Experience
     Then I should understand the social recovery concept simply
     And I should be able to "Set up later"
     And the explanation should not be intimidating
-
   # ============================================================
   # First Exchange
   # ============================================================
@@ -161,7 +156,6 @@ Feature: Onboarding Experience
     Then I should see friendly empty state
     And it should invite me to exchange
     And there should be a button to start exchange
-
   # ============================================================
   # Demo Contact
   # ============================================================
@@ -197,9 +191,8 @@ Feature: Onboarding Experience
     Given I have the demo contact
     When I complete my first real exchange
     Then the demo contact should be automatically removed
-    Or I should be prompted to remove it
+    # Or I should be prompted to remove it
     And focus should shift to real contacts
-
   # ============================================================
   # 9-Step Onboarding Flow
   # ============================================================
@@ -210,19 +203,19 @@ Feature: Onboarding Experience
     When I enter "Alice Johnson"
     Then my identity should be created with display name "Alice Johnson"
     And I should see name suggestions
-      | suggestion       |
-      | Alice            |
-      | Ali              |
-      | A. Johnson       |
+      | suggestion |
+      | Alice      |
+      | Ali        |
+      | A. Johnson |
 
   @skip-gate @implemented
   Scenario: User skips onboarding after entering name
     Given I am on the onboarding skip gate step
     Then I should see what I will miss
-      | feature       |
-      | Groups        |
-      | Contact info  |
-      | Card preview  |
+      | feature      |
+      | Groups       |
+      | Contact info |
+      | Card preview |
     When I choose "Skip to finish"
     Then I should be on the security explanation step
     And I should have no groups
@@ -232,11 +225,11 @@ Feature: Onboarding Experience
   Scenario: User creates groups during onboarding
     Given I am on the groups setup step
     Then I should see suggested groups
-      | group      |
-      | Family     |
-      | Friends    |
-      | Coworkers  |
-      | Business   |
+      | group     |
+      | Family    |
+      | Friends   |
+      | Coworkers |
+      | Business  |
     When I select "Family" and "Friends"
     And I set the name for "Friends" to "Matt"
     And I advance to the next step
@@ -261,7 +254,6 @@ Feature: Onboarding Experience
     When I assign the field to group "Family"
     Then the field should be visible to Family contacts
     And the field should not be visible to Friends contacts
-
   # ============================================================
   # Progress & Navigation
   # ============================================================
@@ -296,7 +288,6 @@ Feature: Onboarding Experience
     Then I should resume where I left off
     And entered data should be preserved
     And I should not start over
-
   # ============================================================
   # Completion
   # ============================================================
@@ -323,7 +314,6 @@ Feature: Onboarding Experience
     Then I should be able to replay the onboarding
     And my data should be preserved
     And it should be educational, not destructive
-
   # ============================================================
   # Time to Value
   # ============================================================

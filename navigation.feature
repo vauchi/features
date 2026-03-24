@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @navigation @ux
 Feature: 5-Screen Navigation Architecture
   As a Vauchi user
@@ -11,19 +10,18 @@ Feature: 5-Screen Navigation Architecture
   Background:
     Given I have an existing identity as "Alice"
     And I have contacts "Bob", "Carol", and "Dave"
-
   # Navigation Bar
 
   @navigation @implemented
   Scenario: Navigation shows 5 screens
     When I view the main screen
     Then I should see a navigation bar with 5 screens:
-      | screen    | position |
-      | Exchange  | 1        |
-      | MyInfo    | 2        |
-      | Contacts  | 3        |
-      | Settings  | 4        |
-      | Help      | 5        |
+      | screen   | position |
+      | Exchange |        1 |
+      | MyInfo   |        2 |
+      | Contacts |        3 |
+      | Settings |        4 |
+      | Help     |        5 |
 
   @navigation @implemented
   Scenario: Dynamic default screen with no contacts
@@ -44,7 +42,6 @@ Feature: 5-Screen Navigation Architecture
     When I switch to the "MyInfo" screen
     And I switch back to the "Contacts" screen
     Then I should still see Bob's details
-
   # MyInfo — Preview As
 
   @navigation @preview-as @planned
@@ -63,7 +60,6 @@ Feature: 5-Screen Navigation Architecture
     When I tap "Exit Preview"
     Then I should see my full editable card
     And the preview banner should be gone
-
   # MyInfo — Visibility Management
 
   @navigation @visibility @planned
@@ -80,7 +76,6 @@ Feature: 5-Screen Navigation Architecture
     Given my "Personal" phone is visible to "Bob"
     When I remove "Bob" from the visibility chips on "Personal" phone
     Then Bob should no longer see my personal phone
-
   # Contacts — Actions
 
   @navigation @contact-actions @planned
@@ -124,7 +119,6 @@ Feature: 5-Screen Navigation Architecture
     And Dave has shared a website URL with me
     When I tap the browser action on Dave's URL
     Then the browser should open to Dave's website
-
   # Contacts — Trust
 
   @navigation @trust @planned
@@ -134,7 +128,6 @@ Feature: 5-Screen Navigation Architecture
     When I tap the trust indicator on Bob's phone number
     Then the field should be marked as personally verified
     And the trust indicator should show as active
-
   # Contacts — Private Notes
 
   @navigation @notes @planned
@@ -144,7 +137,6 @@ Feature: 5-Screen Navigation Architecture
     Then the note should be saved
     And the note should sync to my other linked devices
     And Bob should not see my note about him
-
   # Contacts — "What do they see?"
 
   @navigation @what-they-see @planned
@@ -154,7 +146,6 @@ Feature: 5-Screen Navigation Architecture
     Then I should navigate to the "MyInfo" screen
     And I should see my card in preview-as mode for Bob
     And the banner should say "Viewing as Bob"
-
   # Exchange — Post-Exchange Flow
 
   @navigation @exchange @implemented
@@ -162,33 +153,30 @@ Feature: 5-Screen Navigation Architecture
     When I switch to the "Exchange" screen
     Then I should see the exchange interface
     And I should be able to share my card or receive a card
-
   # Settings
 
   @navigation @settings @planned
   Scenario: Settings screen shows configuration items
     When I switch to the "Settings" screen
     Then I should see settings categories:
-      | category        |
-      | General         |
-      | Security        |
-      | Privacy         |
-      | Appearance      |
-      | Linked Devices  |
-      | Sync Status     |
-      | Backup          |
-
+      | category       |
+      | General        |
+      | Security       |
+      | Privacy        |
+      | Appearance     |
+      | Linked Devices |
+      | Sync Status    |
+      | Backup         |
   # Help
 
   @navigation @help @planned
   Scenario: Help screen shows support items
     When I switch to the "Help" screen
     Then I should see items:
-      | item            |
-      | FAQ             |
-      | About           |
-      | Support Us      |
-
+      | item       |
+      | FAQ        |
+      | About      |
+      | Support Us |
   # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
 
   @platform-edge-case @desktop @multi-window @planned
@@ -196,7 +184,7 @@ Feature: 5-Screen Navigation Architecture
     Given the app is open in one window
     When I try to open another instance
     Then the existing window should be focused
-    Or windows should sync state in real-time
+    # Or windows should sync state in real-time
     And data conflicts should be prevented
 
   @platform-edge-case @desktop @url-scheme @planned

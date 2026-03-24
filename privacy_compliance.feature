@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @gdpr @privacy @compliance
 Feature: Privacy Compliance
   As a Vauchi user
@@ -10,7 +9,6 @@ Feature: Privacy Compliance
 
   Background:
     Given I have an identity with contacts and settings
-
   # ============================================================
   # Data Export
   # ============================================================
@@ -27,14 +25,14 @@ Feature: Privacy Compliance
   Scenario: Export includes all data types
     When I export my data
     Then the export should include:
-      | Data Type | Included |
-      | My contact card | Yes |
-      | My contacts list | Yes |
-      | My settings | Yes |
-      | My device list | Yes |
-      | My visibility labels | Yes |
-      | Update history | Yes |
-      | Recovery configuration | Yes |
+      | Data Type              | Included |
+      | My contact card        | Yes      |
+      | My contacts list       | Yes      |
+      | My settings            | Yes      |
+      | My device list         | Yes      |
+      | My visibility labels   | Yes      |
+      | Update history         | Yes      |
+      | Recovery configuration | Yes      |
     And the export should NOT include contacts' private keys
     And the export should be encrypted with my key
 
@@ -51,7 +49,6 @@ Feature: Privacy Compliance
     When I export my data
     Then the export should succeed for local data
     And I should be informed that relay data may be incomplete
-
   # ============================================================
   # Data Deletion
   # ============================================================
@@ -106,7 +103,6 @@ Feature: Privacy Compliance
     Then Bob's data should be removed from my device
     And Bob should not be notified (my choice to forget)
     And I should be able to re-exchange later if needed
-
   # ============================================================
   # Consent
   # ============================================================
@@ -126,7 +122,6 @@ Feature: Privacy Compliance
     Then I should see what I consented to
     And I should see when I consented
     And I should see the version of terms I agreed to
-
   # Telemetry scenarios removed — Principle 1 states "No tracking, analytics,
   # or telemetry" (principles.md). Vauchi does not collect usage telemetry.
   # See: audit 2026-03-23, finding C1.
@@ -138,7 +133,6 @@ Feature: Privacy Compliance
     Then I should be prompted to re-consent
     And I should see what changed
     And I can continue to decline new collection
-
   # ============================================================
   # Privacy Information
   # ============================================================
@@ -154,11 +148,11 @@ Feature: Privacy Compliance
   Scenario: View what data is stored locally
     When I go to Settings > Privacy > My Data
     Then I should see a summary of stored data:
-      | Category | Description |
+      | Category | Description                           |
       | Identity | Your contact card and encryption keys |
-      | Contacts | People you've exchanged with |
-      | Devices | Your linked devices |
-      | Settings | Your preferences |
+      | Contacts | People you've exchanged with          |
+      | Devices  | Your linked devices                   |
+      | Settings | Your preferences                      |
     And I should see that data is E2E encrypted
 
   @transparency @implemented
@@ -174,7 +168,6 @@ Feature: Privacy Compliance
     Then I should see an explanation of E2E encryption
     And it should explain that Vauchi cannot read my data
     And it should explain that only my contacts can read updates
-
   # ============================================================
   # Data Retention
   # ============================================================
@@ -190,19 +183,18 @@ Feature: Privacy Compliance
   Scenario: Local data persists until deleted
     Given I have contacts and settings
     Then local data should persist indefinitely
-    Until I explicitly delete it
+    # Until I explicitly delete it
     And no automatic purging should occur without my consent
 
   @retention @implemented
   Scenario: View data retention settings
     When I go to Settings > Privacy > Data Retention
     Then I should see:
-      | Setting | Value |
-      | Relay message TTL | 30 days |
+      | Setting              | Value                      |
+      | Relay message TTL    |                    30 days |
       | Local data retention | Forever (until you delete) |
-      | Backup retention | Your control |
+      | Backup retention     | Your control               |
     And I should understand each setting
-
   # ============================================================
   # Third-Party Sharing
   # ============================================================
@@ -227,7 +219,6 @@ Feature: Privacy Compliance
     Then the relay operator should not be able to read my data
     And only encrypted blobs should be visible to relays
     And metadata should be minimized
-
   # ============================================================
   # Privacy Controls
   # ============================================================
@@ -253,7 +244,6 @@ Feature: Privacy Compliance
     Then I should be able to enable enhanced privacy
     And this may include padding messages, random delays
     And I should understand the tradeoffs
-
   # ============================================================
   # Audit & Verification
   # ============================================================
@@ -278,7 +268,6 @@ Feature: Privacy Compliance
     Then Vauchi's source code should be publicly available
     And users should be able to verify privacy claims
     And cryptographic implementations should be auditable
-
   # ============================================================
   # Enhanced GDPR Compliance (P16)
   # ============================================================
@@ -306,7 +295,6 @@ Feature: Privacy Compliance
     And the export should include my recovery configuration
     And the export should include all consent records with versions
     And the export should NOT include private keys
-
   # ============================================================
   # Crypto-Shredding
   # ============================================================
@@ -339,7 +327,6 @@ Feature: Privacy Compliance
     When Alice's content encryption key is destroyed
     Then Bob cannot recover Alice's display name from storage
     And no plaintext personal data remains in the database
-
   # ============================================================
   # Revocation Protocol
   # ============================================================
@@ -386,7 +373,6 @@ Feature: Privacy Compliance
     When an attacker replays Alice's old revocation signal
     Then Bob rejects the stale revocation
     And Alice's new card remains intact
-
   # ============================================================
   # Multi-Device Deletion
   # ============================================================
@@ -398,7 +384,6 @@ Feature: Privacy Compliance
     Then device B receives the deletion schedule via device sync
     And device C receives the deletion schedule via device sync
     And all devices execute deletion after the grace period
-
   # ============================================================
   # Relay Purge
   # ============================================================

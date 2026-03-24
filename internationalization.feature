@@ -1,13 +1,11 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @i18n @internationalization
 Feature: Internationalization
   As a user who speaks a language other than English
   I want Vauchi to be available in my language
   So that I can use the app comfortably
-
   # ============================================================
   # Language Selection
   # ============================================================
@@ -51,7 +49,6 @@ Feature: Internationalization
     Then I should see a list of available languages
     And each language should be shown in its native script
     And the current language should be indicated
-
   # ============================================================
   # Supported Languages
   # ============================================================
@@ -81,16 +78,15 @@ Feature: Internationalization
     And translations should be culturally appropriate
 
     Examples:
-      | language            |
-      | Japanese            |
-      | Chinese (Simplified)|
-      | Chinese (Traditional)|
-      | Korean              |
-      | Arabic              |
-      | Hebrew              |
-      | Russian             |
-      | Hindi               |
-
+      | language              |
+      | Japanese              |
+      | Chinese (Simplified)  |
+      | Chinese (Traditional) |
+      | Korean                |
+      | Arabic                |
+      | Hebrew                |
+      | Russian               |
+      | Hindi                 |
   # ============================================================
   # Right-to-Left (RTL) Support
   # ============================================================
@@ -127,7 +123,6 @@ Feature: Internationalization
     Then directional icons (back, forward) should be mirrored
     And non-directional icons should not be mirrored
     And the visual flow should be consistent
-
   # ============================================================
   # Locale-Aware Formatting
   # ============================================================
@@ -169,7 +164,6 @@ Feature: Internationalization
     When my device is set to German
     Then currency should use Euro symbol and format
     And the format should follow locale conventions
-
   # ============================================================
   # Contact Card Content
   # ============================================================
@@ -185,10 +179,10 @@ Feature: Internationalization
   @content @planned
   Scenario: Mixed-script contact cards
     Given a contact has:
-      | Field | Value |
-      | Name  | محمد أحمد |
+      | Field | Value               |
+      | Name  | محمد أحمد           |
       | Email | mohamed@example.com |
-      | Notes | Some English notes |
+      | Notes | Some English notes  |
     When I view this contact
     Then each field should render in the appropriate direction
     And the card should be readable and well-formatted
@@ -200,7 +194,6 @@ Feature: Internationalization
     Then the input should be handled correctly
     And character composition should work
     And the text should be saved correctly
-
   # ============================================================
   # Search and Sorting
   # ============================================================
@@ -233,8 +226,7 @@ Feature: Internationalization
     And I have contacts with Japanese names
     When I view the contacts list
     Then names should be sorted by reading (kana)
-    Or sorted by stroke count if readings unavailable
-
+    # Or sorted by stroke count if readings unavailable
   # ============================================================
   # Error Messages and Help
   # ============================================================
@@ -262,7 +254,6 @@ Feature: Internationalization
     Then all text should be in German
     And any videos or images should be localized
     And the value proposition should be clear
-
   # ============================================================
   # Pluralization and Grammar
   # ============================================================
@@ -275,17 +266,17 @@ Feature: Internationalization
     And the grammar should be correct for the language
 
     Examples:
-      | language | count | expected          |
-      | English  | 0     | 0 contacts        |
-      | English  | 1     | 1 contact         |
-      | English  | 5     | 5 contacts        |
-      | Russian  | 1     | 1 контакт         |
-      | Russian  | 2     | 2 контакта        |
-      | Russian  | 5     | 5 контактов       |
-      | Arabic   | 0     | ٠ جهات اتصال      |
-      | Arabic   | 1     | جهة اتصال واحدة   |
-      | Arabic   | 2     | جهتا اتصال        |
-      | Arabic   | 10    | ١٠ جهات اتصال     |
+      | language | count | expected        |
+      | English  |     0 |      0 contacts |
+      | English  |     1 |       1 contact |
+      | English  |     5 |      5 contacts |
+      | Russian  |     1 |       1 контакт |
+      | Russian  |     2 |      2 контакта |
+      | Russian  |     5 |     5 контактов |
+      | Arabic   |     0 | ٠ جهات اتصال    |
+      | Arabic   |     1 | جهة اتصال واحدة |
+      | Arabic   |     2 | جهتا اتصال      |
+      | Arabic   |    10 | ١٠ جهات اتصال   |
 
   @grammar @planned
   Scenario: Gender agreement in translations
@@ -294,7 +285,6 @@ Feature: Internationalization
     Then it should use correct gender agreement
     And articles should match noun gender
     And adjectives should agree appropriately
-
   # ============================================================
   # Translation Quality
   # ============================================================
@@ -321,7 +311,6 @@ Feature: Internationalization
     Then the same concept should use the same translation throughout
     And "contact card" should always be "fiche de contact"
     And terminology should be consistent with platform conventions
-
   # ============================================================
   # Translation Contribution
   # ============================================================
@@ -340,7 +329,6 @@ Feature: Internationalization
     Then I should see strings that need translation
     And I should be able to contribute translations
     And I should see my contribution statistics
-
   # ============================================================
   # Technical Requirements
   # ============================================================

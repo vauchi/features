@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @device @multi-device
 Feature: Device Management
   As a Vauchi user
@@ -11,7 +10,6 @@ Feature: Device Management
   Background:
     Given I have an existing identity on my primary device (Device A)
     And my identity has been set up with display name "Alice"
-
   # Device Linking
 
   @link @implemented
@@ -57,7 +55,6 @@ Feature: Device Management
     When I try to link an 11th device
     Then I should see "Maximum devices reached"
     And I should be prompted to unlink a device first
-
   # Device Synchronization
 
   @sync @implemented
@@ -98,7 +95,6 @@ Feature: Device Management
     And both come online
     Then the later change should win
     And both devices should converge to the same value
-
   # Viewing Linked Devices
 
   @view @implemented
@@ -125,7 +121,6 @@ Feature: Device Management
     When I rename Device B to "Work Phone"
     Then Device B should appear as "Work Phone"
     And the name should sync to other devices
-
   # Unlinking Devices
 
   @unlink @implemented
@@ -159,7 +154,6 @@ Feature: Device Management
     When I try to unlink Device A
     Then I should see "Cannot unlink your only device"
     And unlinking should be prevented
-
   # Device Security
 
   @security @implemented
@@ -190,7 +184,6 @@ Feature: Device Management
     But the attacker is not physically present
     Then proximity verification should block the attack
     And the device should not be linked
-
   # Platform Support
 
   @platform @planned
@@ -216,7 +209,6 @@ Feature: Device Management
     When I try to link Device B
     Then I should be offered numeric code entry
     And I should be able to type the code from Device A
-
   # Device-Specific Settings
 
   @settings @planned
@@ -239,7 +231,6 @@ Feature: Device Management
     Then the display name should sync to Device B
     And visibility rules should sync to Device B
     And contact groups should sync to Device B
-
   # Activity Monitoring
 
   @activity @planned
@@ -256,7 +247,6 @@ Feature: Device Management
     When the system detects the anomaly
     Then I should be alerted on other devices
     And I should be offered to review and potentially revoke Device B
-
   # Recovery
 
   @recovery @planned
@@ -273,7 +263,6 @@ Feature: Device Management
     When Device A is about to be replaced
     Then I should be able to designate Device B as primary
     And Device B should handle all primary device functions
-
   # Race Condition Edge Cases (Added 2026-01-21)
 
   @edge-case @race-condition @implemented
@@ -313,7 +302,6 @@ Feature: Device Management
     Then the registry version should increment again
     And version should enable sync conflict detection
 
-
   @edge-case @interruption @implemented
   Scenario: Interrupted initial sync
     Given I am linking Device B to Device A
@@ -337,7 +325,6 @@ Feature: Device Management
     When I try to link Device B to identity "Alice"
     Then Device B must prompt: "Existing data will be wiped. Proceed?"
     And "Bob's" data must be securely erased before "Alice's" data is synced
-
 
   @edge-case @timezone @implemented
   Scenario: Timezone change during sync
@@ -363,7 +350,6 @@ Feature: Device Management
     When Device B scans the code within 5 minutes of real-world time
     Then the linking should succeed
     And the 5-minute expiry should be calculated using absolute UTC time, not local time
-
   # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
 
   @platform-edge-case @ios @keychain @planned
@@ -371,7 +357,7 @@ Feature: Device Management
     Given I restored my iPhone from backup
     When I open Vauchi
     Then keychain items should be accessible
-    Or I should be prompted to restore from backup
+    # Or I should be prompted to restore from backup
     And I should not be locked out of my identity
 
   @platform-edge-case @cross-platform @upgrade @planned

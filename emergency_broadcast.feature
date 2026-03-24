@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @security @resistance @emergency @alert
 Feature: Emergency Broadcast
   As an activist or at-risk user
@@ -21,7 +20,6 @@ Feature: Emergency Broadcast
   Background:
     Given I have an existing identity
     And I have exchanged contacts with trusted people
-
   # ============================================================
   # Setup and Configuration
   # ============================================================
@@ -39,7 +37,7 @@ Feature: Emergency Broadcast
     Given I am configuring emergency broadcast
     When I set up my alert message
     Then I can use the default: "I may be in danger. Please check on me."
-    Or I can write a custom message (max 500 chars)
+    # Or I can write a custom message (max 500 chars)
     And the message is stored encrypted locally
 
   @setup @implemented
@@ -56,7 +54,6 @@ Feature: Emergency Broadcast
     When I check settings
     Then emergency broadcast should not be configured
     And no trusted contacts should be selected by default
-
   # ============================================================
   # Triggering Alerts
   # ============================================================
@@ -82,16 +79,15 @@ Feature: Emergency Broadcast
     When I trigger the widget
     Then the alert should be sent to trusted contacts
     And this should work without opening the full app
+  # promoted_to: tui!67, desktop!99
 
   @trigger @implemented
-  # promoted_to: tui!67, desktop!99
   Scenario: Emergency broadcast with confirmation
     Given I am about to send an emergency broadcast
     When I tap the send button
     Then I should see a brief confirmation: "Send alert to 5 contacts?"
     And I can confirm or cancel
     And the timeout should be 5 seconds
-
   # ============================================================
   # Alert Content and Delivery
   # ============================================================
@@ -100,11 +96,11 @@ Feature: Emergency Broadcast
   Scenario: Alert message content
     Given I have triggered an emergency broadcast
     Then each trusted contact should receive:
-      | field      | value                                  |
-      | type       | EMERGENCY_ALERT                        |
-      | message    | My configured message                  |
-      | timestamp  | Current time                           |
-      | sender_id  | Anonymous sender ID (SP-32, HKDF-derived) |
+      | field     | value                                     |
+      | type      | EMERGENCY_ALERT                           |
+      | message   | My configured message                     |
+      | timestamp | Current time                              |
+      | sender_id | Anonymous sender ID (SP-32, HKDF-derived) |
     And location should only be included if enabled
 
   @delivery @implemented
@@ -136,7 +132,6 @@ Feature: Emergency Broadcast
     Then alerts should be queued locally
     And alerts should be sent when connectivity returns
     And I should see "Alert queued - will send when online"
-
   # ============================================================
   # Receiving Alerts
   # ============================================================
@@ -171,7 +166,6 @@ Feature: Emergency Broadcast
     When I view my contact with that person
     Then I should see a history of emergency alerts received
     And I should see timestamps for each alert
-
   # ============================================================
   # Location Handling
   # ============================================================
@@ -199,7 +193,6 @@ Feature: Emergency Broadcast
     Then the alert should still be sent
     And location field should indicate "unavailable"
     And this should not block the alert
-
   # ============================================================
   # Integration with Other Features
   # ============================================================
@@ -228,7 +221,6 @@ Feature: Emergency Broadcast
     When I send an emergency broadcast
     Then the alert should be routed through Tor
     And delivery may be slower but should still work
-
   # ============================================================
   # Edge Cases
   # ============================================================
@@ -261,9 +253,9 @@ Feature: Emergency Broadcast
     Given I have blocked a contact who was in my trusted list
     Then they should be automatically removed from trusted list
     And they should not receive emergency broadcasts
+  # promoted_to: tui!67
 
   @edge @implemented
-  # promoted_to: tui!67
   Scenario: Rate limiting emergency broadcasts
     Given I have sent an emergency broadcast
     When I try to send another within 1 minute

@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @visibility @labels @privacy
 Feature: Visibility Labels
   As a Vauchi user
@@ -11,14 +10,13 @@ Feature: Visibility Labels
   Background:
     Given I have an existing identity as "Alice"
     And I have the following fields on my contact card:
-      | type   | label        | value              |
-      | phone  | Personal     | +1-555-111-1111    |
-      | phone  | Work         | +1-555-222-2222    |
-      | email  | Personal     | alice@personal.com |
-      | email  | Work         | alice@work.com     |
-      | address| Home         | 123 Main St        |
+      | type    | label    | value              |
+      | phone   | Personal |    +1-555-111-1111 |
+      | phone   | Work     |    +1-555-222-2222 |
+      | email   | Personal | alice@personal.com |
+      | email   | Work     | alice@work.com     |
+      | address | Home     |        123 Main St |
     And I have contacts "Bob", "Carol", "Dave", and "Eve"
-
   # Label Management
 
   @label-create @implemented
@@ -83,7 +81,6 @@ Feature: Visibility Labels
     When I attempt to delete the label "Important"
     And I cancel the deletion
     Then the label "Important" should still exist
-
   # Assigning Contacts to Labels
 
   @assign-contact @implemented
@@ -119,7 +116,6 @@ Feature: Visibility Labels
     When I view Carol's contact details
     Then I should see that Carol belongs to "Friends" and "Colleagues"
     And I should be able to edit her label memberships
-
   # Associating Fields with Labels
 
   @field-label @implemented
@@ -141,7 +137,7 @@ Feature: Visibility Labels
     Given my "Personal" email is visible to label "Family"
     When I remove "Family" from "Personal" email visibility
     Then contacts in "Family" should no longer see "Personal" email
-    Unless they have per-contact visibility override
+    # Unless they have per-contact visibility override
 
   @field-label @implemented
   Scenario: View which labels can see a field
@@ -149,7 +145,6 @@ Feature: Visibility Labels
     When I view visibility settings for "Personal" phone
     Then I should see "Family" and "Close Friends" listed
     And I should see how many contacts are in each label
-
   # Label-based Visibility in Action
 
   @visibility-effect @implemented
@@ -186,7 +181,6 @@ Feature: Visibility Labels
     When I remove Eve from label "Family"
     Then Eve should receive an update
     And Eve should no longer see my "Personal" email
-
   # Per-Contact Visibility Override
 
   @override @implemented
@@ -203,7 +197,7 @@ Feature: Visibility Labels
     And Carol is in "Friends"
     When I specifically hide "Personal" phone from Carol
     Then Carol should not see my "Personal" phone
-    Despite being in the "Friends" label
+    # Despite being in the "Friends" label
 
   @override @implemented
   Scenario: Per-contact override takes precedence over label
@@ -212,7 +206,7 @@ Feature: Visibility Labels
     And I have specifically hidden "Work" email from Bob
     When Bob views my contact card
     Then Bob should not see my "Work" email
-    Because per-contact settings override label settings
+    # Because per-contact settings override label settings
 
   @override @implemented
   Scenario: View effective visibility for a contact
@@ -229,7 +223,6 @@ Feature: Visibility Labels
     When I clear Dave's per-contact overrides
     Then Dave's visibility should be determined only by his labels
     And Dave's visibility should be determined by default settings
-
   # Labels are Local
 
   @local-only @implemented
@@ -253,7 +246,6 @@ Feature: Visibility Labels
     Then Device B should have the same labels
     And contacts in each label should be synced
     And label-based visibility settings should be synced
-
   # Quick Actions with Labels
 
   @quick-assign @planned
@@ -276,7 +268,6 @@ Feature: Visibility Labels
     When I choose "Add to label"
     And I select "Work"
     Then all three contacts should be added to "Work"
-
   # Label Visibility Templates
 
   @template @implemented
@@ -295,8 +286,7 @@ Feature: Visibility Labels
     Given I have a label "Professional" with configured visibility
     When I add Eve to label "Professional"
     Then Eve should automatically see the fields configured for "Professional"
-    Unless I have specific overrides for Eve
-
+    # Unless I have specific overrides for Eve
   # Edge Cases
 
   @edge-cases @implemented
@@ -334,7 +324,6 @@ Feature: Visibility Labels
     When I try to create another label
     Then I should see an error "Maximum number of labels reached"
     And I should be suggested to delete unused labels
-
   # Label Statistics
 
   @stats @planned
@@ -349,7 +338,6 @@ Feature: Visibility Labels
     When I view the unlabeled contacts list
     Then I should see all contacts not assigned to any label
     And I should be able to bulk-assign them
-
   # ============================================================
   # Display Name Overrides
   # ============================================================
@@ -361,7 +349,6 @@ Feature: Visibility Labels
     Then contacts in "Business" should see my name as "Dr. Egloff"
     When I clear the display name override
     Then contacts in "Business" should see my default name
-
   # ============================================================
   # Two-Mode Visibility
   # ============================================================
@@ -380,7 +367,6 @@ Feature: Visibility Labels
     When I assign the phone field to "Family"
     Then Family contacts should see the phone field
     And ungrouped contacts should not see the phone field
-
   # ============================================================
   # Group Transitions
   # ============================================================

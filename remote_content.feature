@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @remote_content @content-updates
 Feature: Remote Content Updates
   As a Vauchi user
@@ -11,7 +10,6 @@ Feature: Remote Content Updates
   Background:
     Given the app is configured with remote updates enabled
     And the content server is "https://vauchi.app/app-files"
-
   # ===========================================
   # Manifest Fetching
   # ===========================================
@@ -45,7 +43,6 @@ Feature: Remote Content Updates
     And the update check interval is 1 hour
     When the app launches
     Then the app should fetch the manifest from the content server
-
   # ===========================================
   # Version Comparison
   # ===========================================
@@ -79,7 +76,6 @@ Feature: Remote Content Updates
     And the remote manifest has locales version "1.5.0" requiring app version "1.0.0"
     When the app checks for updates
     Then locales should be listed as updateable
-
   # ===========================================
   # Content Download
   # ===========================================
@@ -116,7 +112,6 @@ Feature: Remote Content Updates
     When the app attempts to download the networks file
     Then the download should be aborted
     And a size limit error should be reported
-
   # ===========================================
   # Fallback Behavior
   # ===========================================
@@ -143,7 +138,6 @@ Feature: Remote Content Updates
     And bundled networks is version "1.0.0"
     When the app requests the social networks list
     Then the app should return cached networks version "1.1.0"
-
   # ===========================================
   # User Settings
   # ===========================================
@@ -175,7 +169,6 @@ Feature: Remote Content Updates
     When the user triggers apply updates
     Then both networks and locales should be downloaded
     And the user should see a success message
-
   # ===========================================
   # Networks Content
   # ===========================================
@@ -194,7 +187,6 @@ Feature: Remote Content Updates
     And the remote networks has Twitter URL "https://x.com/{handle}"
     When the app applies updates
     Then Twitter profile URLs should use "https://x.com/{handle}"
-
   # ===========================================
   # Locales Content
   # ===========================================
@@ -220,7 +212,6 @@ Feature: Remote Content Updates
     And the remote English locale version "1.1.0" includes new string "settings.theme"
     When the app applies updates
     Then the "settings.theme" string should be available
-
   # ===========================================
   # Help Content
   # ===========================================
@@ -239,7 +230,6 @@ Feature: Remote Content Updates
     When the app applies updates
     Then French help content should be downloaded
     And help should display in French
-
   # ===========================================
   # Themes Content
   # ===========================================
@@ -256,7 +246,6 @@ Feature: Remote Content Updates
     Given the user has downloaded the "catppuccin-mocha" theme
     When the user selects "catppuccin-mocha" theme
     Then the app colors should change to Catppuccin Mocha palette
-
   # ===========================================
   # Privacy
   # ===========================================
@@ -279,8 +268,7 @@ Feature: Remote Content Updates
     Given the content URL is "http://vauchi.app/app-files"
     When the app attempts to fetch content
     Then the request should be upgraded to HTTPS
-    Or the request should fail with security error
-
+    # Or the request should fail with security error
   # ===========================================
   # Error Handling
   # ===========================================
@@ -306,7 +294,6 @@ Feature: Remote Content Updates
     When the app attempts to check for updates
     Then the next check should be delayed
     And the delay should increase exponentially
-
   # ===========================================
   # Atomic Updates
   # ===========================================
@@ -326,7 +313,6 @@ Feature: Remote Content Updates
     When the app applies updates
     Then networks should be updated in cache
     And the partial update should be reported to the user
-
   # ===========================================
   # Selective Downloads (Bandwidth Optimization)
   # ===========================================
