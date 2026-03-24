@@ -2,10 +2,10 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 @navigation @ux
-Feature: 5-Screen Navigation Architecture
+Feature: 5-Tab Navigation Architecture
   As a Vauchi user
-  I want a simple, consistent navigation with 5 screens
-  So that I can quickly access exchange, my info, contacts, settings, and help
+  I want a simple, consistent navigation with 5 tabs
+  So that I can quickly access my card, contacts, exchange, groups, and more
 
   Background:
     Given I have an existing identity as "Alice"
@@ -13,15 +13,15 @@ Feature: 5-Screen Navigation Architecture
   # Navigation Bar
 
   @navigation @implemented
-  Scenario: Navigation shows 5 screens
+  Scenario: Navigation shows 5 tabs
     When I view the main screen
-    Then I should see a navigation bar with 5 screens:
+    Then I should see a navigation bar with 5 tabs:
       | screen   | position |
-      | Exchange |        1 |
-      | MyInfo   |        2 |
-      | Contacts |        3 |
-      | Settings |        4 |
-      | Help     |        5 |
+      | MyInfo   |        1 |
+      | Contacts |        2 |
+      | Exchange |        3 |
+      | Groups   |        4 |
+      | More     |        5 |
 
   @navigation @implemented
   Scenario: Dynamic default screen with no contacts
@@ -44,17 +44,17 @@ Feature: 5-Screen Navigation Architecture
     Then I should still see Bob's details
   # MyInfo — Preview As
 
-  @navigation @preview-as @planned
+  @navigation @preview-as @implemented
   Scenario: Preview my card as a specific contact
     Given I am on the "MyInfo" screen
     When I tap "Preview as..."
     And I select contact "Bob"
     Then I should see my card as Bob would see it
-    And fields hidden from Bob should not be visible
+    And fields hidden from Bob should show as "Hidden" placeholders
     And I should see a banner "Viewing as Bob"
     And I should see an "Exit Preview" button
 
-  @navigation @preview-as @planned
+  @navigation @preview-as @implemented
   Scenario: Exit preview returns to edit mode
     Given I am previewing my card as "Bob"
     When I tap "Exit Preview"
@@ -76,6 +76,17 @@ Feature: 5-Screen Navigation Architecture
     Given my "Personal" phone is visible to "Bob"
     When I remove "Bob" from the visibility chips on "Personal" phone
     Then Bob should no longer see my personal phone
+  # MyInfo — Per-field Private Notes
+
+  @navigation @notes @planned
+  Scenario: View and edit private note on own field
+    Given I am on the "MyInfo" screen
+    And I have a "Work" email field with a note "Check spam folder weekly"
+    When I edit the "Work" email field
+    Then I should see the note "Check spam folder weekly" in the edit dialog
+    And I can update the note
+    And the note should be saved inside my encrypted card data
+    And contacts should never see the note
   # Contacts — Actions
 
   @navigation @contact-actions @planned
@@ -119,33 +130,56 @@ Feature: 5-Screen Navigation Architecture
     And Dave has shared a website URL with me
     When I tap the browser action on Dave's URL
     Then the browser should open to Dave's website
-  # Contacts — Trust
+  # Contacts — Trust Indicators
+
+  @navigation @trust @implemented
+  Scenario: Contact shows trust level badge
+    Given I am viewing Bob's contact details
+    Then I should see a trust level badge derived from exchange facts
+    And the trust level should not be user-editable
 
   @navigation @trust @planned
-  Scenario: Upvote trust on a contact field
+  Scenario: Validate a contact's field
     Given I am viewing Bob's contact details
     And Bob has shared a phone number with me
-    When I tap the trust indicator on Bob's phone number
-    Then the field should be marked as personally verified
-    And the trust indicator should show as active
+    When I tap the validation indicator on Bob's phone number
+    Then the field should be marked as personally validated
+    And the validation confidence should increase
   # Contacts — Private Notes
 
-  @navigation @notes @planned
+  @navigation @notes @implemented
   Scenario: Add private note to a contact
     Given I am viewing Bob's contact details
     When I type "Met at FOSDEM 2026" in the notes field
     Then the note should be saved
     And the note should sync to my other linked devices
     And Bob should not see my note about him
+
+  @navigation @notes @implemented
+  Scenario: Add private note to a contact's shared field
+    Given I am viewing Bob's contact details
+    And Bob has shared a phone number with me
+    When I tap the note area on Bob's phone number
+    And I type "Call before 5pm"
+    Then the note should be saved
+    And Bob should not see my note on his field
   # Contacts — "What do they see?"
 
-  @navigation @what-they-see @planned
+  @navigation @what-they-see @implemented
   Scenario: Navigate from contact to preview-as
     Given I am viewing Bob's contact details on the "Contacts" screen
     When I tap "What do they see?"
     Then I should navigate to the "MyInfo" screen
     And I should see my card in preview-as mode for Bob
     And the banner should say "Viewing as Bob"
+  # Contacts — Proposal Trust
+
+  @navigation @trust @implemented
+  Scenario: Toggle proposal trust on a contact
+    Given I am viewing Bob's contact details
+    When I toggle "Can propose contacts" to on
+    Then Bob should be marked as proposal-trusted
+    And proposal trust should be independent from recovery trust
   # Exchange — Post-Exchange Flow
 
   @navigation @exchange @implemented
@@ -153,30 +187,54 @@ Feature: 5-Screen Navigation Architecture
     When I switch to the "Exchange" screen
     Then I should see the exchange interface
     And I should be able to share my card or receive a card
-  # Settings
+  # Groups
 
-  @navigation @settings @planned
-  Scenario: Settings screen shows configuration items
-    When I switch to the "Settings" screen
-    Then I should see settings categories:
-      | category       |
-      | General        |
-      | Security       |
-      | Privacy        |
-      | Appearance     |
-      | Linked Devices |
-      | Sync Status    |
-      | Backup         |
-  # Help
+  @navigation @groups @implemented
+  Scenario: Groups tab shows group list
+    When I switch to the "Groups" screen
+    Then I should see a list of my visibility groups
+    And each group should show its name and member count
 
-  @navigation @help @planned
-  Scenario: Help screen shows support items
-    When I switch to the "Help" screen
-    Then I should see items:
-      | item       |
-      | FAQ        |
-      | About      |
-      | Support Us |
+  @navigation @groups @implemented
+  Scenario: Preview as group member
+    Given I am viewing the "Family" group detail
+    And "Bob" is a member of "Family"
+    When I tap "Preview as Bob"
+    Then I should navigate to the "MyInfo" screen in preview-as mode for Bob
+
+  @navigation @groups @planned
+  Scenario: Group detail shows member list
+    Given I have a group "Family" with "Bob" and "Carol"
+    When I view the "Family" group detail
+    Then I should see "Bob" and "Carol" in the member list
+    And I should see the group's visible field count
+  # More Menu
+
+  @navigation @more @implemented
+  Scenario: More tab shows sub-screens
+    When I switch to the "More" screen
+    Then I should see a list of sub-screens:
+      | item     |
+      | Sync     |
+      | Devices  |
+      | Settings |
+      | Backup   |
+      | Privacy  |
+      | Help     |
+
+  @navigation @more @implemented
+  Scenario: Navigate to Settings via More
+    Given I am on the "More" screen
+    When I tap "Settings"
+    Then I should see the Settings screen
+    And I should be able to navigate back to "More"
+
+  @navigation @more @implemented
+  Scenario: Navigate to Help via More
+    Given I am on the "More" screen
+    When I tap "Help"
+    Then I should see the Help screen
+    And I should be able to navigate back to "More"
   # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
 
   @platform-edge-case @desktop @multi-window @planned
