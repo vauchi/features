@@ -89,11 +89,11 @@ lint:gherkin:
       done
 
       if [ $ERRORS -gt 0 ]; then
-        echo "Found $ERRORS file(s) with warnings"
+        echo "Found $ERRORS file(s) with Gherkin syntax errors."
+        exit 1
       fi
 
       echo "Gherkin check complete"
-  allow_failure: true
 
 # Check feature file structure
 lint:structure:
