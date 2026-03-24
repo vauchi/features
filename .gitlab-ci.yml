@@ -99,7 +99,7 @@ lint:gherkin:
 lint:structure:
   extends: .mr-or-main
   stage: lint
-  image: alpine:latest
+  image: alpine:3.21
   script:
     - |
       echo "Checking feature file structure..."
