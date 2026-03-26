@@ -15,80 +15,80 @@ Feature: BLE Exchange Protocol Internals
 
   # --- BLE Payload ---
 
-  @ble-payload
+  @ble-payload @implemented
   Scenario: BLE payload generation contains identity and exchange keys
     When Alice generates a BLE exchange payload
     Then the payload should contain Alice's identity key
     And the payload should contain a fresh ephemeral X25519 exchange key
 
-  @ble-payload
+  @ble-payload @implemented
   Scenario: BLE payload serialization roundtrip
     When Alice generates a BLE exchange payload
     And the payload is serialized and deserialized
     Then all fields should be preserved exactly
 
-  @ble-payload
+  @ble-payload @implemented
   Scenario: BLE payload has valid signature
     When Alice generates a BLE exchange payload
     Then the payload should have a valid Ed25519 signature
     And verifying the signature with Alice's identity key should succeed
 
-  @ble-payload @security
+  @ble-payload @security @implemented
   Scenario: Tampered BLE payload fails signature verification
     Given Alice has generated a BLE exchange payload
     When the exchange key bytes are tampered with
     Then signature verification should fail
 
-  @ble-payload
+  @ble-payload @implemented
   Scenario: BLE payload rejected with invalid magic bytes
     Given a payload with magic bytes other than "VBLE"
     When the payload is parsed
     Then it should be rejected as invalid
 
-  @ble-payload
+  @ble-payload @implemented
   Scenario: BLE payload expires after 60 seconds
     Given Alice generated a BLE payload more than 60 seconds ago
     When the payload is checked for expiry
     Then it should be marked as expired
 
-  @ble-payload
+  @ble-payload @implemented
   Scenario: BLE payload is exactly 174 bytes
     When Alice generates a BLE exchange payload
     Then the serialized payload should be exactly 174 bytes
 
-  @ble-payload @forward-secrecy
+  @ble-payload @forward-secrecy @implemented
   Scenario: BLE ephemeral keys differ from identity keys
     When Alice generates a BLE exchange payload
     Then the ephemeral exchange key should differ from Alice's identity key
 
   # --- GATT Service ---
 
-  @gatt
+  @gatt @implemented
   Scenario: GATT UUIDs have correct format
     When the BLE GATT service is configured
     Then the service UUID should have 8-4-4-4-12 format
     And the characteristic UUID should have 8-4-4-4-12 format
 
-  @gatt
+  @gatt @implemented
   Scenario: GATT service and characteristic UUIDs match expected values
     When the BLE GATT service is configured
     Then the UUIDs should match the Vauchi BLE specification
 
   # --- BLE Transport (Mock) ---
 
-  @transport
+  @transport @implemented
   Scenario: BLE transport can advertise
     Given a mock BLE transport
     When advertising is started
     Then it should succeed without error
 
-  @transport
+  @transport @implemented
   Scenario: BLE transport can scan
     Given a mock BLE transport
     When scanning is started
     Then it should succeed without error
 
-  @transport
+  @transport @implemented
   Scenario: BLE transport connect, read, write, disconnect
     Given a mock BLE transport
     When a connection is established
@@ -96,7 +96,7 @@ Feature: BLE Exchange Protocol Internals
     And writing a characteristic should succeed
     And disconnecting should succeed
 
-  @transport @error
+  @transport @error @implemented
   Scenario: BLE transport in failure mode returns errors
     Given a mock BLE transport configured to fail
     When any transport operation is attempted
@@ -104,24 +104,24 @@ Feature: BLE Exchange Protocol Internals
 
   # --- BLE Exchange Session States ---
 
-  @session
+  @session @implemented
   Scenario: New BLE session starts in AwaitingBleConnection
     When a new BLE exchange session is created
     Then its state should be AwaitingBleConnection
 
-  @session
+  @session @implemented
   Scenario: Session transitions to AwaitingBleVerification after payload exchange
     Given a BLE session in AwaitingBleConnection state
     When payloads are exchanged between Alice and Bob
     Then the session state should transition to AwaitingBleVerification
 
-  @session
+  @session @implemented
   Scenario: Session transitions to AwaitingKeyAgreement after proximity verification
     Given a BLE session in AwaitingBleVerification state
     When proximity is verified
     Then the session state should transition to AwaitingKeyAgreement
 
-  @session
+  @session @implemented
   Scenario: Full BLE exchange lifecycle
     Given Alice and Bob have BLE sessions
     When payloads are exchanged
@@ -130,47 +130,47 @@ Feature: BLE Exchange Protocol Internals
     Then both sessions should reach Completed state
     And both should have each other's contact cards
 
-  @session @security
+  @session @security @implemented
   Scenario: Symmetric DH produces identical shared keys
     When Alice and Bob perform DH key agreement via BLE
     Then both shared secrets should be identical
 
-  @session @security
+  @session @security @implemented
   Scenario: Expired BLE payload is rejected
     Given Bob's BLE payload has expired
     When Alice attempts to process it
     Then it should fail with BleExpired error
 
-  @session @security
+  @session @security @implemented
   Scenario: Self-exchange is rejected via BLE
     When Alice's device discovers its own BLE payload
     Then the exchange should fail with SelfExchange error
 
-  @session @error
+  @session @error @implemented
   Scenario: Invalid BLE payload is rejected
     Given a malformed BLE payload
     When Alice attempts to process it
     Then it should be rejected with an error
 
-  @session @error
+  @session @error @implemented
   Scenario: BLE events rejected on non-BLE transport
     Given an exchange session using QR transport
     When a BLE-specific event is received
     Then it should be rejected
 
-  @session @error
+  @session @error @implemented
   Scenario: Proximity verification requires AwaitingBleVerification state
     Given a BLE session in AwaitingBleConnection state
     When proximity verification is attempted
     Then it should fail because the session is not in the correct state
 
-  @session @error
+  @session @error @implemented
   Scenario: Key agreement blocked without proximity verification
     Given a BLE session that has not completed proximity verification
     When key agreement is attempted
     Then it should be blocked
 
-  @session
+  @session @implemented
   Scenario: Full exchange with mock transport
     Given Alice and Bob use mock BLE transports
     When the full exchange flow is executed
@@ -178,141 +178,141 @@ Feature: BLE Exchange Protocol Internals
     And DH key agreement should succeed
     And both should have each other's contact cards
 
-  @session @error
+  @session @error @implemented
   Scenario: BLE error variants have proper display messages
     When each BLE error variant is formatted
     Then each should produce a human-readable message
 
   # --- BLE Handshake Protocol ---
 
-  @handshake @crypto
+  @handshake @crypto @implemented
   Scenario: X25519 shared secret symmetry
     Given Alice and Bob generate X25519 key pairs
     When they compute shared secrets
     Then Alice's shared secret with Bob's public key should equal Bob's shared secret with Alice's public key
 
-  @handshake @crypto
+  @handshake @crypto @implemented
   Scenario: HKDF produces deterministic output
     Given identical HKDF inputs
     When HKDF is computed twice
     Then both outputs should be identical
 
-  @handshake @crypto
+  @handshake @crypto @implemented
   Scenario: XChaCha20-Poly1305 encryption roundtrip
     Given a plaintext message and AAD
     When the message is encrypted and then decrypted
     Then the decrypted output should match the original plaintext
 
-  @handshake @crypto @security
+  @handshake @crypto @security @implemented
   Scenario: Tampered ciphertext fails AEAD decryption
     Given an encrypted message
     When a byte in the ciphertext is flipped
     Then decryption should fail
 
-  @handshake @crypto @security
+  @handshake @crypto @security @implemented
   Scenario: Wrong AAD fails AEAD decryption
     Given an encrypted message with specific AAD
     When decryption is attempted with different AAD
     Then it should fail
 
-  @handshake @crypto
+  @handshake @crypto @implemented
   Scenario: Symmetric key is zeroized on drop
     Given a symmetric key is created
     When it goes out of scope
     Then the key material should be zeroized
 
-  @handshake
+  @handshake @implemented
   Scenario: Initiator starts in Idle state
     When a new handshake initiator session is created
     Then its state should be Idle
 
-  @handshake
+  @handshake @implemented
   Scenario: Responder starts in Idle state
     When a new handshake responder session is created
     Then its state should be Idle
 
-  @handshake
+  @handshake @implemented
   Scenario: Key offer has correct format
     When the initiator creates a key offer
     Then it should be exactly 89 bytes
     And it should contain the correct version byte
     And the initiator should transition to KeyOfferSent
 
-  @handshake @error
+  @handshake @error @implemented
   Scenario: Double key offer is rejected
     Given the initiator has already sent a key offer
     When a second key offer is attempted
     Then it should fail with InvalidState error
 
-  @handshake
+  @handshake @implemented
   Scenario: Responder processes key offer
     Given the initiator has sent an 89-byte key offer
     When the responder processes it
     Then the responder should produce a 113-byte acknowledgment with commitment
     And the responder should transition to KeyAckSent
 
-  @handshake @error
+  @handshake @error @implemented
   Scenario: Responder rejects key offer with invalid version
     Given a key offer with an incorrect version byte
     When the responder attempts to process it
     Then it should be rejected
 
-  @handshake @error
+  @handshake @error @implemented
   Scenario: Responder rejects truncated key offer
     Given an incomplete key offer packet
     When the responder attempts to process it
     Then it should be rejected
 
-  @handshake
+  @handshake @implemented
   Scenario: Initiator processes key acknowledgment
     Given the initiator is in KeyOfferSent state
     When the initiator receives the responder's ack
     Then the initiator should produce a commitment and encrypted card
 
-  @handshake @error
+  @handshake @error @implemented
   Scenario: Initiator rejects ack in wrong state
     Given the initiator is in Idle state
     When an ack is received
     Then it should fail with InvalidState error
 
-  @handshake
+  @handshake @implemented
   Scenario: Responder processes committed payload
     Given the responder is in KeyAckSent state
     When the responder receives the initiator's committed payload
     Then the responder should return a reveal containing its card
 
-  @handshake @security
+  @handshake @security @implemented
   Scenario: Commitment mismatch is rejected
     Given a committed payload with wrong commitment
     When the responder verifies the commitment
     Then it should fail with BleCommitmentMismatch error
 
-  @handshake
+  @handshake @implemented
   Scenario: Full 4-phase handshake happy path
     Given Alice is initiator and Bob is responder
     When the 4-phase handshake completes
     Then both should have each other's contact cards
     And CRC16 verification should pass
 
-  @handshake @security
+  @handshake @security @implemented
   Scenario: Expired key offer is rejected
     Given a key offer with an expired timestamp
     When the responder processes it
     Then it should be rejected
 
-  @handshake @security
+  @handshake @security @implemented
   Scenario: Self-exchange rejected in handshake
     Given both sides have the same identity key
     When a handshake is attempted
     Then it should fail with SelfExchange error
 
-  @handshake @error
+  @handshake @error @implemented
   Scenario: Complete exchange rejected in wrong state
     Given the handshake session is in Idle state
     When complete_exchange is called
     Then it should fail with InvalidState error
 
-  @handshake @error
+  @handshake @error @implemented
   Scenario: Process committed payload rejected in wrong state
     Given the handshake session is in Idle state
     When process_committed_payload is called
@@ -320,124 +320,124 @@ Feature: BLE Exchange Protocol Internals
 
   # --- BLE Integration (Advertisement & Discovery) ---
 
-  @integration @advertisement
+  @integration @advertisement @implemented
   Scenario: Create BLE advertisement with valid token and signature
     When Alice creates a BLE advertisement
     Then it should contain a valid exchange token
     And it should contain a valid signature
 
-  @integration @advertisement
+  @integration @advertisement @implemented
   Scenario: Advertisement includes correct Vauchi service UUID
     When Alice creates a BLE advertisement
     Then it should include the Vauchi BLE service UUID
 
-  @integration @advertisement
+  @integration @advertisement @implemented
   Scenario: Advertisement payload fits BLE limits
     When Alice creates a BLE advertisement
     Then the payload should fit within BLE extended advertisement limits
 
-  @integration @advertisement
+  @integration @advertisement @implemented
   Scenario: Advertisement serialization roundtrip
     When Alice creates a BLE advertisement
     And it is serialized and deserialized
     Then all fields should be preserved
 
-  @integration @discovery
+  @integration @discovery @implemented
   Scenario: Discover nearby devices
     Given Bob is advertising via BLE
     When Alice scans for nearby devices
     Then Alice should discover Bob's device
 
-  @integration @discovery
+  @integration @discovery @implemented
   Scenario: Filter devices by exchange token
     Given multiple devices are advertising
     When Alice filters by exchange token
     Then only matching devices should be returned
 
-  @integration @distance
+  @integration @distance @implemented
   Scenario: Distance estimation from RSSI
     Given a BLE signal with known RSSI
     When distance is estimated
     Then the estimate should be reasonable for the RSSI value
 
-  @integration @session
+  @integration @session @implemented
   Scenario: Exchange session creation
     When Alice creates a BLE exchange session
     Then it should start in Idle state with an exchange token
 
-  @integration @session
+  @integration @session @implemented
   Scenario: Session transitions to Advertising
     Given Alice has a BLE session
     When advertising is started
     Then the session should transition to Advertising state
 
-  @integration @session
+  @integration @session @implemented
   Scenario: Session transitions to Scanning
     Given Alice has a BLE session
     When scanning is started
     Then the session should transition to Scanning state
 
-  @integration @session
+  @integration @session @implemented
   Scenario: Connect to discovered device
     Given Alice has discovered Bob's device
     When Alice connects to Bob
     Then the session should transition to Connected state
 
-  @integration @session
+  @integration @session @implemented
   Scenario: Full mock exchange with data transfer
     Given Alice and Bob both have BLE sessions
     When the full advertising, scanning, and exchange flow completes
     Then both should have each other's contact data
 
-  @integration @timeout
+  @integration @timeout @implemented
   Scenario: Session timeout
     Given Alice has a BLE session
     When the session timeout expires
     Then the session should transition to TimedOut state
 
-  @integration @cancel
+  @integration @cancel @implemented
   Scenario: Cancel session
     Given Alice has an active BLE session
     When Alice cancels the session
     Then the session should transition to Cancelled state
 
-  @integration @proximity
+  @integration @proximity @implemented
   Scenario: Proximity verification passes for close devices
     Given Bob's device is within range
     When proximity is verified
     Then verification should succeed
 
-  @integration @proximity
+  @integration @proximity @implemented
   Scenario: Proximity challenge and response
     Given Alice's device emits a proximity challenge
     When Bob's device responds
     Then the response should be verified successfully
 
-  @integration @proximity @error
+  @integration @proximity @error @implemented
   Scenario: Proximity fails when device is too far
     Given Bob's device is beyond the maximum range
     When proximity verification is attempted
     Then it should fail with TooFar error
 
-  @integration @error
+  @integration @error @implemented
   Scenario: Discovery failure handling
     Given BLE discovery encounters an error
     When Alice attempts to scan
     Then the error should be handled gracefully
 
-  @integration @error
+  @integration @error @implemented
   Scenario: Connection requires exchange token
     Given a discovered device without an exchange token
     When Alice attempts to connect
     Then the connection should be refused
 
-  @integration @error
+  @integration @error @implemented
   Scenario: Cannot exchange without connection
     Given Alice has not connected to Bob
     When Alice attempts to read peer data
     Then it should fail because no connection exists
 
-  @integration
+  @integration @implemented
   Scenario: Session state serialization roundtrip
     Given a BLE session in a specific state
     When the state is serialized to JSON and deserialized
@@ -445,49 +445,49 @@ Feature: BLE Exchange Protocol Internals
 
   # --- BLE Property-Based Tests ---
 
-  @proptest @crypto
+  @proptest @crypto @implemented
   Scenario: Encrypt-decrypt roundtrip preserves arbitrary data
     Given arbitrary plaintext data between 0 and 10KB
     When it is encrypted and decrypted
     Then the output should match the original plaintext
 
-  @proptest @crypto @security
+  @proptest @crypto @security @implemented
   Scenario: Any single byte flip in ciphertext fails decryption
     Given encrypted data
     When any single byte in the ciphertext is flipped
     Then decryption should fail
 
-  @proptest @chunking
+  @proptest @chunking @implemented
   Scenario: Chunking and reassembly preserves data
     Given arbitrary data between 1 and 15KB and a variable MTU
     When the data is chunked and reassembled
     Then the output should match the original data
 
-  @proptest @adversarial
+  @proptest @adversarial @implemented
   Scenario: Empty display name roundtrips correctly
     Given a contact card with an empty display name
     When the card is serialized and deserialized
     Then the empty display name should be preserved
 
-  @proptest @adversarial
+  @proptest @adversarial @implemented
   Scenario: Unicode display name roundtrips correctly
     Given a contact card with emoji, CJK, Arabic, and combining characters
     When the card is serialized and deserialized
     Then the unicode display name should be preserved exactly
 
-  @proptest @adversarial
+  @proptest @adversarial @implemented
   Scenario: Null bytes in fields roundtrip correctly
     Given a contact card with null bytes in field keys and values
     When the card is serialized and deserialized
     Then the fields with null bytes should be preserved
 
-  @proptest @adversarial
+  @proptest @adversarial @implemented
   Scenario: Maximum size avatar roundtrips correctly
     Given a contact card with a 16KB avatar
     When the card is serialized and deserialized
     Then the avatar data should be preserved
 
-  @proptest @adversarial @security
+  @proptest @adversarial @security @implemented
   Scenario: Truncated handshake packet is rejected
     Given a truncated 50-byte KeyOffer packet
     When the packet is processed
@@ -495,83 +495,83 @@ Feature: BLE Exchange Protocol Internals
 
   # --- BLE Rollback ---
 
-  @rollback
+  @rollback @implemented
   Scenario: Rollback clears pending contact data
     Given a pending contact has been recorded
     When rollback is called for that contact
     Then the pending data should be cleared
 
-  @rollback
+  @rollback @implemented
   Scenario: Rollback on nonexistent contact is a no-op
     Given no pending contact exists for a given ID
     When rollback is called for that ID
     Then it should succeed without error
 
-  @rollback
+  @rollback @implemented
   Scenario: Commit returns pending data and removes it
     Given a pending contact has been recorded
     When commit is called
     Then the pending data should be returned
     And the pending entry should be removed
 
-  @rollback @error
+  @rollback @error @implemented
   Scenario: Commit on nonexistent contact returns error
     Given no pending contact exists for a given ID
     When commit is called for that ID
     Then it should return an InvalidState error
 
-  @rollback
+  @rollback @implemented
   Scenario: Rollback all clears everything
     Given multiple pending contacts have been recorded
     When rollback_all is called
     Then all pending data should be cleared
 
-  @rollback
+  @rollback @implemented
   Scenario: Default rollback manager is empty
     When a new BLE rollback manager is created
     Then it should have no pending data
 
   # --- BLE Chunking ---
 
-  @chunking
+  @chunking @implemented
   Scenario: Small payload creates single chunk
     Given a small BLE payload
     When it is chunked
     Then it should produce a single chunk
     And the chunk should contain the correct header and payload
 
-  @chunking
+  @chunking @implemented
   Scenario: Large payload splits into multiple chunks
     Given a 500-byte BLE payload
     When it is chunked with a limited MTU
     Then it should produce multiple chunks
     And each chunk header should contain the correct total_chunks
 
-  @chunking
+  @chunking @implemented
   Scenario: Chunking and reassembly roundtrip
     Given a 2000-byte BLE payload
     When it is chunked and reassembled
     Then the reassembled data should match the original
 
-  @chunking
+  @chunking @implemented
   Scenario: Out-of-order reassembly
     Given chunks received in reverse order
     When they are reassembled
     Then the result should match the original data
 
-  @chunking
+  @chunking @implemented
   Scenario: Duplicate chunk is idempotent
     Given a chunk has already been received
     When the same chunk is received again
     Then the received count should not increment
 
-  @chunking
+  @chunking @implemented
   Scenario: Incomplete reassembly returns nothing
     Given not all chunks have been received
     When reassembly is attempted
     Then it should return no result
 
-  @chunking @error
+  @chunking @error @implemented
   Scenario: Chunk index out of range returns nothing
     Given a chunked payload
     When a chunk beyond the total is requested
