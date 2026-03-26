@@ -75,6 +75,7 @@ lint:gherkin:
   extends: .mr-or-main
   stage: lint
   image: node:20-alpine
+  tags: [docker]
   before_script:
     - npm install -g @cucumber/gherkin-utils
   script:
@@ -104,6 +105,7 @@ lint:structure:
   extends: .mr-or-main
   stage: lint
   image: alpine:3.21
+  tags: [docker]
   script:
     - |
       echo "Checking feature file structure..."
