@@ -81,7 +81,7 @@ Feature: Onboarding Experience
     And I should be able to go back and edit
     And I should see a "Looks good!" button
 
-  @card-creation @planned
+  @card-creation @implemented
   Scenario: Suggest display name variations
     Given I entered my full name "Alexandra Johnson"
     When I reach the display name step
@@ -142,7 +142,7 @@ Feature: Onboarding Experience
     And it should explain "Show your code, scan theirs"
     And it should mention this is an in-person thing
 
-  @first-exchange @planned
+  @first-exchange @implemented
   Scenario: Exchange success celebration
     Given I complete my first exchange
     Then I should see a celebration moment
@@ -169,7 +169,7 @@ Feature: Onboarding Experience
     And it should be clearly marked as demo
     And I can delete it anytime
 
-  @demo @planned
+  @demo @implemented
   Scenario: Demo contact updates demonstrate value
     Given I have the demo contact
     When I open the app later
@@ -178,7 +178,7 @@ Feature: Onboarding Experience
     And tapping should show the changed field
     And I should understand this is how real updates work
 
-  @demo @planned
+  @demo @implemented
   Scenario: Demo contact is dismissible
     Given I have the demo contact
     When I delete it
@@ -186,7 +186,7 @@ Feature: Onboarding Experience
     And I should not be pestered about it
     And I should still see onboarding tips elsewhere
 
-  @demo @planned
+  @demo @implemented
   Scenario: Demo contact removed after first real contact
     Given I have the demo contact
     When I complete my first real exchange
