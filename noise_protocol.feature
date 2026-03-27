@@ -111,7 +111,7 @@ Feature: Noise Protocol Inner Encryption
     And only the relay's static key is authenticated
     And the client does not reveal its static key
 
-  @pattern @planned
+  @pattern @implemented
   Scenario: Defense-in-depth layering
     Given TLS is the outer transport encryption
     And Noise is the inner transport encryption
