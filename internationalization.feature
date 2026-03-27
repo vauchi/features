@@ -10,7 +10,7 @@ Feature: Internationalization
   # Language Selection
   # ============================================================
 
-  @language @planned
+  @language @implemented
   Scenario: App uses system language by default
     Given my device is set to German
     When I open the app for the first time
@@ -35,7 +35,7 @@ Feature: Internationalization
     And this preference should persist
     And I should be able to return to system default
 
-  @language @planned
+  @language @implemented
   Scenario: Language change applies immediately
     Given the app is displaying in English
     When I change the language to Spanish
@@ -43,7 +43,7 @@ Feature: Internationalization
     And I should not need to restart the app
     And all screens should reflect the new language
 
-  @language @planned
+  @language @implemented
   Scenario: Available languages are listed
     When I view the language selection screen
     Then I should see a list of available languages
@@ -231,7 +231,7 @@ Feature: Internationalization
   # Error Messages and Help
   # ============================================================
 
-  @errors @planned
+  @errors @implemented
   Scenario: Error messages are translated
     Given my device is set to Spanish
     When an error occurs
@@ -289,7 +289,7 @@ Feature: Internationalization
   # Translation Quality
   # ============================================================
 
-  @quality @planned
+  @quality @implemented
   Scenario: No untranslated strings visible
     Given my device is set to a supported language
     When I navigate through all screens
@@ -333,7 +333,7 @@ Feature: Internationalization
   # Technical Requirements
   # ============================================================
 
-  @technical @planned
+  @technical @implemented
   Scenario: Locale files are complete
     Given the app is built
     Then each supported locale should have 100% string coverage
