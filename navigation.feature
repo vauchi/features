@@ -78,7 +78,7 @@ Feature: 5-Tab Navigation Architecture
     Then Bob should no longer see my personal phone
   # MyInfo — Per-field Private Notes
 
-  @navigation @notes @planned
+  @navigation @notes @implemented
   Scenario: View and edit private note on own field
     Given I am on the "MyInfo" screen
     And I have a "Work" email field with a note "Check spam folder weekly"
@@ -89,28 +89,28 @@ Feature: 5-Tab Navigation Architecture
     And contacts should never see the note
   # Contacts — Actions
 
-  @navigation @contact-actions @planned
+  @navigation @contact-actions @implemented
   Scenario: Tap phone number to call
     Given I am viewing Bob's contact details on the "Contacts" screen
     And Bob has shared a phone number with me
     When I tap the call action on Bob's phone number
     Then the phone dialer should open with Bob's number
 
-  @navigation @contact-actions @planned
+  @navigation @contact-actions @implemented
   Scenario: Tap email to compose
     Given I am viewing Carol's contact details
     And Carol has shared an email with me
     When I tap the compose action on Carol's email
     Then the email client should open with Carol's address
 
-  @navigation @contact-actions @planned
+  @navigation @contact-actions @implemented
   Scenario: Tap social handle to open in app
     Given I am viewing Bob's contact details
     And Bob has shared a Signal handle with me
     When I tap the open action on Bob's Signal handle
     Then Signal should open to Bob's profile
 
-  @navigation @contact-actions @planned
+  @navigation @contact-actions @implemented
   Scenario: Tap address to open in maps
     Given I am viewing Carol's contact details
     And Carol has shared an address with me
@@ -124,7 +124,7 @@ Feature: 5-Tab Navigation Architecture
     When I tap the calendar action on Bob's birthday
     Then the calendar app should open to add the event
 
-  @navigation @contact-actions @planned
+  @navigation @contact-actions @implemented
   Scenario: Tap URL to open in browser
     Given I am viewing Dave's contact details
     And Dave has shared a website URL with me
@@ -138,7 +138,7 @@ Feature: 5-Tab Navigation Architecture
     Then I should see a trust level badge derived from exchange facts
     And the trust level should not be user-editable
 
-  @navigation @trust @planned
+  @navigation @trust @implemented
   Scenario: Validate a contact's field
     Given I am viewing Bob's contact details
     And Bob has shared a phone number with me
@@ -202,7 +202,7 @@ Feature: 5-Tab Navigation Architecture
     When I tap "Preview as Bob"
     Then I should navigate to the "MyInfo" screen in preview-as mode for Bob
 
-  @navigation @groups @planned
+  @navigation @groups @implemented
   Scenario: Group detail shows member list
     Given I have a group "Family" with "Bob" and "Carol"
     When I view the "Family" group detail
