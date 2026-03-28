@@ -39,7 +39,7 @@ Feature: Performance Requirements
   # Contact List Performance
   # ============================================================
 
-  @contacts @scale @planned
+  @contacts @scale @implemented
   Scenario: Handle 100 contacts smoothly
     Given I have 100 contacts
     When I open the contacts list
@@ -47,7 +47,7 @@ Feature: Performance Requirements
     And scrolling should be smooth (60fps)
     And there should be no jank
 
-  @contacts @scale @planned
+  @contacts @scale @implemented
   Scenario: Handle 1000 contacts
     Given I have 1000 contacts
     When I open the contacts list
@@ -75,7 +75,7 @@ Feature: Performance Requirements
   # Sync Performance
   # ============================================================
 
-  @sync @planned
+  @sync @implemented
   Scenario: Sync large batch of updates
     Given I was offline for 7 days
     And I have 100 pending updates to receive
@@ -269,7 +269,7 @@ Feature: Performance Requirements
   # Stress Testing
   # ============================================================
 
-  @stress @planned
+  @stress @implemented
   Scenario: Handle many simultaneous operations
     Given I am receiving updates from 10 contacts at once
     When all updates arrive simultaneously
