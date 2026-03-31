@@ -65,20 +65,20 @@ Ideas and brainstorming live in `_private/features/ideas/` (not in this repo).
 
 ### P0: Core Features
 
-**identity_management.feature**
+#### identity_management.feature
 
 - Identity creation, backup, recovery
 - Master seed and key derivation
 - Code: `vauchi-core/src/identity/`
 
-**contact_card_management.feature**
+#### contact_card_management.feature
 
 - Create/edit own contact card
 - Field types: phone, email, social, address, website, custom
 - Social network registry (35+ networks)
 - Code: `vauchi-core/src/contact_card/`
 
-**contact_exchange.feature**
+#### contact_exchange.feature
 
 - QR code generation and scanning (implemented)
 - X3DH key exchange (implemented)
@@ -86,58 +86,58 @@ Ideas and brainstorming live in `_private/features/ideas/` (not in this repo).
 - NFC Active exchange (implemented — 174-byte APDU, VNFC magic)
 - Code: `vauchi-core/src/exchange/`
 
-**contacts_management.feature**
+#### contacts_management.feature
 
 - Contact list CRUD operations
 - Search, filter, favorites
 - Blocking and notes
 - Code: `vauchi-core/src/contact/`
 
-**device_management.feature**
+#### device_management.feature
 
 - Multi-device linking via QR
 - Device registry with signatures
 - Device revocation
 - Code: `vauchi-core/src/identity/device.rs`, `vauchi-core/src/exchange/device_link.rs`
 
-**sync_updates.feature**
+#### sync_updates.feature
 
 - Card update propagation
 - Double Ratchet forward secrecy
 - Offline queuing and retry
 - Code: `vauchi-core/src/sync/`, `vauchi-core/src/network/`
 
-**onboarding.feature**
+#### onboarding.feature
 
 - First-run experience and setup flow
 
-**demo_contact.feature**
+#### demo_contact.feature
 
 - Demo contact for new users to explore features
 - Code: `vauchi-core/tests/demo_contact_integration_tests.rs`
 
 ### P1: Security Features
 
-**security.feature**
+#### security.feature
 
 - E2E encryption (XChaCha20-Poly1305)
 - Signature verification (Ed25519)
 - MITM detection, replay prevention
 - Code: `vauchi-core/src/crypto/`
 
-**visibility_control.feature**
+#### visibility_control.feature
 
 - Per-contact field visibility
 - View-as-contact preview
 - Code: `vauchi-core/src/contact/visibility.rs`
 
-**field_validation.feature**
+#### field_validation.feature
 
 - Input validation rules for contact fields
 - Trust levels, validation status tracking
 - Code: `vauchi-core/src/storage/validation.rs`
 
-**privacy_compliance.feature**
+#### privacy_compliance.feature
 
 - GDPR compliance, data export, data deletion
 - Consent storage, crypto-shredding, revocation protocol
@@ -145,38 +145,38 @@ Ideas and brainstorming live in `_private/features/ideas/` (not in this repo).
 
 ### P2: Infrastructure
 
-**visibility_labels.feature**
+#### visibility_labels.feature
 
 - Group contacts by label (Family, Work, etc.)
 - Bulk visibility rules
 - Code: `vauchi-core/src/contact/labels.rs`, `vauchi-core/src/storage/labels.rs`
 
-**relay_network.feature**
+#### relay_network.feature
 
 - Store-and-forward relay
 - Rate limiting, blob expiration
 - Federation (planned)
 - Code: `vauchi-relay/`
 
-**message_delivery.feature**
+#### message_delivery.feature
 
 - Delivery receipts, retry logic
 - Device delivery tracking, status transitions
 - Code: `vauchi-core/src/storage/delivery.rs`, `vauchi-core/src/storage/device_delivery.rs`
 
-**contact_actions.feature**
+#### contact_actions.feature
 
 - Contact interactions (share, export, etc.)
 - URI builder for phone, email, social, address, website
 - Code: `vauchi-core/src/contact_card/uri_builder.rs`
 
-**contact_recovery.feature**
+#### contact_recovery.feature
 
 - Contact recovery flows
 - Trust configuration, vouching, proof collection, discovery
 - Code: `vauchi-core/src/recovery/`
 
-**remote_content.feature**
+#### remote_content.feature
 
 - Remote content updates
 - Manifest fetching, version comparison, fallback behavior
@@ -190,27 +190,27 @@ Ideas and brainstorming live in `_private/features/ideas/` (not in this repo).
 
 ### P3: Advanced Features (Post-Launch)
 
-**performance.feature**
+#### performance.feature
 
 - Performance benchmarks and targets
 
-**accessibility.feature**
+#### accessibility.feature
 
 - Accessibility compliance
 
-**internationalization.feature**
+#### internationalization.feature
 
 - Internationalization and localization
 
-**theming.feature**
+#### theming.feature
 
 - Visual theming support
 
-**platform_edge_cases.feature**
+#### platform_edge_cases.feature
 
 - Platform-specific edge cases
 
-**aha_moments.feature**
+#### aha_moments.feature
 
 - User delight moments
 
