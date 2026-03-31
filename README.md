@@ -1,12 +1,14 @@
 <!-- SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me> -->
 <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
 
-> **Mirror:** This repo is a read-only mirror of [gitlab.com/vauchi/features](https://gitlab.com/vauchi/features). Please open issues and merge requests there.
+# Feature Scenarios
+
+> **Mirror:** This repo is a read-only mirror of
+> [gitlab.com/vauchi/features](https://gitlab.com/vauchi/features).
+> Please open issues and merge requests there.
 
 [![Pipeline](https://img.shields.io/endpoint?url=https://vauchi.gitlab.io/features/badges/pipeline.json&label=pipeline)](https://gitlab.com/vauchi/features/-/pipelines)
 [![REUSE](https://api.reuse.software/badge/gitlab.com/vauchi/features)](https://api.reuse.software/info/gitlab.com/vauchi/features)
-
-# Feature Scenarios
 
 Gherkin scenarios defining Vauchi behavior.
 Each scenario should have corresponding tests.
@@ -25,7 +27,7 @@ Ideas and brainstorming live in `_private/features/ideas/` (not in this repo).
 ## Status Overview
 
 | Feature | Scenarios | Implemented | Priority | Notes |
-|---------|-----------|-------------|----------|-------|
+| ------- | --------- | ----------- | -------- | ----- |
 | identity_management | 15 | 12 | P0 | Core, backup, password done; QR linking gaps |
 | contact_card_management | 34 | 34 | P0 | Core |
 | contact_exchange | 50 | 30 | P0 | QR, Mutual QR, BLE, NFC Active, X3DH done |
