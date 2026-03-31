@@ -3,12 +3,13 @@
 
 > **Mirror:** This repo is a read-only mirror of [gitlab.com/vauchi/features](https://gitlab.com/vauchi/features). Please open issues and merge requests there.
 
-[![Pipeline](https://vauchi.gitlab.io/features/badges/pipeline.svg)](https://gitlab.com/vauchi/features/-/pipelines)
+[![Pipeline](https://img.shields.io/endpoint?url=https://vauchi.gitlab.io/features/badges/pipeline.json&label=pipeline)](https://gitlab.com/vauchi/features/-/pipelines)
 [![REUSE](https://api.reuse.software/badge/gitlab.com/vauchi/features)](https://api.reuse.software/info/gitlab.com/vauchi/features)
 
 # Feature Scenarios
 
-Gherkin scenarios defining Vauchi behavior. Each scenario should have corresponding tests.
+Gherkin scenarios defining Vauchi behavior.
+Each scenario should have corresponding tests.
 
 ## Lifecycle Tags
 
@@ -65,17 +66,20 @@ Ideas and brainstorming live in `_private/features/ideas/` (not in this repo).
 ### P0: Core Features
 
 **identity_management.feature**
+
 - Identity creation, backup, recovery
 - Master seed and key derivation
 - Code: `vauchi-core/src/identity/`
 
 **contact_card_management.feature**
+
 - Create/edit own contact card
 - Field types: phone, email, social, address, website, custom
 - Social network registry (35+ networks)
 - Code: `vauchi-core/src/contact_card/`
 
 **contact_exchange.feature**
+
 - QR code generation and scanning (implemented)
 - X3DH key exchange (implemented)
 - BLE proximity exchange (stubbed)
@@ -83,49 +87,58 @@ Ideas and brainstorming live in `_private/features/ideas/` (not in this repo).
 - Code: `vauchi-core/src/exchange/`
 
 **contacts_management.feature**
+
 - Contact list CRUD operations
 - Search, filter, favorites
 - Blocking and notes
 - Code: `vauchi-core/src/contact/`
 
 **device_management.feature**
+
 - Multi-device linking via QR
 - Device registry with signatures
 - Device revocation
 - Code: `vauchi-core/src/identity/device.rs`, `vauchi-core/src/exchange/device_link.rs`
 
 **sync_updates.feature**
+
 - Card update propagation
 - Double Ratchet forward secrecy
 - Offline queuing and retry
 - Code: `vauchi-core/src/sync/`, `vauchi-core/src/network/`
 
 **onboarding.feature**
+
 - First-run experience and setup flow
 
 **demo_contact.feature**
+
 - Demo contact for new users to explore features
 - Code: `vauchi-core/tests/demo_contact_integration_tests.rs`
 
 ### P1: Security Features
 
 **security.feature**
+
 - E2E encryption (XChaCha20-Poly1305)
 - Signature verification (Ed25519)
 - MITM detection, replay prevention
 - Code: `vauchi-core/src/crypto/`
 
 **visibility_control.feature**
+
 - Per-contact field visibility
 - View-as-contact preview
 - Code: `vauchi-core/src/contact/visibility.rs`
 
 **field_validation.feature**
+
 - Input validation rules for contact fields
 - Trust levels, validation status tracking
 - Code: `vauchi-core/src/storage/validation.rs`
 
 **privacy_compliance.feature**
+
 - GDPR compliance, data export, data deletion
 - Consent storage, crypto-shredding, revocation protocol
 - Code: `vauchi-core/src/storage/consent.rs`, `vauchi-core/src/crypto/shredding.rs`
@@ -133,37 +146,44 @@ Ideas and brainstorming live in `_private/features/ideas/` (not in this repo).
 ### P2: Infrastructure
 
 **visibility_labels.feature**
+
 - Group contacts by label (Family, Work, etc.)
 - Bulk visibility rules
 - Code: `vauchi-core/src/contact/labels.rs`, `vauchi-core/src/storage/labels.rs`
 
 **relay_network.feature**
+
 - Store-and-forward relay
 - Rate limiting, blob expiration
 - Federation (planned)
 - Code: `vauchi-relay/`
 
 **message_delivery.feature**
+
 - Delivery receipts, retry logic
 - Device delivery tracking, status transitions
 - Code: `vauchi-core/src/storage/delivery.rs`, `vauchi-core/src/storage/device_delivery.rs`
 
 **contact_actions.feature**
+
 - Contact interactions (share, export, etc.)
 - URI builder for phone, email, social, address, website
 - Code: `vauchi-core/src/contact_card/uri_builder.rs`
 
 **contact_recovery.feature**
+
 - Contact recovery flows
 - Trust configuration, vouching, proof collection, discovery
 - Code: `vauchi-core/src/recovery/`
 
 **remote_content.feature**
+
 - Remote content updates
 - Manifest fetching, version comparison, fallback behavior
 - Code: `vauchi-core/src/content/`
 
 **IP privacy** (via OHTTP relay — see relay_network.feature)
+
 - Self-hosted OHTTP relay strips client IPs
 - Optional SOCKS5 proxy for ISP-level hiding
 - Timing obfuscation (jitter, padding)
@@ -171,21 +191,27 @@ Ideas and brainstorming live in `_private/features/ideas/` (not in this repo).
 ### P3: Advanced Features (Post-Launch)
 
 **performance.feature**
+
 - Performance benchmarks and targets
 
 **accessibility.feature**
+
 - Accessibility compliance
 
 **internationalization.feature**
+
 - Internationalization and localization
 
 **theming.feature**
+
 - Visual theming support
 
 **platform_edge_cases.feature**
+
 - Platform-specific edge cases
 
 **aha_moments.feature**
+
 - User delight moments
 
 ## Running Scenario Tests
