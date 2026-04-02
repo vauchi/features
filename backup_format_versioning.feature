@@ -6,7 +6,7 @@
 Feature: Backup Format Versioning
   As a Vauchi user
   I want backup files to use versioned formats
-  So that new backups use stronger cryptography while old backups remain restorable
+  So that backup files use strong, versioned cryptography with clear format detection
 
   Background:
     Given the Vauchi application is installed
