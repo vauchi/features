@@ -55,32 +55,6 @@ Feature: Backup Format Versioning
     And no partial data should be exposed
 
   # ============================================================
-  # Legacy Format (v1)
-  # ============================================================
-
-  @v1 @legacy @implemented
-  Scenario: Legacy backups are still restorable
-    Given I have a legacy (v1) backup file
-    When I restore the backup with the correct password
-    Then my identity should be fully restored
-    And the legacy format should be auto-detected
-
-  @v1 @legacy @implemented
-  Scenario: Legacy backup uses PBKDF2 key derivation
-    Given I have a legacy backup file
-    When the system decrypts it
-    Then key derivation should use PBKDF2-HMAC-SHA256
-    And PBKDF2 should use 100,000 iterations
-    And decryption should use AES-256-GCM
-
-  @v1 @legacy @implemented
-  Scenario: Legacy backup format auto-detection
-    Given I have a backup file without a v2 version byte
-    When I attempt to restore it
-    Then the system should detect it as a legacy format
-    And fall back to PBKDF2 + AES-256-GCM decryption
-
-  # ============================================================
   # Version Detection
   # ============================================================
 
@@ -91,34 +65,10 @@ Feature: Backup Format Versioning
     Then the backup should be treated as v2 format
 
   @detection @implemented
-  Scenario: Unknown version byte falls back to legacy
+  Scenario: Unknown version byte is rejected
     Given I have a backup file
     When the first byte is not 0x02
-    Then the backup should be treated as legacy format
-    And PBKDF2 + AES-256-GCM decryption should be attempted
-
-  # ============================================================
-  # Migration
-  # ============================================================
-
-  @migration @implemented
-  Scenario: Restoring legacy backup and re-exporting creates v2
-    Given I restore a legacy (v1) backup successfully
-    When I create a new backup of the restored identity
-    Then the new backup should use v2 format
-    And the new backup should use Argon2id + XChaCha20-Poly1305
-    And the original legacy backup should remain valid
-
-  # ============================================================
-  # Security Properties
-  # ============================================================
-
-  @security @planned
-  Scenario: V2 provides stronger protection than v1
-    Given v2 uses Argon2id (memory-hard, timing-resistant)
-    And v1 uses PBKDF2 (CPU-only, parallelizable)
-    Then v2 should be more resistant to GPU-based brute force attacks
-    And v2 should be more resistant to ASIC-based attacks
+    Then restoration should fail with RestoreFailed
 
   @security @implemented
   Scenario: Backup contains only the master seed
