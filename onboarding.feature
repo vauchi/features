@@ -265,7 +265,7 @@ Feature: Onboarding Experience
     And I should know how much is left
     And completed steps should be checkmarked
 
-  @progress @planned
+  @progress @implemented
   Scenario: Can go back to previous steps
     Given I am on step 3 of onboarding
     When I tap the back button
@@ -280,7 +280,7 @@ Feature: Onboarding Experience
     And skipping should not break the flow
     And I should be reminded later in settings
 
-  @progress @planned
+  @progress @implemented
   Scenario: Exit and resume onboarding
     Given I am halfway through onboarding
     When I close the app
@@ -307,7 +307,7 @@ Feature: Onboarding Experience
     And hints should be dismissible
     And they should not be overwhelming
 
-  @completion @planned
+  @completion @implemented
   Scenario: Replay onboarding from settings
     Given I completed onboarding previously
     When I go to Settings > Help > Show Onboarding
@@ -326,7 +326,7 @@ Feature: Onboarding Experience
     And I should have a functional card
     And I should be ready to exchange
 
-  @ttv @planned
+  @ttv @implemented
   Scenario: First exchange possible immediately
     Given I just completed onboarding
     When I find another Vauchi user
@@ -334,7 +334,7 @@ Feature: Onboarding Experience
     And no further setup should be required
     And the value should be apparent
 
-  @ttv @planned
+  @ttv @implemented
   Scenario: Value clear even without exchange
     Given I completed onboarding alone
     Then I should still understand the value proposition
