@@ -476,3 +476,118 @@ Feature: Contact Card Exchange
     And relative times should be correct
     And no duplicate notifications should occur
 
+  # Exchange Reciprocity Confirmation
+  # Detects and surfaces whether both sides completed the exchange.
+  # Design: _private/docs/designs/2026-04-04-atomic-exchange-reciprocity-design.md
+  # Problem: PRB-2026-038 (unilateral exchange race)
+
+  @reciprocity @relay-escrow @planned
+  Scenario: Both sides confirm via relay escrow
+    Given Alice and Bob successfully complete a QR exchange
+    And both devices have internet connectivity
+    When Alice's device deposits her confirmation token to the relay escrow
+    And Bob's device deposits his confirmation token to the relay escrow
+    Then both devices should retrieve the other's token
+    And Alice's contact for Bob should have reciprocity "Confirmed"
+    And Bob's contact for Alice should have reciprocity "Confirmed"
+    And no toast or notification should be shown for the confirmation
+
+  @reciprocity @relay-sync @planned
+  Scenario: Both sides confirm via relay sync fallback
+    Given Alice and Bob successfully complete a QR exchange
+    And relay escrow confirmation has timed out for both
+    When Alice's device sends a ReciprocityConfirm payload during relay sync
+    And Bob's device sends a ReciprocityConfirm payload during relay sync
+    Then Alice's contact for Bob should transition from "Pending" to "Confirmed"
+    And Bob's contact for Alice should transition from "Pending" to "Confirmed"
+    And no toast or notification should be shown for the confirmation
+
+  @reciprocity @planned
+  Scenario: New contact starts with Pending reciprocity
+    Given Alice and Bob successfully complete a QR exchange
+    When Alice's device creates the contact record for Bob
+    Then Alice's contact for Bob should have reciprocity "Pending"
+    And Alice should see a subtle clock icon on Bob's contact
+
+  @reciprocity @planned
+  Scenario: One side never completes the exchange
+    Given Alice scans Bob's QR code and completes the exchange
+    But Bob's device times out before completing
+    When Alice's device attempts relay escrow confirmation
+    Then the escrow gate should never reach 2 deposits
+    And Alice's device should fall through to relay sync confirmation
+    And after 7 days without a ReciprocityConfirm from Bob
+    And Alice's contact for Bob should transition from "Pending" to "Unreciprocated"
+    And Alice should see "May not have your card. Exchange again when you meet."
+    And Bob should NOT have a contact record for Alice
+
+  @reciprocity @planned
+  Scenario: Late confirmation accepted after 7-day window
+    Given Alice has a contact for Bob with reciprocity "Unreciprocated"
+    When Bob later completes an exchange that produces the same shared secret
+    And Bob's device sends a valid ReciprocityConfirm via relay sync
+    Then Alice's contact for Bob should transition from "Unreciprocated" to "Confirmed"
+    And Alice should see the "May not have your card" banner disappear
+    And no toast or notification should be shown
+
+  @reciprocity @security @planned
+  Scenario: Confirmation tokens are asymmetric per identity
+    Given Alice and Bob successfully complete a QR exchange
+    When Alice derives her confirmation token
+    And Bob derives his confirmation token
+    Then Alice's token should NOT equal Bob's token
+    And replaying Alice's own token back to her should NOT confirm the exchange
+
+  @reciprocity @security @planned
+  Scenario: Escrow gate hash is unguessable without shared secret
+    Given Alice and Bob successfully complete a QR exchange
+    And their escrow gate hash is derived via HKDF from the DH shared secret
+    When an adversary who did not participate in the exchange
+    Then the adversary should not be able to derive the gate hash
+    And the adversary should not be able to deposit a fake confirmation token
+
+  @reciprocity @edge-case @planned
+  Scenario: App killed mid-confirmation resumes at relay escrow
+    Given Alice and Bob successfully complete a QR exchange
+    And Alice's device has begun the confirmation cascade
+    When Alice's app is killed before confirmation completes
+    And Alice relaunches the app
+    Then Alice's device should find Bob's contact with reciprocity "Pending"
+    And resume confirmation starting at relay escrow level
+    And skip audio and BLE confirmation levels
+
+  @reciprocity @edge-case @planned
+  Scenario: Re-exchange with same contact cancels previous confirmer
+    Given Alice has a contact for Bob with reciprocity "Pending"
+    And a confirmation cascade is in progress
+    When Alice and Bob perform a new exchange
+    Then the previous confirmer should be cancelled
+    And its tokens should be zeroized
+    And a new confirmer should be created with fresh tokens from the new exchange
+
+  @reciprocity @edge-case @planned
+  Scenario: Remote exchange skips audio and BLE confirmation
+    Given Alice initiates a web-based remote exchange with Bob
+    When both sides complete the exchange
+    Then the confirmation cascade should start at relay escrow level
+    And audio confirmation should NOT be attempted
+    And BLE confirmation should NOT be attempted
+
+  @reciprocity @edge-case @planned
+  Scenario: Network partition during relay escrow falls through to sync
+    Given Alice and Bob successfully complete a QR exchange
+    And Alice's device loses internet connectivity
+    When Alice's relay escrow deposit fails after 3 retry attempts
+    Then Alice's device should fall through to relay sync confirmation
+    And Alice's contact for Bob should remain "Pending"
+    And confirmation should complete when connectivity is restored and sync delivers the payload
+
+  @reciprocity @backward-compat @planned
+  Scenario: Old client receives ReciprocityConfirm gracefully
+    Given Alice is running a version that supports reciprocity confirmation
+    And Bob is running an older version without reciprocity support
+    When Alice sends a ReciprocityConfirm payload (version byte 0x03) via relay sync
+    Then Bob's device should return "UnknownPayloadVersion"
+    And Bob's device should NOT crash or lose data
+    And Alice's contact for Bob should remain "Pending" until timeout
+
