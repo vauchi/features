@@ -126,7 +126,7 @@ Feature: Onboarding Experience
   # First Exchange
   # ============================================================
 
-  @first-exchange @planned
+  @first-exchange @implemented
   Scenario: Prompt for first exchange
     Given I completed card creation
     When I reach the main screen for the first time
@@ -149,7 +149,7 @@ Feature: Onboarding Experience
     And it should explain "You'll see their updates automatically"
     And I should feel accomplished
 
-  @first-exchange @planned
+  @first-exchange @implemented
   Scenario: Empty state with guidance
     Given I have no contacts yet
     When I view the contacts list
