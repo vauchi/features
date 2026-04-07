@@ -45,6 +45,7 @@ lint:images:
 # Override shared template to exclude ideas/ directory from naming check.
 # Idea files don't need date prefixes — they're informal brainstorming docs.
 check:doc-naming:
+  tags: [docker]
   script:
     - |
       ERRORS=0
