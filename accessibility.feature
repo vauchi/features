@@ -108,7 +108,7 @@ Feature: Accessibility
     And focus should be visible at all times
     And the tab order should be logical
 
-  @keyboard @desktop @planned
+  @keyboard @desktop @implemented
   Scenario: Keyboard shortcuts for common actions
     Given I am on the main screen
     When I press Ctrl+N (or Cmd+N on Mac)
@@ -165,7 +165,7 @@ Feature: Accessibility
     And icons or text should accompany color indicators
     And the app should be usable by colorblind users
 
-  @visual @text-size @implemented
+  @visual @text-size @planned
   Scenario: Dynamic type support on iOS
     Given I have increased text size in iOS settings
     When I open the app
@@ -173,7 +173,7 @@ Feature: Accessibility
     And layout should adapt without truncation
     And the app should remain usable at largest sizes
 
-  @visual @text-size @implemented
+  @visual @text-size @planned
   Scenario: Font scaling support on Android
     Given I have increased font size in Android settings
     When I open the app
@@ -323,7 +323,7 @@ Feature: Accessibility
     And all images should have alternative text
     And all controls should have accessibility labels
 
-  @android @requirement @implemented
+  @android @requirement @planned
   Scenario: Android Accessibility requirements met
     Given I run Accessibility Scanner on the Android app
     Then there should be no critical accessibility issues
