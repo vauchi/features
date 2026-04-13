@@ -294,3 +294,68 @@ Feature: Contacts Management
     When I dismiss the suggestion
     Then both contacts should remain separate
     And the suggestion should not reappear
+
+  # --- Contact Nickname & Custom Avatar ---
+
+  @nickname @planned
+  Scenario: Set and display custom nickname
+    Given I have an exchanged contact "Bob"
+    When I set the nickname "Bobby" for contact "Bob"
+    Then the nickname for contact "Bob" is "Bobby"
+
+  @nickname @planned
+  Scenario: Choose between card variant names and nickname
+    Given I have an exchanged contact "Bob"
+    And the contact "Bob" has a name variant "Work" with name "Dr. Bob"
+    When I set the nickname "Bobby" for contact "Bob"
+    And I set the display name preference to "custom" for contact "Bob"
+    Then the resolved display name for contact "Bob" is "Bobby"
+
+  @avatar @planned
+  Scenario: Upload custom avatar
+    Given I have an exchanged contact "Bob"
+    When I set a custom WebP avatar for contact "Bob"
+    Then the contact "Bob" has a custom avatar
+
+  @nickname @planned
+  Scenario: Per-group name variant selection
+    Given I have an exchanged contact "Bob"
+    And the contact "Bob" has name variants:
+      | source_label | name      |
+      |              | Bob Smith |
+      | Work         | Dr. Smith |
+      | Family       | Bobby     |
+    When I set the display name preference to card variant "Work" for contact "Bob"
+    Then the resolved display name for contact "Bob" is "Dr. Smith"
+
+  @nickname @planned
+  Scenario: Card update follows selected variant
+    Given I have an exchanged contact "Bob"
+    And the contact "Bob" has a name variant "Work" with name "Dr. Bob"
+    And I set the display name preference to card variant "Work"
+    When the name variant "Work" is updated to "Prof. Bob"
+    Then the resolved display name for contact "Bob" is "Prof. Bob"
+
+  @merge @planned
+  Scenario: Cross-kind merge with name and avatar adoption
+    Given I have an exchanged contact "Bob"
+    And I have an imported contact "Robert" with avatar
+    When I merge "Robert" into "Bob" with name and avatar adoption
+    Then the nickname for contact "Bob" is "Robert"
+    And the contact "Bob" has a custom avatar
+    And the imported contact "Robert" no longer exists
+
+  @merge @planned
+  Scenario: Cross-kind merge with notes preservation
+    Given I have an exchanged contact "Bob"
+    And I have an imported contact "Robert" with phone "555-1234"
+    When I merge "Robert" into "Bob" with notes preservation
+    Then the personal note for "Bob" contains "555-1234"
+    And the imported contact "Robert" no longer exists
+
+  @nickname @planned
+  Scenario: Smart merge - card update stays when preference is nickname
+    Given I have an exchanged contact "Bob"
+    And I set the nickname "Bobby" and display name preference to "custom"
+    When a card update changes the default name to "Robert"
+    Then the resolved display name for contact "Bob" is "Bobby"
