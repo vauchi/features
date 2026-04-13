@@ -323,24 +323,24 @@ Feature: Contacts Management
     And the contact "Bob" has shared names:
       | name       | is_primary |
       | Bob Smith  | true       |
-      | lissa      | false      |
+      | Bobby      | false      |
       | Dr. Smith  | false      |
-    When I set the display name preference to shared name "lissa" for contact "Bob"
-    Then the resolved display name for contact "Bob" is "lissa"
+    When I set the display name preference to shared name "Dr. Smith" for contact "Bob"
+    Then the resolved display name for contact "Bob" is "Dr. Smith"
 
   @nickname @planned
   Scenario: Sync delta adds and removes shared names
     Given I have an exchanged contact "Bob" with shared name "Bob Smith"
-    When a sync delta adds shared name "lissa" for contact "Bob"
+    When a sync delta adds shared name "Bobby" for contact "Bob"
     And a sync delta removes shared name "Bob Smith" for contact "Bob"
-    Then the contact "Bob" has shared names "lissa"
+    Then the contact "Bob" has shared names "Bobby"
 
   @nickname @planned
   Scenario: Display follows selected shared name after sync update
     Given I have an exchanged contact "Bob"
-    And the contact "Bob" has shared names "Bob Smith" and "lissa"
-    And I set the display name preference to shared name "lissa"
-    When the shared name "lissa" is removed by a sync delta
+    And the contact "Bob" has shared names "Bob Smith" and "Bobby"
+    And I set the display name preference to shared name "Bobby"
+    When the shared name "Bobby" is removed by a sync delta
     Then the resolved display name for contact "Bob" falls back to primary
 
   @merge @planned
