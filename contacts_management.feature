@@ -306,7 +306,7 @@ Feature: Contacts Management
   @nickname @planned
   Scenario: Choose between shared names and nickname
     Given I have an exchanged contact "Bob"
-    And the contact "Bob" has shared names "Bob Smith" and "lissa"
+    And the contact "Bob" has shared names "Bob Smith" and "Bobby"
     When I set the nickname "Bobby" for contact "Bob"
     And I set the display name preference to "custom" for contact "Bob"
     Then the resolved display name for contact "Bob" is "Bobby"
