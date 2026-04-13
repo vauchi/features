@@ -295,7 +295,7 @@ Feature: Contacts Management
     Then both contacts should remain separate
     And the suggestion should not reappear
 
-  # --- Contact Nickname & Custom Avatar ---
+  # --- Contact Nickname, Custom Avatar & Shared Names ---
 
   @nickname @planned
   Scenario: Set and display custom nickname
@@ -304,9 +304,9 @@ Feature: Contacts Management
     Then the nickname for contact "Bob" is "Bobby"
 
   @nickname @planned
-  Scenario: Choose between card variant names and nickname
+  Scenario: Choose between shared names and nickname
     Given I have an exchanged contact "Bob"
-    And the contact "Bob" has a name variant "Work" with name "Dr. Bob"
+    And the contact "Bob" has shared names "Bob Smith" and "lissa"
     When I set the nickname "Bobby" for contact "Bob"
     And I set the display name preference to "custom" for contact "Bob"
     Then the resolved display name for contact "Bob" is "Bobby"
@@ -318,23 +318,30 @@ Feature: Contacts Management
     Then the contact "Bob" has a custom avatar
 
   @nickname @planned
-  Scenario: Per-group name variant selection
+  Scenario: Select a shared name
     Given I have an exchanged contact "Bob"
-    And the contact "Bob" has name variants:
-      | source_label | name      |
-      |              | Bob Smith |
-      | Work         | Dr. Smith |
-      | Family       | Bobby     |
-    When I set the display name preference to card variant "Work" for contact "Bob"
-    Then the resolved display name for contact "Bob" is "Dr. Smith"
+    And the contact "Bob" has shared names:
+      | name       | is_primary |
+      | Bob Smith  | true       |
+      | lissa      | false      |
+      | Dr. Smith  | false      |
+    When I set the display name preference to shared name "lissa" for contact "Bob"
+    Then the resolved display name for contact "Bob" is "lissa"
 
   @nickname @planned
-  Scenario: Card update follows selected variant
+  Scenario: Sync delta adds and removes shared names
+    Given I have an exchanged contact "Bob" with shared name "Bob Smith"
+    When a sync delta adds shared name "lissa" for contact "Bob"
+    And a sync delta removes shared name "Bob Smith" for contact "Bob"
+    Then the contact "Bob" has shared names "lissa"
+
+  @nickname @planned
+  Scenario: Display follows selected shared name after sync update
     Given I have an exchanged contact "Bob"
-    And the contact "Bob" has a name variant "Work" with name "Dr. Bob"
-    And I set the display name preference to card variant "Work"
-    When the name variant "Work" is updated to "Prof. Bob"
-    Then the resolved display name for contact "Bob" is "Prof. Bob"
+    And the contact "Bob" has shared names "Bob Smith" and "lissa"
+    And I set the display name preference to shared name "lissa"
+    When the shared name "lissa" is removed by a sync delta
+    Then the resolved display name for contact "Bob" falls back to primary
 
   @merge @planned
   Scenario: Cross-kind merge with name and avatar adoption
@@ -354,8 +361,8 @@ Feature: Contacts Management
     And the imported contact "Robert" no longer exists
 
   @nickname @planned
-  Scenario: Smart merge - card update stays when preference is nickname
+  Scenario: Smart merge - sync delta stays when preference is nickname
     Given I have an exchanged contact "Bob"
     And I set the nickname "Bobby" and display name preference to "custom"
-    When a card update changes the default name to "Robert"
+    When a sync delta changes the primary name to "Robert"
     Then the resolved display name for contact "Bob" is "Bobby"
