@@ -10,7 +10,7 @@ Feature: Sealed Mailbox Tokens (SP-33)
 
   PRINCIPLES ALIGNMENT:
   - Privacy is a right: Relay sees neither sender (SP-32) nor recipient (SP-33)
-  - Zero Knowledge: Relay routes by opaque daily-rotating tokens, not identity
+  - Oblivious Relay: Relay routes by opaque daily-rotating tokens, not identity
   - Trust earned in person: Tokens derived from shared keys established in person
   - Audited crypto only: HKDF-SHA256 derivation, same pattern as anonymous sender
 

@@ -13,7 +13,7 @@ Feature: Emergency Broadcast
   PRINCIPLES ALIGNMENT:
   - Privacy is a right: Alerts are E2E encrypted
   - Trust earned in person: Alerts go only to contacts met in person
-  - Zero knowledge: Alert looks like normal sync to relay
+  - Oblivious relay: Alert looks like normal sync to relay
   - Simplicity: One tap to alert — simple mental model
   - No harvesting: No location unless user explicitly enables
 
