@@ -11,36 +11,26 @@ Feature: Onboarding Experience
   # ============================================================
 
   @first-launch @implemented
-  Scenario: Welcome screen on first launch
+  Scenario: Identity check on first launch
     Given I have never used Vauchi before
     When I launch the app
-    Then I should see a welcome screen
-    And it should briefly explain Vauchi's value proposition
-    And there should be a "Get Started" button
-
-  @first-launch @implemented
-  Scenario: Value proposition is clear
-    Given I am on the welcome screen
-    Then I should understand:
-      | Point | Message                                     |
-      | What  | Contact cards that update automatically     |
-      | How   | Exchange QR codes in person                 |
-      | Why   | Your contacts always have your current info |
-    And the explanation should take less than 30 seconds to read
+    Then I should see an identity check screen
+    And I should be able to create a new identity
+    And I should be able to restore an existing identity
 
   @first-launch @implemented
   Scenario: Skip to restore for existing users
-    Given I am on the welcome screen
+    Given I am on the identity check screen
     And I have a backup from another device
-    When I tap "I have a backup"
+    When I tap "I already have an identity"
     Then I should be guided to restore my identity
     And I should not go through new user onboarding
 
   @first-launch @implemented
   Scenario: Link to existing device
-    Given I am on the welcome screen
+    Given I am on the identity check screen
     And I have Vauchi on another device
-    When I tap "Link to existing device"
+    When I tap "I already have an identity"
     Then I should be guided through device linking
     And my identity should transfer
     And onboarding should skip card creation
@@ -49,20 +39,20 @@ Feature: Onboarding Experience
   # ============================================================
 
   @card-creation @implemented
-  Scenario: Guided card creation wizard
-    Given I tapped "Get Started"
+  Scenario: Guided card creation
+    Given I tapped "Create new identity"
     When I reach the card creation step
-    Then I should see a friendly wizard
-    And it should ask for my name first
-    And it should suggest common fields to add
-    And I should be able to skip optional fields
+    Then it should ask for my name first
+    And I should be able to set up groups
+    And I should be able to add contact fields
+    And I should be able to skip optional steps
 
   @card-creation @implemented
   Scenario: Minimum viable card
     Given I am creating my card
     When I enter just my name
     Then I should be able to proceed
-    And I should see "You can add more later"
+    And I should be able to skip groups and contact info
     And I should not feel pressured to complete everything
 
   @card-creation @planned
@@ -74,14 +64,6 @@ Feature: Onboarding Experience
     And I should be able to skip
 
   @card-creation @implemented
-  Scenario: Card preview before finishing
-    Given I have entered my card information
-    When I reach the preview step
-    Then I should see how my card will look to others
-    And I should be able to go back and edit
-    And I should see a "Looks good!" button
-
-  @card-creation @implemented
   Scenario: Suggest display name variations
     Given I entered my full name "Alexandra Johnson"
     When I reach the display name step
@@ -89,39 +71,36 @@ Feature: Onboarding Experience
     And I should be able to pick one or type custom
     And I should understand this is what contacts see first
   # ============================================================
-  # Security Explanation
+  # What Next (post-onboarding choices)
   # ============================================================
 
-  @security @implemented
-  Scenario: Simple security explanation
-    Given I am in the onboarding flow
-    When I reach the security step
-    Then I should see a simple explanation of E2E encryption
-    And it should NOT use technical jargon
+  @what-next @implemented
+  Scenario: User chooses next action after onboarding
+    Given I completed card setup
+    When I reach the "What would you like to do?" screen
+    Then I should see options to:
+      | option                    |
+      | Exchange cards            |
+      | Import existing contacts  |
+      | Read about security       |
+      | Read about backup         |
+      | Start using the app       |
+    And all options should complete onboarding
+    And I should be taken to the chosen destination
+
+  @what-next @implemented
+  Scenario: Security info accessible from WhatNext
+    Given I am on the WhatNext screen
+    When I choose "Read about security"
+    Then I should see information about E2E encryption
     And it should convey "Only you and your contacts can see your info"
 
-  @security @planned
-  Scenario: Visual encryption explanation
-    Given I am on the security step
-    Then I should see a visual diagram
-    And it should show: your phone ↔ their phone (no cloud in middle)
-    And the message should be clear without reading text
-
-  @security @implemented
-  Scenario: Backup prompt
-    Given I have created my identity
-    When onboarding continues
-    Then I should be prompted to set up backup
+  @what-next @implemented
+  Scenario: Backup accessible from WhatNext
+    Given I am on the WhatNext screen
+    When I choose "Read about backup"
+    Then I should be taken to the backup setup screen
     And I should understand why backup matters
-    And I should be able to "Remind me later"
-
-  @security @planned
-  Scenario: Recovery setup prompt
-    Given I completed basic onboarding
-    When I am prompted about recovery
-    Then I should understand the social recovery concept simply
-    And I should be able to "Set up later"
-    And the explanation should not be intimidating
   # ============================================================
   # First Exchange
   # ============================================================
@@ -194,7 +173,7 @@ Feature: Onboarding Experience
     # Or I should be prompted to remove it
     And focus should shift to real contacts
   # ============================================================
-  # 9-Step Onboarding Flow
+  # 4-Step Onboarding Flow
   # ============================================================
 
   @default-name @implemented
@@ -207,19 +186,6 @@ Feature: Onboarding Experience
       | Alice      |
       | Ali        |
       | A. Johnson |
-
-  @skip-gate @implemented
-  Scenario: User skips onboarding after entering name
-    Given I am on the onboarding skip gate step
-    Then I should see what I will miss
-      | feature      |
-      | Groups       |
-      | Contact info |
-      | Card preview |
-    When I choose "Skip to finish"
-    Then I should be on the security explanation step
-    And I should have no groups
-    And I should have no contact fields
 
   @groups-setup @implemented
   Scenario: User creates groups during onboarding
@@ -261,9 +227,8 @@ Feature: Onboarding Experience
   @progress @implemented
   Scenario: Onboarding progress indicator
     Given I am in the onboarding flow
-    Then I should see my progress (step 2 of 4)
+    Then I should see my progress (step N of 4)
     And I should know how much is left
-    And completed steps should be checkmarked
 
   @progress @implemented
   Scenario: Can go back to previous steps
@@ -293,19 +258,11 @@ Feature: Onboarding Experience
   # ============================================================
 
   @completion @implemented
-  Scenario: Onboarding completion
+  Scenario: Onboarding completion via WhatNext
     Given I finish all onboarding steps
-    Then I should see a completion message
-    And I should be taken to the main app
+    Then I should see "What would you like to do?"
+    And I should choose my next action
     And the onboarding should not repeat on next launch
-
-  @completion @planned
-  Scenario: What's next guidance
-    Given I completed onboarding
-    When I see the main screen
-    Then I should see contextual hints for next steps
-    And hints should be dismissible
-    And they should not be overwhelming
 
   @completion @implemented
   Scenario: Replay onboarding from settings
@@ -319,10 +276,10 @@ Feature: Onboarding Experience
   # ============================================================
 
   @ttv @implemented
-  Scenario: Complete onboarding in under 2 minutes
+  Scenario: Complete onboarding in under 30 seconds
     Given I am a new user
     When I go through the minimal onboarding path
-    Then I should be done in under 2 minutes
+    Then I should be done in under 30 seconds
     And I should have a functional card
     And I should be ready to exchange
 
