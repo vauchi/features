@@ -140,34 +140,34 @@ Feature: Help & FAQ System
   # Platform Access
   # ============================================================
 
-  @platform @planned
+  @platform @implemented
   Scenario: Access FAQs from CLI
     When I run "vauchi faq list"
     Then I should see all FAQs formatted for the terminal
 
-  @platform @planned
+  @platform @implemented
   Scenario: Search FAQs from CLI
     When I run "vauchi faq list --query encryption"
     Then I should see only FAQs matching "encryption"
 
-  @platform @planned
+  @platform @implemented
   Scenario: View FAQ categories from CLI
     When I run "vauchi faq categories"
     Then I should see all categories with their FAQ counts
 
-  @platform @planned
+  @platform @implemented
   Scenario: View specific FAQ from CLI
     When I run "vauchi faq show faq-phone-lost"
     Then I should see the full question and answer
     And I should see related FAQ IDs if any exist
 
-  @platform @planned
+  @platform @implemented
   Scenario: Access FAQs from desktop app
     When I navigate to the Help page
     Then I should see a searchable FAQ interface
     And I should be able to browse by category
 
-  @platform @planned
+  @platform @implemented
   Scenario: Access FAQs from TUI
     When I navigate to the Help screen
     Then I should see FAQ content navigable with keyboard
