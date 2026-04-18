@@ -390,7 +390,7 @@ Feature: Contact Recovery
       you're not part of. But it could also be an impersonator.
       """
 
-  @recovery @verification @isolated @planned
+  @recovery @verification @isolated @implemented
   Scenario: Isolated contact options
     Given David receives a recovery proof with no mutual contact vouchers
     Then David is presented with options:
@@ -401,7 +401,7 @@ Feature: Contact Recovery
       | Reject                 | Safe     | Decline the recovery                  |
       | Remind Me Later        | Neutral  | Check again in 7 days                 |
 
-  @recovery @verification @isolated @planned
+  @recovery @verification @isolated @implemented
   Scenario: Isolated contact accepts with warning
     Given David has no mutual contacts with the vouchers
     When David chooses "Accept Anyway"
@@ -416,7 +416,7 @@ Feature: Contact Recovery
       """
     And David must confirm to proceed
 
-  @recovery @verification @isolated @planned
+  @recovery @verification @isolated @implemented
   Scenario: Isolated contact verifies out of band
     Given David has no mutual contacts with the vouchers
     When David chooses "Verify Another Way"
@@ -431,7 +431,7 @@ Feature: Contact Recovery
       """
     And David can mark as verified after out-of-band confirmation
 
-  @recovery @verification @isolated @planned
+  @recovery @verification @isolated @implemented
   Scenario: Isolated contact meets in person and vouches
     Given David has no mutual contacts with the vouchers
     When David chooses "Meet Alice in Person"
