@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @recovery
 Feature: Contact Recovery
   As a user who lost their device
@@ -11,7 +10,6 @@ Feature: Contact Recovery
   Background:
     Given the Vauchi app is installed
     And the user has an identity
-
   # ============================================================
   # Configuration
   # ============================================================
@@ -43,7 +41,6 @@ Feature: Contact Recovery
     Then the operation should fail with "Recovery threshold must be at least 1"
     When I try to set my recovery threshold to 20
     Then the operation should fail with "Recovery threshold cannot exceed 10"
-
   # ============================================================
   # Trusted Contacts for Recovery
   # ============================================================
@@ -154,7 +151,6 @@ Feature: Contact Recovery
     Then Bob's fingerprint verification should remain unchanged
     And Bob's visibility rules should remain unchanged
     And only the recovery trust flag should change
-
   # ============================================================
   # Identity Loss and New Identity Creation
   # ============================================================
@@ -176,7 +172,6 @@ Feature: Contact Recovery
     When Alice creates a new identity on a new device
     Then Alice can enter her old fingerprint manually
     And the app stores the recovery claim for "pk_old"
-
   # ============================================================
   # In-Person Vouching Process
   # ============================================================
@@ -187,11 +182,11 @@ Feature: Contact Recovery
     And Alice claims her old identity was "pk_old"
     When Alice generates a recovery QR code
     Then the QR code contains:
-      | field      | value          |
-      | type       | recovery_claim |
-      | old_pk     | pk_old         |
-      | new_pk     | pk_new         |
-      | timestamp  | current_time   |
+      | field     | value          |
+      | type      | recovery_claim |
+      | old_pk    | pk_old         |
+      | new_pk    | pk_new         |
+      | timestamp | current_time   |
 
   @recovery @vouching @implemented
   Scenario: Voucher recognizes old contact
@@ -215,12 +210,12 @@ Feature: Contact Recovery
     When Bob confirms he has verified Alice in person
     And Bob taps "Vouch for Recovery"
     Then a voucher is created containing:
-      | field       | value                                |
-      | old_pk      | pk_old                               |
-      | new_pk      | pk_new                               |
-      | voucher_pk  | Bob's public key                     |
-      | timestamp   | current_time                         |
-      | signature   | Ed25519 signature of above fields    |
+      | field      | value                             |
+      | old_pk     | pk_old                            |
+      | new_pk     | pk_new                            |
+      | voucher_pk | Bob's public key                  |
+      | timestamp  | current_time                      |
+      | signature  | Ed25519 signature of above fields |
     And the voucher is sent to Alice's new identity
 
   @recovery @vouching @implemented
@@ -242,7 +237,6 @@ Feature: Contact Recovery
     And Betty vouches for Alice's recovery
     Then Alice has 3 trusted vouchers
     And the recovery threshold is met
-
   # ============================================================
   # Recovery Proof Creation and Distribution
   # ============================================================
@@ -254,10 +248,10 @@ Feature: Contact Recovery
     And Alice has collected 3 trusted vouchers from Bob, Charlie, and Betty
     When the recovery threshold is met
     Then a recovery proof is automatically created containing:
-      | field     | value                              |
-      | old_pk    | Alice's old public key             |
-      | new_pk    | Alice's new public key             |
-      | threshold | 3                                  |
+      | field     | value                                               |
+      | old_pk    | Alice's old public key                              |
+      | new_pk    | Alice's new public key                              |
+      | threshold |                                                   3 |
       | vouchers  | [Bob's voucher, Charlie's voucher, Betty's voucher] |
 
   @recovery @proof @implemented
@@ -283,7 +277,6 @@ Feature: Contact Recovery
     Then the recovery proof is updated with 4 vouchers
     And the updated proof is uploaded to the relay
     And more contacts may be able to verify via mutual contacts
-
   # ============================================================
   # Discovery by Other Contacts
   # ============================================================
@@ -311,7 +304,6 @@ Feature: Contact Recovery
     And Alice has not uploaded a recovery proof
     When John's app checks for recovery proofs
     Then no recovery notification is shown for Alice
-
   # ============================================================
   # Verification - Mutual Contacts
   # ============================================================
@@ -326,12 +318,12 @@ Feature: Contact Recovery
     And John's app shows:
       """
       Alice has recovered their identity.
-
+      
       Vouched by:
         - Bob (unknown to you)
         - Charlie (unknown to you)
         - Betty (contact of yours) ✓
-
+      
       Mutual contacts vouching: 1 of 2 required
       """
     And John is warned that verification threshold is not met
@@ -345,12 +337,12 @@ Feature: Contact Recovery
     And John's app shows:
       """
       Alice has recovered their identity.
-
+      
       Vouched by:
         - Bob (contact of yours) ✓
         - Charlie (contact of yours) ✓
         - Betty (unknown to you)
-
+      
       Mutual contacts vouching: 2 of 2 required ✓
       """
     And John can confidently accept the recovery
@@ -362,7 +354,6 @@ Feature: Contact Recovery
     When Eve receives Alice's recovery proof vouched by Bob, Charlie, Betty, and David
     Then Eve's app shows all 4 vouchers are mutual contacts
     And the recovery is marked as "High confidence"
-
   # ============================================================
   # Verification - Isolated Contacts (David's Case)
   # ============================================================
@@ -376,16 +367,16 @@ Feature: Contact Recovery
     Then David's app shows:
       """
       ⚠️ Recovery Request
-
+      
       Alice claims to have recovered their identity.
-
+      
       Vouched by:
         - Bob (unknown to you)
         - Charlie (unknown to you)
         - Betty (unknown to you)
-
+      
       ⚠️ Warning: You don't know any of the vouchers
-
+      
       This could be legitimate - Alice may have friend groups
       you're not part of. But it could also be an impersonator.
       """
@@ -394,12 +385,12 @@ Feature: Contact Recovery
   Scenario: Isolated contact options
     Given David receives a recovery proof with no mutual contact vouchers
     Then David is presented with options:
-      | option                 | security | description                           |
-      | Meet Alice in Person   | Highest  | Verify directly and become a voucher  |
-      | Verify Another Way     | High     | Call or text Alice to confirm         |
-      | Accept Anyway          | Lower    | Trust the unknown vouchers            |
-      | Reject                 | Safe     | Decline the recovery                  |
-      | Remind Me Later        | Neutral  | Check again in 7 days                 |
+      | option               | security | description                          |
+      | Meet Alice in Person | Highest  | Verify directly and become a voucher |
+      | Verify Another Way   | High     | Call or text Alice to confirm        |
+      | Accept Anyway        | Lower    | Trust the unknown vouchers           |
+      | Reject               | Safe     | Decline the recovery                 |
+      | Remind Me Later      | Neutral  | Check again in 7 days                |
 
   @recovery @verification @isolated @implemented
   Scenario: Isolated contact accepts with warning
@@ -408,10 +399,10 @@ Feature: Contact Recovery
     Then David is shown a final warning:
       """
       You are accepting a recovery without mutual contact verification.
-
+      
       If this is an impersonator, they will have access to communicate
       with you as if they were Alice.
-
+      
       Are you sure?
       """
     And David must confirm to proceed
@@ -423,10 +414,10 @@ Feature: Contact Recovery
     Then David's app shows:
       """
       Contact Alice through another channel to verify:
-
+      
       Ask Alice to confirm their new identity fingerprint:
       WXYZ-5678-ABCD-1234
-
+      
       If Alice confirms this fingerprint, tap "Verified"
       """
     And David can mark as verified after out-of-band confirmation
@@ -440,7 +431,6 @@ Feature: Contact Recovery
     Then David becomes a voucher
     And Alice's recovery proof is updated with David's voucher
     And other isolated contacts who know David can now verify
-
   # ============================================================
   # Acceptance and Reconnection
   # ============================================================
@@ -478,7 +468,6 @@ Feature: Contact Recovery
     Then the notification is dismissed
     And John is reminded after 7 days
     And John can adjust the reminder period
-
   # ============================================================
   # Edge Cases and Security
   # ============================================================
@@ -519,10 +508,10 @@ Feature: Contact Recovery
     Then contacts see a conflict warning:
       """
       ⚠️ Multiple recovery claims detected for Alice
-
+      
       Claim 1: pk_new_1 (3 vouchers)
       Claim 2: pk_new_2 (2 vouchers)
-
+      
       This may indicate an attack. Verify with Alice directly.
       """
 
@@ -546,36 +535,34 @@ Feature: Contact Recovery
     When Eve tries to scan Alice's recovery QR code
     Then Eve cannot vouch
     And Eve sees "You must be an existing contact to vouch"
-
   # ============================================================
   # Data Recovery Limitations
   # ============================================================
 
-  @recovery @limitations @planned
+  @recovery @limitations @implemented
   Scenario: What is recovered
     Given John accepts Alice's recovery
     Then the following is recovered:
-      | data                    | recovered |
-      | Contact relationship    | Yes       |
-      | Ability to communicate  | Yes       |
-      | Alice's contact card    | Yes (re-sent by Alice) |
+      | data                   | recovered              |
+      | Contact relationship   | Yes                    |
+      | Ability to communicate | Yes                    |
+      | Alice's contact card   | Yes (re-sent by Alice) |
 
-  @recovery @limitations @planned
+  @recovery @limitations @implemented
   Scenario: What is NOT recovered
     Given John accepts Alice's recovery
     Then the following is NOT recovered:
-      | data                        | reason                          |
-      | Old encryption keys         | Lost with device                |
-      | Old message history         | Cannot decrypt without keys     |
-      | Visibility rules Alice set  | Lost with device                |
-      | Notes Alice wrote           | Lost with device                |
-      | Old shared secret           | Replaced with new exchange      |
-
+      | data                       | reason                      |
+      | Old encryption keys        | Lost with device            |
+      | Old message history        | Cannot decrypt without keys |
+      | Visibility rules Alice set | Lost with device            |
+      | Notes Alice wrote          | Lost with device            |
+      | Old shared secret          | Replaced with new exchange  |
   # ============================================================
   # Multi-Device Considerations
   # ============================================================
 
-  @recovery @multi-device @planned
+  @recovery @multi-device @implemented
   Scenario: Recovery when user has multiple devices
     Given Alice has 2 devices linked
     And Alice loses device 1 but still has device 2
@@ -583,19 +570,18 @@ Feature: Contact Recovery
     And Alice can revoke device 1 from device 2
     And contacts are notified of device revocation
 
-  @recovery @multi-device @planned
+  @recovery @multi-device @implemented
   Scenario: Recovery after losing all devices
     Given Alice had 2 linked devices
     And Alice loses both devices
     Then Alice must use social recovery
     And Alice creates new identity on new device
     And the old linked devices are implicitly revoked
-
   # ============================================================
   # Relay Behavior
   # ============================================================
 
-  @recovery @relay @planned
+  @recovery @relay @implemented
   Scenario: Relay stores recovery proof privately
     Given Alice uploads a recovery proof
     Then the relay stores the proof under hash(pk_old)
@@ -609,7 +595,7 @@ Feature: Contact Recovery
     Then the relay returns the recovery proof
     And the relay does not log who queried
 
-  @recovery @relay @planned
+  @recovery @relay @implemented
   Scenario: Relay handles proof expiration
     Given Alice uploaded a recovery proof 91 days ago
     And the proof expiration is 90 days
