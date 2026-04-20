@@ -311,7 +311,7 @@ Feature: Contacts Management
     And I set the display name preference to "custom" for contact "Bob"
     Then the resolved display name for contact "Bob" is "Bobby"
 
-  @avatar @planned
+  @avatar @implemented
   Scenario: Upload custom avatar
     Given I have an exchanged contact "Bob"
     When I set a custom WebP avatar for contact "Bob"
@@ -343,7 +343,7 @@ Feature: Contacts Management
     When the shared name "Bobby" is removed by a sync delta
     Then the resolved display name for contact "Bob" falls back to primary
 
-  @merge @planned
+  @merge @implemented
   Scenario: Cross-kind merge with name and avatar adoption
     Given I have an exchanged contact "Bob"
     And I have an imported contact "Robert" with avatar
