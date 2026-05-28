@@ -323,7 +323,7 @@ Feature: Accessibility
     And all images should have alternative text
     And all controls should have accessibility labels
 
-  @android @requirement @planned
+  @android @requirement @implemented
   Scenario: Android Accessibility requirements met
     Given I run Accessibility Scanner on the Android app
     Then there should be no critical accessibility issues
