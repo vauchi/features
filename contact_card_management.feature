@@ -201,14 +201,17 @@ Feature: Contact Card Management
     Given my contact card has no avatar
     When I add an avatar image
     Then my contact card should display the avatar
-    And the avatar should be under 256KB
+    And the stored avatar should be WebP of at most 32KB (ADR-042)
 
   @avatar @implemented
-  Scenario: Avatar image too large
+  Scenario: Oversized avatar input is normalized, not rejected
     Given I am adding an avatar
-    When I select an image larger than 256KB
-    Then I should see an error "Avatar too large"
-    And the avatar should not be saved
+    When I select an image larger than 32KB
+    Then core should convert and resize it to WebP of at most 32KB
+    And the normalized avatar should be saved
+    # Core owns the conversion pipeline (ADR-042): any common input format
+    # (PNG, JPEG, BMP, WebP) is accepted and normalized; frontends never
+    # convert and users never see a size error for common photos.
 
   @avatar @implemented
   Scenario: Remove avatar from contact card
