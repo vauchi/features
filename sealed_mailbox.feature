@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @privacy @network @sp-33
 Feature: Sealed Mailbox Tokens (SP-33)
   As a Vauchi user
@@ -19,7 +18,6 @@ Feature: Sealed Mailbox Tokens (SP-33)
   Background:
     Given I have an existing identity
     And I have exchanged contacts with Bob
-
   # ============================================================
   # Token Derivation
   # ============================================================
@@ -55,7 +53,6 @@ Feature: Sealed Mailbox Tokens (SP-33)
     When I compute mailbox tokens for both
     Then Bob's token and Carol's token should differ
     And the relay cannot determine they belong to the same sender
-
   # ============================================================
   # Registration and Routing
   # ============================================================
@@ -89,7 +86,6 @@ Feature: Sealed Mailbox Tokens (SP-33)
     Then the message should be routed via the self-mailbox token
     And device B should receive it via the same token
     And the relay should not see my identity
-
   # ============================================================
   # Privacy Properties
   # ============================================================
@@ -113,16 +109,19 @@ Feature: Sealed Mailbox Tokens (SP-33)
     Then the sender_id is an anonymous hourly token (SP-32)
     And the recipient_id is a daily mailbox token (SP-33)
     And the relay sees only opaque tokens and encrypted ciphertext
-
   # ============================================================
   # Backward-Compat Cleanup (v0.1 alpha)
   # ============================================================
 
-  @cleanup @planned
-  Scenario: Noise NK v2 is mandatory
+  @cleanup @implemented
+  Scenario: Encrypted transport is mandatory
     Given a client connects to the relay
-    Then the Noise NK handshake must complete before any messages
-    And plaintext (v1) connections should be rejected
+    Then the connection must use the HTTPS-only v2 API
+    And plaintext connections should be rejected
+    # Originally "Noise NK v2 is mandatory" — the Noise client transport
+    # was retired (ADR-004 superseded); the no-plaintext guarantee now
+    # lives at the URL parse boundary and the relay's HTTP-only API.
+    # See relay_transport_security.feature.
 
   @cleanup @implemented
   Scenario: AccountRevoked verified client-side

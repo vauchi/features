@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @relay @infrastructure
 Feature: Relay Network
   As a Vauchi user or contributor
@@ -11,7 +10,6 @@ Feature: Relay Network
   Background:
     Given the relay network is operational
     And there are volunteer-run relay nodes available
-
   # Relay Usage
 
   @usage @implemented
@@ -46,7 +44,6 @@ Feature: Relay Network
     Then the relay should expire the update blob
     And my client should be notified of failed delivery
     And I should be prompted to retry later
-
   # Privacy in Relay
 
   @privacy @implemented
@@ -77,7 +74,6 @@ Feature: Relay Network
     Then my IP address should be hidden from the vauchi relay
     And the OHTTP relay should not see my request content
     And I can optionally route through a SOCKS5 proxy for ISP-level hiding
-
   # Running a Relay Node
 
   @contribute @implemented
@@ -111,7 +107,6 @@ Feature: Relay Network
     Then it should respond to health check probes
     And unhealthy nodes should be removed from network
     And the network should route around failed nodes
-
   # Contribution Model
 
   @contribution @planned
@@ -137,7 +132,6 @@ Feature: Relay Network
     And I should not get extra storage
     And all users should be treated equally
     # promoted_to: relay (all clients treated equally, no contributor concept)
-
   # Relay Network Health
 
   @health @implemented
@@ -162,7 +156,6 @@ Feature: Relay Network
     Then I should discover available relay nodes
     And nodes should be ranked by latency/availability
     And I should connect to the best available
-
   # Abuse Prevention
 
   @abuse @implemented
@@ -193,7 +186,6 @@ Feature: Relay Network
     Then proof-of-work may be required
     And rate limits should prevent flooding
     And the network should remain functional
-
   # Relay Protocol
 
   @protocol @implemented
@@ -202,7 +194,6 @@ Feature: Relay Network
     Then the relay should authenticate with a certificate
     And I should verify the relay's identity
     And connection should be encrypted (TLS)
-
   # Signed Operations (originally "Relay Authentication Phase 1",
   # relay!28 + core!88). Connection-level identity authentication was
   # retired with the sealed-mailbox model (SP-33, ADR-029/ADR-037):
@@ -253,11 +244,12 @@ Feature: Relay Network
 
   @protocol @authentication @implemented
   Scenario: Plaintext connections are rejected
-    Given the relay requires Noise NK encryption
-    When a client connects without the Noise handshake
+    Given the relay serves only the HTTPS v2 API
+    When a client attempts a plaintext or WebSocket connection
     Then the connection should be rejected
-    And a warning should be logged
-    # promoted_to: relay (handler/connection.rs — Noise NK mandatory since v0.1, plaintext fallback removed SP-33)
+    And the relay should serve no unencrypted client transport
+    # promoted_to: relay (main.rs — WS upgrades rejected 426; Noise-era
+    # plaintext fallback removed SP-33; see relay_transport_security.feature)
 
   @protocol @authentication @implemented
   Scenario: Anonymous token routing requires no signature
@@ -273,7 +265,6 @@ Feature: Relay Network
     Then they should gossip routing information
     And network state should converge
     And new nodes should discover the network
-
   # Fallback Behavior
 
   @fallback @implemented
@@ -291,7 +282,6 @@ Feature: Relay Network
     Then remaining relays should handle the load
     And delivery should succeed with higher latency
     And user experience should remain acceptable
-
   # User Preferences
 
   @preferences @planned
@@ -315,7 +305,6 @@ Feature: Relay Network
     When I block those relays
     Then my traffic should avoid those nodes
     And delivery should use alternative routes
-
   # Relay Federation - Message Offloading
   # Phase 1 (static federation): implemented in relay!22
   # Phase 2 (client multi-relay): pending
@@ -402,7 +391,6 @@ Feature: Relay Network
     Then it should be routed to a relay with available capacity
     And heavily loaded relays should receive less traffic
     And the network should self-balance over time
-
   # Federation Security
 
   @federation @security @phase4 @planned
