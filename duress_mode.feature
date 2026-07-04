@@ -1,11 +1,9 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 # Merged 2026-03-17: duress_pin.feature + duress_password.feature → duress_mode.feature
 # PIN scenarios from duress_pin.feature preserve their @implemented tags.
 # Password-specific scenarios from duress_password.feature added as @planned.
-
 @security @resistance @coercion @opt-in
 Feature: Duress Mode
   As an activist or at-risk user
@@ -33,7 +31,6 @@ Feature: Duress Mode
   Background:
     Given I have an existing identity
     And I have contacts in my real contact list
-
   # ============================================================
   # Setup and Configuration
   # ============================================================
@@ -81,9 +78,9 @@ Feature: Duress Mode
   Scenario: Duress password strength requirements
     Given I am setting up a duress password
     Then the duress password should meet requirements:
-      | requirement        | description                    |
-      | Minimum length     | At least 8 characters          |
-      | Different from app | Must not match app password    |
+      | requirement        | description                                   |
+      | Minimum length     | At least 8 characters                         |
+      | Different from app | Must not match app password                   |
       | Memorable          | User should be able to recall it under stress |
 
   @setup @implemented
@@ -101,7 +98,6 @@ Feature: Duress Mode
     Then I should see my real contacts list
     And I should be able to select up to 5 trusted contacts
     And selected contacts will receive silent alerts on duress unlock
-
   # ============================================================
   # Decoy Profile Setup
   # ============================================================
@@ -117,11 +113,11 @@ Feature: Duress Mode
   Scenario: Make decoy profile believable
     Given I am configuring the decoy profile
     Then I should consider:
-      | aspect           | recommendation                           |
-      | Contact count    | Have a realistic number (5-20)           |
-      | Names            | Use common, believable names             |
-      | Recency          | Some should have recent "activity"       |
-      | Variety          | Mix of friends, family, work contacts    |
+      | aspect        | recommendation                        |
+      | Contact count | Have a realistic number (5-20)        |
+      | Names         | Use common, believable names          |
+      | Recency       | Some should have recent "activity"    |
+      | Variety       | Mix of friends, family, work contacts |
 
   @decoy @planned
   Scenario: Import decoy contacts from phone
@@ -138,7 +134,6 @@ Feature: Duress Mode
     Then contacts should be created with realistic names
     And cards should contain plausible fake data
     And the list should look like a normal contact list
-
   # ============================================================
   # Duress Unlock Behavior
   # ============================================================
@@ -173,7 +168,6 @@ Feature: Duress Mode
     When I try to access hidden settings or contacts
     Then I should not be able to reach real contacts
     And attempting secret gestures should do nothing
-
   # ============================================================
   # Duress Mode Behavior
   # ============================================================
@@ -189,7 +183,6 @@ Feature: Duress Mode
     # The queued duress alert is the one real payload permitted here — it
     # travels disguised as this normal-looking sync (see "Duress unlock
     # sends silent alert to trusted contacts").
-
   # Removed: "Exchange in duress mode is fake" — contradicted line 216
   # ("Exchanges add to decoy profile"). For plausible deniability, the
   # exchange must APPEAR to work. A coercer watching would notice a
@@ -222,7 +215,6 @@ Feature: Duress Mode
     Then the new contact should be added to the decoy profile
     And they should NOT be added to the real profile
     And they should receive my decoy card (if configured)
-
   # ============================================================
   # Silent Alerts
   # ============================================================
@@ -266,7 +258,6 @@ Feature: Duress Mode
     When I unlock with the duress credential
     Then the alert should be queued locally
     And the alert should be sent when connectivity returns
-
   # ============================================================
   # Security Properties
   # ============================================================
@@ -322,7 +313,6 @@ Feature: Duress Mode
     Then entering either credential should look the same
     And timing should be similar
     And no visual difference should reveal which was entered
-
   # ============================================================
   # Believability
   # ============================================================
@@ -331,21 +321,21 @@ Feature: Duress Mode
   Scenario: Decoy app has full functionality appearance
     Given I am in duress mode
     Then all app features should appear to work:
-      | feature          | behavior                         |
-      | Sync             | Fake animation, "success"        |
-      | Exchange         | Shows QR (non-functional)        |
-      | Settings         | Fake settings that "save"        |
-      | Contact details  | Shows decoy contact info         |
-      | Edit card        | Appears to save (discarded)      |
+      | feature         | behavior                    |
+      | Sync            | Fake animation, "success"   |
+      | Exchange        | Shows QR (non-functional)   |
+      | Settings        | Fake settings that "save"   |
+      | Contact details | Shows decoy contact info    |
+      | Edit card       | Appears to save (discarded) |
 
   @believability @planned
   Scenario: Decoy profile has realistic timestamps
     Given I have decoy contacts
     Then decoy contacts should show:
-      | field            | behavior                         |
-      | Added date       | Realistic past dates             |
-      | Last updated     | Staggered, believable dates      |
-      | Last seen        | Some recent, some older          |
+      | field        | behavior                    |
+      | Added date   | Realistic past dates        |
+      | Last updated | Staggered, believable dates |
+      | Last seen    | Some recent, some older     |
 
   @believability @planned
   Scenario: Settings reflect decoy state
@@ -354,7 +344,6 @@ Feature: Duress Mode
     Then settings should show decoy identity name
     And "contacts count" should match decoy count
     And storage usage should be plausible
-
   # ============================================================
   # Edge Cases
   # ============================================================
@@ -455,7 +444,6 @@ Feature: Duress Mode
     Then I can access duress settings
     And I can reset the duress credential
     And no data is lost
-
   # ============================================================
   # Decoy Profile Management
   # ============================================================

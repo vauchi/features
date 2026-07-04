@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @identity @backup
 Feature: Backup Format Versioning
   As a Vauchi user
@@ -10,7 +9,6 @@ Feature: Backup Format Versioning
 
   Background:
     Given the Vauchi application is installed
-
   # ============================================================
   # Current Format (v2)
   # ============================================================
@@ -53,7 +51,6 @@ Feature: Backup Format Versioning
     Then decryption should fail
     And I should see an authentication error
     And no partial data should be exposed
-
   # ============================================================
   # Version Detection
   # ============================================================
@@ -84,7 +81,6 @@ Feature: Backup Format Versioning
     And I try to restore it
     Then the AEAD authentication should fail
     And no partial data should be returned
-
   # ============================================================
   # Full Backup (v3)
   # ============================================================

@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @security @network
 Feature: Noise Protocol Inner Encryption
   As a Vauchi user
@@ -11,7 +10,6 @@ Feature: Noise Protocol Inner Encryption
   Background:
     Given I have an existing identity
     And the relay supports Noise protocol (v2)
-
   # ============================================================
   # Handshake
   # ============================================================
@@ -67,7 +65,6 @@ Feature: Noise Protocol Inner Encryption
     When I try to parse a Noise public key
     Then parsing should fail
     And I should see a key length error
-
   # ============================================================
   # Transport Encryption
   # ============================================================
@@ -101,7 +98,6 @@ Feature: Noise Protocol Inner Encryption
     When I send multiple messages
     Then each message should use a unique nonce
     And replaying an earlier message should fail decryption
-
   # ============================================================
   # Noise Pattern Properties
   # ============================================================
@@ -120,7 +116,6 @@ Feature: Noise Protocol Inner Encryption
     Then compromising TLS alone should not reveal routing metadata
     And compromising the Noise layer alone should not reveal data in transit
     And both layers must be compromised to observe plaintext
-
   # ============================================================
   # No Plaintext (fallback removed SP-33)
   # ============================================================

@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @contacts @import
 Feature: External Contact Import
   As a Vauchi user
@@ -11,7 +10,6 @@ Feature: External Contact Import
   Background:
     Given I have an existing identity as "Alice"
     And I am logged into Vauchi
-
   # Import from vCard
 
   @import @implemented
@@ -53,7 +51,6 @@ Feature: External Contact Import
     When I try to import a vCard file with 5 contacts
     Then the import result should show 0 imported, 5 skipped
     And a warning should mention the contact limit
-
   # Trust boundary
 
   @trust @implemented
@@ -74,7 +71,6 @@ Feature: External Contact Import
     Given I have an imported contact "Bob"
     When I try to mark Bob as trusted for proposals
     Then I should get an error
-
   # Editing
 
   @edit @implemented
@@ -95,7 +91,6 @@ Feature: External Contact Import
     Given I have an imported contact "Bob" with no email
     When I add an email "bob@example.com" to Bob
     Then Bob should have email "bob@example.com"
-
   # Visual distinction
 
   @display @implemented
@@ -104,7 +99,6 @@ Feature: External Contact Import
     When I view the contacts list
     Then Bob should have an "Imported" indicator
     And Carol should have a "Vauchi contact" indicator
-
   # Merge prevention
 
   @merge @implemented
@@ -117,7 +111,6 @@ Feature: External Contact Import
     # the adoption flow (contacts_management.feature "Cross-kind merge with
     # name and avatar adoption"); an imported contact can never override an
     # exchanged one, because imported data is unverified.
-
   # Phone normalization for dedup
 
   @dedup @implemented
@@ -126,7 +119,6 @@ Feature: External Contact Import
     And I have imported contact "Robert" with phone "15551234567"
     When I check for duplicates
     Then Bob and Robert should be flagged as potential duplicates
-
   # Encrypted backup
 
   @backup @implemented
@@ -141,7 +133,6 @@ Feature: External Contact Import
     Given I have exported a contact backup with password "correct"
     When I try to import with password "wrong"
     Then the import should fail with a decryption error
-
   # Device sync
 
   @sync @implemented
@@ -150,7 +141,6 @@ Feature: External Contact Import
     When device B links to device A via full sync
     Then device B should have imported contact "Bob"
     And Bob's hidden/blocked/favorite flags should be preserved
-
   # Local groups
 
   @groups @implemented

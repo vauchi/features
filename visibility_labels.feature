@@ -11,11 +11,11 @@ Feature: Visibility Labels
     Given I have an existing identity as "Alice"
     And I have the following fields on my contact card:
       | type    | label          | value              |
-      | phone   | Personal Phone | +1-555-111-1111    |
-      | phone   | Work Phone     | +1-555-222-2222    |
+      | phone   | Personal Phone |    +1-555-111-1111 |
+      | phone   | Work Phone     |    +1-555-222-2222 |
       | email   | Personal Email | alice@personal.com |
       | email   | Work Email     | alice@work.com     |
-      | address | Home Address   | 123 Main St        |
+      | address | Home Address   |        123 Main St |
     And I have a contact "Bob"
     And I have a contact "Carol"
     And I have a contact "Dave"

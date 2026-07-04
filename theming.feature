@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @theming @appearance @ui
 Feature: App Theming
   As a Vauchi user
@@ -10,7 +9,6 @@ Feature: App Theming
 
   Background:
     Given the app is installed and configured
-
   # ===========================================
   # Theme Selection
   # ===========================================
@@ -49,7 +47,6 @@ Feature: App Theming
     Given the user has selected "Nord" theme
     When the user closes and reopens the app
     Then the "Nord" theme should still be applied
-
   # ===========================================
   # Catppuccin Themes
   # ===========================================
@@ -62,11 +59,11 @@ Feature: App Theming
     And the theme should be labeled as "Catppuccin <flavor>"
 
     Examples:
-      | flavor     |
-      | Latte      |
-      | Frappé     |
-      | Macchiato  |
-      | Mocha      |
+      | flavor    |
+      | Latte     |
+      | Frappé    |
+      | Macchiato |
+      | Mocha     |
 
   @catppuccin @dark @implemented
   Scenario: Apply Catppuccin Mocha (dark)
@@ -102,7 +99,6 @@ Feature: App Theming
     Then the success color should use the "green" palette color
     And the error color should use the "red" palette color
     And the warning color should use the "peach" palette color
-
   # ===========================================
   # Other Open Source Themes
   # ===========================================
@@ -175,7 +171,6 @@ Feature: App Theming
     Then the background primary color should be "#282828"
     And the text primary color should be "#ebdbb2"
     And the accent color should be "#83a598"
-
   # ===========================================
   # System Integration
   # ===========================================
@@ -199,7 +194,6 @@ Feature: App Theming
     Then the app should apply "Catppuccin Mocha"
     When the system switches to light mode
     Then the app should apply "Catppuccin Latte"
-
   # ===========================================
   # Accessibility
   # ===========================================
@@ -223,7 +217,6 @@ Feature: App Theming
     When a theme is applied
     Then theme transitions should be instant
     And no animations should play during theme change
-
   # ===========================================
   # Cross-Platform Consistency
   # ===========================================
@@ -250,7 +243,6 @@ Feature: App Theming
     When the user applies "Catppuccin Mocha" theme
     Then the theme tokens should be applied by the native toolkit
     And window frame should adapt to theme if supported
-
   # ===========================================
   # Theme Schema
   # ===========================================
@@ -281,7 +273,6 @@ Feature: App Theming
     When the app attempts to load the theme
     Then a validation error should be reported
     And the current theme should remain unchanged
-
   # ===========================================
   # Remote Theme Updates
   # ===========================================
@@ -308,7 +299,6 @@ Feature: App Theming
     When the user views available themes
     Then "Default Dark" should be available
     And "Default Light" should be available
-
   # ===========================================
   # Accent Color Customization
   # ===========================================
@@ -318,17 +308,16 @@ Feature: App Theming
     Given the user has selected "Catppuccin Mocha" theme
     When the user opens accent color options
     Then the user should see Catppuccin accent colors:
-      | rosewater | flamingo | pink   | mauve    |
-      | red       | maroon   | peach  | yellow   |
-      | green     | teal     | sky    | sapphire |
-      | blue      | lavender |        |          |
+      | rosewater | flamingo | pink  | mauve    |
+      | red       | maroon   | peach | yellow   |
+      | green     | teal     | sky   | sapphire |
+      | blue      | lavender |       |          |
 
   @accent @future @implemented
   Scenario: Custom accent color persists
     Given the user has selected "Catppuccin Mocha" with "mauve" accent
     When the user closes and reopens the app
     Then the "mauve" accent color should still be applied
-
   # ===========================================
   # QR Code Theming
   # ===========================================
@@ -345,7 +334,6 @@ Feature: App Theming
     When the user views their QR code
     Then the QR code container should use theme background
     And the QR code itself should remain standard black-on-white
-
   # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
 
   @platform-edge-case @desktop @theme @planned

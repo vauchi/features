@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @security
 Feature: Security
   As a Vauchi user
@@ -11,7 +10,6 @@ Feature: Security
   Background:
     Given I have an existing identity
     And I have sensitive contact information
-
   # End-to-End Encryption
 
   @e2e @implemented
@@ -43,7 +41,6 @@ Feature: Security
     Then keys should ratchet forward after each exchange
     And compromising a future key should not reveal past messages
     And compromising a past key should not reveal future messages
-
   # Private Key Protection
 
   @keys @implemented
@@ -73,7 +70,6 @@ Feature: Security
     Then the backup should be encrypted with my password
     And plaintext private keys should never leave the device
     And the export process should use secure memory
-
   # Authentication & Verification
 
   @auth @implemented
@@ -107,7 +103,6 @@ Feature: Security
     Then I should see Bob's public key fingerprint
     And I should be able to verify it matches Bob's display
     And I should be able to mark Bob as "verified"
-
   # Attack Prevention
 
   @attacks @implemented
@@ -148,7 +143,6 @@ Feature: Security
     Then relay nodes should only see encrypted blobs
     And relay nodes should have no access to encryption keys
     And a compromised relay should learn nothing about my data
-
   # Data Protection
 
   @data @planned
@@ -181,7 +175,6 @@ Feature: Security
     Then data should be securely overwritten
     And deleted data should be unrecoverable
     And file system should not retain deleted content
-
   # Access Control
 
   @access @planned
@@ -213,7 +206,6 @@ Feature: Security
     Then screenshots should be blocked
     And screen recording should be blocked
     And the app should appear blank in app switcher
-
   # Audit & Logging
 
   @audit @implemented
@@ -239,7 +231,6 @@ Feature: Security
     Then a sanitized log file should be generated
     And no private keys should be in the export
     And no contact details should be in the export
-
   # Security Notifications
 
   @notifications @planned
@@ -265,7 +256,6 @@ Feature: Security
     And the attempt should appear only in my local security log
     # Blocked contacts generate no notifications of any kind
     # (contact_exchange.feature "Blocked user attempts exchange").
-
   # Cryptographic Details
 
   @crypto @implemented
@@ -290,9 +280,7 @@ Feature: Security
     And DES/3DES should not be used
     And RSA should not be used (prefer Ed25519/X25519)
     And no custom cryptographic algorithms should be implemented
-
   # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
-
   # WebView scenario removed — desktop app archived per ADR-027 (2026-03).
   # Native apps (macOS SwiftUI, Linux GTK4, Linux Qt6, Windows WinUI3) do not use WebView.
   # See: audit 2026-03-23, finding H2.

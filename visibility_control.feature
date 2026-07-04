@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @visibility @privacy
 Feature: Visibility Control
   As a Vauchi user
@@ -12,14 +11,13 @@ Feature: Visibility Control
     Given I have an existing identity as "Alice"
     And I have the following fields on my contact card:
       | type  | label          | value              |
-      | phone | Personal Phone | +1-555-111-1111    |
-      | phone | Work Phone     | +1-555-222-2222    |
+      | phone | Personal Phone |    +1-555-111-1111 |
+      | phone | Work Phone     |    +1-555-222-2222 |
       | email | Personal Email | alice@personal.com |
       | email | Work Email     | alice@work.com     |
     And I have a contact "Bob"
     And I have a contact "Carol"
     And I have a contact "Dave"
-
   # Default Visibility
 
   @default @implemented
@@ -33,7 +31,6 @@ Feature: Visibility Control
     Given all my fields are set to "visible to all"
     When I exchange contacts with "Eve"
     Then Eve should see all four of my contact fields
-
   # Setting Individual Visibility
 
   @individual @implemented
@@ -56,7 +53,6 @@ Feature: Visibility Control
     Then contact "Bob" cannot see my "Personal Email" field
     And contact "Carol" cannot see my "Personal Email" field
     And contact "Dave" cannot see my "Personal Email" field
-
   # Group Visibility
 
   @groups @implemented
@@ -94,7 +90,6 @@ Feature: Visibility Control
     And I make field "Work Email" visible only to group "Work Contacts"
     When I remove contact "Carol" from group "Work Contacts"
     Then contact "Carol" cannot see my "Work Email" field
-
   # Visibility Changes Propagation
 
   @propagation @implemented
@@ -123,7 +118,6 @@ Feature: Visibility Control
     And when Dave comes online
     Then Dave should receive the update
     And my "Personal" phone should be removed from Dave's view
-
   # Visibility and New Contacts
 
   @new-contact @planned
@@ -142,7 +136,6 @@ Feature: Visibility Control
     And Eve should see my "Work" email
     But Eve should not see my "Personal" phone
     But Eve should not see my "Personal" email
-
   # Visibility Rules Persistence
 
   @persistence @implemented
@@ -158,7 +151,6 @@ Feature: Visibility Control
     When I link Device B to my identity
     Then Device B should have the same visibility settings
     And changes on either device should sync to the other
-
   # Visibility Verification
 
   @verification @implemented
@@ -174,7 +166,6 @@ Feature: Visibility Control
     When I view visibility details for "Personal" phone
     Then I should see a list of contacts who can see it
     And I should see a list of contacts who cannot see it
-
   # Edge Cases
 
   @edge-cases @implemented
@@ -206,7 +197,6 @@ Feature: Visibility Control
     When I unblock Dave
     Then Dave should be able to see my "Work" fields again
     And Dave should receive an update with the restored fields
-
   # Privacy Protection
 
   @privacy @implemented
@@ -231,7 +221,6 @@ Feature: Visibility Control
     Then all changes should be applied atomically
     And contacts should receive a single update
     And there should be no intermediate inconsistent state visible
-
   # Bulk Operations
 
   @bulk @implemented

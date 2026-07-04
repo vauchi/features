@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @demo @onboarding @ux @ui
 Feature: Demo Contact
   As a new Vauchi user with no contacts
@@ -12,7 +11,6 @@ Feature: Demo Contact
     Given the Vauchi app is installed
     And the user has completed onboarding
     And the user has created their identity
-
   # ============================================================
   # Demo Contact Appearance
   # ============================================================
@@ -37,7 +35,6 @@ Feature: Demo Contact
     When I view my contacts list
     Then the demo contact should have a special indicator
     And it should be clear this is not a real person
-
   # ============================================================
   # Demo Updates
   # ============================================================
@@ -64,7 +61,6 @@ Feature: Demo Contact
     And I view a demo update for the first time
     Then I should see a before/after comparison
     And this should trigger the first-update-received aha moment
-
   # ============================================================
   # Demo Contact Content
   # ============================================================
@@ -73,11 +69,11 @@ Feature: Demo Contact
   Scenario: Demo contact has rotating tips
     Given the demo contact exists
     Then the contact card should contain helpful content:
-      | tip_category | description |
-      | getting_started | How to share your card |
-      | privacy | How your data is protected |
-      | updates | How updates work |
-      | recovery | What happens if you lose your phone |
+      | tip_category    | description                         |
+      | getting_started | How to share your card              |
+      | privacy         | How your data is protected          |
+      | updates         | How updates work                    |
+      | recovery        | What happens if you lose your phone |
 
   @demo-content @implemented
   Scenario: Demo tips change over time
@@ -85,7 +81,6 @@ Feature: Demo Contact
     When I check the demo contact later
     Then the tips may have rotated to new content
     And the update appears as a normal card update
-
   # ============================================================
   # Demo Contact Dismissal
   # ============================================================
@@ -110,7 +105,6 @@ Feature: Demo Contact
     When I go to Settings > Help > Show Demo Contact
     Then the demo contact should reappear
     And updates resume from current content
-
   # ============================================================
   # Demo Contact Privacy
   # ============================================================
@@ -128,7 +122,6 @@ Feature: Demo Contact
     When I check my contact count
     Then the demo contact should not be counted
     And sharing stats should exclude the demo
-
   # ============================================================
   # Persistence
   # ============================================================
@@ -145,7 +138,6 @@ Feature: Demo Contact
     Given I have dismissed the demo contact
     When I force quit and relaunch the app
     Then the demo contact should remain dismissed
-
   # ============================================================
   # Edge Cases
   # ============================================================

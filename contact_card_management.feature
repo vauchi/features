@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @contact-card
 Feature: Contact Card Management
   As a Vauchi user
@@ -12,7 +11,6 @@ Feature: Contact Card Management
     Given I have an existing identity
     And I am logged into Vauchi
     And I have a contact card with display name "Alice Smith"
-
   # Adding Contact Fields
 
   @add-field @phone @implemented
@@ -47,12 +45,12 @@ Feature: Contact Card Management
     And the field should have value "<value>"
 
     Examples:
-      | social_type       | label      | value              |
-      | social_twitter    | Twitter    | @alicesmith        |
-      | social_instagram  | Instagram  | alice.smith        |
-      | social_linkedin   | LinkedIn   | linkedin.com/in/as |
-      | social_github     | GitHub     | alicesmith         |
-      | social_facebook   | Facebook   | alice.smith.123    |
+      | social_type      | label     | value              |
+      | social_twitter   | Twitter   | @alicesmith        |
+      | social_instagram | Instagram | alice.smith        |
+      | social_linkedin  | LinkedIn  | linkedin.com/in/as |
+      | social_github    | GitHub    | alicesmith         |
+      | social_facebook  | Facebook  | alice.smith.123    |
 
   @add-field @address @implemented
   Scenario: Add a physical address field
@@ -81,7 +79,6 @@ Feature: Contact Card Management
     And I set the value to "+1-555-987-6543"
     And I save the field
     Then my contact card should have a custom field labeled "Signal"
-
   # Field Validation
 
   @validation @phone @implemented
@@ -92,12 +89,12 @@ Feature: Contact Card Management
     And I should see message "<message>"
 
     Examples:
-      | phone_number      | result   | message                           |
-      | +1-555-123-4567   | pass     |                                   |
-      | 555-123-4567      | pass     |                                   |
-      | +44 20 7946 0958  | pass     |                                   |
-      | not-a-phone       | fail     | Please enter a valid phone number |
-      |                   | fail     | Phone number is required          |
+      | phone_number     | result | message                           |
+      |  +1-555-123-4567 | pass   |                                   |
+      |     555-123-4567 | pass   |                                   |
+      | +44 20 7946 0958 | pass   |                                   |
+      | not-a-phone      | fail   | Please enter a valid phone number |
+      |                  | fail   | Phone number is required          |
 
   @validation @email @implemented
   Scenario Outline: Email validation
@@ -112,7 +109,7 @@ Feature: Contact Card Management
       | alice@sub.example.com | pass   |
       | invalid-email         | fail   |
       | @example.com          | fail   |
-      | alice@               | fail   |
+      | alice@                | fail   |
 
   @validation @size @implemented
   Scenario: Field value size limit
@@ -120,7 +117,6 @@ Feature: Contact Card Management
     When I enter a value exceeding 1000 characters
     Then I should see an error "Value exceeds maximum length"
     And the field should not be saved
-
   # Editing Contact Fields
 
   @edit-field @implemented
@@ -147,7 +143,6 @@ Feature: Contact Card Management
     And I change the value to "+1-555-999-8888"
     And I cancel the edit
     Then the "Mobile" phone field should still have value "+1-555-123-4567"
-
   # Removing Contact Fields
 
   @remove-field @implemented
@@ -171,7 +166,6 @@ Feature: Contact Card Management
     When I remove the "Mobile" phone field
     Then Bob should receive an update
     And Bob should no longer see the "Mobile" field on my card
-
   # Display Name Management
 
   @display-name @implemented
@@ -193,7 +187,6 @@ Feature: Contact Card Management
     Given I am editing my display name
     When I enter a name longer than 100 characters
     Then I should see an error "Display name too long"
-
   # Avatar Management
 
   @avatar @implemented
@@ -218,7 +211,6 @@ Feature: Contact Card Management
     Given my contact card has an avatar
     When I remove the avatar
     Then my contact card should not display an avatar
-
   # Contact Card Limits
 
   @limits @implemented
@@ -241,7 +233,6 @@ Feature: Contact Card Management
     When I try to add a field that would exceed the limit
     Then I should see an error "Contact card size limit exceeded"
     And the field should not be added
-
   # Ordering Fields
 
   @ordering @implemented
@@ -255,7 +246,6 @@ Feature: Contact Card Management
     Given I have reordered my fields to: "Twitter", "Mobile", "Email"
     When I restart the application
     Then my contact card fields should still be in order: "Twitter", "Mobile", "Email"
-
   # Social Network Registry Configuration
 
   @social-registry @implemented
@@ -282,12 +272,12 @@ Feature: Contact Card Management
     And I should see message "<message>"
 
     Examples:
-      | network  | username              | result | message                          |
-      | twitter  | @alicesmith           | pass   |                                  |
-      | twitter  | alice                 | pass   |                                  |
-      | twitter  | this_is_way_too_long! | fail   | Invalid Twitter username format  |
-      | github   | octocat               | pass   |                                  |
-      | github   | -invalid              | fail   | Invalid GitHub username format   |
+      | network | username              | result | message                         |
+      | twitter | @alicesmith           | pass   |                                 |
+      | twitter | alice                 | pass   |                                 |
+      | twitter | this_is_way_too_long! | fail   | Invalid Twitter username format |
+      | github  | octocat               | pass   |                                 |
+      | github  | -invalid              | fail   | Invalid GitHub username format  |
 
   @social-registry @profile-url @implemented
   Scenario: Generate profile URL from social field
@@ -302,10 +292,10 @@ Feature: Contact Card Management
     When I view the verification options for "twitter"
     Then I should see the verification method "signed_post"
     And I should see verification steps:
-      | step                                              |
-      | Generate a signed verification message            |
-      | Post the message as a tweet from your account     |
-      | Paste the tweet URL to verify ownership           |
+      | step                                          |
+      | Generate a signed verification message        |
+      | Post the message as a tweet from your account |
+      | Paste the tweet URL to verify ownership       |
 
   @social-registry @verification @implemented
   Scenario: View help text for finding social network ID

@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @ble @exchange @implemented
 Feature: BLE Exchange Protocol Internals
   As a Vauchi developer
@@ -12,7 +11,6 @@ Feature: BLE Exchange Protocol Internals
     Given Alice has Vauchi installed with identity "Alice"
     And Bob has Vauchi installed with identity "Bob"
     And both devices support BLE
-
   # --- BLE Payload ---
 
   @ble-payload @implemented
@@ -60,7 +58,6 @@ Feature: BLE Exchange Protocol Internals
   Scenario: BLE ephemeral keys differ from identity keys
     When Alice generates a BLE exchange payload
     Then the ephemeral exchange key should differ from Alice's identity key
-
   # --- GATT Service ---
 
   @gatt @implemented
@@ -73,7 +70,6 @@ Feature: BLE Exchange Protocol Internals
   Scenario: GATT service and characteristic UUIDs match expected values
     When the BLE GATT service is configured
     Then the UUIDs should match the Vauchi BLE specification
-
   # --- BLE Transport (Mock) ---
 
   @transport @implemented
@@ -101,7 +97,6 @@ Feature: BLE Exchange Protocol Internals
     Given a mock BLE transport configured to fail
     When any transport operation is attempted
     Then it should return an error
-
   # --- BLE Exchange Session States ---
 
   @session @implemented
@@ -182,7 +177,6 @@ Feature: BLE Exchange Protocol Internals
   Scenario: BLE error variants have proper display messages
     When each BLE error variant is formatted
     Then each should produce a human-readable message
-
   # --- BLE Handshake Protocol ---
 
   @handshake @crypto @implemented
@@ -317,7 +311,6 @@ Feature: BLE Exchange Protocol Internals
     Given the handshake session is in Idle state
     When process_committed_payload is called
     Then it should fail with InvalidState error
-
   # --- BLE Integration (Advertisement & Discovery) ---
 
   @integration @advertisement @implemented
@@ -442,7 +435,6 @@ Feature: BLE Exchange Protocol Internals
     Given a BLE session in a specific state
     When the state is serialized to JSON and deserialized
     Then the state should be preserved
-
   # --- BLE Property-Based Tests ---
 
   @proptest @crypto @implemented
@@ -492,7 +484,6 @@ Feature: BLE Exchange Protocol Internals
     Given a truncated 50-byte KeyOffer packet
     When the packet is processed
     Then it should be rejected as invalid
-
   # --- BLE Rollback ---
 
   @rollback @implemented
@@ -530,7 +521,6 @@ Feature: BLE Exchange Protocol Internals
   Scenario: Default rollback manager is empty
     When a new BLE rollback manager is created
     Then it should have no pending data
-
   # --- BLE Chunking ---
 
   @chunking @implemented

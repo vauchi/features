@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @sync @updates
 Feature: Sync and Updates
   As a Vauchi user
@@ -13,7 +12,6 @@ Feature: Sync and Updates
     Given I have an existing identity as "Alice"
     And I have contacts "Bob", "Carol", and "Dave" in my contact list
     And the sync service is running
-
   # Update Propagation
 
   @propagation @implemented
@@ -46,7 +44,6 @@ Feature: Sync and Updates
     And Carol comes online
     Then Carol should receive one combined update
     And all 5 changes should be reflected
-
   # Receiving Updates
 
   @receive @implemented
@@ -72,7 +69,6 @@ Feature: Sync and Updates
     When sync occurs
     Then I should not receive any update from Bob
     And my view of Bob should remain unchanged
-
   # Relay-Based Sync
 
   @relay @implemented
@@ -96,7 +92,6 @@ Feature: Sync and Updates
     When I update my contact card
     Then the relay should store the encrypted update
     And when Bob comes online Bob should receive the update
-
   # Conflict Resolution
 
   @conflict @implemented
@@ -123,7 +118,6 @@ Feature: Sync and Updates
     Then changes should be merged using last-write-wins with device-id tie-breaking
     And no data should be lost
     And both devices should converge to the same state
-
   # Sync Status
 
   @status @implemented
@@ -147,7 +141,6 @@ Feature: Sync and Updates
     When I tap "Sync Now"
     Then immediate sync attempt should be made
     And sync status should update
-
   # Sync Reliability
 
   @reliability @implemented
@@ -172,7 +165,6 @@ Feature: Sync and Updates
     And I launch Vauchi
     Then pending updates should still be queued
     And sync should resume
-
   # Bandwidth and Efficiency
 
   @efficiency @implemented
@@ -194,7 +186,6 @@ Feature: Sync and Updates
     Given I am sending an update
     Then the payload should be compressed before encryption
     And the encrypted payload should be as small as possible
-
   # Sync Settings
 
   @settings @planned
@@ -217,7 +208,6 @@ Feature: Sync and Updates
     Given I have set sync frequency to "every hour"
     Then sync should run at most once per hour
     And manual sync should always work
-
   # Security in Sync
 
   @security @implemented
@@ -240,7 +230,6 @@ Feature: Sync and Updates
     When the attacker replays it to me
     Then I should detect the replay via timestamp/nonce
     And the replayed update should be rejected
-
   # Multi-device Sync
 
   @multi-device @implemented
@@ -264,7 +253,6 @@ Feature: Sync and Updates
     Then Device C should receive my full contact card
     And Device C should receive all my contacts
     And Device C should be fully synced
-
   # Edge Cases
 
   @edge-case @implemented
@@ -290,7 +278,6 @@ Feature: Sync and Updates
     Then updates should be processed in batches
     And UI should remain responsive
     And progress should be shown
-
   # Clock Skew Handling (Added 2026-01-21)
 
   @edge-case @clock-skew @implemented
@@ -326,7 +313,6 @@ Feature: Sync and Updates
     Then partial updates should not be committed
     And sync should resume from last checkpoint
     And no data corruption should occur
-
   # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
 
   @platform-edge-case @ios @background @planned

@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @relay @delivery @infrastructure
 Feature: Message Delivery Guarantees
   As a Vauchi user
@@ -11,7 +10,6 @@ Feature: Message Delivery Guarantees
   Background:
     Given I have created my identity
     And I have contacts who use Vauchi
-
   # ============================================================
   # Delivery Confirmation
   # ============================================================
@@ -49,7 +47,6 @@ Feature: Message Delivery Guarantees
     Then my status should update to "Delivered"
     And the update should happen without manual refresh
     And a subtle notification should confirm delivery
-
   # ============================================================
   # Relay Persistence
   # ============================================================
@@ -83,7 +80,6 @@ Feature: Message Delivery Guarantees
     Then I should receive confirmation that the relay stored it
     And the confirmation should include a message ID
     And I can use this ID to track delivery
-
   # ============================================================
   # Message Expiration
   # ============================================================
@@ -120,7 +116,6 @@ Feature: Message Delivery Guarantees
     Then I should see an option to "Resend"
     And resending should create a new message with fresh TTL
     And the original failure should be logged
-
   # ============================================================
   # Retry and Recovery
   # ============================================================
@@ -157,7 +152,6 @@ Feature: Message Delivery Guarantees
     Then the update should be marked as "Failed"
     And I should be notified
     And I should see options: Retry Now, Cancel, or Contact Support
-
   # ============================================================
   # Offline Behavior
   # ============================================================
@@ -192,7 +186,6 @@ Feature: Message Delivery Guarantees
     Then the app should show an offline indicator
     And I should understand that updates are queued
     And the indicator should clear when online
-
   # ============================================================
   # Multi-Device Delivery
   # ============================================================
@@ -221,7 +214,6 @@ Feature: Message Delivery Guarantees
     When Bob's tablet comes online
     Then the tablet should receive the update
     And my status should update to "Delivered to all devices"
-
   # ============================================================
   # Delivery Order
   # ============================================================
@@ -242,7 +234,6 @@ Feature: Message Delivery Guarantees
     Then the app should reorder them by timestamp
     And the final state should be consistent
     And no update should be lost
-
   # ============================================================
   # Delivery Transparency
   # ============================================================
@@ -269,7 +260,6 @@ Feature: Message Delivery Guarantees
     Then I should see a human-readable reason
     And not just an error code
     And I should see what I can do about it
-
   # ============================================================
   # Privacy in Delivery
   # ============================================================
@@ -298,7 +288,6 @@ Feature: Message Delivery Guarantees
     Then the relay should log minimal metadata
     And logs should be automatically purged
     And no long-term tracking should occur
-
   # ============================================================
   # Error Handling
   # ============================================================

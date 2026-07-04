@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @security @resistance @emergency @widget @ui
 Feature: Panic Button Widget
   As an activist or at-risk user
@@ -20,7 +19,6 @@ Feature: Panic Button Widget
   Background:
     Given I have an existing identity
     And I have contacts and stored data
-
   # ============================================================
   # Widget Setup
   # ============================================================
@@ -52,12 +50,11 @@ Feature: Panic Button Widget
   Scenario: Configure widget confirmation mode
     Given I am setting up the panic widget
     Then I should be able to choose:
-      | mode           | description                              |
-      | Tap + Confirm  | Tap widget, then confirm in dialog       |
-      | Long Press     | Hold widget for 3 seconds to trigger     |
-      | Double Tap     | Tap twice quickly to trigger             |
+      | mode          | description                          |
+      | Tap + Confirm | Tap widget, then confirm in dialog   |
+      | Long Press    | Hold widget for 3 seconds to trigger |
+      | Double Tap    | Tap twice quickly to trigger         |
     And the default should be "Tap + Confirm" for safety
-
   # ============================================================
   # Panic Trigger
   # ============================================================
@@ -93,7 +90,6 @@ Feature: Panic Button Widget
     When I tap the tile
     Then the same trigger behavior should apply as the widget
     And panic shred should be initiated
-
   # ============================================================
   # Panic Shred Execution
   # ============================================================
@@ -119,7 +115,6 @@ Feature: Panic Button Widget
     Then the shred should complete within 5 seconds
     And visual feedback should show progress
     And completion should be clearly indicated
-
   # ============================================================
   # Visual Design
   # ============================================================
@@ -146,7 +141,6 @@ Feature: Panic Button Widget
     Then it should show only essential UI elements
     And the confirm button should be prominent
     And the dialog should close within 5 seconds if no action
-
   # ============================================================
   # Authentication
   # ============================================================
@@ -171,7 +165,6 @@ Feature: Panic Button Widget
     Given I want to add or configure the panic widget
     Then I should authenticate first
     And only someone with app access can set up the widget
-
   # ============================================================
   # Edge Cases
   # ============================================================
@@ -214,7 +207,6 @@ Feature: Panic Button Widget
     Then only that device's data should be destroyed
     And other devices should receive a revocation notice
     And they continue functioning
-
   # ============================================================
   # Platform-Specific Behavior
   # ============================================================
