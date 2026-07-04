@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-@theming @appearance
+@theming @appearance @ui
 Feature: App Theming
   As a Vauchi user
   I want to customize the app's appearance with different color themes

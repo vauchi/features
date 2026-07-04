@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-@help @faq
+@help @faq @ui
 Feature: Help & FAQ System
   As a Vauchi user
   I want to access help content and frequently asked questions

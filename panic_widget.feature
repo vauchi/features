@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-@security @resistance @emergency @widget
+@security @resistance @emergency @widget @ui
 Feature: Panic Button Widget
   As an activist or at-risk user
   I want a home screen widget that triggers immediate data destruction

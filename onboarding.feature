@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-@onboarding
+@onboarding @ui
 Feature: Onboarding Experience
   As a new Vauchi user
   I want a guided first experience

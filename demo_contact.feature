@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-@demo @onboarding @ux
+@demo @onboarding @ux @ui
 Feature: Demo Contact
   As a new Vauchi user with no contacts
   I want to see how updates work through a demo contact

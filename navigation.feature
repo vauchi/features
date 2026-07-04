@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-@navigation @ux
+@navigation @ux @ui
 Feature: 5-Tab Navigation Architecture
   As a Vauchi user
   I want a simple, consistent navigation with 5 tabs

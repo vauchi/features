@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-@accessibility @a11y
+@accessibility @a11y @ui
 Feature: Accessibility
   As a user with disabilities
   I want Vauchi to be fully accessible
