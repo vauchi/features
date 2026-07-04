@@ -93,6 +93,10 @@ lint:gherkin:
   stage: lint
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:20-alpine
   tags: [docker]
+  # Slow source fetch + a network `npm install -g` routinely blew the tight
+  # default budget before the linter even ran (job timed out in setup, not on
+  # content). Give the setup real headroom.
+  timeout: 10m
   before_script:
     - npm install -g @cucumber/gherkin-utils
   script:
