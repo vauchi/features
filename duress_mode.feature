@@ -179,12 +179,16 @@ Feature: Duress Mode
   # ============================================================
 
   @behavior @planned
-  Scenario: Duress mode actions are fake
+  Scenario: Duress mode sync is fake but looks real
     Given I am in duress mode
     When I try to sync
     Then a fake sync animation should play
-    And no real network activity should occur
+    And no real contact data should be synced
+    And any network traffic should be indistinguishable from a normal sync
     And "Sync complete" should be shown
+    # The queued duress alert is the one real payload permitted here — it
+    # travels disguised as this normal-looking sync (see "Duress unlock
+    # sends silent alert to trusted contacts").
 
   # Removed: "Exchange in duress mode is fake" — contradicted line 216
   # ("Exchanges add to decoy profile"). For plausible deniability, the

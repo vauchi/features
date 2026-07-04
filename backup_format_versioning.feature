@@ -67,12 +67,12 @@ Feature: Backup Format Versioning
   @detection @implemented
   Scenario: Unknown version byte is rejected
     Given I have a backup file
-    When the first byte is not 0x02
+    When the first byte is not a known version (0x02 identity, 0x03 full)
     Then restoration should fail with RestoreFailed
 
   @security @implemented
-  Scenario: Backup contains only the master seed
-    When I create a backup
+  Scenario: Identity backup carries no plaintext key material
+    When I create an identity backup
     Then the backup should contain the encrypted master seed
     And all keypairs should be re-derivable from the seed
     And no plaintext key material should appear in the backup file
@@ -84,3 +84,32 @@ Feature: Backup Format Versioning
     And I try to restore it
     Then the AEAD authentication should fail
     And no partial data should be returned
+
+  # ============================================================
+  # Full Backup (v3)
+  # ============================================================
+
+  @v3 @implemented
+  Scenario: Full backup includes identity, contacts, own card, and labels
+    Given I have an existing identity with contacts and labels
+    When I create a full backup with a password
+    Then the backup should use format version 0x03
+    And it should include my identity and display name
+    And it should include my contacts (imported and exchanged)
+    And it should include my own contact card and labels
+    And nothing should be readable without the password
+
+  @v3 @planned
+  Scenario: Full backup is opt-in
+    Given I have never opted in to full backup
+    Then no contact or card data should be written to any backup file
+    And only the identity backup should be offered by default
+
+  @v3 @planned
+  Scenario: Full backup can be unlocked via social recovery
+    Given I have a full backup but lost my password
+    When I complete social recovery with my trusted contacts
+    Then I should be able to unlock the full backup
+    # Alternative under consideration: back up only identity + connection
+    # identities and re-fetch card data from contacts after recovery —
+    # more private, but harder (needs contacts online).

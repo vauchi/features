@@ -159,8 +159,9 @@ Feature: Demo Contact
     And no network error should be shown
 
   @demo-edge @planned
-  Scenario: Demo contact does not interfere with real contacts
+  Scenario: Demo contact is removed once any real contact exists
     Given I have the demo contact
-    And I add a real contact
-    Then both should appear in the contacts list
-    And they should function independently
+    When I import a real contact
+    Then the demo contact should be automatically removed
+    # Same invariant as creation ("no demo contact should be created" when
+    # real contacts exist) and as removal on first real exchange.

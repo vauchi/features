@@ -45,12 +45,14 @@ Feature: Noise Protocol Inner Encryption
     Then I should extract the 32-byte X25519 public key from the URL fragment
     And the key should be base64url-decoded
 
-  @handshake @implemented
-  Scenario: URL without fragment has no Noise key
+  @handshake @planned
+  Scenario: Relay URL without a Noise key is rejected
     Given the relay URL is "wss://relay.example.com"
     When I try to parse a Noise public key
     Then parsing should return None
-    And the connection should proceed without Noise encryption
+    And the client should refuse to connect
+    # No plaintext, ever: a relay whose URL carries no inner-encryption key
+    # is not connected to — there is no unencrypted fallback.
 
   @handshake @implemented
   Scenario: Invalid Noise key in URL fragment is rejected
@@ -120,20 +122,20 @@ Feature: Noise Protocol Inner Encryption
     And both layers must be compromised to observe plaintext
 
   # ============================================================
-  # Backward Compatibility
+  # No Plaintext (fallback removed SP-33)
   # ============================================================
 
-  @compat @implemented
-  Scenario: Client connects to relay without Noise support
+  @compat @planned
+  Scenario: Client refuses relay without inner encryption
     Given the relay does not support v2 protocol
     When I connect to the relay
-    Then the connection should fall back to TLS-only
-    And sync should proceed normally
-    And I should be informed that inner encryption is not active
+    Then the connection should fail
+    And no application data should be sent
+    And I should be informed the relay is unsupported
 
   @compat @implemented
-  Scenario: Relay optionally requires Noise for v2+ clients
-    Given the relay is configured to require Noise encryption
+  Scenario: Relay requires Noise for all clients
+    Given the relay requires Noise NK encryption
     When a client connects without the v2 magic prefix
-    Then the relay may reject the connection
+    Then the relay should reject the connection
     And the client should retry with Noise enabled

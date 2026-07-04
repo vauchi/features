@@ -302,7 +302,9 @@ Feature: Visibility Labels
     When I block Eve
     Then Eve should be removed from all labels
     And Eve should not see any of my fields
-    And Eve should receive an empty contact card update
+    And no further updates should be sent to Eve
+    # A one-time wipe update is a separate opt-in choice —
+    # visibility_control.feature "Blocking offers a final wipe of my info".
 
   @edge-cases @planned
   Scenario: Unblock contact does not restore labels

@@ -283,11 +283,14 @@ Feature: Message Delivery Guarantees
     And the relay should not track my online status
 
   @privacy @implemented
-  Scenario: Read receipts are never sent
+  Scenario: Read receipts are off by default
     Given I receive an update from Alice
+    And I have not enabled read receipts
     Then Alice should not know when I read the update
     And there should be no "seen" indicators
     And only delivery (not read) status is tracked
+    # Read receipts are opt-in via Settings > Privacy > Read Receipts
+    # (privacy_compliance.feature "Disable read receipts").
 
   @privacy @implemented
   Scenario: Delivery metadata is minimal

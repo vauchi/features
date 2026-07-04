@@ -108,11 +108,15 @@ Feature: External Contact Import
   # Merge prevention
 
   @merge @implemented
-  Scenario: Cannot merge exchanged and imported contacts
+  Scenario: Direct cross-kind merge is rejected
     Given I have exchanged contact "Carol" and imported contact "Carol Smith"
-    When I try to merge them
+    When I try to merge them directly
     Then I should get an error
     And the error should indicate cross-kind merge is not allowed
+    # Direction matters: an exchanged contact may absorb an imported one via
+    # the adoption flow (contacts_management.feature "Cross-kind merge with
+    # name and avatar adoption"); an imported contact can never override an
+    # exchanged one, because imported data is unverified.
 
   # Phone normalization for dedup
 

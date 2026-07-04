@@ -15,12 +15,13 @@ Feature: App Theming
   # Theme Selection
   # ===========================================
 
-  @selection @implemented
-  Scenario: Default theme on fresh install
+  @selection @planned
+  Scenario: Default theme on fresh install follows the system
     Given this is a fresh app installation
     When the app launches
-    Then the "default" dark theme should be applied
-    And the theme should respect system dark/light mode preference
+    Then the theme should follow the system dark/light mode preference
+    And a dark-mode system should apply "Default Dark"
+    And a light-mode system should apply "Default Light"
 
   @selection @implemented
   Scenario: Select theme from settings

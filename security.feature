@@ -257,11 +257,13 @@ Feature: Security
     And I should be prompted to re-verify Bob
 
   @notifications @planned
-  Scenario: Notification on blocked exchange attempt
+  Scenario: Blocked exchange attempts stay silent
     Given I have blocked Eve
     When Eve attempts to exchange contacts
-    Then I should be notified of the attempt
-    And I should see when and where it occurred
+    Then I should not receive any notification about the attempt
+    And the attempt should appear only in my local security log
+    # Blocked contacts generate no notifications of any kind
+    # (contact_exchange.feature "Blocked user attempts exchange").
 
   # Cryptographic Details
 

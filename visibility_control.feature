@@ -23,12 +23,13 @@ Feature: Visibility Control
   # Default Visibility
 
   @default @implemented
-  Scenario: New fields default to visible to all contacts
+  Scenario: New fields default to hidden
     When I add a phone field "Mobile" with value "+1-555-333-3333"
-    Then all contacts can see my "Mobile" field
+    Then no contact can see my "Mobile" field
+    And the field stays hidden until I explicitly grant visibility
 
   @default @implemented
-  Scenario: New contacts see default-visible fields
+  Scenario: New contacts see fields I made visible to all
     Given all my fields are set to "visible to all"
     When I exchange contacts with "Eve"
     Then Eve should see all four of my contact fields
@@ -188,8 +189,15 @@ Feature: Visibility Control
     Given Dave can see all my fields
     When I block Dave
     Then Dave should not be able to see any of my fields
-    And Dave should receive an update with an empty contact card
     And Dave should not receive future updates
+
+  @edge-cases @planned
+  Scenario: Blocking offers a final wipe of my info
+    Given Dave can see all my fields
+    When I block Dave
+    Then I should be asked whether to remove my info from Dave's device
+    And if I confirm, Dave should receive one final update with an empty contact card
+    And no further updates should ever be sent to Dave
 
   @edge-cases @planned
   Scenario: Unblock contact restores previous visibility
@@ -238,5 +246,5 @@ Feature: Visibility Control
     Given I have various custom visibility settings
     When I select "Reset all to default"
     And I confirm the action
-    Then all fields should be visible to all contacts
-    And all contacts should receive updates
+    Then all fields should revert to hidden (the default)
+    And contacts who could see fields should receive updates removing them
