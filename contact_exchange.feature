@@ -479,8 +479,8 @@ Feature: Contact Card Exchange
 
   # Exchange Reciprocity Confirmation
   # Detects and surfaces whether both sides completed the exchange.
-  # Design: _private/docs/designs/2026-04-04-atomic-exchange-reciprocity-design.md
-  # Problem: PRB-2026-038 (unilateral exchange race)
+  # Design: atomic exchange reciprocity design doc (2026-04-04,
+  # maintainer-internal). Problem: PRB-2026-038 (unilateral exchange race)
 
   @reciprocity @relay-escrow @planned
   Scenario: Both sides confirm via relay escrow

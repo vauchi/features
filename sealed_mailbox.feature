@@ -13,7 +13,7 @@ Feature: Sealed Mailbox Tokens (SP-33)
   - Trust earned in person: Tokens derived from shared keys established in person
   - Audited crypto only: HKDF-SHA256 derivation, same pattern as anonymous sender
 
-  Design: _private/docs/plans/2026-03-22-sealed-mailbox-tokens-design.md
+  Design: sealed-mailbox tokens design doc (2026-03-22, maintainer-internal)
 
   Background:
     Given I have an existing identity
