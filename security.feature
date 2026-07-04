@@ -163,7 +163,8 @@ Feature: Security
   Scenario: Local database encryption
     Given I have local data storage
     Then the database should be encrypted with XChaCha20-Poly1305
-    And the encryption key (SMK) should be stored in platform secure storage
+    And the storage key should be derived from the SMK (ADR-033)
+    And the SMK should be stored in platform secure storage
     And database files should be unreadable without the key
 
   @data @implemented

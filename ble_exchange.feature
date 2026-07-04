@@ -482,7 +482,7 @@ Feature: BLE Exchange Protocol Internals
     Then the fields with null bytes should be preserved
 
   @proptest @adversarial @implemented
-  Scenario: Maximum size avatar roundtrips correctly
+  Scenario: Large avatar roundtrips correctly
     Given a contact card with a 16KB avatar
     When the card is serialized and deserialized
     Then the avatar data should be preserved

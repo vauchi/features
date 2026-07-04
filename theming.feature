@@ -248,7 +248,7 @@ Feature: App Theming
   Scenario: Theme applies on Desktop
     Given the user is on Desktop
     When the user applies "Catppuccin Mocha" theme
-    Then CSS custom properties should be updated
+    Then the theme tokens should be applied by the native toolkit
     And window frame should adapt to theme if supported
 
   # ===========================================

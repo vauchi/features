@@ -76,7 +76,7 @@ Feature: Sync and Updates
   # Relay-Based Sync
 
   @relay @implemented
-  Scenario: Sync via WebSocket relay
+  Scenario: Sync via relay
     Given Bob and I are both online
     When I update my contact card
     Then the update should be sent via the relay server
