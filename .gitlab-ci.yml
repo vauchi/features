@@ -132,7 +132,12 @@ lint:step-catalog:
   tags: [docker]
   timeout: 10m
   script:
-    - node scripts/check-step-catalog.mjs --min 333
+    # Floor 333 -> 331 (features!100): two wired assertions were corrected
+    # to real behavior that has no core step def yet — the avatar "too
+    # large" rejection (ADR-042: core normalizes any format to WebP <=32KB,
+    # never rejects) and the field-visibility default (now hidden, not
+    # visible-to-all). Re-raise once those get wired core step definitions.
+    - node scripts/check-step-catalog.mjs --min 331
 
 # Check feature file structure
 lint:structure:
