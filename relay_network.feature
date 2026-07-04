@@ -203,49 +203,52 @@ Feature: Relay Network
     And I should verify the relay's identity
     And connection should be encrypted (TLS)
 
-  # Client Identity Verification (Relay Authentication Phase 1)
-  # Implemented in relay!28 + core!88
+  # Signed Operations (originally "Relay Authentication Phase 1",
+  # relay!28 + core!88). Connection-level identity authentication was
+  # retired with the sealed-mailbox model (SP-33, ADR-029/ADR-037):
+  # routing is always by anonymous daily-rotating tokens, and Ed25519
+  # signatures authenticate specific signed operations (e.g. purge
+  # requests) — never a connection or routing identity.
 
   @protocol @authentication @implemented
-  Scenario: Client authenticates with Ed25519 signature
+  Scenario: Signed operations verified without a routing identity
     Given I have an identity with an Ed25519 signing key
-    When I connect to the relay
-    Then my client should sign a nonce and timestamp with my private key
-    And the handshake should include my public key in hex encoding
-    And the relay should verify the signature before accepting me
-    And my routing should use my verified public key as client_id
-    # promoted_to: relay (handler/verify.rs, handler/connection.rs)
+    When I submit a signed operation to the relay (e.g. a purge request)
+    Then the relay should verify the signature before acting on it
+    And my routing should use anonymous daily-rotating mailbox tokens
+    And my public key should never be used as a connection or routing identifier
+    # promoted_to: relay (handler/verify.rs)
 
   @protocol @authentication @implemented
   Scenario: Invalid signature rejected by relay
-    Given an attacker sends a handshake with a forged signature
-    When the relay verifies the handshake
-    Then the relay should reject the connection
+    Given an attacker sends a signed operation with a forged signature
+    When the relay verifies the operation
+    Then the relay should reject the operation
     And the attacker should not receive any routed messages
     # promoted_to: relay (handler/verify.rs)
 
   @protocol @authentication @implemented
-  Scenario: Client ID mismatch rejected
-    Given an attacker signs with key A but claims client_id of key B
-    When the relay verifies the handshake
+  Scenario: Signature key mismatch rejected
+    Given an attacker signs an operation with key A but claims it came from key B
+    When the relay verifies the operation
     Then the relay should detect the mismatch
-    And the connection should be rejected
-    # promoted_to: relay (handler/connection.rs:168)
+    And the operation should be rejected
+    # promoted_to: relay (handler/verify.rs)
 
   @protocol @authentication @implemented
   Scenario: Nonce replay attack prevented
-    Given an attacker captures a valid signed handshake
-    When the attacker replays the exact same handshake
+    Given an attacker captures a valid signed request
+    When the attacker replays the exact same request
     Then the relay should detect the nonce was already used
-    And the replayed handshake should be rejected
+    And the replayed request should be rejected
     # promoted_to: relay (handler/nonce.rs)
 
   @protocol @authentication @implemented
   Scenario: Expired timestamp rejected
-    Given an attacker replays a handshake with a stale timestamp
+    Given an attacker replays a signed request with a stale timestamp
     When the relay checks the timestamp
-    Then the relay should reject handshakes older than 60 seconds
-    And the connection should not be established
+    Then the relay should reject requests older than 60 seconds
+    And the operation should be rejected
     # promoted_to: relay (handler/verify.rs:45)
 
   @protocol @authentication @implemented
@@ -257,12 +260,12 @@ Feature: Relay Network
     # promoted_to: relay (handler/connection.rs — Noise NK mandatory since v0.1, plaintext fallback removed SP-33)
 
   @protocol @authentication @implemented
-  Scenario: Routing token mode unaffected by authentication
-    Given I am using a routing token for anonymous access
-    When I connect to the relay with a routing token
+  Scenario: Anonymous token routing requires no signature
+    Given I am connecting with a daily-rotating mailbox token
+    When I fetch or deposit blobs by that token
     Then no signature verification should be required
-    And the routing token should work as before
-    # promoted_to: relay (handler/connection.rs:201)
+    And the relay should validate only the token format
+    # promoted_to: relay (http_api.rs token validation)
 
   @protocol @implemented
   Scenario: Relay gossip protocol

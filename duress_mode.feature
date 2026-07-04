@@ -134,6 +134,22 @@ Feature: Duress Mode
     Then contacts should be created with realistic names
     And cards should contain plausible fake data
     And the list should look like a normal contact list
+
+  @decoy @planned
+  Scenario: Auto-generated decoys read as an almost unused app
+    Given my decoy profile was auto-populated
+    Then the decoy profile should resemble a lightly used app, not a template:
+      | aspect         | requirement                                   |
+      | Contact count  | small (roughly 3-8), not a full address book  |
+      | Card detail    | sparse — a phone or an email, rarely both     |
+      | Timestamps     | plausible, spread over months, none identical |
+      | Update history | little to none — an almost unused app         |
+      | Names          | locale-plausible, no repeating patterns       |
+    And no two auto-generated decoy profiles should be identical
+    # A sparse profile is the credible cover: heavy curated-looking decoys
+    # are hard to fake convincingly; "barely uses the app" is common and
+    # explains away every gap a coercer might probe (ADR-032 addendum
+    # 2026-07-04).
   # ============================================================
   # Duress Unlock Behavior
   # ============================================================
