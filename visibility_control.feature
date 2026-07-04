@@ -10,10 +10,12 @@ Feature: Visibility Control
 
   Background:
     Given I have an existing identity as "Alice"
-    And I have a phone field "Personal Phone" with value "+1-555-111-1111"
-    And I have a phone field "Work Phone" with value "+1-555-222-2222"
-    And I have an email field "Personal Email" with value "alice@personal.com"
-    And I have an email field "Work Email" with value "alice@work.com"
+    And I have the following fields on my contact card:
+      | type  | label          | value              |
+      | phone | Personal Phone | +1-555-111-1111    |
+      | phone | Work Phone     | +1-555-222-2222    |
+      | email | Personal Email | alice@personal.com |
+      | email | Work Email     | alice@work.com     |
     And I have a contact "Bob"
     And I have a contact "Carol"
     And I have a contact "Dave"

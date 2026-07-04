@@ -40,6 +40,9 @@ Feature: Contacts Management
   @view @implemented
   Scenario: Empty contacts list
     Then I should have 0 contacts
+    When I open the app
+    And I navigate to the contacts screen
+    Then I should see "No contacts yet"
 
   # Searching and Filtering
 

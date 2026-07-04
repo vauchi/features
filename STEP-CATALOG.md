@@ -24,6 +24,7 @@ steps executes as a real test; a scenario with any other step is skipped
 
 ## Given (setup)
 
+- `{string} has a/an {word} field {string} with value {string}`
 - `a user {string}`
 - `contact {string} is in group {string}`
 - `contact {string} is in label {string}`
@@ -46,6 +47,7 @@ steps executes as a real test; a scenario with any other step is skipped
 - `I have an existing identity`
 - `I have an existing identity as {string}`
 - `I have just created a new identity`
+- `I have the following fields on my contact card:`
 - `I make field {string} visible only to group {string}`
 - `I make field {string} visible only to label {string}`
 - `my display name is {string}`
@@ -55,6 +57,8 @@ steps executes as a real test; a scenario with any other step is skipped
 ## When (actions)
 
 - `{string} and {string} complete a QR exchange`
+- `{string} syncs their card with {string}`
+- `{string} updates their {string} field to {string}`
 - `I add a new field of type {string}`
 - `I add a phone field {string} with value {string}`
 - `I add contact {string} to group {string}`
@@ -74,6 +78,8 @@ steps executes as a real test; a scenario with any other step is skipped
 - `I make field {string} visible only to group {string}`
 - `I make field {string} visible only to label {string}`
 - `I make field {string} visible to contact {string}`
+- `I navigate to the {word} screen`
+- `I open the app`
 - `I remove contact {string}`
 - `I remove contact {string} from group {string}`
 - `I rename group {string} to {string}`
@@ -83,6 +89,7 @@ steps executes as a real test; a scenario with any other step is skipped
 - `I set the label to {string}`
 - `I set the nickname {string} for contact {string}`
 - `I set the value to {string}`
+- `I tap {string}`
 - `I try to set an empty display name`
 - `I unblock contact {string}`
 - `I view my identity details`
@@ -91,6 +98,7 @@ steps executes as a real test; a scenario with any other step is skipped
 ## Then (assertions)
 
 - `{string} has {string} as a contact`
+- `{string} sees {string} field {string} with value {string}`
 - `a new Ed25519 keypair should be generated`
 - `all contacts can see my {string} field`
 - `an encrypted backup file should be generated`
@@ -109,6 +117,8 @@ steps executes as a real test; a scenario with any other step is skipped
 - `I should have {int} contacts`
 - `I should not be able to proceed`
 - `I should not have a contact {string}`
+- `I should not see {string}`
+- `I should see {string}`
 - `I should see an error {string}`
 - `I should see an error about password requirements`
 - `I should see my public key fingerprint`

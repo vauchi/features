@@ -38,6 +38,14 @@ Feature: Contact Card Exchange
     Then "Alice" has "Bob" as a contact
     And "Bob" has "Alice" as a contact
 
+  @qr-code @sync @implemented
+  Scenario: Card update propagates after exchange
+    Given "Alice" has an email field "Work Email" with value "alice@old.com"
+    When "Alice" and "Bob" complete a QR exchange
+    And "Alice" updates their "Work Email" field to "alice@new.com"
+    And "Alice" syncs their card with "Bob"
+    Then "Bob" sees "Alice" field "Work Email" with value "alice@new.com"
+
   @qr-code @proximity-fail @implemented
   Scenario: QR code exchange blocked without proximity
     Given Alice is displaying her exchange QR code
