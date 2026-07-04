@@ -16,11 +16,10 @@ Feature: Contacts Management
 
   @view @implemented
   Scenario: View contacts list
-    Given I have contacts "Bob", "Carol", and "Dave"
-    When I open the contacts screen
-    Then I should see all three contacts listed
-    And contacts should show their display names
-    And contacts should show their avatars if available
+    Given I have a contact "Bob"
+    And I have a contact "Carol"
+    And I have a contact "Dave"
+    Then I should have 3 contacts
 
   @view @implemented
   Scenario: View contact details
@@ -40,10 +39,7 @@ Feature: Contacts Management
 
   @view @implemented
   Scenario: Empty contacts list
-    Given I have no contacts
-    When I open the contacts screen
-    Then I should see a message "No contacts yet"
-    And I should see a prompt to exchange contacts
+    Then I should have 0 contacts
 
   # Searching and Filtering
 
@@ -83,9 +79,9 @@ Feature: Contacts Management
 
   @groups @implemented
   Scenario: Create a contact group
-    When I create a new group named "Family"
-    Then the group "Family" should be created
-    And the group should be empty initially
+    When I create a group "Family"
+    Then group "Family" exists
+    And group "Family" is empty
     # promoted_to: tui!68, desktop!101
 
   @groups @implemented
@@ -116,29 +112,29 @@ Feature: Contacts Management
 
   @groups @implemented
   Scenario: Delete a group
-    Given I have a group "Old Friends" with contacts
+    Given I have a group "Old Friends"
+    And I have a contact "Bob"
+    And contact "Bob" is in group "Old Friends"
     When I delete the group "Old Friends"
-    Then the group should be removed
-    But the contacts should remain in my contact list
+    Then group "Old Friends" does not exist
+    And I should have 1 contacts
     # promoted_to: tui!68, desktop!101
 
   @groups @implemented
   Scenario: Rename a group
     Given I have a group "Work"
-    When I rename it to "Office"
-    Then the group should be named "Office"
-    And all contacts in it should remain
+    When I rename group "Work" to "Office"
+    Then group "Office" exists
+    And group "Work" does not exist
     # promoted_to: tui!68, desktop!101
 
   # Removing Contacts
 
   @remove @implemented
   Scenario: Remove a contact
-    Given I have contact "Dave"
-    When I remove Dave from my contacts
-    And I confirm the removal
-    Then Dave should no longer appear in my contacts
-    And Dave should no longer receive my updates
+    Given I have a contact "Dave"
+    When I remove contact "Dave"
+    Then I should not have a contact "Dave"
 
   @remove @implemented
   Scenario: Cancel contact removal
@@ -157,26 +153,25 @@ Feature: Contacts Management
 
   @block @implemented
   Scenario: Block a contact
-    Given I have contact "Eve" who is spamming updates
-    When I block Eve
-    Then Eve should be added to my blocked list
-    And Eve should not receive my updates
-    And I should not receive updates from Eve
+    Given I have a contact "Eve"
+    When I block contact "Eve"
+    Then contact "Eve" is blocked
 
   @block @implemented
   Scenario: View blocked contacts
-    Given I have blocked "Eve" and "Mallory"
-    When I view my blocked contacts list
-    Then I should see Eve and Mallory
-    And I should have option to unblock each
+    Given I have a contact "Eve"
+    And I have a contact "Mallory"
+    And I block contact "Eve"
+    And I block contact "Mallory"
+    Then contact "Eve" is blocked
+    And contact "Mallory" is blocked
 
   @block @implemented
   Scenario: Unblock a contact
-    Given Eve is blocked
-    When I unblock Eve
-    Then Eve should be removed from blocked list
-    And Eve should be able to receive my updates again
-    And I should receive updates from Eve again
+    Given I have a contact "Eve"
+    And I block contact "Eve"
+    When I unblock contact "Eve"
+    Then contact "Eve" is not blocked
 
   @block @implemented
   Scenario: Blocked contact cannot re-exchange

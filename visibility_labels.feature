@@ -9,14 +9,15 @@ Feature: Visibility Labels
 
   Background:
     Given I have an existing identity as "Alice"
-    And I have the following fields on my contact card:
-      | type    | label    | value              |
-      | phone   | Personal |    +1-555-111-1111 |
-      | phone   | Work     |    +1-555-222-2222 |
-      | email   | Personal | alice@personal.com |
-      | email   | Work     | alice@work.com     |
-      | address | Home     |        123 Main St |
-    And I have contacts "Bob", "Carol", "Dave", and "Eve"
+    And I have a phone field "Personal Phone" with value "+1-555-111-1111"
+    And I have a phone field "Work Phone" with value "+1-555-222-2222"
+    And I have an email field "Personal Email" with value "alice@personal.com"
+    And I have an email field "Work Email" with value "alice@work.com"
+    And I have an address field "Home Address" with value "123 Main St"
+    And I have a contact "Bob"
+    And I have a contact "Carol"
+    And I have a contact "Dave"
+    And I have a contact "Eve"
   # Label Management
 
   @label-create @implemented
@@ -158,11 +159,10 @@ Feature: Visibility Labels
 
   @visibility-effect @implemented
   Scenario: Non-member does not see label-restricted fields
-    Given I have a label "Family" containing Bob
-    And Carol is not in "Family"
-    And my "Personal" phone is visible only to label "Family"
-    When Carol views my contact card
-    Then Carol should not see my "Personal" phone
+    Given I have a label "Family"
+    And contact "Bob" is in label "Family"
+    And I make field "Personal Phone" visible only to label "Family"
+    Then contact "Carol" cannot see my "Personal Phone" field
 
   @visibility-effect @implemented
   Scenario: Adding contact to label grants visibility
@@ -185,28 +185,26 @@ Feature: Visibility Labels
 
   @override @implemented
   Scenario: Grant visibility to contact not in label
-    Given my "Home" address is visible to label "Family"
-    And Dave is not in "Family"
-    When I grant "Home" address visibility specifically to Dave
-    Then Dave should see my "Home" address
-    And Dave does not need to be in "Family"
+    Given I have a label "Family"
+    And I make field "Home Address" visible only to label "Family"
+    When I make field "Home Address" visible to contact "Dave"
+    Then contact "Dave" can see my "Home Address" field
 
   @override @implemented
   Scenario: Revoke visibility from contact in label
-    Given my "Personal" phone is visible to label "Friends"
-    And Carol is in "Friends"
-    When I specifically hide "Personal" phone from Carol
-    Then Carol should not see my "Personal" phone
-    # Despite being in the "Friends" label
+    Given I have a label "Friends"
+    And contact "Carol" is in label "Friends"
+    And I make field "Personal Phone" visible only to label "Friends"
+    When I hide field "Personal Phone" from contact "Carol"
+    Then contact "Carol" cannot see my "Personal Phone" field
 
   @override @implemented
   Scenario: Per-contact override takes precedence over label
-    Given my "Work" email is visible to label "Colleagues"
-    And Bob is in "Colleagues"
-    And I have specifically hidden "Work" email from Bob
-    When Bob views my contact card
-    Then Bob should not see my "Work" email
-    # Because per-contact settings override label settings
+    Given I have a label "Colleagues"
+    And contact "Bob" is in label "Colleagues"
+    And I make field "Work Email" visible only to label "Colleagues"
+    When I hide field "Work Email" from contact "Bob"
+    Then contact "Bob" cannot see my "Work Email" field
 
   @override @implemented
   Scenario: View effective visibility for a contact

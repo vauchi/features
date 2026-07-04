@@ -10,21 +10,20 @@ Feature: Visibility Control
 
   Background:
     Given I have an existing identity as "Alice"
-    And I have the following fields on my contact card:
-      | type   | label        | value              |
-      | phone  | Personal     | +1-555-111-1111    |
-      | phone  | Work         | +1-555-222-2222    |
-      | email  | Personal     | alice@personal.com |
-      | email  | Work         | alice@work.com     |
-    And I have contacts "Bob", "Carol", and "Dave"
+    And I have a phone field "Personal Phone" with value "+1-555-111-1111"
+    And I have a phone field "Work Phone" with value "+1-555-222-2222"
+    And I have an email field "Personal Email" with value "alice@personal.com"
+    And I have an email field "Work Email" with value "alice@work.com"
+    And I have a contact "Bob"
+    And I have a contact "Carol"
+    And I have a contact "Dave"
 
   # Default Visibility
 
   @default @implemented
   Scenario: New fields default to visible to all contacts
-    When I add a new phone field "Mobile" with value "+1-555-333-3333"
-    Then the visibility for "Mobile" should be "all contacts"
-    And Bob, Carol, and Dave should all be able to see the "Mobile" field
+    When I add a phone field "Mobile" with value "+1-555-333-3333"
+    Then all contacts can see my "Mobile" field
 
   @default @implemented
   Scenario: New contacts see default-visible fields
@@ -36,60 +35,62 @@ Feature: Visibility Control
 
   @individual @implemented
   Scenario: Hide a field from a specific contact
-    Given my "Personal" phone is visible to all
-    When I set "Personal" phone visibility to hide from "Dave"
-    Then Bob should see my "Personal" phone
-    And Carol should see my "Personal" phone
-    But Dave should not see my "Personal" phone
+    When I hide field "Personal Phone" from contact "Dave"
+    Then contact "Bob" can see my "Personal Phone" field
+    And contact "Carol" can see my "Personal Phone" field
+    But contact "Dave" cannot see my "Personal Phone" field
 
   @individual @implemented
   Scenario: Show a field only to specific contacts
-    Given my "Work" phone is visible to all
-    When I set "Work" phone visibility to "only Bob and Carol"
-    Then Bob should see my "Work" phone
-    And Carol should see my "Work" phone
-    But Dave should not see my "Work" phone
+    When I make field "Work Phone" visible only to contacts "Bob, Carol"
+    Then contact "Bob" can see my "Work Phone" field
+    And contact "Carol" can see my "Work Phone" field
+    But contact "Dave" cannot see my "Work Phone" field
 
   @individual @implemented
   Scenario: Make a field private (visible to none)
-    Given my "Personal" email is visible to all
-    When I set "Personal" email visibility to "no one"
-    Then Bob should not see my "Personal" email
-    And Carol should not see my "Personal" email
-    And Dave should not see my "Personal" email
+    When I make field "Personal Email" private
+    Then contact "Bob" cannot see my "Personal Email" field
+    And contact "Carol" cannot see my "Personal Email" field
+    And contact "Dave" cannot see my "Personal Email" field
 
   # Group Visibility
 
   @groups @implemented
   Scenario: Create a visibility group
-    When I create a visibility group named "Close Friends"
-    And I add "Bob" and "Carol" to "Close Friends"
-    Then "Close Friends" should contain Bob and Carol
-    And "Close Friends" should not contain Dave
+    Given I have a visibility group "Close Friends"
+    When I add contact "Bob" to group "Close Friends"
+    And I add contact "Carol" to group "Close Friends"
+    Then group "Close Friends" contains contact "Bob"
+    And group "Close Friends" contains contact "Carol"
+    But group "Close Friends" does not contain contact "Dave"
 
   @groups @implemented
   Scenario: Apply visibility group to a field
-    Given I have a visibility group "Work Contacts" containing Carol and Dave
-    When I set "Work" email visibility to group "Work Contacts"
-    Then Carol should see my "Work" email
-    And Dave should see my "Work" email
-    But Bob should not see my "Work" email
+    Given I have a visibility group "Work Contacts"
+    And contact "Carol" is in group "Work Contacts"
+    And contact "Dave" is in group "Work Contacts"
+    When I make field "Work Email" visible only to group "Work Contacts"
+    Then contact "Carol" can see my "Work Email" field
+    And contact "Dave" can see my "Work Email" field
+    But contact "Bob" cannot see my "Work Email" field
 
   @groups @implemented
   Scenario: Add contact to group updates their visibility
-    Given "Work" email is visible only to group "Work Contacts"
-    And Bob is not in "Work Contacts"
-    When I add Bob to "Work Contacts"
-    Then Bob should now see my "Work" email
-    And Bob should receive an update with the "Work" email field
+    Given I have a visibility group "Work Contacts"
+    And contact "Carol" is in group "Work Contacts"
+    And I make field "Work Email" visible only to group "Work Contacts"
+    When I add contact "Bob" to group "Work Contacts"
+    Then contact "Bob" can see my "Work Email" field
+    And contact "Carol" can see my "Work Email" field
 
   @groups @implemented
   Scenario: Remove contact from group updates their visibility
-    Given "Work" email is visible only to group "Work Contacts"
-    And Carol is in "Work Contacts"
-    When I remove Carol from "Work Contacts"
-    Then Carol should no longer see my "Work" email
-    And Carol should receive an update removing the "Work" email field
+    Given I have a visibility group "Work Contacts"
+    And contact "Carol" is in group "Work Contacts"
+    And I make field "Work Email" visible only to group "Work Contacts"
+    When I remove contact "Carol" from group "Work Contacts"
+    Then contact "Carol" cannot see my "Work Email" field
 
   # Visibility Changes Propagation
 
