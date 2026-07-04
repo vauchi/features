@@ -121,6 +121,19 @@ lint:gherkin:
 
       echo "Gherkin check complete"
 
+# Report per-feature step-catalog coverage + gate against regression.
+# Steps outside the wired core vocabulary (STEP-CATALOG.md) are what make a
+# scenario skip against vauchi-core; this surfaces the reuse gap and fails if
+# a wired step is rewritten to free-form. Deterministic (catalog is in-repo).
+lint:step-catalog:
+  extends: .mr-or-main
+  stage: lint
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:20-alpine
+  tags: [docker]
+  timeout: 10m
+  script:
+    - node scripts/check-step-catalog.mjs --min 273
+
 # Check feature file structure
 lint:structure:
   extends: .mr-or-main
