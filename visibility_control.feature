@@ -20,8 +20,20 @@ Feature: Visibility Control
     And I have a contact "Dave"
   # Default Visibility
 
+  # Default-closed holds for GROUPED contacts (ADR-054 D3). Ungrouped
+  # contacts still fall through to the Layer-A public base card, whose
+  # empty field_visibility defaults to Everyone — default-OPEN today
+  # (get_effective_field_visibility, 2026-06-14 visibility layering).
+  # The 2026-07-04 contradiction-resolution decision #5 wants
+  # default-hidden universally; the ungrouped half needs a core change
+  # — draft scenario + design question live in the problem record
+  # 2026-07-05-ungrouped-contacts-default-open.
   @default @implemented
-  Scenario: New fields default to hidden
+  Scenario: New fields default to hidden for grouped contacts
+    Given I have a visibility group "Friends"
+    And contact "Bob" is in group "Friends"
+    And contact "Carol" is in group "Friends"
+    And contact "Dave" is in group "Friends"
     When I add a phone field "Mobile" with value "+1-555-333-3333"
     Then no contact can see my "Mobile" field
     And the field stays hidden until I explicitly grant visibility
