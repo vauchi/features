@@ -24,6 +24,7 @@ steps executes as a real test; a scenario with any other step is skipped
 
 ## Given (setup)
 
+- `a user {string}`
 - `contact {string} is in group {string}`
 - `contact {string} is in label {string}`
 - `I am creating an identity backup`
@@ -53,6 +54,7 @@ steps executes as a real test; a scenario with any other step is skipped
 
 ## When (actions)
 
+- `{string} and {string} complete a QR exchange`
 - `I add a new field of type {string}`
 - `I add a phone field {string} with value {string}`
 - `I add contact {string} to group {string}`
@@ -88,6 +90,7 @@ steps executes as a real test; a scenario with any other step is skipped
 
 ## Then (assertions)
 
+- `{string} has {string} as a contact`
 - `a new Ed25519 keypair should be generated`
 - `all contacts can see my {string} field`
 - `an encrypted backup file should be generated`

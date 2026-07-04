@@ -9,9 +9,8 @@ Feature: Contact Card Exchange
   So that I can build my contact list through real-world interactions
 
   Background:
-    Given Alice has Vauchi installed with identity "Alice"
-    And Bob has Vauchi installed with identity "Bob"
-    And both devices are operational
+    Given a user "Alice"
+    And a user "Bob"
 
   # QR Code Exchange
 
@@ -35,15 +34,9 @@ Feature: Contact Card Exchange
 
   @qr-code @qr-mutual @implemented
   Scenario: Successful QR code exchange with proximity
-    Given Alice is displaying her exchange QR code
-    And Bob is displaying his exchange QR code
-    And both are physically present
-    When Alice scans Bob's QR code
-    And Bob scans Alice's QR code
-    Then symmetric key agreement should succeed
-    And Bob should receive Alice's contact card
-    And Alice should receive Bob's contact card
-    And both should see "Exchange Successful"
+    When "Alice" and "Bob" complete a QR exchange
+    Then "Alice" has "Bob" as a contact
+    And "Bob" has "Alice" as a contact
 
   @qr-code @proximity-fail @implemented
   Scenario: QR code exchange blocked without proximity

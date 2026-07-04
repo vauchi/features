@@ -132,7 +132,7 @@ lint:step-catalog:
   tags: [docker]
   timeout: 10m
   script:
-    - node scripts/check-step-catalog.mjs --min 273
+    - node scripts/check-step-catalog.mjs --min 278
 
 # Check feature file structure
 lint:structure:
