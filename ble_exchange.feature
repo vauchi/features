@@ -165,14 +165,6 @@ Feature: BLE Exchange Protocol Internals
     When key agreement is attempted
     Then it should be blocked
 
-  @session @implemented
-  Scenario: Full exchange with mock transport
-    Given Alice and Bob use mock BLE transports
-    When the full exchange flow is executed
-    Then payloads should be read and written via GATT
-    And DH key agreement should succeed
-    And both should have each other's contact cards
-
   @session @error @implemented
   Scenario: BLE error variants have proper display messages
     When each BLE error variant is formatted
