@@ -26,7 +26,7 @@ default:
 # Include shared templates
 include:
   - project: 'vauchi/scripts'
-    ref: main
+    ref: ci-templates-v2026.07.1
     file:
       - '/ci-templates/lint-docs.yml'
       - '/ci-templates/mr-rules.yml'
@@ -34,6 +34,9 @@ include:
       - '/ci-templates/image-lint.yml'
       - '/ci-templates/badges.yml'
       - '/ci-templates/github-mirror.yml'
+
+variables:
+  VAUCHI_SCRIPTS_REF: "ci-templates-v2026.07.1"
 
 stages:
   - lint
@@ -87,19 +90,22 @@ check:doc-naming:
 
       echo "All documentation files follow naming convention."
 
-# Validate Gherkin feature files
-lint:gherkin:
+# Combined cross-cutting feature-file lint checks.
+lint:cross-cutting-blocking:
   extends: .mr-or-main
   stage: lint
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:20-alpine
   tags: [docker]
+  needs: []
+  allow_failure: false
   # Slow source fetch + a network `npm install -g` routinely blew the tight
   # default budget before the linter even ran (job timed out in setup, not on
   # content). Give the setup real headroom.
-  timeout: 10m
+  timeout: 20m
   before_script:
     - npm install -g @cucumber/gherkin-utils
   script:
+    # Validate Gherkin feature files
     - |
       echo "Validating Gherkin feature files..."
       ERRORS=0
@@ -121,17 +127,10 @@ lint:gherkin:
 
       echo "Gherkin check complete"
 
-# Report per-feature step-catalog coverage + gate against regression.
-# Steps outside the wired core vocabulary (STEP-CATALOG.md) are what make a
-# scenario skip against vauchi-core; this surfaces the reuse gap and fails if
-# a wired step is rewritten to free-form. Deterministic (catalog is in-repo).
-lint:step-catalog:
-  extends: .mr-or-main
-  stage: lint
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:20-alpine
-  tags: [docker]
-  timeout: 10m
-  script:
+    # Report per-feature step-catalog coverage + gate against regression.
+    # Steps outside the wired core vocabulary (STEP-CATALOG.md) are what make a
+    # scenario skip against vauchi-core; this surfaces the reuse gap and fails if
+    # a wired step is rewritten to free-form. Deterministic (catalog is in-repo).
     # Floor 333 -> 331 (features!100): two wired assertions were corrected
     # to real behavior that has no core step def yet — the avatar "too
     # large" rejection (ADR-042: core normalizes any format to WebP <=32KB,
@@ -139,13 +138,7 @@ lint:step-catalog:
     # visible-to-all). Re-raise once those get wired core step definitions.
     - node scripts/check-step-catalog.mjs --min 331
 
-# Check feature file structure
-lint:structure:
-  extends: .mr-or-main
-  stage: lint
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine:3.21
-  tags: [docker]
-  script:
+    # Check feature file structure
     - |
       echo "Checking feature file structure..."
 
