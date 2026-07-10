@@ -415,3 +415,23 @@ Feature: Relay Network
     And neither relay can decrypt the content
     And the E2E encryption is preserved
     # promoted_to: relay (E2E encryption is client-side, relay stores opaque blobs)
+
+  @federation @phase1 @implemented
+  Scenario: Version mismatch between relays is an explicit refusal
+    Given relay A and relay B speak different federation protocol versions
+    When relay A sends a version handshake to relay B
+    Then relay B should answer with its own version and "accepted: false"
+    And relay A should not offload any blobs to relay B
+    And relay A's blobs should remain in local storage for retry
+    And the refusal should be visible in both relays' metrics
+    # promoted_to: relay (tests/it/federation_handshake_tests.rs +
+    # federation_connector_tests.rs, 2026-07-04-federation-version-negotiation)
+
+  @federation @phase1 @implemented
+  Scenario: Version-skewed control messages are refused, not dropped
+    Given relay B receives a federation control message with an unsupported version
+    Then relay B should refuse it with an "upgrade required" error naming both versions
+    And the refusal should be counted in relay B's metrics
+    And no message should ever be silently discarded without a metric
+    # promoted_to: relay (tests/it/federation_http_tests.rs,
+    # 2026-07-04-federation-version-negotiation)
