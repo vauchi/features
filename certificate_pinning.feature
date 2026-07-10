@@ -51,10 +51,10 @@ Feature: Certificate Pinning
   # ============================================================
 
   @format @implemented
-  Scenario: Pin is SHA-256 hash of DER certificate
+  Scenario: Pin is SHA-256 hash of the certificate's SPKI
     Given I have a relay's DER-encoded certificate
     When I compute the certificate pin
-    Then the pin should be the SHA-256 hash of the DER bytes
+    Then the pin should be the SHA-256 hash of the certificate's SubjectPublicKeyInfo
     And the pin should be exactly 32 bytes
 
   @format @implemented
