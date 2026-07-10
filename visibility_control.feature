@@ -46,6 +46,22 @@ Feature: Visibility Control
     Given all my fields are set to "visible to all"
     When I exchange contacts with "Eve"
     Then Eve should see all four of my contact fields
+
+  @default @implemented
+  Scenario: A visible field outside every group reaches group members too
+    Given I have a visibility group "Friends"
+    And contact "Bob" is in group "Friends"
+    And all my fields are set to "visible to all"
+    Then contact "Bob" can see my "Personal Phone" field
+    And contact "Carol" can see my "Personal Phone" field
+
+  @default @planned
+  Scenario: Archived contacts stop receiving card updates
+    Given I have a contact "Bob" with an established sync channel
+    And I archived contact "Bob"
+    When I update my "Work Phone" field and sync
+    Then "Bob" receives no card update
+    And unarchiving "Bob" delivers my current card to him
   # Setting Individual Visibility
 
   @individual @implemented
