@@ -43,6 +43,7 @@ Feature: Contact Card Exchange
     Given "Alice" has an email field "Work Email" with value "alice@old.com"
     When "Alice" and "Bob" complete a QR exchange
     And "Alice" updates their "Work Email" field to "alice@new.com"
+    And "Alice" makes their "Work Email" field visible to all
     And "Alice" syncs their card with "Bob"
     Then "Bob" sees "Alice" field "Work Email" with value "alice@new.com"
 
