@@ -44,14 +44,14 @@ Feature: Remote Content Updates
     When the app launches
     Then the app should fetch the manifest from the content server
 
-  @manifest @signature @security @planned
+  @manifest @signature @security @implemented
   Scenario: Reject a manifest without a publisher signature
     Given the content server returns an unsigned manifest
     When the app checks for updates
     Then the manifest should be rejected
     And no remote content should be applied
 
-  @manifest @signature @security @planned
+  @manifest @signature @security @implemented
   Scenario: Reject a manifest signed by an untrusted publisher
     Given the content server returns a manifest signed by an untrusted key
     When the app checks for updates
@@ -91,7 +91,7 @@ Feature: Remote Content Updates
     When the app checks for updates
     Then locales should be listed as updateable
 
-  @version @rollback @security @planned
+  @version @rollback @security @implemented
   Scenario: Reject a signed content downgrade
     Given the cached manifest has networks version "1.1.0"
     And the remote manifest has networks version "1.0.0" signed by the trusted publisher
@@ -127,7 +127,7 @@ Feature: Remote Content Updates
     And an integrity error should be reported
     And the app should continue using cached content
 
-  @download @retry @security @planned
+  @download @retry @security @implemented
   Scenario: Preserve the cached version when a content download fails
     Given the cached manifest has networks version "1.0.0"
     And the remote manifest has networks version "1.1.0" signed by the trusted publisher
