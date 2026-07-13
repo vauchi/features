@@ -43,6 +43,20 @@ Feature: Remote Content Updates
     And the update check interval is 1 hour
     When the app launches
     Then the app should fetch the manifest from the content server
+
+  @manifest @signature @security @planned
+  Scenario: Reject a manifest without a publisher signature
+    Given the content server returns an unsigned manifest
+    When the app checks for updates
+    Then the manifest should be rejected
+    And no remote content should be applied
+
+  @manifest @signature @security @planned
+  Scenario: Reject a manifest signed by an untrusted publisher
+    Given the content server returns a manifest signed by an untrusted key
+    When the app checks for updates
+    Then the manifest should be rejected
+    And no remote content should be applied
   # ===========================================
   # Version Comparison
   # ===========================================
@@ -76,6 +90,14 @@ Feature: Remote Content Updates
     And the remote manifest has locales version "1.5.0" requiring app version "1.0.0"
     When the app checks for updates
     Then locales should be listed as updateable
+
+  @version @rollback @security @planned
+  Scenario: Reject a signed content downgrade
+    Given the cached manifest has networks version "1.1.0"
+    And the remote manifest has networks version "1.0.0" signed by the trusted publisher
+    When the app checks for updates
+    Then the update status should indicate no updates available
+    And networks should not be listed as updateable
   # ===========================================
   # Content Download
   # ===========================================
@@ -104,6 +126,15 @@ Feature: Remote Content Updates
     Then the file should not be saved to cache
     And an integrity error should be reported
     And the app should continue using cached content
+
+  @download @retry @security @planned
+  Scenario: Preserve the cached version when a content download fails
+    Given the cached manifest has networks version "1.0.0"
+    And the remote manifest has networks version "1.1.0" signed by the trusted publisher
+    And the networks download fails
+    When the app applies updates
+    Then the cached manifest should keep networks version "1.0.0"
+    And networks version "1.1.0" should remain updateable
 
   @download @size @planned
   Scenario: Reject content exceeding size limit
