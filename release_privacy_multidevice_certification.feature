@@ -33,9 +33,9 @@ Feature: Release privacy and multi-device certification
 
     Examples:
       | alice_device | bob_device | phone    |
-      | A1           | B1         | +410001  |
-      | A2           | B2         | +410002  |
-      | A3           | B3         | +410003  |
+      | A1           | B1         | +12025550101 |
+      | A2           | B2         | +12025550102 |
+      | A3           | B3         | +12025550103 |
 
   @rg-10 @adr-020 @adr-051 @adr-054 @planned
   Scenario: Complete owner-private state converges across linked devices
