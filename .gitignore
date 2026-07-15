@@ -1,2 +1,5 @@
 # CI local testing
 .gitlab-ci-local/
+
+# Node tooling (lint:gherkin npm install in CI)
+node_modules/
