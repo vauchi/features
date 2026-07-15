@@ -26,16 +26,19 @@ Feature: Release privacy and multi-device certification
   Scenario Outline: Every active device can exchange and update
     When <alice_device> completes an exchange with <bob_device>
     And <alice_device> changes Alice's phone to <phone>
+    And <bob_device> changes Bob's phone to <bob_phone>
     And all six devices synchronize through both relays
     Then A1, A2, and A3 converge on Alice's phone <phone>
     And B1, B2, and B3 converge on Alice's permitted phone <phone>
+    And A1, A2, and A3 converge on Bob's permitted phone <bob_phone>
+    And B1, B2, and B3 converge on Bob's phone <bob_phone>
     And every active device pair uses an independent ratchet session
 
     Examples:
-      | alice_device | bob_device | phone    |
-      | A1           | B1         | +12025550101 |
-      | A2           | B2         | +12025550102 |
-      | A3           | B3         | +12025550103 |
+      | alice_device | bob_device | phone        | bob_phone    |
+      | A1           | B1         | +12025550101 | +12025550201 |
+      | A2           | B2         | +12025550102 | +12025550202 |
+      | A3           | B3         | +12025550103 | +12025550203 |
 
   @rg-10 @adr-020 @adr-051 @adr-054 @planned
   Scenario: Complete owner-private state converges across linked devices
