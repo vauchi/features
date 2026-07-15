@@ -65,11 +65,12 @@ Feature: Emergency Shred
     Then the operation should be rejected
 
   @hard @implemented
-  Scenario: Hard shred sends network notifications before destruction
+  Scenario: Hard shred attempts network notifications before destruction
     Given I execute a hard shred
-    Then relay purge requests should be sent BEFORE key destruction
-    And contact deletion notices should be sent BEFORE key destruction
-    And only after notifications succeed should keys be destroyed
+    Then relay purge requests should be attempted before key destruction
+    And contact deletion notices should be attempted before key destruction
+    And notification failures should be recorded in the shred report
+    And keys and local data should be destroyed regardless of network outcome
 
   # ============================================================
   # Panic Shred (Phase 3) — Immediate Emergency Wipe

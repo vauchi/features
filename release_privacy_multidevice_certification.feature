@@ -95,6 +95,53 @@ Feature: Release privacy and multi-device certification
       | native   | direct mode is injected    |
       | E2E      | same-operator config loads |
 
+  @rg-8 @device-link @fail-closed @planned
+  Scenario Outline: Device-link actions require a distinct OHTTP outer hop
+    Given the application relay records every request
+    And the OHTTP outer-hop configuration is <outer_state>
+    When the <role> sends a device-link action
+    Then the device-link action fails closed
+    And the application relay records zero requests
+    And no direct fallback is attempted
+
+    Examples:
+      | role      | outer_state                         |
+      | initiator | missing                             |
+      | responder | the application-relay origin       |
+      | initiator | malformed                           |
+      | responder | different from the configured route |
+
+  @rg-8 @device-link @invitation @validation @planned
+  Scenario Outline: Device-link invitations reject unsafe relay metadata
+    Given a scanned device-link invitation contains <relay_metadata>
+    When the invitation is parsed
+    Then the invitation is rejected before network use
+    And the error does not echo the untrusted relay value
+    And no relay records a request
+
+    Examples:
+      | relay_metadata              |
+      | a plaintext HTTP relay      |
+      | a loopback-address alias    |
+      | user information or fragment |
+      | an oversized relay value    |
+      | malformed percent encoding  |
+
+  @rg-8 @shred @fail-closed @planned
+  Scenario Outline: OHTTP failure cannot block local shred
+    Given an authorized <shred_mode> is ready
+    And OHTTP notification has <failure>
+    When the shred is executed
+    Then local keys and data are destroyed
+    And the application relay records zero direct notification requests
+    And the shred report records that notification was not sent
+
+    Examples:
+      | shred_mode  | failure                    |
+      | hard shred  | no distinct outer hop      |
+      | panic shred | a malformed cached key     |
+      | panic shred | an oversized fetched key   |
+
   @rg-15 @pending-decision @planned
   Scenario: Undefined ignore behavior keeps longitudinal release blocked
     Given no accepted product meaning for ignoring a relationship exists
