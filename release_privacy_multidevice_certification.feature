@@ -40,6 +40,16 @@ Feature: Release privacy and multi-device certification
       | A2           | B2         | +12025550102 | +12025550202 |
       | A3           | B3         | +12025550103 | +12025550203 |
 
+  @rg-4 @rg-5 @adr-064 @implemented
+  Scenario: A single exchange converges across all linked devices
+    Given Alice and Bob each link three devices before their first exchange
+    When only A1 and B1 complete an exchange
+    And a secondary device A2 that never exchanged changes and permits a field
+    And A1 and A2 concurrently edit the same field without syncing between edits
+    And all six devices synchronize through both relays
+    Then every Bob device receives the secondary device's update
+    And all six devices converge on the ADR-020 winner without re-exchanging
+
   @rg-10 @adr-020 @adr-051 @adr-054 @planned
   Scenario: Complete owner-private state converges across linked devices
     When Alice changes MyInfo fields including a removal on A2
