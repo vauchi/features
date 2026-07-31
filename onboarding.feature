@@ -135,6 +135,14 @@ Feature: Onboarding Experience
     Then I should see friendly empty state
     And it should invite me to exchange
     And there should be a button to start exchange
+
+  @empty-state @implemented
+  Scenario: No sync chip before the first contact
+    Given I have no contacts yet
+    When I view any screen
+    Then I should not see a sync button or chip
+    When I add my first contact
+    Then the sync chip should appear
   # ============================================================
   # Demo Contact
   # ============================================================
