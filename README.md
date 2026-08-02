@@ -61,4 +61,4 @@ cargo test sync
 3. Implement minimal code to pass
 4. Refactor while green
 
-See [TDD Rules](https://docs.vauchi.app/developers/tdd-rules/) for methodology.
+See [TDD Rules](https://vauchi.app/docs/developers/tdd-rules/) for methodology.
