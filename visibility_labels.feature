@@ -129,6 +129,15 @@ Feature: Visibility Labels
     And contacts not in "Family" should not see it
 
   @field-label @implemented
+  Scenario: A field that could not be shared with a label says so
+    Given I am adding a new phone number to my card
+    And I have chosen to share it with label "Work"
+    When "Work" is deleted before I save the new phone number
+    Then the phone number should still be saved to my card
+    And I should be told it did not reach one of the labels I picked
+    And I should not be returned to my card as if it had been shared
+
+  @field-label @implemented
   Scenario: Associate field with multiple labels
     Given I have labels "Family" and "Close Friends"
     When I set my "Home" address to be visible to "Family" and "Close Friends"
