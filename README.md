@@ -7,7 +7,7 @@
 > [gitlab.com/vauchi/features](https://gitlab.com/vauchi/features).
 > Please open issues and merge requests there.
 
-[![Pipeline](https://img.shields.io/endpoint?url=https://vauchi.gitlab.io/features/badges/pipeline.json&label=pipeline)](https://gitlab.com/vauchi/features/-/pipelines)
+[![Pipeline](https://img.shields.io/endpoint?url=https://vauchi.gitlab.io/features/badges/pipeline.json&label=pipeline)](https://gitlab.com/vauchi/features)
 [![REUSE](https://api.reuse.software/badge/gitlab.com/vauchi/features)](https://api.reuse.software/info/gitlab.com/vauchi/features)
 
 Gherkin scenarios defining Vauchi behavior.
