@@ -208,33 +208,11 @@ Feature: 5-Tab Navigation Architecture
     When I view the "Family" group detail
     Then I should see "Bob" and "Carol" in the member list
     And I should see the group's visible field count
-  # More Menu
+  # The More menu was retired 2026-08-20: it was a second navigation
+  # surface reached from the first, and listed itself. Every destination
+  # it carried is offered directly by the overlay now, covered by
+  # `nav_destination_self_reference_tests` in vauchi-app.
 
-  @navigation @more @implemented
-  Scenario: More tab shows sub-screens
-    When I switch to the "More" screen
-    Then I should see a list of sub-screens:
-      | item     |
-      | Sync     |
-      | Devices  |
-      | Settings |
-      | Backup   |
-      | Privacy  |
-      | Help     |
-
-  @navigation @more @implemented
-  Scenario: Navigate to Settings via More
-    Given I am on the "More" screen
-    When I tap "Settings"
-    Then I should see the Settings screen
-    And I should be able to navigate back to "More"
-
-  @navigation @more @implemented
-  Scenario: Navigate to Help via More
-    Given I am on the "More" screen
-    When I tap "Help"
-    Then I should see the Help screen
-    And I should be able to navigate back to "More"
   # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
 
   @platform-edge-case @desktop @multi-window @planned
