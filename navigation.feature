@@ -2,10 +2,11 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 @navigation @ux @ui
-Feature: 5-Tab Navigation Architecture
+Feature: Navigation Architecture
   As a Vauchi user
-  I want a simple, consistent navigation with 5 tabs
-  So that I can quickly access my card, contacts, exchange, groups, and more
+  I want one simple, consistent list of destinations
+  So that I can reach any part of the app without hunting through a
+  second menu
 
   Background:
     Given I have an existing identity as "Alice"
@@ -212,7 +213,6 @@ Feature: 5-Tab Navigation Architecture
   # surface reached from the first, and listed itself. Every destination
   # it carried is offered directly by the overlay now, covered by
   # `nav_destination_self_reference_tests` in vauchi-app.
-
   # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
 
   @platform-edge-case @desktop @multi-window @planned
