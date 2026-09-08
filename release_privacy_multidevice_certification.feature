@@ -155,9 +155,19 @@ Feature: Release privacy and multi-device certification
       | panic shred | a malformed cached key     |
       | panic shred | an oversized fetched key   |
 
-  @rg-15 @pending-decision @planned
-  Scenario: Undefined ignore behavior keeps longitudinal release blocked
-    Given no accepted product meaning for ignoring a relationship exists
+  @rg-15 @planned
+  Scenario: Ignoring a contact removes attention but keeps continuity
+    Given Alice has exchanged with Bob and both have linked devices
+    When Alice ignores Bob
+    Then Bob is never told and keeps receiving Alice's permitted updates
+    And Bob's updates still arrive on every one of Alice's devices
+    And Alice receives no notifications or unread badges for Bob
+    And Bob sorts below Alice's active contacts but stays findable
+    And un-ignoring Bob restores normal ordering with no catch-up step
+
+  @rg-15 @planned
+  Scenario: Only blocking ends long-lived contact continuity
+    Given Alice has ignored Bob
     When long-lived contact continuity is evaluated
-    Then RG-15 remains blocked
-    And no partial lifecycle scenario is accepted as continuity evidence
+    Then ignore counts as continuity preserved
+    And only an intentional block counts as continuity ended
