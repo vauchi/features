@@ -293,7 +293,7 @@ Feature: Accessibility
   # Accessibility Settings
   # ============================================================
 
-  @settings @planned
+  @settings @implemented
   Scenario: In-app accessibility settings
     Given I open the Settings screen
     When I navigate to Accessibility settings
@@ -301,6 +301,18 @@ Feature: Accessibility
       | Option                    |
       | Reduce animations         |
       | Increase touch target size|
+    And changes should apply immediately
+
+  # High contrast is not a toggle Core can honour on its own: its effect is
+  # theme colours the frontend applies, so it needs effective-theme
+  # resolution in Core plus per-platform wiring. It was removed from the
+  # shipped group rather than persisted as an inert switch.
+  @settings @planned
+  Scenario: Accessibility settings offer contrast and screen-reader options
+    Given I open the Settings screen
+    When I navigate to Accessibility settings
+    Then I should see options for:
+      | Option                    |
       | High contrast mode        |
       | Screen reader hints       |
     And changes should apply immediately
