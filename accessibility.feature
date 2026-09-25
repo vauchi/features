@@ -298,9 +298,9 @@ Feature: Accessibility
     Given I open the Settings screen
     When I navigate to Accessibility settings
     Then I should see options for:
-      | Option                    |
-      | Reduce animations         |
-      | Increase touch target size|
+      | Option                     |
+      | Reduce animations          |
+      | Increase touch target size |
     And changes should apply immediately
 
   # High contrast is not a toggle Core can honour on its own: its effect is
@@ -312,9 +312,9 @@ Feature: Accessibility
     Given I open the Settings screen
     When I navigate to Accessibility settings
     Then I should see options for:
-      | Option                    |
-      | High contrast mode        |
-      | Screen reader hints       |
+      | Option              |
+      | High contrast mode  |
+      | Screen reader hints |
     And changes should apply immediately
 
   @settings @planned
