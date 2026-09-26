@@ -102,6 +102,7 @@ lint:cross-cutting-blocking:
   # default budget before the linter even ran (job timed out in setup, not on
   # content). Give the setup real headroom.
   timeout: 20m
+  # vci02-ok: .mr-or-main carries only `rules:`, no before_script to preserve
   before_script:
     - npm install -g @cucumber/gherkin-utils
   script:
