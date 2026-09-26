@@ -57,7 +57,7 @@ Feature: Contact Card Exchange
     And both should see "Proximity verification failed"
     And no contact cards should be exchanged
 
-  @qr-code @glance @planned
+  @qr-code @glance @implemented
   Scenario: Glance scans with the rear camera and can switch to the front camera
     Given Alice's device has a camera
     When Alice starts a Glance exchange
@@ -67,7 +67,7 @@ Feature: Contact Card Exchange
     Then the scanner should switch to the front camera
     And Alice should be offered "Use Rear Camera"
 
-  @qr-code @glance @planned
+  @qr-code @glance @implemented
   Scenario: Glance keeps the chosen camera when retrying
     Given Alice switched her Glance scanner to the front camera
     When the Glance exchange fails and Alice retries
