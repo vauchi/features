@@ -50,6 +50,20 @@ Feature: Generic presentation command/event protocol
       | 840   | expanded    |
 
   @planned
+  Scenario Outline: Class boundaries are damped on collapse
+    Given the presentation is <from> at an available width of <start>
+    When the available width shrinks to <width>
+    Then Core emits the <composition> structural composition
+
+    Examples:
+      | from     | start | width | composition |
+      | medium   | 600   | 568   | medium      |
+      | medium   | 600   | 567   | compact     |
+      | expanded | 840   | 808   | expanded    |
+      | expanded | 840   | 807   | medium      |
+      | expanded | 1200  | 580   | medium      |
+
+  @planned
   Scenario: Interaction activates its visible pane first
     Given two visible panes have stable opaque surface identifiers
     And the secondary pane is inactive
