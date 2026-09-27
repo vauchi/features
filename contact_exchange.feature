@@ -81,7 +81,7 @@ Feature: Contact Card Exchange
     When Alice leaves the Glance exchange
     Then Alice's screen brightness should be restored
 
-  @ble @glance
+  @ble @glance @implemented
   Scenario: Glance redials a connection that never established
     Given Bob scanned Alice's Glance QR
     And Bob's device is connecting to Alice's device
