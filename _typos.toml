@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# typos source code spell checker configuration
+# https://github.com/crate-ci/typos
+
+[default.extend-words]
+# German month name in a locale-formatting Gherkin example
+# (internationalization.feature: "21. Januar 2026") — not a typo for "January".
+Januar = "Januar"
+# French "mis à jour" (updated) in a relative-date localization example —
+# not a typo for "miss"/"mist".
+mis = "mis"
