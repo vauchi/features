@@ -147,7 +147,7 @@ Feature: App Theming
     And the text primary color should be "#839496"
     And the accent color should be "#268bd2"
 
-  @solarized @light @planned
+  @solarized @light @implemented
   Scenario: Apply Solarized Light theme
     When the user applies "Solarized Light" theme
     Then the background primary color should be "#fdf6e3"

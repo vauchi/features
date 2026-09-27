@@ -145,7 +145,7 @@ Feature: Panic Button Widget
   # Authentication
   # ============================================================
 
-  @auth @planned
+  @auth @implemented
   Scenario: Widget works without app unlock
     Given the app is locked
     When I trigger the panic widget

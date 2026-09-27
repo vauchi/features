@@ -55,7 +55,7 @@ Feature: Onboarding Experience
     And I should be able to skip groups and contact info
     And I should not feel pressured to complete everything
 
-  @card-creation @planned
+  @card-creation @implemented
   Scenario: Quick add phone and email
     Given I am creating my card
     When I enter my name

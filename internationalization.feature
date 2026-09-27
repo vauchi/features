@@ -53,7 +53,7 @@ Feature: Internationalization
   # Supported Languages
   # ============================================================
 
-  @languages @planned
+  @languages @implemented
   Scenario Outline: Core languages are supported
     Given my device is set to <language>
     When I open the app

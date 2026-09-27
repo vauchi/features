@@ -165,7 +165,7 @@ Feature: Accessibility
     And icons or text should accompany color indicators
     And the app should be usable by colorblind users
 
-  @visual @text-size @planned
+  @visual @text-size @implemented
   Scenario: Dynamic type support on iOS
     Given I have increased text size in iOS settings
     When I open the app
@@ -173,7 +173,7 @@ Feature: Accessibility
     And layout should adapt without truncation
     And the app should remain usable at largest sizes
 
-  @visual @text-size @planned
+  @visual @text-size @implemented
   Scenario: Font scaling support on Android
     Given I have increased font size in Android settings
     When I open the app

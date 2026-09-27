@@ -295,13 +295,13 @@ Feature: Contacts Management
 
   # --- Contact Nickname, Custom Avatar & Shared Names ---
 
-  @nickname @planned
+  @nickname @implemented
   Scenario: Set and display custom nickname
     Given I have an exchanged contact "Bob"
     When I set the nickname "Bobby" for contact "Bob"
     Then the nickname for contact "Bob" is "Bobby"
 
-  @nickname @planned
+  @nickname @implemented
   Scenario: Choose between shared names and nickname
     Given I have an exchanged contact "Bob"
     And the contact "Bob" has shared names "Bob Smith" and "Bobby"
@@ -315,7 +315,7 @@ Feature: Contacts Management
     When I set a custom WebP avatar for contact "Bob"
     Then the contact "Bob" has a custom avatar
 
-  @nickname @planned
+  @nickname @implemented
   Scenario: Select a shared name
     Given I have an exchanged contact "Bob"
     And the contact "Bob" has shared names:
@@ -326,7 +326,7 @@ Feature: Contacts Management
     When I set the display name preference to shared name "Dr. Smith" for contact "Bob"
     Then the resolved display name for contact "Bob" is "Dr. Smith"
 
-  @nickname @planned
+  @nickname @implemented
   Scenario: Sync delta adds and removes shared names
     Given I have an exchanged contact "Bob" with shared name "Bob Smith"
     When a sync delta adds shared name "Bobby" for contact "Bob"

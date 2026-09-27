@@ -359,14 +359,14 @@ Feature: Privacy Compliance
     Then Bob receives the revocation signal
     And Alice's card is removed from Bob's device
 
-  @revocation @security @planned
+  @revocation @security @implemented
   Scenario: Card update arriving after revocation is discarded
     Given Bob has processed a revocation signal from Alice
     When a card update from Alice arrives on the relay
     Then Bob discards the update
     And no data for Alice is re-created
 
-  @revocation @security @planned
+  @revocation @security @implemented
   Scenario: Replayed revocation for re-established contact is rejected
     Given Alice previously revoked her account
     And Alice created a new account and re-exchanged cards with Bob
