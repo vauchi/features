@@ -73,6 +73,23 @@ Feature: Contact Card Exchange
     When the Glance exchange fails and Alice retries
     Then the scanner should use the front camera
 
+  @qr-code @glance @implemented
+  Scenario: Glance shows its QR at a camera-readable brightness
+    Given Alice's screen brightness is at its maximum
+    When Alice starts a Glance exchange
+    Then Alice's screen should dim while her Glance QR is shown
+    When Alice leaves the Glance exchange
+    Then Alice's screen brightness should be restored
+
+  @ble @glance
+  Scenario: Glance redials a connection that never established
+    Given Bob scanned Alice's Glance QR
+    And Bob's device is connecting to Alice's device
+    When the connection fails before it is established
+    Then Bob's device should connect to Alice's device again
+    And the Glance exchange should continue
+    But after two failed redials the exchange should fail
+
   # Mutual QR Code Exchange
 
   @qr-mutual @implemented
