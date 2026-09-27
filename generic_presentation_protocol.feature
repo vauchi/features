@@ -4,7 +4,7 @@
 @architecture @presentation @command-event
 Feature: Generic presentation command/event protocol
 
-  @planned
+  @implemented
   Scenario: Every shell renders the same prepared presentation
     Given Core has prepared a generic presentation command
     When each supported shell receives that command
@@ -24,19 +24,19 @@ Feature: Generic presentation command/event protocol
     Then Core emits only commands supported by those capabilities
     And the shell does not know which domain feature requested them
 
-  @planned
+  @implemented
   Scenario: Invalid boundary input fails safely
     Given a malformed or oversized command or event payload
     When the boundary decoder receives it
     Then the payload is rejected without exposing internal state
 
-  @planned
+  @implemented
   Scenario: Contextual controls expose four stable roles
     Given Core has prepared controls for the active surface
     When a shell renders the contextual control surface
     Then supplied roles define Back, navigation, primary, and secondary actions
 
-  @planned
+  @implemented
   Scenario Outline: Available window drives structural composition
     Given the available logical window width is <width>
     When Core recomposes the presentation
@@ -49,7 +49,7 @@ Feature: Generic presentation command/event protocol
       | 839   | medium      |
       | 840   | expanded    |
 
-  @planned
+  @implemented
   Scenario Outline: Class boundaries are damped on collapse
     Given the presentation is <from> at an available width of <start>
     When the available width shrinks to <width>
@@ -63,34 +63,34 @@ Feature: Generic presentation command/event protocol
       | expanded | 840   | 807   | medium      |
       | expanded | 1200  | 580   | medium      |
 
-  @planned
+  @implemented
   Scenario: Interaction activates its visible pane first
     Given two visible panes have stable opaque surface identifiers
     And the secondary pane is inactive
     When the user activates an action in the secondary pane
     Then Core activates the secondary surface before interpreting the action
 
-  @planned
+  @implemented
   Scenario: Responsive transitions preserve interaction state
     Given an expanded two-pane presentation with a selected detail
     And a reversible primary action is available
     When the available window collapses and expands again
     Then the detail remains reachable with its selection and Undo state
 
-  @planned
+  @implemented
   Scenario: Primary action becomes causal Undo
     Given the primary action causes a reversible mutation
     When Core prepares the next contextual controls
     Then Undo occupies the primary role for that mutation
     And invoking Undo restores the previous primary role
 
-  @planned
+  @implemented
   Scenario: Overlay kinds remain distinct with reduced motion
     Given navigation and secondary-action overlays are available
     When the shell uses full or reduced motion
     Then the two overlay kinds remain structurally distinguishable
 
-  @planned
+  @implemented
   Scenario: Release contains only the generic action system
     Given all supported shells consume the generic command/event protocol
     When release validation runs
