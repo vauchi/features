@@ -165,7 +165,7 @@ Feature: Release privacy and multi-device certification
     And Bob sorts below Alice's active contacts but stays findable
     And un-ignoring Bob restores normal ordering with no catch-up step
 
-  @rg-15 @planned
+  @rg-15 @implemented
   Scenario: Only blocking ends long-lived contact continuity
     Given Alice has ignored Bob
     When long-lived contact continuity is evaluated
