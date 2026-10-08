@@ -25,25 +25,25 @@ Feature: Paper Heirloom Export
     Then I should be warned that the document is not encrypted
     And nothing should be exported until I confirm
 
-  @planned
+  @implemented
   Scenario: The document carries no app-internal identifiers
     When I export a paper heirloom
     Then it should contain no public keys, key fingerprints or contact ids
     And it should contain no exchange coordinates
 
-  @planned
+  @implemented
   Scenario: Contact-provided text cannot inject markup
     Given a contact whose name contains HTML markup
     When I export a paper heirloom
     Then the markup should appear as literal text in the document
 
-  @planned
+  @implemented
   Scenario: Duress mode exports only decoy contacts
     Given I have unlocked the app with my duress PIN
     When I export a paper heirloom
     Then the document should contain only decoy contacts
 
-  @planned
+  @implemented
   Scenario: The same contacts always produce the same document
     When I export a paper heirloom twice without changing anything
     Then both documents should be byte-for-byte identical
