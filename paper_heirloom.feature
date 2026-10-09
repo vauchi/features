@@ -10,7 +10,7 @@ Feature: Paper Heirloom Export
   Background:
     Given I have an identity with contacts
 
-  @planned
+  @implemented
   Scenario: Export my contacts as a printable document
     When I go to Settings > Privacy > Paper Heirloom
     And I confirm the plaintext warning
@@ -19,7 +19,7 @@ Feature: Paper Heirloom Export
     And it should show the date we exchanged cards
     And it should show the name of the place we met, when I named it
 
-  @planned
+  @implemented
   Scenario: The export is plaintext and leaves the encryption envelope
     When I start a paper heirloom export
     Then I should be warned that the document is not encrypted
