@@ -391,9 +391,17 @@ Feature: Duress Mode
   Scenario: Biometric unlock with duress
     Given I have configured duress mode
     And I have biometric unlock enabled
-    Then biometric should unlock to real profile
-    And duress mode requires entering the duress credential manually
-    And this is by design (coercion typically involves credential demand)
+    When biometric authentication succeeds on the lock screen
+    Then the lock screen should ask for my PIN without offering biometrics
+    And my normal PIN should open my real profile
+    And my duress PIN should open the decoy profile the same way
+
+  @edge @planned
+  Scenario: Biometric unlock without duress
+    Given I have an app password but no duress PIN
+    And I have biometric unlock enabled
+    When biometric authentication succeeds on the lock screen
+    Then the app should open my real profile
 
   @edge @implemented
   Scenario: App update preserves duress configuration
