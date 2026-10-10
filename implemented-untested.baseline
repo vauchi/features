@@ -1,0 +1,345 @@
+# SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# @implemented scenarios that had no test naming them when
+# check-implemented-scenarios.py arrived (vauchi/private#268). This list may
+# only shrink: add a test annotated `// @scenario: <stem> :: <name>`, or
+# retag the scenario @planned, then delete its line here.
+accessibility :: Helpful error messages
+accessibility :: Keyboard shortcuts for common actions
+accessibility :: Screen reader announces app structure on desktop
+accessibility :: TUI is fully keyboard navigable
+backup_reminder :: First reminder fires 7 days after identity creation
+backup_reminder :: Monthly frequency fires at 30 days
+backup_reminder :: Monthly frequency suppresses reminder at 7 days
+backup_reminder :: Settings exposes a cycling frequency control
+backup_reminder :: Showing a reminder increments the reminder count
+backup_reminder :: Successful backup resets the reminder timer
+backup_reminder :: User disables backup reminders via frequency "Never"
+ble_exchange :: BLE payload has valid signature
+ble_exchange :: Commit on nonexistent contact returns error
+ble_exchange :: Commit returns pending data and removes it
+ble_exchange :: Default rollback manager is empty
+ble_exchange :: Large avatar roundtrips correctly
+ble_exchange :: Rollback all clears everything
+ble_exchange :: Rollback clears pending contact data
+ble_exchange :: Rollback on nonexistent contact is a no-op
+ble_exchange :: Tampered BLE payload fails signature verification
+ble_exchange_modes :: Accepting relay fallback switches to Link mode
+ble_exchange_modes :: BLE failure offers relay fallback
+ble_exchange_modes :: BLE timeout after connection is ignored
+ble_exchange_modes :: BLE timeout during discovery triggers fallback
+ble_exchange_modes :: Bump mode completes with strong impact
+ble_exchange_modes :: Bump mode completes with weak impact (unverified)
+ble_exchange_modes :: Bump mode starts accelerometer on connection
+ble_exchange_modes :: Magic mode completes even if audio times out
+ble_exchange_modes :: Magic mode completes with audio verification
+ble_exchange_modes :: Magic mode connects on device discovery
+ble_exchange_modes :: Magic mode discovery emits BLE commands
+ble_exchange_modes :: Magic mode starts audio proximity on connection
+ble_exchange_modes :: Shake mode completes with peer envelope correlation
+ble_exchange_modes :: Shake mode records and exchanges envelopes
+certificate_pinning :: Connection rejected with mismatched certificate
+certificate_pinning :: Connection succeeds with matching certificate pin
+certificate_pinning :: Graceful certificate rotation
+certificate_pinning :: Pin computation is deterministic
+certificate_pinning :: Pin is SHA-256 hash of the certificate's SPKI
+certificate_pinning :: Pin verification happens before sending data
+contact_actions :: Action menu is accessible
+contact_actions :: Actionable fields are announced as buttons
+contact_actions :: Actionable fields show tap affordance
+contact_actions :: Address opens Apple Maps on iOS
+contact_actions :: Address opens Google Maps on Android
+contact_actions :: Brief loading indicator when opening external app
+contact_actions :: CLI uses open crate
+contact_actions :: Confirmation toast after copy to clipboard
+contact_actions :: Custom field with email-like value offers email
+contact_actions :: Desktop opens URL via system handler
+contact_actions :: Keyboard navigation on desktop
+contact_actions :: Network error when opening social profile
+contact_actions :: No application available for action
+contact_actions :: Social media falls back to browser when app not installed
+contact_actions :: Social media opens native app if installed (Android)
+contact_actions :: Social media opens native app if installed (iOS)
+contact_actions :: TUI offers to open in external app
+contact_card_management :: Add a custom field
+contact_card_management :: Add a physical address field
+contact_card_management :: Add unlisted social network as custom field
+contact_card_management :: Cancel editing preserves original values
+contact_card_management :: Cancel field removal
+contact_card_management :: Field order persists after restart
+contact_card_management :: Field value size limit
+contact_card_management :: Oversized avatar input is normalized, not rejected
+contact_card_management :: Remove field updates contacts
+contact_card_management :: Validate social network username format
+contact_card_management :: View verification workflow for social network
+contact_exchange :: BLE exchange prevents self-exchange
+contact_exchange :: BLE exchange rejects expired payload
+contact_exchange :: Card update propagates after exchange
+contact_exchange :: Deny exchange request
+contact_exchange :: Exchange blocked on low battery
+contact_exchange :: Exchange fails due to full storage
+contact_exchange :: Exchange timeout after interruption
+contact_exchange :: Incomplete exchange recovery
+contact_import :: Add field to imported contact
+contact_import :: Cannot edit exchanged contact fields
+contact_import :: Contact backup with wrong password fails
+contact_import :: Create local organization group
+contact_import :: Direct cross-kind merge is rejected
+contact_import :: Edit imported contact fields
+contact_import :: Export and import contact backup
+contact_import :: Import contacts from a vCard file
+contact_import :: Import non-UTF-8 vCard file
+contact_import :: Import respects contact limit
+contact_import :: Import vCard 2.1 with QUOTED-PRINTABLE encoding
+contact_import :: Import vCard 3.0 from Google Contacts
+contact_import :: Imported contacts are visually distinct
+contact_import :: Imported contacts cannot be trusted for proposals
+contact_import :: Imported contacts cannot be trusted for recovery
+contact_import :: Imported contacts cannot have fingerprint verified
+contact_import :: Imported contacts sync to linked device
+contact_import :: Local groups have no visibility semantics
+contact_import :: Phone normalization detects duplicates across formatting
+contact_import :: Re-import same vCard file does not create duplicates
+contact_recovery :: Batch query for recovery proofs
+contact_recovery :: Blocked contact cannot be recovery-trusted
+contact_recovery :: Contact card is refreshed after recovery
+contact_recovery :: Contact discovers recovery proof via relay
+contact_recovery :: Isolated contact accepts with warning
+contact_recovery :: Isolated contact meets in person and vouches
+contact_recovery :: Isolated contact options
+contact_recovery :: Isolated contact verifies out of band
+contact_recovery :: No recovery proof found
+contact_recovery :: Recovery after losing all devices
+contact_recovery :: Recovery proof expiration
+contact_recovery :: Recovery when user has multiple devices
+contact_recovery :: Reject recovery
+contact_recovery :: Reject recovery from unknown identity
+contact_recovery :: Relay handles proof expiration
+contact_recovery :: Relay returns recovery proof on query
+contact_recovery :: Relay stores recovery proof privately
+contact_recovery :: Remember old identity fingerprint
+contact_recovery :: Trust state is private to the user
+contact_recovery :: Upload recovery proof to relay
+contact_recovery :: Voucher establishes contact with new identity
+contact_recovery :: Voucher recognizes old contact
+contact_recovery :: What is NOT recovered
+contact_recovery :: What is recovered
+contacts_management :: Add contact to group
+contacts_management :: Cancel contact removal
+contacts_management :: Create a contact group
+contacts_management :: Cross-kind merge with name and avatar adoption
+contacts_management :: Empty contacts list
+contacts_management :: Remove a contact
+contacts_management :: Remove contact cleans up visibility rules
+contacts_management :: Search contacts by field value
+contacts_management :: Sort contacts by recent interaction
+contacts_management :: View contacts list
+demo_contact :: Demo contact does not count as real contact
+device_management :: Insufficient storage for sync
+device_management :: Interrupted initial sync
+device_management :: Link new device via numeric code
+device_management :: Linking code ignores timezone
+device_management :: Linking to a device that already has a different identity
+device_management :: Timezone change during sync
+device_management :: Transfer primary device role
+duress_mode :: Cannot disable duress mode from duress mode
+duress_mode :: Duress password option hidden until app password enabled
+duress_mode :: Pre-populate decoy contacts
+emergency_broadcast :: Alert is encrypted end-to-end
+emergency_broadcast :: Alert looks like normal sync traffic
+emergency_broadcast :: Blocked contact in trusted list
+emergency_broadcast :: Emergency broadcast with confirmation
+emergency_broadcast :: Rate limiting emergency broadcasts
+emergency_shred :: Hard shred after grace period
+emergency_shred :: Hard shred attempts network notifications before destruction
+emergency_shred :: Panic shred when network is unavailable
+emergency_shred :: Shred verification audits completeness
+emergency_shred :: Soft shred cannot proceed before grace period expires
+emergency_shred :: Soft shred schedules deletion with grace period
+field_validation :: Mark my own field as self-attested
+field_validation :: Remove self-attestation
+field_validation :: Self-attestation is per-field
+field_validation :: Self-attestation resets when field value changes
+help_faq :: Access FAQs from CLI
+help_faq :: Access FAQs from desktop app
+help_faq :: Access FAQs from TUI
+help_faq :: FAQ content covers core topics
+help_faq :: FAQ localization for supported languages
+help_faq :: FAQs are available offline
+help_faq :: Search FAQs from CLI
+help_faq :: View FAQ categories from CLI
+help_faq :: View specific FAQ from CLI
+identity_management :: Generate device linking QR code
+identity_management :: Link second device successfully
+mesh_exchange :: Discover nearby Vauchi users
+mesh_exchange :: Exchange timeout
+mesh_exchange :: Exchange with user already in contacts
+mesh_exchange :: Replay attack prevention
+message_delivery :: Read receipts are off by default
+navigation :: Add private note to a contact
+navigation :: Add private note to a contact's shared field
+navigation :: Contact shows trust level badge
+navigation :: Dynamic default screen with contacts
+navigation :: Dynamic default screen with no contacts
+navigation :: Exchange is accessible from navigation
+navigation :: Exit preview returns to edit mode
+navigation :: Group detail shows member list
+navigation :: Groups tab shows group list
+navigation :: Navigate from contact to preview-as
+navigation :: Navigation shows 5 tabs
+navigation :: Preview as group member
+navigation :: Preview my card as a specific contact
+navigation :: Switching screens preserves state
+navigation :: Tap address to open in maps
+navigation :: Tap email to compose
+navigation :: Tap phone number to call
+navigation :: Tap social handle to open in app
+navigation :: Tap URL to open in browser
+navigation :: Toggle proposal trust on a contact
+navigation :: Validate a contact's field
+navigation :: View and edit private note on own field
+onboarding :: Backup accessible from WhatNext
+onboarding :: Can skip optional steps
+onboarding :: Complete onboarding in under 30 seconds
+onboarding :: Demo contact is dismissible
+onboarding :: Demo contact removed after first real contact
+onboarding :: Demo contact updates demonstrate value
+onboarding :: Exchange success celebration
+onboarding :: Guided card creation
+onboarding :: Identity check on first launch
+onboarding :: Minimum viable card
+onboarding :: No sync chip before the first contact
+onboarding :: Onboarding completion via WhatNext
+onboarding :: Onboarding progress indicator
+onboarding :: Prompt for first exchange
+onboarding :: Security info accessible from WhatNext
+onboarding :: Suggest display name variations
+onboarding :: User adds contact info with no-group visibility
+onboarding :: User adds contact info with per-group visibility
+onboarding :: User chooses next action after onboarding
+onboarding :: User creates groups during onboarding
+onboarding :: User enters default name during onboarding
+performance :: Clear cache option
+performance :: Handle low disk space
+performance :: Handle process killed for memory on Android
+performance :: Reasonable storage footprint
+pre_signed_operations :: Contact can verify deletion notice signature
+pre_signed_operations :: Relay can verify purge request signature
+pre_signed_operations :: Tampered pre-signed message is rejected
+privacy_compliance :: Account deletion destroys all content encryption keys
+privacy_compliance :: Account deletion propagates across all user devices
+privacy_compliance :: Account deletion purges all relay data including recovery proofs
+privacy_compliance :: Account deletion sends revocation signal to all contacts
+privacy_compliance :: Contact display name is protected by crypto-shredding
+privacy_compliance :: Delete my account
+privacy_compliance :: Delete specific contacts
+privacy_compliance :: Deletion is thorough
+privacy_compliance :: Deletion notifies contacts
+privacy_compliance :: Export requires authentication
+privacy_compliance :: Export works offline
+privacy_compliance :: Local data persists until deleted
+privacy_compliance :: Offline contact receives revocation on reconnect
+privacy_compliance :: Panic shred immediately destroys all data and notifies contacts
+privacy_compliance :: Relay data expires automatically
+privacy_compliance :: Relay notified on account deletion
+privacy_compliance :: Understand E2E encryption
+privacy_compliance :: View data retention settings
+privacy_compliance :: View privacy policy in app
+privacy_compliance :: View what data is on relays
+privacy_compliance :: View what data is stored locally
+relay_network :: Anonymous token routing requires no signature
+relay_network :: Deploy relay node with Docker
+relay_network :: Direct connection preferred
+relay_network :: Expired timestamp rejected
+relay_network :: Invalid signature rejected by relay
+relay_network :: No relays available
+relay_network :: No special privileges for contributors
+relay_network :: Nonce replay attack prevented
+relay_network :: Plaintext connections are rejected
+relay_network :: Rate limiting on relay nodes
+relay_network :: Relay gossip protocol
+relay_network :: Relay includes forwarding hints
+relay_network :: Relay node authentication
+relay_network :: Relay node discovery via DHT
+relay_network :: Relay registry for peer discovery
+relay_network :: Signature key mismatch rejected
+relay_network :: Signed operations verified without a routing identity
+relay_network :: Sybil attack resistance
+relay_network :: Version mismatch between relays is an explicit refusal
+relay_network :: Version-skewed control messages are refused, not dropped
+relay_transport_security :: Defense in depth
+relay_transport_security :: No plaintext fallback exists
+relay_transport_security :: Non-https relay URLs are rejected at the parse boundary
+relay_transport_security :: Relay identity survives the Noise retirement
+relay_transport_security :: Relay URLs must use https
+relay_transport_security :: Sensitive requests are OHTTP-encapsulated when configured
+relay_transport_security :: WebSocket upgrades are rejected
+release_privacy_multidevice_certification :: Exact two-user update propagates through both privacy hops
+remote_content :: Apply updates compatible with current app version
+remote_content :: Check for updates when interval elapsed
+remote_content :: Detect available updates
+remote_content :: Fetch content manifest on app launch
+remote_content :: No updates when versions match
+remote_content :: Reject a manifest signed by an untrusted publisher
+remote_content :: Reject content with mismatched checksum
+remote_content :: Respect update check interval
+remote_content :: Skip updates requiring newer app version
+remote_content :: Use cached manifest when offline
+remote_content :: Verify content checksum before saving
+sealed_mailbox :: AccountRevoked verified client-side
+sealed_mailbox :: Contact mailbox token derived from shared key
+sealed_mailbox :: Device sync routed by self-token
+sealed_mailbox :: Encrypted transport is mandatory
+sealed_mailbox :: Register mailbox tokens on connect
+sealed_mailbox :: Token set padded to hide contact count
+storage_key_upgrade :: A keychain that fails for another reason offers Try again
+storage_key_upgrade :: A keychain that needs an unlock starts on Core's unlock screen
+storage_key_upgrade :: The upgrade keeps everything and leaves only Core's key
+storage_key_upgrade :: Unlocking finishes the upgrade
+sync_updates :: Compression of sync payloads
+sync_updates :: Handle SSH disconnection
+sync_updates :: Manual sync trigger
+sync_updates :: Merkle tree for efficient sync detection
+sync_updates :: Receive update while offline
+sync_updates :: Relay stores updates for offline contacts
+sync_updates :: Sync state persisted atomically
+sync_updates :: Sync via relay
+theming :: Apply Catppuccin Frappé (dark)
+theming :: Apply Catppuccin Macchiato (dark)
+theming :: Catppuccin flavor themes available
+theming :: Dracula theme available
+theming :: Gruvbox themes available
+theming :: High contrast mode overrides theme
+theming :: Nord theme available
+theming :: Solarized themes available
+theming :: Theme applies on iOS
+visibility_control :: A visible field outside every group reaches group members too
+visibility_control :: Block contact removes all their visibility
+visibility_control :: Contact cannot determine hidden field existence
+visibility_control :: New contacts see fields I made visible to all
+visibility_control :: New fields default to hidden for grouped contacts
+visibility_control :: Visibility changes are atomic
+visibility_labels :: Add multiple contacts to a label at once
+visibility_labels :: Apply label template to new contact
+visibility_labels :: Associate field with multiple labels
+visibility_labels :: Cancel label deletion
+visibility_labels :: Cannot rename to existing label name
+visibility_labels :: Clear per-contact overrides
+visibility_labels :: Contact sees fields based on label membership
+visibility_labels :: Create custom label with any name
+visibility_labels :: Default labels are suggested on first use
+visibility_labels :: Grant visibility to contact not in label
+visibility_labels :: Groups mode visibility
+visibility_labels :: Label with no contacts still exists
+visibility_labels :: Labels exist only on my devices
+visibility_labels :: No-group mode visibility
+visibility_labels :: Non-member does not see label-restricted fields
+visibility_labels :: Per-group display name override
+visibility_labels :: Remove field from label visibility
+visibility_labels :: Revoke visibility from contact in label
+visibility_labels :: Transition from groups to no-group mode
+visibility_labels :: Transition from no-group to groups mode
+visibility_labels :: View all labels for a contact
+visibility_labels :: View effective visibility for a contact
+visibility_labels :: View which labels can see a field

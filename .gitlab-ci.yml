@@ -161,6 +161,36 @@ lint:cross-cutting-blocking:
 
       echo "Structure checks passed!"
 
+# Every @implemented scenario needs a test annotated
+# `// @scenario: <stem> :: <name>` in some repo's main (vauchi/private#268,
+# owner decision 2026-10-10). implemented-untested.baseline holds the 338
+# untested at arrival and may only shrink. CC-27: a sentinel @implemented
+# scenario with no test failed the check with exit 1 (2026-10-10).
+lint:implemented-scenarios:
+  extends: .mr-or-main
+  stage: lint
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.12-slim
+  tags: [docker]
+  needs: []
+  allow_failure: false
+  timeout: 20m
+  # vci02-ok: .mr-or-main carries only `rules:`, no before_script to preserve
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq --no-install-recommends git ca-certificates > /dev/null
+    - |
+      for repo in scripts core cli tui e2e relay ohttp-relay linux-gtk linux-qt windows web-demo ios macos android; do
+        git clone --quiet --depth=1 --branch main \
+          "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/vauchi/${repo}.git" "/tmp/repos/${repo}"
+      done
+  script:
+    - >-
+      python3 /tmp/repos/scripts/scripts/check-implemented-scenarios.py
+      --features . --baseline implemented-untested.baseline
+      /tmp/repos/core /tmp/repos/cli /tmp/repos/tui /tmp/repos/e2e
+      /tmp/repos/relay /tmp/repos/ohttp-relay /tmp/repos/linux-gtk
+      /tmp/repos/linux-qt /tmp/repos/windows /tmp/repos/web-demo
+      /tmp/repos/ios /tmp/repos/macos /tmp/repos/android
+
 # ============================================================
 # Deploy Stage — Badge Pages
 # ============================================================
