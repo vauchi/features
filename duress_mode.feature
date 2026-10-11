@@ -24,7 +24,8 @@ Feature: Duress Mode
 
   PRINCIPLES ALIGNMENT:
   - Privacy is a right: Protects contacts under coercion
-  - Trust earned in person: Duress alerts go to in-person contacts
+  - Trust earned in person: a duress unlock tells no one, so nothing can
+    give it away; the emergency broadcast is the way to alert contacts
   - Simplicity: Simple concept (different credential = different view)
   - User ownership: All data remains local; no central authority
 
@@ -91,13 +92,6 @@ Feature: Duress Mode
     And I should be able to import from system contacts
     And the decoy contacts should be stored separately
 
-  @setup @implemented
-  Scenario: Configure trusted contacts for duress alerts
-    Given I have enabled duress mode
-    When I configure duress alert recipients
-    Then I should see my real contacts list
-    And I should be able to select up to 5 trusted contacts
-    And selected contacts will receive silent alerts on duress unlock
   # ============================================================
   # Decoy Profile Setup
   # ============================================================
@@ -196,9 +190,8 @@ Feature: Duress Mode
     And no real contact data should be synced
     And any network traffic should be indistinguishable from a normal sync
     And "Sync complete" should be shown
-    # The queued duress alert is the one real payload permitted here — it
-    # travels disguised as this normal-looking sync (see "Duress unlock
-    # sends silent alert to trusted contacts").
+    # No real payload rides this sync: a duress unlock sends nothing
+    # (see "A duress unlock sends nothing").
   # Removed: "Exchange in duress mode is fake" — contradicted line 216
   # ("Exchanges add to decoy profile"). For plausible deniability, the
   # exchange must APPEAR to work. A coercer watching would notice a
@@ -232,48 +225,15 @@ Feature: Duress Mode
     And they should NOT be added to the real profile
     And they should receive my decoy card (if configured)
   # ============================================================
-  # Silent Alerts
+  # No Alerts (ADR-032 amendment 2026-10-11)
   # ============================================================
 
   @alert @implemented
-  Scenario: Duress unlock sends silent alert to trusted contacts
-    Given I have configured trusted contacts for duress alerts
+  Scenario: A duress unlock sends nothing
+    Given I have exchanged contacts
     When I unlock the app with the duress credential
-    Then a silent alert should be queued for trusted contacts
-    And the alert should be sent via normal sync channel
-    And no confirmation should be visible on my device
-
-  @alert @implemented
-  Scenario: Duress alert looks like normal sync traffic
-    Given I have configured duress alerts
-    When I unlock with the duress credential
-    Then the alert message should be encrypted
-    And to the relay it should look like a normal card update
-    And network observers cannot distinguish it from regular traffic
-
-  @alert @implemented
-  Scenario: Duress alert content
-    Given I have configured trusted contacts for duress alerts
-    When a duress alert is sent
-    Then the recipient should see "Duress alert from [Name]"
-    And the alert should include timestamp
-    And the alert should NOT include location unless explicitly enabled
-
-  @alert @planned
-  Scenario: Receiving a duress alert
-    Given Bob has configured me as a duress alert recipient
-    When Bob unlocks with his duress credential
-    Then I should receive a duress alert notification
-    And the notification should be clearly marked as urgent
-    And I should see when the alert was triggered
-
-  @alert @implemented
-  Scenario: Duress alerts work offline
-    Given I have configured duress alerts
-    And I have no network connection
-    When I unlock with the duress credential
-    Then the alert should be queued locally
-    And the alert should be sent when connectivity returns
+    Then nothing should be queued for any contact
+    And an alert claiming to be a duress alert should be rejected
   # ============================================================
   # Security Properties
   # ============================================================
@@ -316,7 +276,7 @@ Feature: Duress Mode
 
   @security @planned
   Scenario: Credential entry logged (accessible from real mode only)
-    Given I have configured duress alerts
+    Given I have configured duress mode
     When I unlock with the duress credential
     Then the duress entry should be logged locally
     And the log should be accessible only from real mode
@@ -370,7 +330,6 @@ Feature: Duress Mode
     When I navigate to Privacy settings in normal mode
     And I disable duress mode
     Then the decoy database should be deleted
-    And duress alerts should be disabled
     And the duress credential should no longer work
 
   @edge @implemented
