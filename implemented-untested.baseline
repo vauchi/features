@@ -120,7 +120,6 @@ contact_recovery :: Relay returns recovery proof on query
 contact_recovery :: Relay stores recovery proof privately
 contact_recovery :: Remember old identity fingerprint
 contact_recovery :: Trust state is private to the user
-contact_recovery :: Upload recovery proof to relay
 contact_recovery :: Voucher establishes contact with new identity
 contact_recovery :: Voucher recognizes old contact
 contact_recovery :: What is NOT recovered

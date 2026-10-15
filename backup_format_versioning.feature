@@ -95,7 +95,7 @@ Feature: Backup Format Versioning
     And it should include my own contact card and labels
     And nothing should be readable without the password
 
-  @v6 @implemented
+  @v6 @planned
   Scenario: Password backup preserves sharing and contact state
     Given I have contacts, groups and explicit per-contact sharing choices
     And some contacts are archived, blocked or ignored
@@ -107,14 +107,14 @@ Feature: Backup Format Versioning
     And archived, blocked and ignored contact state should match
     And old v3 readers should reject the richer backup
 
-  @v6 @implemented
+  @v6 @planned
   Scenario: Full backup import is atomic
     Given I have a fresh installation
     When a password full backup contains invalid state or cannot be committed
     Then no restored identity, card, contacts or groups should remain
     And a later valid restore should succeed
 
-  @v6 @implemented
+  @v6 @planned
   Scenario: Restored contacts continue exchanging updates
     Given two CLI installations have exchanged contacts
     And one has a password full backup with sharing choices
