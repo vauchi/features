@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 @release-gate @privacy @multi-device
 Feature: Release privacy and multi-device certification
   As the release owner
@@ -13,6 +12,36 @@ Feature: Release privacy and multi-device certification
     And Bob has linked active devices B1, B2, and B3
     And the OHTTP relay and application relay have distinct operators
     And ordinary relay traffic must traverse the OHTTP relay
+
+  @evidence @automated-certification @planned
+  Scenario: One current automated certification report is required
+    Given all seven automated certification lanes passed on E2E main
+    When their pipeline evidence is exported
+    Then one report records every required scenario and tested revision
+    And the release check verifies the report for the current E2E revision
+    And native-device and independent-operator acceptance remain separate
+
+  @evidence @automated-certification @adversarial @planned
+  Scenario Outline: Incomplete automated evidence blocks release
+    Given an automated certification report has <defect>
+    When the release check verifies the report
+    Then the check fails and identifies the invalid evidence
+
+    Examples:
+      | defect                         |
+      | a missing report               |
+      | a missing lane                 |
+      | a missing required scenario    |
+      | no executed scenarios          |
+      | a skipped scenario             |
+      | a failed scenario              |
+      | a non-blocking job             |
+      | an obsolete source revision    |
+      | a result older than seven days |
+      | a future timestamp             |
+      | mixed pipeline identities      |
+      | duplicate scenarios            |
+      | malformed or oversized JSON    |
 
   @rg-2 @rg-3 @ohttp @implemented
   Scenario: Exact two-user update propagates through both privacy hops
@@ -120,7 +149,7 @@ Feature: Release privacy and multi-device certification
     Examples:
       | role      | outer_state                         |
       | initiator | missing                             |
-      | responder | the application-relay origin       |
+      | responder | the application-relay origin        |
       | initiator | malformed                           |
       | responder | different from the configured route |
 
@@ -133,12 +162,12 @@ Feature: Release privacy and multi-device certification
     And no relay records a request
 
     Examples:
-      | relay_metadata              |
-      | a plaintext HTTP relay      |
-      | a loopback-address alias    |
+      | relay_metadata               |
+      | a plaintext HTTP relay       |
+      | a loopback-address alias     |
       | user information or fragment |
-      | an oversized relay value    |
-      | malformed percent encoding  |
+      | an oversized relay value     |
+      | malformed percent encoding   |
 
   @rg-8 @shred @fail-closed @planned
   Scenario Outline: OHTTP failure cannot block local shred
@@ -150,10 +179,10 @@ Feature: Release privacy and multi-device certification
     And the shred report records that notification was not sent
 
     Examples:
-      | shred_mode  | failure                    |
-      | hard shred  | no distinct outer hop      |
-      | panic shred | a malformed cached key     |
-      | panic shred | an oversized fetched key   |
+      | shred_mode  | failure                  |
+      | hard shred  | no distinct outer hop    |
+      | panic shred | a malformed cached key   |
+      | panic shred | an oversized fetched key |
 
   @rg-15 @implemented
   Scenario: Ignoring a contact removes attention but keeps continuity
