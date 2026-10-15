@@ -64,7 +64,7 @@ Feature: Backup Format Versioning
   @detection @implemented
   Scenario: Unknown version byte is rejected
     Given I have a backup file
-    When the first byte is not a known version (0x02 identity, 0x03 full)
+    When the first byte is not a known version (0x02 identity, 0x03 legacy full, 0x06 password snapshot)
     Then restoration should fail with RestoreFailed
 
   @security @implemented
@@ -82,18 +82,46 @@ Feature: Backup Format Versioning
     Then the AEAD authentication should fail
     And no partial data should be returned
   # ============================================================
-  # Full Backup (v3)
+  # Legacy low-level full backup (v3)
   # ============================================================
 
   @v3 @implemented
   Scenario: Full backup includes identity, contacts, own card, and labels
     Given I have an existing identity with contacts and labels
-    When I create a full backup with a password
+    When I create a legacy full backup with the low-level v3 API and a password
     Then the backup should use format version 0x03
     And it should include my identity and display name
     And it should include my contacts (imported and exchanged)
     And it should include my own contact card and labels
     And nothing should be readable without the password
+
+  @v6 @implemented
+  Scenario: Password backup preserves sharing and contact state
+    Given I have contacts, groups and explicit per-contact sharing choices
+    And some contacts are archived, blocked or ignored
+    When I export a password full backup
+    Then its outer format version should be 0x06
+    When I restore it onto a fresh installation and restart the application
+    Then my identity, own card and contacts should match the snapshot
+    And all group metadata and explicit allow and deny choices should match
+    And archived, blocked and ignored contact state should match
+    And old v3 readers should reject the richer backup
+
+  @v6 @implemented
+  Scenario: Full backup import is atomic
+    Given I have a fresh installation
+    When a password full backup contains invalid state or cannot be committed
+    Then no restored identity, card, contacts or groups should remain
+    And a later valid restore should succeed
+
+  @v6 @implemented
+  Scenario: Restored contacts continue exchanging updates
+    Given two CLI installations have exchanged contacts
+    And one has a password full backup with sharing choices
+    When that installation is removed and restored from the backup
+    And both people update their contact cards without a new exchange
+    Then both should receive the exact updated shared values
+    And explicitly hidden fields should remain absent
 
   @v3 @planned
   Scenario: Full backup is opt-in
