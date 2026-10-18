@@ -1,0 +1,1296 @@
+# SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# @scenario annotations that named no scenario when this list arrived
+# (vauchi/private#620): a renamed or deleted scenario, or one nobody wrote.
+# This list may only shrink: correct the annotation to an existing scenario,
+# or remove it, then delete its line here.
+Full duress flow :: real contacts hidden, decoys shown, nothing sent
+accessibility :: contact items preserve a11y through engine
+accessibility :: contactdetail delete inlineconfirm has populated a11y
+accessibility :: contactdetail personal note editabletext has populated a11y
+accessibility :: exchange fallback actions carry consequence hints
+accessibility :: exchange success screen statusindicator has populated a11y
+accessibility :: onboarding custom group input has a11y label
+accessibility :: onboarding text inputs have a11y labels
+activity_log :: duplicate events are deduplicated
+activity_log :: old entries are pruned
+activity_log :: view recent activity
+aha_moments :: aha moment shows only once
+aha_moments :: aha moments are tracked per milestone
+aha_moments :: aha moments persist across app restarts
+aha_moments :: card creation celebration is shown once
+aha_moments :: card creation shows completion message
+aha_moments :: first contact added celebration
+aha_moments :: first contact added triggers the moment once
+aha_moments :: first edit feedback shown only once
+aha_moments :: first edit shows would-update feedback
+aha_moments :: first outbound update shows delivery confirmation
+aha_moments :: first received update shows diff view
+aha_moments :: subsequent contacts do not show celebration
+aha_moments :: subsequent updates do not show aha moment
+app_security :: already locked app stays locked on background
+app_security :: app does not lock without password
+app_security :: app locks on background when password is set
+app_security :: onboarding is not interrupted by background lock
+avatar-editor :: source-picker screen renders in the active locale
+avatar_editor :: brightness slider updates preview
+avatar_editor :: camera action emits image capture command
+avatar_editor :: camera row tap (listitemselected) emits capture command
+avatar_editor :: cancel completes with cancelled flag
+avatar_editor :: generate action transitions to generator
+avatar_editor :: generate row tap (listitemselected) transitions to generator
+avatar_editor :: image pick cancelled stays on source picker
+avatar_editor :: image received transitions to editing
+avatar_editor :: initial screen shows source picker
+avatar_editor :: mandelbrot regenerate bumps seed
+avatar_editor :: photos action emits pick command
+avatar_editor :: photos row tap (listitemselected) emits pick command
+avatar_editor :: remove row tap (listitemselected) completes with removed flag
+avatar_editor :: save in editing state completes
+avatar_editor :: save in generator state completes with avatar
+avatar_editor :: unknown source row tap is a no-op updatescreen
+avatar_editor_wiring :: avatareditor is a valid appscreen
+avatar_editor_wiring :: avatareditor source picker has remove option when avatar exists
+avatar_editor_wiring :: cancel navigates back without persisting
+avatar_editor_wiring :: contactdetail shows imagecircle for contact
+avatar_editor_wiring :: contactedit cardpreview includes avatar data
+avatar_editor_wiring :: edit_avatar action on myinfo navigates to avatareditor
+avatar_editor_wiring :: generate avatar then use persists and navigates back
+avatar_editor_wiring :: hardware events routed to avatareditor
+avatar_editor_wiring :: myinfo imagecircle shows avatar data after save
+avatar_editor_wiring :: myinfo shows imagecircle component
+avatar_editor_wiring :: navigate to avatareditor shows source picker
+avatar_editor_wiring :: remove avatar action clears and completes
+avatar_editor_wiring :: save avatar persists and navigates back
+backup-reminder :: native toast action opens backup
+backup_format_versioning :: backup contains only the master seed
+backup_format_versioning :: backup level toggle switches between full and identity-only
+backup_format_versioning :: full backup defaults to full level
+backup_format_versioning :: full backup import rejects existing identity
+backup_format_versioning :: full backup requires identity
+backup_format_versioning :: full backup round-trip via api
+backup_format_versioning :: full backup with empty contacts
+backup_format_versioning :: full backup wrong password
+backup_format_versioning :: guardian backup authenticates recovery metadata
+backup_format_versioning :: guardian backup recovery rejects insufficient shares
+backup_format_versioning :: guardian backup rejects mixed share sets
+backup_format_versioning :: guardian backup round-trip with shards
+backup_format_versioning :: guardian re-seal rejects tampered ciphertext
+backup_format_versioning :: guardian re-seal rejects wrong recovering key
+backup_format_versioning :: guardian recovery isolates ceremonies
+backup_format_versioning :: guardian recovery rejects duplicate shares
+backup_format_versioning :: guardian recovery tolerates one bad response
+backup_format_versioning :: guardian sealed share rejects wrong recipient
+backup_format_versioning :: non-v2 backup format rejected
+backup_format_versioning :: restored identity survives restart
+backup_format_versioning :: restoring legacy backup and re-exporting creates v2
+backup_recovery :: a second submit during processing cannot re-enter the flow
+backup_recovery :: choosing a file requests an importbackup pick
+backup_recovery :: create encrypted backup
+backup_recovery :: create mode has no file pick
+backup_recovery :: picked backup bytes populate the restore payload
+backup_recovery :: restore offers a file pick for full backups
+backup_reminder :: export updates reminder state
+backup_reminder :: first reminder after 7 days
+backup_reminder :: frequency cycling
+backup_reminder :: monthly frequency at 30-day threshold
+backup_reminder :: monthly frequency triggers at 30 days
+backup_reminder :: reminders disabled
+batch3 :: every screen renders in the active locale
+ble_exchange :: a peripheral responder (no discovery) persists the contact
+ble_exchange :: both peers persist the exchanged contact
+ble_exchange :: both sides derive cross-matching reciprocity tokens
+ble_exchange :: correct nonce echo cannot smuggle a wrong identity (cc-14)
+ble_exchange :: foreign-session reciprocity ack is rejected
+ble_exchange :: glance displayer rejects a connector that never scanned
+ble_exchange :: glance identity-spoofing advertiser is rejected at the handshake pin
+ble_exchange :: glance matching binding completes for both peers
+ble_exchange :: glance scanner ignores an advertiser it did not scan (f1 dissolves)
+ble_exchange :: glance scanner rejects a foreign displayer
+ble_exchange :: glance symmetric one-sided-qr completes for both peers
+ble_exchange :: initiator rejects ack after session timeout
+ble_exchange :: keyoffer includes exchange public key
+ble_exchange :: maximum size avatar roundtrips correctly
+ble_exchange :: oob nonce echo roundtrip succeeds
+ble_exchange :: persisted ratchets from both roles form a working channel
+ble_exchange :: pinned initiator accepts the expected exchange key
+ble_exchange :: pinned initiator accepts the expected identity
+ble_exchange :: pinned initiator rejects a keyack from an unexpected identity
+ble_exchange :: pinned initiator rejects a keyack whose exchange key differs from the oob-pinned one
+ble_exchange :: pinned responder rejects a keyoffer from an unexpected identity
+ble_exchange :: pinned responder rejects a keyoffer whose exchange key differs from the pinned one
+ble_exchange :: protocol version is 0x03
+ble_exchange :: reciprocity ack confirms both directions
+ble_exchange :: responder rejects a zeroed oob echo when a nonce is required
+ble_exchange :: round-trip handshake succeeds under clock drift
+ble_exchange :: tampered exchange key causes decryption failure
+ble_exchange :: tampered reciprocity ack is rejected
+ble_exchange :: truncated v4 offer rejected (adversarial, cc-14)
+ble_exchange :: v1 offer rejected by v2 responder
+ble_exchange :: v4 keyoffer carries the oob nonce slot
+ble_exchange :: wrong echoed nonce is rejected (adversarial, cc-14)
+build-provenance :: the embedded locale revision is recorded
+certificate_pinning :: clone and equality
+certificate_pinning :: connection succeeds with matching pin
+certificate_pinning :: debug representation
+certificate_pinning :: different keys produce different pins
+certificate_pinning :: fail-secure when all pins wrong
+certificate_pinning :: garbage input returns none
+certificate_pinning :: graceful certificate rotation (full lifecycle)
+certificate_pinning :: many pins scalability
+certificate_pinning :: mitm with valid attacker cert
+certificate_pinning :: new cert works during rotation
+certificate_pinning :: old pin removed after rotation
+certificate_pinning :: pin is sha-256 hash of der certificate
+certificate_pinning :: pin matching is order-independent
+certificate_pinning :: single byte difference detected
+certificate_pinning :: spki hash is deterministic
+certificate_pinning :: spki hash is sha-256
+certificate_pinning :: spki pin detects key change
+certificate_pinning :: spki pin survives cert renewal (same key)
+certificate_pinning :: wrong fingerprint fails
+component_serialization :: pre-status_label payloads still deserialize
+component_serialization :: status badge label is translated per locale
+component_serialization :: status badge label resolves in every locale
+component_serialization :: statusindicator carries status_label on the wire
+config :: embedded credentials in gateway url are rejected
+config :: empty client_ip_header is filtered out
+config :: empty host in gateway url is rejected
+config :: fragment in gateway url is rejected
+config :: gateway url without port is accepted
+config :: missing gateway url produces an error
+config :: non-empty client_ip_header is preserved
+config :: path in gateway url is rejected
+config :: query string in gateway url is rejected
+config :: rate-limit bucket cap is parsed
+config :: required gateway url and defaults are applied
+config :: trailing slash is normalized away
+config :: trusted proxy count is parsed
+config :: valid http gateway url is accepted
+config :: valid https gateway url is accepted
+contact-detail :: actionable toast copy is resolved by core
+contact-detail :: main screen renders in the active locale
+contact-detail :: not-found screen renders in the active locale
+contact-edit :: screen renders in the active locale
+contact-merge :: screen renders in the active locale
+contact-visibility :: the contact name survives interpolation
+contact_actions :: address field offers get directions and open map and copy actions
+contact_actions :: allowed uri schemes whitelist (#47)
+contact_actions :: context menu shows all applicable actions
+contact_actions :: custom field heuristic detection
+contact_actions :: custom field with actionable content offers actions
+contact_actions :: email field offers send email and copy actions
+contact_actions :: empty field shows only copy action
+contact_actions :: export contact as vcard
+contact_actions :: get directions generates web maps url
+contact_actions :: get directions handles empty address
+contact_actions :: get directions handles whitespace-only address
+contact_actions :: get directions url-encodes special characters
+contact_actions :: get directions with unicode address
+contact_actions :: mastodon bare username without @ prefix
+contact_actions :: mastodon federated handle resolves to correct instance
+contact_actions :: non-address fields return none for directions
+contact_actions :: only safe uri schemes are allowed (#46)
+contact_actions :: phone field offers call and sms actions in context menu
+contact_actions :: social field offers open profile and copy actions
+contact_actions :: tap social media opens profile (mastodon federated)
+contact_actions :: urls are validated before opening (#45)
+contact_actions :: website field offers open url and copy actions
+contact_actions :: website primary action uses safe uri
+contact_card_management :: add field to contact card
+contact_card_management :: add multiple fields to contact card
+contact_card_management :: add social network field from catalog
+contact_card_management :: an ambiguous label is refused with the entries' ids
+contact_card_management :: an entry is edited by its id
+contact_card_management :: avatar invalid format rejected
+contact_card_management :: create contact card with display name
+contact_card_management :: different colors produce different images
+contact_card_management :: different seeds produce different images
+contact_card_management :: display name must not be empty
+contact_card_management :: edit an existing field preserves its identity
+contact_card_management :: editing the own card propagates to exchanged contacts
+contact_card_management :: field type alias resolution
+contact_card_management :: field type alias resolution exhaustive
+contact_card_management :: field type categorization
+contact_card_management :: generate initials avatar
+contact_card_management :: generate mandelbrot avatar
+contact_card_management :: generate social profile url
+contact_card_management :: initials avatar corners are transparent
+contact_card_management :: initials avatar dimensions
+contact_card_management :: initials avatar is deterministic
+contact_card_management :: initials avatar is symmetric
+contact_card_management :: initials avatar pin specific pixels
+contact_card_management :: initials avatar size grows with side length
+contact_card_management :: initials avatar small size
+contact_card_management :: large avatar image normalized
+contact_card_management :: list available social networks
+contact_card_management :: mandelbrot avatar corners transparent
+contact_card_management :: mandelbrot center is inside the set
+contact_card_management :: mandelbrot large seed
+contact_card_management :: mandelbrot seed 0 does not panic
+contact_card_management :: mandelbrot seed nudges center
+contact_card_management :: normalize jpeg avatar to webp
+contact_card_management :: normalize png avatar to webp
+contact_card_management :: normalize webp avatar passthrough
+contact_card_management :: reject empty avatar data
+contact_card_management :: reject invalid avatar data
+contact_card_management :: remove field from contact card
+contact_card_management :: resize large avatar image
+contact_card_management :: search social networks
+contact_card_management :: social field label uses display name
+contact_card_management :: social network profile links
+contact_card_management :: user adds an email field to their card
+contact_card_management :: user edits a field on their card
+contact_card_management :: user removes a field from their card
+contact_card_management :: very large avatar always within size limit
+contact_exchange :: a cli user accepts a link from another user
+contact_exchange :: a cli user shares a link for a remote exchange
+contact_exchange :: a malformed peer code fails to the retry screen
+contact_exchange :: both sides of a mutual qr exchange get trust metrics
+contact_exchange :: completed qr exchange contact has trust metrics
+contact_exchange :: exchange completes over ble
+contact_exchange :: exchange completes under mvp latency budget
+contact_exchange :: exchange handles invalid state transitions
+contact_exchange :: exchange session timeout
+contact_exchange :: exchange with existing contact shows update option
+contact_exchange :: fingerprint verification after exchange
+contact_exchange :: first exchange persists the contact
+contact_exchange :: glance selects its scan camera before ble bootstrap
+contact_exchange :: glance with a camera offers manual code entry
+contact_exchange :: glance without a camera accepts the peer code as text
+contact_exchange :: in-person exchanged contacts can message each other
+contact_exchange :: independent start+complete derives mismatched secrets
+contact_exchange :: manual proximity confirmation
+contact_exchange :: multi-stage exchanged contacts can message each other
+contact_exchange :: multi-stage wrapper builds a working ratchet (asymmetric camera)
+contact_exchange :: multi-stage wrapper builds a working ratchet (lockstep)
+contact_exchange :: nfc exchange rejects expired payload
+contact_exchange :: nfc exchange reports descriptive error on failure
+contact_exchange :: nfc exchange session starts in awaitingnfctap
+contact_exchange :: nfc payload has valid signature
+contact_exchange :: nfc tap generates exchange payload
+contact_exchange :: proximity auto-verification during exchange
+contact_exchange :: proximity verification prevents remote exchange
+contact_exchange :: proximity verification session binding
+contact_exchange :: proximity verifier confidence level
+contact_exchange :: raw contact lists are valid json
+contact_exchange :: repeat in-person exchange of the same pair
+contact_exchange :: resumed start+complete preserves the shared secret
+contact_exchange :: successful nfc exchange with proximity
+contact_exchange :: successful qr code exchange
+contact_exchange :: transport proximity is derived correctly for each transport type
+contact_exchange :: transport proximity strength classification
+contact_exchange :: two users exchange contact cards via qr code
+contact_exchange :: two users exchange over a link without the app screens
+contact_exchange :: user activates a surface list row by number
+contact_exchange :: user activates a surface list row with enter
+contact_exchange :: user selects an exchange mode from the tui
+contact_field_notes :: cascade on contact delete cleans notes
+contact_field_notes :: delete only removes specified field, not others
+contact_field_notes :: delete removes specific note
+contact_field_notes :: empty result for contact with no notes
+contact_field_notes :: insert or replace updates existing note
+contact_field_notes :: multiple fields on same contact
+contact_field_notes :: notes for different contacts are isolated
+contact_field_notes :: notes on retained fields survive when another field is removed
+contact_field_notes :: per-field note is deleted when contact removes that field
+contact_field_notes :: save and load round-trip
+contact_management :: archive a contact
+contact_management :: preview merge shows unique fields
+contact_notes :: contactfield note is exposed in mobilecontactfield
+contact_notes :: contactfield without note has none in mobilecontactfield
+contact_notes :: multiple field notes are returned sorted by field_id
+contact_recovery :: a store signature cannot be replayed as a delete
+contact_recovery :: accept high confidence returns complete
+contact_recovery :: accept v1 backward-compatible voucher without guardian token
+contact_recovery :: add voucher with valid guardian token to recovery proof
+contact_recovery :: cancel recovery returns to status
+contact_recovery :: complete screen shows what is recovered
+contact_recovery :: confirm risky accept returns complete
+contact_recovery :: create a guardian token with correct designator and guardian keys
+contact_recovery :: create recovery voucher from claim with guardian token
+contact_recovery :: delete by a non-owner is rejected
+contact_recovery :: delete removes entries
+contact_recovery :: deserializing v2 voucher preserves guardian token fields exactly
+contact_recovery :: different designator keys produce different guardian hashes
+contact_recovery :: done from complete returns complete
+contact_recovery :: done from voucher qr returns complete
+contact_recovery :: each guardian can only decrypt their own sealed entry
+contact_recovery :: ed25519 to x25519 key conversion is deterministic
+contact_recovery :: enforce domain separation in guardian token signature
+contact_recovery :: exact min_sealed_len with empty plaintext
+contact_recovery :: full lifecycle of guardian token creation, encryption, decryption, and verification
+contact_recovery :: guardian hash computation is deterministic for the same key
+contact_recovery :: high confidence acceptance shows safe message
+contact_recovery :: high confidence vouching shows safe message
+contact_recovery :: insufficient trusted vouchers
+contact_recovery :: linked devices show hint
+contact_recovery :: low confidence accept anyway shows confirm
+contact_recovery :: low confidence has verify action
+contact_recovery :: low confidence shows pending status
+contact_recovery :: medium confidence has remind action
+contact_recovery :: medium confidence shows warning
+contact_recovery :: missing signature is rejected
+contact_recovery :: no linked devices hides hint
+contact_recovery :: non-guardian cannot decrypt sealed guardian entry
+contact_recovery :: open returns decryptionfailed for wrong key
+contact_recovery :: open returns invalidformat for short input
+contact_recovery :: output size scales linearly with plaintext
+contact_recovery :: query nonexistent returns empty
+contact_recovery :: query rejects invalid hash
+contact_recovery :: recovered contact trust lifecycle
+contact_recovery :: recovery proof completeness predicate
+contact_recovery :: recovery settings persistence
+contact_recovery :: reject 200 bytes of 0xff as garbage for guardiantoken deserialization
+contact_recovery :: reject all-zero minimum-size blob in sealed-box decryption
+contact_recovery :: reject empty input for guardiantoken deserialization
+contact_recovery :: reject empty input for sealed-box decryption
+contact_recovery :: reject forged guardian token signed by wrong designator key
+contact_recovery :: reject guardian token with tampered guardian key
+contact_recovery :: reject or fail verification when last byte is flipped in guardiantoken
+contact_recovery :: reject or invalidate one-megabyte zero buffer for guardiantoken
+contact_recovery :: reject oversized junk blob in sealed-box decryption
+contact_recovery :: reject plausible-length zero buffer for guardiantoken deserialization
+contact_recovery :: reject recovery proof voucher where token guardian key does not match voucher signer
+contact_recovery :: reject recovery proof voucher whose token designator does not match proof identity
+contact_recovery :: reject recovery proof voucher with invalid guardian token signature
+contact_recovery :: reject returns complete
+contact_recovery :: reject sealed-box blob with flipped authentication tag
+contact_recovery :: reject sealed-box blob with zeroed ephemeral public key
+contact_recovery :: reject sealed-box blob with zeroed nonce
+contact_recovery :: reject single zero byte for guardiantoken deserialization
+contact_recovery :: reject sub-minimum-length input for sealed-box decryption
+contact_recovery :: reject token with all-zero designator key
+contact_recovery :: reject token with all-zero guardian key tampered after signing
+contact_recovery :: reject token with zeroed signature bytes
+contact_recovery :: reject truncated guardiantoken bytes
+contact_recovery :: remind returns complete
+contact_recovery :: replayed delete is rejected
+contact_recovery :: roundtrip across plaintext sizes
+contact_recovery :: seal and unseal a payload with the correct recipient key
+contact_recovery :: seal rejects a small-order recipient key
+contact_recovery :: sealed-box output size is ephemeral-pk plus nonce plus ciphertext plus tag
+contact_recovery :: sender is anonymous (ephemeral key changes per call)
+contact_recovery :: serialize and deserialize a guardian token preserving all fields
+contact_recovery :: serialize and deserialize v1 recovery voucher without guardian token
+contact_recovery :: serialize and deserialize v2 recovery voucher with guardian token
+contact_recovery :: stale timestamp is rejected
+contact_recovery :: start recovery shows claim qr
+contact_recovery :: store and query roundtrip
+contact_recovery :: store by a non-owner is rejected
+contact_recovery :: store overwrites atomically
+contact_recovery :: store rejects entry too large
+contact_recovery :: store rejects invalid base64
+contact_recovery :: store rejects invalid hash
+contact_recovery :: store rejects too many entries
+contact_recovery :: store rejects total size exceeded
+contact_recovery :: submit proof transitions to complete
+contact_recovery :: tampered ephemeral key fails authentication
+contact_recovery :: tampered nonce fails authentication
+contact_recovery :: tampered sealed-box ciphertext fails authentication
+contact_recovery :: tampered signature is rejected
+contact_recovery :: threshold met enables submit
+contact_recovery :: truncated ciphertext fails authentication
+contact_recovery :: user initiates social recovery
+contact_recovery :: verify a freshly created guardian token
+contact_recovery :: verify other shows fingerprint
+contact_recovery :: version byte is 2 for voucher with token and 1 without
+contact_recovery :: voucher added updates progress
+contact_recovery :: vouching returns showvoucherqr
+contact_recovery :: wait for voucher shows scanner
+contact_recovery :: wrong recipient key cannot decrypt sealed payload
+contact_trust :: fingerprint-verified contact maps to verified trust level
+contact_trust :: proposal_trusted flag round-trips via set_proposal_trusted
+contact_trust :: set_proposal_trusted returns contactnotfound for unknown id
+contact_trust :: standard trust contact has correct fields in mobilecontact
+contacts :: a personal note from a linked device shows in the app
+contacts :: a personal note reads the same on every path
+contacts :: empty contact list renders in the active locale
+contacts_management :: a personal note saved in the app reaches linked devices
+contacts_management :: all categories enumerated
+contacts_management :: appengine exposes field type catalog
+contacts_management :: archive exchanged contact hides from list
+contacts_management :: archive imported contact fails
+contacts_management :: archived contacts appear in archive list
+contacts_management :: catalog by_category filters correctly
+contacts_management :: catalog categories are correct
+contacts_management :: catalog includes base field types
+contacts_management :: catalog includes social networks
+contacts_management :: catalog search finds matching entries
+contacts_management :: catalog search is case-insensitive
+contacts_management :: catalog total count includes all entries
+contacts_management :: category display names
+contacts_management :: clear group filter shows all contacts
+contacts_management :: contact limits
+contacts_management :: contact list shows subtitle from first field
+contacts_management :: contact trust management
+contacts_management :: contactdetail shows empty field note when none saved
+contacts_management :: contactdetail shows empty note when none saved
+contacts_management :: contactdetail shows per-field private notes
+contacts_management :: contactdetail shows personal note
+contacts_management :: contacts screen offers find duplicates action
+contacts_management :: contacts screen offers view archived action
+contacts_management :: cross-kind merge: adopt imported data into exchanged
+contacts_management :: cross-kind merge: save imported info to notes
+contacts_management :: cross-kind merge: skip adoption, delete imported
+contacts_management :: detect duplicate contacts across import sources
+contacts_management :: display name resolution in platform bindings
+contacts_management :: edit contact display name
+contacts_management :: edit personal note persists via appengine
+contacts_management :: empty registry produces minimal catalog
+contacts_management :: explicitly saving a field note persists it
+contacts_management :: group filter combines with search
+contacts_management :: groups appear as filter actions
+contacts_management :: hard-delete exchanged contact fails
+contacts_management :: hard-delete permanently removes contact
+contacts_management :: hide contact from main list
+contacts_management :: mark contact as favorite (storage round-trip)
+contacts_management :: merge duplicate contacts (appengine wiring)
+contacts_management :: merge duplicate contacts (confirm executes merge)
+contacts_management :: merge duplicate contacts (no-pairs fallback)
+contacts_management :: merge duplicate contacts (preview content)
+contacts_management :: navigate to archived contacts from contacts list
+contacts_management :: nonexistent contact returns error
+contacts_management :: remove favorite (storage round-trip)
+contacts_management :: scroll through large contact list
+contacts_management :: search contacts by email
+contacts_management :: search contacts by phone number
+contacts_management :: search contacts no results
+contacts_management :: search contacts partial match
+contacts_management :: search scales with many contacts
+contacts_management :: select a shared avatar
+contacts_management :: soft-delete exchanged contact fails
+contacts_management :: soft-delete imported contact hides from list
+contacts_management :: sync delta adds and removes shared avatars
+contacts_management :: unarchive restores contact to main list
+contacts_management :: undo soft-delete restores contact
+contacts_management :: view all contacts
+contacts_management :: view all contacts with populated list
+contacts_management :: view contact detail shows all fields
+contacts_management.feature - Cross-kind merge :: adopt imported data into exchanged
+core_file_picker :: back from password entry clears pending bytes
+core_file_picker :: bytes from non-more screen are ignored
+core_file_picker :: cancellation produces no result
+core_file_picker :: empty password is rejected before import
+core_file_picker :: file pick on onboarding → backuppasswordentry
+core_file_picker :: filepickedfromuser on contacts imports vcard
+core_file_picker :: garbage bytes import zero contacts cleanly
+core_file_picker :: import_contacts action emits filepickfromuser
+core_file_picker :: imported contacts persisted in storage
+core_file_picker :: restore_backup emits filepickfromuser
+core_file_picker :: skipped duplicates surface in toast
+core_file_picker :: submit valid password completes restore
+core_file_picker :: wrong password surfaces alert
+decoy_contacts :: user adds a decoy contact
+decoy_contacts :: user removes a decoy contact
+decoy_contacts :: user views decoy contact list
+delivery-status :: screen renders in the active locale
+device-linking :: qr-expired + link-failed render in the active locale
+device-linking :: transport-selection + show-qr render in the active locale
+device-replacement :: select-mode screen renders in the active locale
+device_capabilities :: audio capability serialization
+device_capabilities :: available exchanges for full device
+device_capabilities :: available exchanges for ios without nfc
+device_capabilities :: available exchanges for minimal device
+device_capabilities :: biometric type serialization
+device_capabilities :: biometric unlock requires biometric hardware
+device_capabilities :: ble exchange requires ble hardware
+device_capabilities :: capabilities serialization
+device_capabilities :: connection type variants
+device_capabilities :: exchange allowed at normal battery
+device_capabilities :: exchange blocked at critical battery
+device_capabilities :: mesh mode requires ble
+device_capabilities :: mesh relay blocked at critical battery
+device_capabilities :: mesh relay warning at low battery
+device_capabilities :: nfc exchange requires nfc hardware
+device_capabilities :: platform detection
+device_capabilities :: platform serialization
+device_capabilities :: qr display always available
+device_capabilities :: qr scan requires camera
+device_capabilities :: relay sync allowed when online
+device_capabilities :: relay sync blocked when offline
+device_capabilities :: sync blocked at low storage
+device_management :: a globally routable rendezvous is refused
+device_management :: a joiner links against a real hosting device
+device_management :: a joiner that never confirms cannot obtain the seed
+device_management :: a late joiner expires with the qr, not 300s later
+device_management :: a local rendezvous survives the invitation round trip
+device_management :: a malformed rendezvous is refused
+device_management :: a reported address makes the device host locally
+device_management :: an empty local param reads as absent
+device_management :: an invitation routes the joiner to the peer
+device_management :: an invitation without a local address still parses
+device_management :: concurrent edits converge by last-write-wins
+device_management :: contact field note syncs to linked devices
+device_management :: cross-session replay attack prevented
+device_management :: expired manual confirmation is rejected
+device_management :: generate device linking qr code
+device_management :: group presentation changes sync to linked devices
+device_management :: leaving the screen closes the socket
+device_management :: link-local rendezvous addresses are accepted
+device_management :: linked device preserves group presentation state
+device_management :: linking with manual confirmation proof succeeds
+device_management :: no reported address keeps the ceremony on the relay
+device_management :: personal note deletion syncs to linked devices
+device_management :: personal note syncs to linked devices
+device_management :: proposal trust syncs to linked devices
+device_management :: proximity proof boundary timing
+device_management :: self-linking prevention
+device_management :: the joiner's name field does not prepend a default
+device_management :: two devices complete a link and agree on the code
+device_management :: two devices link over a local rendezvous
+device_management :: two devices link over a local socket
+device_management :: user links a new device
+device_management :: view linked devices
+device_management :: visibility grants converge across linked devices
+device_management :: wrong manual confirmation mac is rejected
+device_sync :: claim payload serialization roundtrip
+device_sync :: concurrent sync + write + delivery has no lock contention
+device_sync :: foreign relay invitation fails closed
+device_sync :: sync result aggregation
+devices :: device-management screen renders in the active locale
+duress_mode :: biometric unlock still asks for the pin
+duress_mode :: changes made in duress mode look like they worked
+duress_mode :: duress unlock sends silent alert to trusted contacts
+duress_mode :: the duress setup cannot be changed in duress mode
+duress_mode :: the duress setup is invisible in duress mode
+duress_password :: disabling duress pin persists
+duress_password :: duress pin setup persists through appengine
+duress_pin :: disable duress mode when not enabled
+duress_pin :: enable duress mode
+duress_pin :: test duress authentication
+duress_pin :: view duress pin status
+emergency_broadcast :: alert delivery reaches the recipient
+emergency_broadcast :: an alert reaches a contact not yet heard from
+emergency_broadcast :: configure emergency broadcast
+emergency_broadcast :: disable emergency broadcast
+emergency_broadcast :: send emergency broadcast
+emergency_broadcast :: view emergency broadcast status
+exchange :: a failed glance offers no fallback that restarts glance
+exchange :: a malformed qr frame never aborts the desktop shell
+exchange :: a reported decode advances hover past advertising
+exchange :: ble discovering chrome renders in the active locale
+exchange :: ble ends on the rich success summary
+exchange :: ble failure falls back to glance instead of cancelling
+exchange :: ble failure falls back to link instead of cancelling
+exchange :: ble failure never celebrates
+exchange :: ble success celebrates exactly once
+exchange :: camera-less devices are offered link first
+exchange :: cancel on group selection exits the exchange
+exchange :: dedicated mode screens render no step numbers
+exchange :: deleted default group degrades gracefully
+exchange :: disclosure lists all other modes in order
+exchange :: failed terminal screen renders in the active locale
+exchange :: first exchange with groups starts on group selection
+exchange :: first-run picker hero is glance
+exchange :: group gate and field preview render in the active locale
+exchange :: group selection has one primary button and cancel
+exchange :: hover completes when the shell reports decodes
+exchange :: mode picker renders in the active locale
+exchange :: multi-stage exchange (glance) dims screen, disables idle timer, locks portrait, and announces back camera on entry
+exchange :: multi-stage exchange (hover) dims screen, disables idle timer, locks portrait, and announces front camera on entry
+exchange :: multi-stage exchange dims screen, disables idle timer, and locks portrait on entry
+exchange :: multi-stage exchange entry surfaces lifecycle commands in envelope
+exchange :: multi-stage exchange restores defaults on exit
+exchange :: multi-stage exchange restores presentation defaults on exit
+exchange :: multi-stage success celebrates exactly once
+exchange :: no exchange screen renders a step number
+exchange :: ohttp relay exchange
+exchange :: picker hero is the last-used mode
+exchange :: picker offers only the alpha-reliable modes
+exchange :: picking a mode persists last-used defaults
+exchange :: recommendation never names an unoffered mode
+exchange :: repeat exchange opens the picker with prior groups
+exchange :: sharing chip opens group selection as a refinement
+exchange :: unified button keeps continue/skip semantics
+exchange :: unoffered last-used mode falls back to glance
+exchange :: unrunnable last-used mode falls back to glance
+field_validation :: backward compatible card updates
+field_validation :: birthday days-per-month table
+field_validation :: each field type has independent validation
+field_validation :: each social field has independent validation
+field_validation :: field label truncation at max_label_length
+field_validation :: field note truncation boundary
+field_validation :: set_value updates timestamp
+field_validation :: valid email address formats
+field_validation :: valid phone number formats
+field_validation :: validate a contact's email address
+field_validation :: validate a contact's phone number
+field_validation :: validate a contact's social profile
+field_validation :: validate a custom field
+field_validation :: validate iso 8601 birthday format
+field_validation :: validation counts in card updates
+field_validation :: validation persists when other fields change
+field_validation :: validation summary in filtered deltas
+field_validation :: validation summary not serialized when empty
+field_validation :: validation summary with multiple fields
+form-dialog :: create-group screen renders in the active locale
+generic_presentation_protocol :: a list of commands can ask to be drawn as buttons
+generic_presentation_protocol :: a panel without a title shows no heading
+generic_presentation_protocol :: a screen can name what a payload is instead of reciting it
+generic_presentation_protocol :: a status chip is reachable from the keyboard
+generic_presentation_protocol :: a value on a binding core never minted fails closed
+generic_presentation_protocol :: core publishes navigation persistently
+generic_presentation_protocol :: every shell reports the same generic events
+generic_presentation_protocol :: return in a field reports a submission
+generic_presentation_protocol :: shell boundary carries no domain vocabulary
+generic_presentation_protocol :: unknown input fails closed
+group-detail :: screen renders in the active locale
+groups-list :: screen renders in the active locale
+help_faq :: all info keys resolve to locale content
+help_wiring :: help is a valid appscreen with roundtrip parsing
+help_wiring :: help screen contains faq items after navigation from settings
+help_wiring :: help screen dispatches faq selection after navigation
+help_wiring :: help screen dispatches search action after navigation
+help_wiring :: navigate to help shows the help screen
+help_wiring :: settings help_center navigates to help screen
+identity :: myinfo sync captions render in the active locale
+identity_management :: app password setup
+identity_management :: cannot re-initialize without force
+identity_management :: configure recovery settings
+identity_management :: duress pin
+identity_management :: gdpr data export
+identity_management :: identity deletion
+identity_management :: re-initialize with force flag
+identity_management :: social recovery setup
+identity_management :: view recovery status
+internationalization :: settings sections render the active locale
+link-exchange :: share-url screen renders in the active locale
+link-responder :: waiting badge label is catalog-resolved
+link_exchange :: a full contact list names the limit, not a crypto failure
+link_exchange :: a visible own-card edit reaches a link contact
+link_exchange :: an empty peer link does nothing
+link_exchange :: completing a link exchange primes the update channel
+link_exchange :: edits from both sides of a link exchange converge
+link_exchange :: pasting the peer's link opens the consent screen
+link_exchange :: the responder decrypts the initiator's deposit
+link_exchange :: the responder retrieves the initiator's deposit
+link_exchange :: the share screen accepts a pasted peer link
+link_exchange :: two parties converge over one relay escrow
+link_exchange :: typed peer link is kept across re-renders
+linux_desktop_reliability :: gtk identity survives restart without a system keyring
+linux_desktop_reliability :: qt identity survives restart without a system keyring
+local_device_link :: a ceremony cannot grow past its two legs
+local_device_link :: a ceremony completes over a real socket
+local_device_link :: a ceremony's second leg gets its own slot
+local_device_link :: a frame split across writes is still served
+local_device_link :: a non-relay broker satisfies the same contract
+local_device_link :: a peer that accepts and never answers times out
+local_device_link :: a refusal does not disclose ceremony state
+local_device_link :: a refusal reaches the caller as a network error
+local_device_link :: a refusal reaches the joiner as an error
+local_device_link :: a response survives the encode round trip
+local_device_link :: a silent peer does not wedge the listener
+local_device_link :: a wrong code is refused, not served
+local_device_link :: an oversized frame is refused before parsing
+local_device_link :: an oversized payload is refused
+local_device_link :: an unbounded code is refused
+local_device_link :: an unclaimed ceremony reports not-yet
+local_device_link :: an unknown action is refused
+local_device_link :: an unreachable rendezvous fails rather than hangs
+local_device_link :: claiming returns the initiator's payload
+local_device_link :: exactly one peer wins a contested ceremony
+local_device_link :: malformed bytes are refused
+local_device_link :: minted codes are unguessable
+local_device_link :: polling twice does not consume the response
+local_device_link :: the initiator collects the peer's response
+local_device_link :: the joiner drives a ceremony over the socket
+local_device_link :: the same code cannot be offered twice
+local_device_link :: the socket closes when the window expires
+local_device_link :: the wire carries a whole ceremony
+message_delivery :: cleanup removes old records
+message_delivery :: client acknowledges message receipt
+message_delivery :: combined retry and offline stats
+message_delivery :: connectivity restored triggers retry and flush
+message_delivery :: connectivitydiagnostics report is accessible
+message_delivery :: delivered ack removes retry entry
+message_delivery :: delivery list with filter
+message_delivery :: delivery list with no records
+message_delivery :: delivery receipts can be disabled by user
+message_delivery :: delivery receipts enabled by default
+message_delivery :: delivery records cleanup
+message_delivery :: delivery status command shows counts
+message_delivery :: delivery status formatting
+message_delivery :: delivery status maps storage statuses to ui statuses correctly
+message_delivery :: delivery status screen shows empty state when no records
+message_delivery :: delivery status screen shows pending and failed records
+message_delivery :: device ack for unknown message returns error
+message_delivery :: diagnostics includes retry information
+message_delivery :: diagnostics reports queue status
+message_delivery :: empty retry and queue on connectivity restore
+message_delivery :: expired messages are cleaned up automatically
+message_delivery :: exponential backoff with jitter
+message_delivery :: failed ack captured in ack_events
+message_delivery :: failed ack schedules retry with backoff
+message_delivery :: failed deliveries show retry action
+message_delivery :: failed device ack does not mark message delivered
+message_delivery :: failure reason translated to user message
+message_delivery :: flush preserves message order
+message_delivery :: invalid acknowledgment is ignored
+message_delivery :: key rotation detected during send
+message_delivery :: key rotation error includes contact id
+message_delivery :: messages persist until acknowledged
+message_delivery :: network ack status converts to delivery ack status
+message_delivery :: no rotation when key matches
+message_delivery :: offline message queued for later delivery
+message_delivery :: offline queue respects capacity
+message_delivery :: old terminal records are cleaned up
+message_delivery :: online message sent directly (not queued)
+message_delivery :: per-device ack tracking aggregates to full delivery
+message_delivery :: queue capacity tracking
+message_delivery :: queued messages ready for flush on reconnect
+message_delivery :: read receipts are never sent
+message_delivery :: retry tick returns ready ids for resend
+message_delivery :: retry tick with no due entries
+message_delivery :: suppress presence defaults to false
+message_delivery :: suppress presence hides online status from relay
+message_delivery :: unknown failure reasons produce generic message
+message_delivery :: unknown message ack handled gracefully
+message_delivery :: user can diagnose delivery problems
+message_delivery :: user sees meaningful error for failed delivery
+multi-stage-exchange :: camera-permission-denied screen renders in the active locale
+multi_device_sync :: a confirmed contact is not re-pushed
+multi_device_sync :: a confirmed handshake opens per-device fan-out
+multi_device_sync :: a corrupt per-device session triggers handshake repair
+multi_device_sync :: a device-routed handshake ack carries an origin hint
+multi_device_sync :: a device-scoped card delta uses this device's sender token
+multi_device_sync :: a device-scoped send requires local device info
+multi_device_sync :: a forged registry push is rejected without persisting anything
+multi_device_sync :: a forged relayed registry is rejected
+multi_device_sync :: a genesis alert seeds the sender's registry for activation
+multi_device_sync :: a handshake ack routes device-scoped but signs with the legacy token
+multi_device_sync :: a joining device inherits activation state via full sync
+multi_device_sync :: a linked device sends without legacy local device storage
+multi_device_sync :: a per-device copy reaches only its own sibling
+multi_device_sync :: a queued card update cannot starve registry activation
+multi_device_sync :: a received registry push is persisted and answered, never trusted for sending
+multi_device_sync :: a registry change is pushed without waiting for the contact
+multi_device_sync :: a registry change re-pushes until re-confirmed
+multi_device_sync :: a registry-less, session-less device geneses its push
+multi_device_sync :: a responder's device-scoped genesis card fallback is received
+multi_device_sync :: a sent push waits for the contact before it is sent again
+multi_device_sync :: a stale carried registry never clobbers a newer held one
+multi_device_sync :: activation re-arms the owed card so pre-activation edits deliver
+multi_device_sync :: alice a1/a2/a3 and bob b1/b2/b3 converge independently
+multi_device_sync :: an ack of our outstanding push activates per-device sending
+multi_device_sync :: an identity-mailbox send uses the legacy sender token
+multi_device_sync :: an orphaned sibling re-converges to active without re-exchange
+multi_device_sync :: authenticated local device identity wins over stale storage
+multi_device_sync :: blocked contacts receive nothing, silently
+multi_device_sync :: concurrent handshakes never clobber an in-flight push
+multi_device_sync :: demoted activation falls back to the legacy session
+multi_device_sync :: each device has its own contact mailbox
+multi_device_sync :: each local/peer device pair has an independent channel
+multi_device_sync :: fan-out copies are queued for device-scoped delivery
+multi_device_sync :: fan-out queue failure rolls back send state
+multi_device_sync :: handshake progress is journaled for linked devices
+multi_device_sync :: handshake replies stay on the legacy session before activation
+multi_device_sync :: linked devices receive peer topology without shared ratchets
+multi_device_sync :: lost exchanging device no longer orphans the relationship
+multi_device_sync :: offline catch-up tolerates reorder and duplicate delivery
+multi_device_sync :: one contact update fans out to every active device
+multi_device_sync :: one handshake message in flight per contact
+multi_device_sync :: registry presence alone never switches sends off the legacy session
+multi_device_sync :: relay sender tokens distinguish linked devices
+multi_device_sync :: relayed activation merges monotonically, never regressing
+multi_device_sync :: repeat acks never force replies from an active contact
+multi_device_sync :: safety-alert rate limiting does not block a device card fallback
+multi_device_sync :: siblings adopt relayed activation state
+multi_device_sync :: siblings learn a contact's registry through owner sync
+multi_device_sync :: stale or unknown acks are tolerated without state change
+multi_device_sync :: the ack reply echoes our registry exactly once
+multi_device_sync :: the ack routes back to the originating device
+multi_device_sync :: the bootstrap push is a single identity-mailbox cold-start
+multi_device_sync :: the sync cycle pushes our registry to unconfirmed contacts
+multi_device_sync :: three devices per user exchange updates bidirectionally
+multi_device_sync :: un-orphaning converges even when the sibling is the session responder
+multi_stage :: both sides derive cross-matching reciprocity tokens
+multi_stage_exchange :: persisted contact carries qr transport and a role-correct ratchet
+multi_stage_exchange :: persisted contacts are recorded pending
+my_info :: entry rows show who can see each entry
+navigation :: settings groups follow the design canvas
+nfc_exchange :: self-exchange rejected in handshake
+nfc_exchange :: self-exchange rejected on the ack path
+notifications :: card-update copy renders in the active locale
+ohttp_cache :: clearing one relay key preserves others
+ohttp_gateway :: a legacy public-config key file self-heals
+ohttp_gateway :: from_key_file respects rotation interval in seconds
+ohttp_gateway :: key rotation produces distinct key_ids
+ohttp_gateway :: persisted key reloads as a usable keypair
+ohttp_gateway :: x25519 private key is zeroizable
+ohttp_outer_hop :: cli completes a 2-user exchange via the orchestrator-spawned outer ohttp-relay
+ohttp_outer_hop :: cli with split data/ohttp relay config completes exchange + card-update sync
+ohttp_outer_hop :: default orchestrator routes through the outer ohttp-relay
+ohttp_stale_key :: a healthy relay is not asked for a new key
+ohttp_stale_key :: device link recovers from a rotated relay key
+ohttp_stale_key :: link-mode exchange recovers from a rotated relay key
+ohttp_sync :: clean ok does not trigger refetch
+ohttp_sync :: key error heuristic matches http 400
+ohttp_sync :: key error heuristic matches http 502 (relay-masked decap failure)
+ohttp_sync :: key error heuristic matches ohttp keyword
+ohttp_sync :: key error heuristic rejects connection refused
+ohttp_sync :: key error heuristic rejects storage errors
+ohttp_sync :: key error heuristic rejects timeout
+ohttp_sync :: last_sync_time records wall-clock on success
+ohttp_sync :: non-ok outcome variant carries no send errors
+ohttp_sync :: receive-leg 502 err still triggers refetch+retry
+ohttp_sync :: send-leg 502 in ok{errors} triggers key refetch+retry
+ohttp_sync :: storage err is not an ohttp key error
+ohttp_sync :: unrelated send error does not trigger refetch
+ohttp_sync :: url scheme conversion ws to http
+ohttp_sync :: url scheme conversion wss to https
+ohttp_sync :: url scheme passthrough for http
+ohttp_sync :: url scheme passthrough for https
+onboarding :: a second custom group can follow the first
+onboarding :: advance_completed_at_only_set_at_final
+onboarding :: advance_through_all_steps (#26)
+onboarding :: an empty field never promotes add
+onboarding :: api_advance (#26)
+onboarding :: api_completion_percentage (#22)
+onboarding :: api_current_step
+onboarding :: api_is_complete (#26)
+onboarding :: api_reset (#28)
+onboarding :: api_skip (#24)
+onboarding :: complete onboarding in under 2 minutes
+onboarding :: completion_percentage (#22)
+onboarding :: completion_percentage_table
+onboarding :: create_suggested_groups
+onboarding :: create_suggested_groups_skips_duplicates
+onboarding :: default
+onboarding :: device_link_instructions_back
+onboarding :: device_link_instructions_scan
+onboarding :: device_link_instructions_unknown_action
+onboarding :: display_name_empty
+onboarding :: display_name_first_letter_present
+onboarding :: display_name_full_name (#9)
+onboarding :: display_name_short
+onboarding :: display_name_short_threshold
+onboarding :: display_name_single (#9)
+onboarding :: display_name_unicode
+onboarding :: e2e_full_flow
+onboarding :: empty name rejected with inline validation error
+onboarding :: first launch renders in the active locale
+onboarding :: guided card creation wizard
+onboarding :: idempotent_advance_at_final (#26)
+onboarding :: identity_check_create_new
+onboarding :: identity_check_link_device
+onboarding :: identity_check_load_backup
+onboarding :: identity_check_unknown_action
+onboarding :: json_roundtrip_with_timestamps
+onboarding :: json_serialization_roundtrip (#25)
+onboarding :: leaving the field offers a visible way to commit
+onboarding :: new_progress (#1)
+onboarding :: reset (#28)
+onboarding :: return commits a custom group
+onboarding :: skip_step (#24)
+onboarding :: skip_step_at_what_next_completes
+onboarding :: skip_step_completed_at_only_set_at_final
+onboarding :: step_index
+onboarding :: step_index_consistency
+onboarding :: step_index_per_variant
+onboarding :: step_navigation
+onboarding :: step_next_per_variant
+onboarding :: step_order
+onboarding :: step_previous_per_variant
+onboarding :: storage_load_empty
+onboarding :: storage_load_or_create
+onboarding :: storage_overwrite
+onboarding :: storage_roundtrip (#25)
+onboarding :: total_steps_constant
+onboarding :: valid name after validation error navigates forward
+onboarding :: welcome screen on first launch
+onboarding_workflow :: field visibility default empty (privacy-first)
+onboarding_workflow :: remove field cleans up field_visibility
+onboarding_workflow :: show and hide field in no-group mode
+pair5_device_link_bridge :: a session that cannot start reports instead of spinning
+pair5_device_link_bridge :: bridges no-op (return none) off the device-linking screen
+pair5_device_link_bridge :: cancel from any device-link step navigates away
+pair5_device_link_bridge :: codes_match is the single confirmation and emits the typed result
+pair5_device_link_bridge :: cycle thread can push qrpending into the engine
+pair5_device_link_bridge :: deny on confirming device emits devicelinkdeny
+pair5_device_link_bridge :: invalidation keeps a live session
+pair5_device_link_bridge :: on_completed transitions to terminal complete screen
+pair5_device_link_bridge :: on_confirmation_required surfaces device name + code
+pair5_device_link_bridge :: on_failed maps to honest copy in the linkfailed screen
+pair5_device_link_bridge :: on_qr_ready surfaces qr data + expiry
+pair5_device_link_bridge :: qr_expired failure renders retry+cancel surface
+pair5_device_link_bridge :: retry from expired emits devicelinkretry and advances to pending
+pair5_device_link_listener :: cancel from device-link screen leaves no active session
+pair5_device_link_listener :: codes_match surfaces devicelinkconfirmmanual json
+pair5_device_link_listener :: deny surfaces devicelinkdeny json
+pair5_device_link_listener :: ensure_device_link_session is idempotent
+pair5_device_link_listener :: navigating away cancels the session
+pair5_device_link_listener :: navigation into devicelinking spawns a session
+pair5_device_link_listener :: on_confirmation_required advances the engine
+pair5_device_link_listener :: on_failed("qr_expired") routes to the expired screen
+pair5_device_link_listener :: retry from qrexpired emits devicelinkretry and rotates session
+pinning :: empty pin list roundtrip
+pinning :: fresh cache within ttl
+pinning :: merge_pins deduplicates
+pinning :: merge_pins handles empty source
+pinning :: merge_pins handles empty target
+pinning :: ohttp shares the relay host -> relay pins apply
+pinning :: ohttp transport pins the ohttp host, not the relay
+pinning :: pin cache persistence
+pinning :: production default pins the ohttp host distinctly
+pinning :: resolve_pins falls back to bundled when refresh fails
+pinning :: resolve_pins returns only bundled when no verify key
+pinning :: stale cache beyond ttl
+platform_edge_cases :: sync state persisted atomically
+pre_signed_operations :: pre-signed purge request has valid ed25519 signature
+privacy_compliance :: a received revocation blob shreds the contact
+privacy_compliance :: consent for optional features
+privacy_compliance :: crypto-shredding key hierarchy is sound
+privacy_compliance :: delete my identity
+privacy_compliance :: encrypted gdpr export roundtrip
+privacy_compliance :: full erasure after grace period
+privacy_compliance :: hard shred sends purge and revocations
+privacy_compliance :: identity deletion destroys all content encryption keys
+privacy_compliance :: identity deletion notifies contacts end-to-end
+privacy_compliance :: identity deletion produces relay-ready revocation deliveries
+privacy_compliance :: identity deletion propagates across all user devices
+privacy_compliance :: identity deletion sends revocation signal to all contacts
+privacy_compliance :: identity purge sends relay purge and revocations
+privacy_compliance :: identity purge sends relay purge request
+privacy_compliance :: non-revocation blobs are not misclassified
+privacy_compliance :: process_revocation reports whether it acted
+privacy_compliance :: revocation blob round-trips through encode/decode
+privacy_compliance :: revocation broadcast transmits to the relay
+privacy_compliance :: withdraw consent for telemetry
+privacy_compliance :: wrong password fails decryption
+qr_scanning :: preprocessed pipeline decodes a clean qr
+qr_scanning :: rqrr decodes a clean qr
+rate_limit :: evict with nonzero max_age removes old entries
+rate_limit :: falls back to connectinfo on malformed header value
+rate_limit :: falls back to connectinfo when header has too few entries
+rate_limit :: falls back to connectinfo when header missing
+rate_limit :: ipv6 client with one trusted proxy
+rate_limit :: memory cap evicts oldest buckets
+rate_limit :: mutex poisoning is not silently recovered
+rate_limit :: networkerror::ratelimited variant can be constructed
+rate_limit :: parses ipv6 address from rightmost header value
+rate_limit :: prefers configured header over connectinfo
+rate_limit :: rate-limited response has 429 status and retry-after header
+rate_limit :: ratelimited display includes retry seconds
+rate_limit :: ratelimited implements clone
+rate_limit :: ratelimited is distinct from other error variants (cc-11)
+rate_limit :: ratelimited with large retry_after_secs
+rate_limit :: ratelimited with zero retry_after_secs
+rate_limit :: retry-after value is a positive integer
+rate_limit :: successful responses do not include a non-empty retry-after
+rate_limit :: takes rightmost ip from x-forwarded-for by default
+rate_limit :: trusted_proxies selects client ip counting from the right
+rate_limit :: uses connectinfo when no header configured
+receive_phase :: a batch that applies nothing emits no events
+receive_phase :: a confirmed contact answers a peer still waiting
+receive_phase :: a rolled-back receive must not ack the blob
+receive_phase :: a wrong-token confirmation is not answered
+receive_phase :: alert events derive from durable facts only
+receive_phase :: an applied update yields one incomingupdate
+receive_phase :: blob with empty mailbox_token is dropped
+receive_phase :: blob with unknown mailbox_token is dropped
+receive_phase :: confirmed contacts are not re-confirmed
+receive_phase :: fast path is the only path for in-spec input
+receive_phase :: garbage payload with valid token is reported as not decrypted
+receive_phase :: mailbox_token attribution drives o(1) routing
+receive_phase :: mixed batch yields per-blob outcomes in input order
+receive_phase :: one reciprocity confirmation in flight per contact
+receive_phase :: origin-device hint routes a secondary-device delta
+receive_phase :: queued reciprocity confirmation closes the loop
+receive_phase :: relay-sync reciprocity confirmation resolves confirmed
+receive_phase :: replayed blob is rejected on second submission
+receive_phase :: token map omits blocked contacts
+receive_phase :: token map resolves contact mailbox tokens
+receive_phase :: token map yields o(1) lookup for unknown tokens
+receive_phase :: wrong-token reciprocity confirmation never confirms
+reciprocity :: relay-sync confirmation is verified and surfaced
+reciprocity :: wrong-recipient confirmation is rejected
+recovery :: claim review screen renders in the active locale
+recovery :: intro screen renders in the active locale
+recovery :: one identity's query limit does not block another's
+recovery :: query is rate limited per key hash
+recovery :: query nonexistent returns empty
+recovery :: query rejects too many hashes
+recovery :: query returns partial results for mixed hits
+recovery :: store and query roundtrip
+recovery :: store is rate limited
+recovery :: store overwrites existing proof
+recovery :: store rejects invalid key hash
+recovery :: store rejects oversized proof data
+recovery-help :: info screen renders in the active locale
+relay_escrow :: ohttp escrow full put-count-get flow
+relay_escrow :: ohttp escrow get before both deposits returns notready
+relay_exchange :: both x3dh sides derive matching sas
+relay_exchange :: claim endpoint exists on httptransport
+relay_exchange :: claim requires identity
+relay_exchange :: claim returns initiator payload
+relay_exchange :: claim with identity reaches network layer
+relay_exchange :: complete endpoint exists on httptransport
+relay_exchange :: complete flow offer-claim-complete
+relay_exchange :: complete requires identity
+relay_exchange :: different shared secrets produce different sas
+relay_exchange :: offer endpoint exists on httptransport
+relay_exchange :: offer returns 6-digit code
+relay_exchange :: oversized payload rejected
+relay_exchange :: sas derivation is deterministic
+relay_exchange :: sas derivation is order independent
+relay_exchange :: sas format is xxx-xxx
+relay_exchange :: start requires identity
+relay_exchange :: start with identity reaches network layer
+relay_exchange :: ttl above 3600s rejected
+relay_network :: client authenticates with ed25519 signature
+relay_network :: graceful degradation when all relays unavailable
+relay_network :: multiple clients connect simultaneously
+relay_network :: relay failover to backup server
+relay_network :: relay protocol versioning
+relay_network :: relay reports storage metrics
+relay_network :: socks5 proxy support
+relay_network :: stale updates cleaned up
+relay_network :: updates queued during outage delivered after recovery
+relay_network :: updates routed to correct recipient
+relay_ohttp :: disabled gateway returns 404
+relay_ohttp :: gateway decrypts and routes fetch action
+relay_ohttp :: gateway decrypts and routes send action
+relay_ohttp :: key endpoint returns valid ohttp config
+relay_ohttp :: response padded to bucket size
+relay_ohttp :: version 2 request accepted
+release_privacy_multidevice_certification :: action families fail closed when no ohttp key resolves
+release_privacy_multidevice_certification :: bound complete invitations
+release_privacy_multidevice_certification :: bound invitation relay metadata
+release_privacy_multidevice_certification :: preserve valid invitation relays
+release_privacy_multidevice_certification :: reject invalid percent encoding
+release_privacy_multidevice_certification :: reject loopback aliases
+release_privacy_multidevice_certification :: reject malformed fetched ohttp keys
+release_privacy_multidevice_certification :: reject mismatched action relay
+release_privacy_multidevice_certification :: reject missing outer relay
+release_privacy_multidevice_certification :: reject same-hop bootstrap
+release_privacy_multidevice_certification :: reject same-origin outer relay
+release_privacy_multidevice_certification :: reject unsafe invitation relays
+release_privacy_multidevice_certification :: simultaneous linked-device edits converge
+router :: health and key endpoints are exempt from rate limiting
+router :: health endpoint returns 200 ok
+router :: oversized content-length header is rejected with 413
+router :: oversized request body is rejected before forwarding
+router :: oversized request body is rejected with 413
+router :: oversized upstream ohttp response is rejected with 502
+router :: production build omits e2e fault control route
+router :: rate limiter returns 429 after burst is exhausted
+router :: request body at exact size limit is accepted
+schema_compat :: any valid contactcard survives roundtrip
+schema_compat :: bio survives a serde roundtrip
+schema_compat :: core parser accepts locale files from sibling repo
+schema_compat :: core parser accepts networks.json
+schema_compat :: core parser accepts themes.json from sibling repo
+schema_compat :: current version roundtrips correctly
+schema_compat :: future version fields don't break parser
+schema_compat :: schema_version is serialized
+screen_model :: with_validation_error injects error into pininput
+screen_model :: with_validation_error injects error into textinput
+security :: a fresh responder cannot send before it receives
+security :: ad-bound ciphertext cannot be retagged as legacy ciphertext
+security :: authenticated malformed cek is rejected on mailbox route
+security :: backup wizard renders in the active locale
+security :: decrypted backup debug output redacts secret material
+security :: duress pin wizard renders in the active locale
+security :: ed25519 implementation matches the published standard
+security :: emergency wipe renders in the active locale
+security :: every successful contact backup export is importable
+security :: failed authentication does not advance ratchet state
+security :: failed authentication does not persist ratchet mutation
+security :: failed authentication preserves skipped message keys
+security :: failed authentication rolls back a dh ratchet step
+security :: fingerprint verification
+security :: genesis route rejects an authenticated malformed cek
+security :: identity deletion review renders in the active locale
+security :: key material zeroized after use
+security :: malformed authenticated cek payload is rejected without panic
+security :: no silent decrypt fallback in storage
+security :: no unchecked key construction at trust boundaries
+security :: notes stored at rest are encrypted
+security :: oversized contact backup is rejected before decryption
+security :: qr ingestion rejects weak ed25519 identity keys
+security :: rekey covers all encrypted columns
+security :: rekey heals one row, normally-encrypts another
+security :: rekey heals plaintext contact field notes
+security :: rekey heals plaintext personal notes
+security :: rekey preserves contacts.cek_encrypted
+security :: rekey preserves decoy_contacts
+security :: rekey preserves emergency_config
+security :: rekey preserves encrypted contact field notes
+security :: rekey preserves encrypted personal notes
+security :: rekey preserves exchange_states
+security :: rekey preserves identity.password_hash_encrypted
+security :: rekey preserves recovery_settings
+security :: rekey preserves ux_state.onboarding_progress_encrypted
+security :: rekey preserves ux_state.relay_url_encrypted
+security :: rekey preserves visibility_labels bio/avatar overrides (adr-054 phase 2b)
+security :: rekey preserves visibility_labels.display_name_override_encrypted
+security :: rekey re-encrypts every column in the registry
+security :: rekey refuses to heal a ciphertext it cannot decrypt
+security :: rekey self-heals plaintext avatar
+security :: rekey self-heals plaintext field_note
+security :: rekey self-heals plaintext personal_notes
+security :: rekey-or-heal preserves byte-exact plaintext that
+security :: relay exchange offer debug output redacts private key material
+security :: relay exchange uses matching fresh keys and consumes offer secret
+security :: relay exchanges use fresh x25519 key material per offer
+security :: relay url validation
+security :: sensitive data is encrypted at rest (adr-015)
+security :: tampered exchange data is rejected
+security :: two-dh static responder compromise recovers past secrets
+security :: weak ed25519 identity keys are rejected
+security :: x25519 implementation matches the published standard
+settings :: about overlay renders in the active locale
+settings :: persist relay url across restart
+settings :: profile/privacy groups render in the active locale
+settings :: security/danger groups render in the active locale
+sync :: a sync fires at its drawn time, not on the next heartbeat
+sync :: ohttp cached key remains valid for requests
+sync :: ohttp concurrent rotation
+sync :: ohttp fail-closed
+sync :: ohttp ip obfuscation
+sync :: ohttp key bootstrap + send
+sync :: ohttp key cache persistence
+sync :: ohttp key fetch
+sync :: ohttp key rotation fallback
+sync :: ohttp malformed blob
+sync :: ohttp mixed transports
+sync :: ohttp oversized blob
+sync :: ohttp payload padding
+sync :: ohttp rate limit
+sync :: ohttp response padding
+sync :: ohttp send
+sync :: ohttp signed key record
+sync :: ohttp stale key
+sync_chrome :: sync now connects before syncing
+sync_chrome :: throttled sync shows the remaining wait
+sync_privacy :: application actions fail closed before ohttp bootstrap
+sync_privacy :: application actions use the distinct outer ohttp hop
+sync_privacy :: ohttp key bootstrap on connect
+sync_privacy :: ohttp key cache persistence
+sync_privacy :: ohttp sync gate checks
+sync_privacy :: production relay reachable over its websocket url
+sync_privacy :: sync adapter never inherits direct fallback
+sync_privacy :: sync gate checks
+sync_updates :: a both-initiator exchange cannot decrypt updates
+sync_updates :: a card update propagates after a multi-stage exchange
+sync_updates :: a card update propagates after an in-person exchange
+sync_updates :: a card with duplicate fields is deduplicated
+sync_updates :: a contact saved without a ratchet rejects card updates
+sync_updates :: a display-name change propagates to contacts
+sync_updates :: a multi-device sender's versions are floored per device
+sync_updates :: a multi-stage exchange auto-bootstraps card sync without an edit
+sync_updates :: a removed field fully revokes despite a stored duplicate
+sync_updates :: a secondary-device card change reaches contacts
+sync_updates :: a stale-version delta is rejected by the device receiver
+sync_updates :: a successfully-sent update is cleared from the queue
+sync_updates :: all updates to home relay when no relay url set
+sync_updates :: all updates to same relay grouped together
+sync_updates :: batch size limiting
+sync_updates :: bidirectional card updates after a multi-stage exchange
+sync_updates :: card update received from contact
+sync_updates :: client initiates sync with relay
+sync_updates :: concurrent card edits from multiple devices converge
+sync_updates :: concurrent linked-device edits converge
+sync_updates :: connection state tracking
+sync_updates :: contact sync includes favorite status
+sync_updates :: contact updates propagate to all devices
+sync_updates :: delta sync versioning
+sync_updates :: duplicate added then removed leaves no stale field
+sync_updates :: empty queue returns empty grouping
+sync_updates :: exchanged contact reaches linked devices
+sync_updates :: failed updates not ready are excluded from grouped query
+sync_updates :: first field added to an empty exchanged card propagates
+sync_updates :: first update to a freshly-exchanged (cek-less) contact is accepted
+sync_updates :: genesis card versions are floored per origin device
+sync_updates :: group presentation state converges across linked devices
+sync_updates :: linked devices stay in sync across app versions
+sync_updates :: linked-device card update reaches contacts
+sync_updates :: linked-device updates reach every device
+sync_updates :: multiple sequential card edits are durable
+sync_updates :: new fields retain the owner's privacy-first default on linked devices
+sync_updates :: new own-card fields preserve identity across linked devices
+sync_updates :: no pending updates returns empty
+sync_updates :: offline device catches up on reconnect
+sync_updates :: own-card field identity and private annotations converge across linked devices
+sync_updates :: own-card field removals converge across linked devices
+sync_updates :: peeking does not consume updates
+sync_updates :: pending updates delivered on connect
+sync_updates :: personal note deletion converges across linked devices
+sync_updates :: personal notes converge across linked devices
+sync_updates :: re-adding a field with the same id replaces it
+sync_updates :: re-propagated deltas carry incrementing versions
+sync_updates :: receive contact update from relay
+sync_updates :: relay accessor methods
+sync_updates :: removing myinfo through a complete-card edit syncs as deletion
+sync_updates :: route updates to correct relay per contact
+sync_updates :: stale pre-rekey update is skipped, channel survives
+sync_updates :: sync contact not connected
+sync_updates :: sync result detects changes
+sync_updates :: sync result total with all zeros
+sync_updates :: sync result tracks operation totals
+sync_updates :: sync status across contacts
+sync_updates :: sync via websocket relay
+sync_updates :: tag state converges across linked devices
+sync_updates :: timezone change during sync
+sync_updates :: update propagates after a re-exchange
+sync_updates :: update propagates to contacts
+sync_updates :: update propagates to link-exchanged contacts
+tags-list :: english copy unchanged (regression pin)
+tags-list :: screen renders in the active locale
+theming :: default theme on fresh install
+theming :: mobiledesigntokens matches designtokens::default
+theming :: mobiletheme includes design tokens
+tui_harness :: ci names the tui binary explicitly
+unicode_normalization :: display name nfc normalization
+unicode_normalization :: display name trimmed
+unicode_normalization :: field label nfc normalization
+unicode_normalization :: field value nfc normalization
+unicode_normalization :: whitespace-only display name rejected
+update_propagation :: all delivered shows success
+update_propagation :: contact detail shows delivery summary
+update_propagation :: failed deliveries shown in summary
+update_propagation :: no delivery records shows nothing
+upstream :: body larger than the read buffer is fully read
+upstream :: streamed body exceeding the limit is rejected
+version_policy :: config key-value store round-trips and overwrites
+visibility :: a label shared by two entries is refused, naming their ids
+visibility :: an entry id addresses one of two same-label entries
+visibility_control :: a content edit reaches only the granting group
+visibility_control :: a content edit reaches ungrouped contacts via the public base card
+visibility_control :: a field still granted by another group is not over-removed
+visibility_control :: a hidden toggle hides from all contacts alike
+visibility_control :: a public-base change is repropagated to contacts
+visibility_control :: a visible toggle reaches all contacts alike
+visibility_control :: an own-card edit is repropagated to contacts
+visibility_control :: cannot create duplicate label names
+visibility_control :: clear a per-contact visibility override
+visibility_control :: create a new visibility label
+visibility_control :: creating first group preserves field_visibility
+visibility_control :: default visibility is public
+visibility_control :: delete a label
+visibility_control :: delete last group does not migrate hidden fields
+visibility_control :: delete last group migrates fields to field_visibility
+visibility_control :: delete last group with multiple visible fields
+visibility_control :: delete non-last group does not migrate
+visibility_control :: deleting a group revokes its fields from members
+visibility_control :: group assignment overrides a visible toggle for non-members
+visibility_control :: group-assigned fields follow group membership only
+visibility_control :: hide specific fields from individual contacts
+visibility_control :: list visibility labels
+visibility_control :: new fields default to visible to all contacts
+visibility_control :: per-contact overrides always win
+visibility_control :: per-group display name override
+visibility_control :: removing a field from the public base revokes it from an ungrouped contact
+visibility_control :: rename an existing label
+visibility_control :: revoking an exchange-shared field notifies the contact
+visibility_control :: revoking propagates to the peer; an un-revoked peer keeps the field
+visibility_control :: revoking the last visible field notifies the contact
+visibility_control :: set field visibility to private
+visibility_control :: set_field_shown api persists changes
+visibility_control :: show label details
+visibility_control :: the effective resolver never grants an ungranted field
+visibility_labels :: create and assign visibility labels
+visibility_labels :: group detail shows real name and members
+visibility_labels :: label controls field visibility

@@ -189,6 +189,7 @@ lint:implemented-scenarios:
     - >-
       python3 /tmp/repos/scripts/scripts/check-implemented-scenarios.py
       --features . --baseline implemented-untested.baseline
+      --dangling-baseline dangling-annotations.baseline
       /tmp/repos/core /tmp/repos/cli /tmp/repos/tui /tmp/repos/e2e
       /tmp/repos/relay /tmp/repos/ohttp-relay /tmp/repos/linux-gtk
       /tmp/repos/linux-qt /tmp/repos/windows /tmp/repos/web-demo
