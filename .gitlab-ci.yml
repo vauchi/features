@@ -16,7 +16,10 @@ workflow:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
       when: never
+    # A merge must not cancel a main pipeline other repos wait on (VCI05).
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      auto_cancel:
+        on_new_commit: none
     - if: $CI_COMMIT_TAG
     - if: $CI_PIPELINE_SOURCE == "schedule"
 
