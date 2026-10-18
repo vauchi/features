@@ -194,6 +194,28 @@ lint:implemented-scenarios:
       /tmp/repos/linux-qt /tmp/repos/windows /tmp/repos/web-demo
       /tmp/repos/ios /tmp/repos/macos /tmp/repos/android
 
+# A wired step reworded or deleted here unbinds a scenario core runs, and
+# core CI (which checks out features main) went red on every MR after the
+# merge (#700). This fails the features MR instead, against core main's step
+# definitions. Land the core step change first, then the features MR.
+lint:wired-scenarios:
+  extends: .mr-or-main
+  stage: lint
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:20-alpine
+  tags: [docker]
+  needs: []
+  allow_failure: false
+  timeout: 10m
+  # vci02-ok: .mr-or-main carries only `rules:`, no before_script to preserve
+  before_script:
+    - apk add --no-cache git > /dev/null
+    - git clone --quiet --depth=1 --branch main
+      "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/vauchi/core.git" /tmp/core
+    - git fetch --quiet --depth=1 origin main
+  script:
+    - node --test scripts/check-wired-scenarios.test.mjs
+    - node scripts/check-wired-scenarios.mjs --steps /tmp/core/vauchi-core/tests/steps --base FETCH_HEAD
+
 # ============================================================
 # Deploy Stage — Badge Pages
 # ============================================================
