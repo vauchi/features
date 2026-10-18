@@ -10,7 +10,6 @@ accessibility :: Keyboard shortcuts for common actions
 accessibility :: Screen reader announces app structure on desktop
 accessibility :: TUI is fully keyboard navigable
 backup_reminder :: First reminder fires 7 days after identity creation
-backup_reminder :: Monthly frequency fires at 30 days
 backup_reminder :: Monthly frequency suppresses reminder at 7 days
 backup_reminder :: Settings exposes a cycling frequency control
 backup_reminder :: Showing a reminder increments the reminder count
@@ -40,7 +39,6 @@ ble_exchange_modes :: Magic mode starts audio proximity on connection
 ble_exchange_modes :: Shake mode completes with peer envelope correlation
 ble_exchange_modes :: Shake mode records and exchanges envelopes
 certificate_pinning :: Connection rejected with mismatched certificate
-certificate_pinning :: Connection succeeds with matching certificate pin
 certificate_pinning :: Graceful certificate rotation
 certificate_pinning :: Pin computation is deterministic
 certificate_pinning :: Pin is SHA-256 hash of the certificate's SPKI
@@ -205,7 +203,6 @@ onboarding :: Demo contact is dismissible
 onboarding :: Demo contact removed after first real contact
 onboarding :: Demo contact updates demonstrate value
 onboarding :: Exchange success celebration
-onboarding :: Guided card creation
 onboarding :: Identity check on first launch
 onboarding :: Minimum viable card
 onboarding :: No sync chip before the first contact
@@ -226,10 +223,7 @@ performance :: Reasonable storage footprint
 pre_signed_operations :: Contact can verify deletion notice signature
 pre_signed_operations :: Relay can verify purge request signature
 pre_signed_operations :: Tampered pre-signed message is rejected
-privacy_compliance :: Account deletion destroys all content encryption keys
-privacy_compliance :: Account deletion propagates across all user devices
 privacy_compliance :: Account deletion purges all relay data including recovery proofs
-privacy_compliance :: Account deletion sends revocation signal to all contacts
 privacy_compliance :: Contact display name is protected by crypto-shredding
 privacy_compliance :: Delete my account
 privacy_compliance :: Delete specific contacts

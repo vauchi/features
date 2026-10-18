@@ -95,7 +95,6 @@ backup_reminder :: export updates reminder state
 backup_reminder :: first reminder after 7 days
 backup_reminder :: frequency cycling
 backup_reminder :: monthly frequency at 30-day threshold
-backup_reminder :: monthly frequency triggers at 30 days
 backup_reminder :: reminders disabled
 batch3 :: every screen renders in the active locale
 ble_exchange :: a peripheral responder (no discovery) persists the contact
@@ -132,7 +131,6 @@ ble_exchange :: v4 keyoffer carries the oob nonce slot
 ble_exchange :: wrong echoed nonce is rejected (adversarial, cc-14)
 build-provenance :: the embedded locale revision is recorded
 certificate_pinning :: clone and equality
-certificate_pinning :: connection succeeds with matching pin
 certificate_pinning :: debug representation
 certificate_pinning :: different keys produce different pins
 certificate_pinning :: fail-secure when all pins wrong
@@ -176,7 +174,6 @@ contact-edit :: screen renders in the active locale
 contact-merge :: screen renders in the active locale
 contact-visibility :: the contact name survives interpolation
 contact_actions :: address field offers get directions and open map and copy actions
-contact_actions :: allowed uri schemes whitelist (#47)
 contact_actions :: context menu shows all applicable actions
 contact_actions :: custom field heuristic detection
 contact_actions :: custom field with actionable content offers actions
@@ -191,11 +188,9 @@ contact_actions :: get directions with unicode address
 contact_actions :: mastodon bare username without @ prefix
 contact_actions :: mastodon federated handle resolves to correct instance
 contact_actions :: non-address fields return none for directions
-contact_actions :: only safe uri schemes are allowed (#46)
 contact_actions :: phone field offers call and sms actions in context menu
 contact_actions :: social field offers open profile and copy actions
 contact_actions :: tap social media opens profile (mastodon federated)
-contact_actions :: urls are validated before opening (#45)
 contact_actions :: website field offers open url and copy actions
 contact_actions :: website primary action uses safe uri
 contact_card_management :: add field to contact card
@@ -207,7 +202,6 @@ contact_card_management :: avatar invalid format rejected
 contact_card_management :: create contact card with display name
 contact_card_management :: different colors produce different images
 contact_card_management :: different seeds produce different images
-contact_card_management :: display name must not be empty
 contact_card_management :: edit an existing field preserves its identity
 contact_card_management :: editing the own card propagates to exchanged contacts
 contact_card_management :: field type alias resolution
@@ -235,7 +229,6 @@ contact_card_management :: normalize png avatar to webp
 contact_card_management :: normalize webp avatar passthrough
 contact_card_management :: reject empty avatar data
 contact_card_management :: reject invalid avatar data
-contact_card_management :: remove field from contact card
 contact_card_management :: resize large avatar image
 contact_card_management :: search social networks
 contact_card_management :: social field label uses display name
@@ -525,7 +518,6 @@ device_management :: concurrent edits converge by last-write-wins
 device_management :: contact field note syncs to linked devices
 device_management :: cross-session replay attack prevented
 device_management :: expired manual confirmation is rejected
-device_management :: generate device linking qr code
 device_management :: group presentation changes sync to linked devices
 device_management :: leaving the screen closes the socket
 device_management :: link-local rendezvous addresses are accepted
@@ -563,7 +555,6 @@ duress_pin :: test duress authentication
 duress_pin :: view duress pin status
 emergency_broadcast :: alert delivery reaches the recipient
 emergency_broadcast :: an alert reaches a contact not yet heard from
-emergency_broadcast :: configure emergency broadcast
 emergency_broadcast :: disable emergency broadcast
 emergency_broadcast :: send emergency broadcast
 emergency_broadcast :: view emergency broadcast status
@@ -871,7 +862,6 @@ onboarding :: display_name_unicode
 onboarding :: e2e_full_flow
 onboarding :: empty name rejected with inline validation error
 onboarding :: first launch renders in the active locale
-onboarding :: guided card creation wizard
 onboarding :: idempotent_advance_at_final (#26)
 onboarding :: identity_check_create_new
 onboarding :: identity_check_link_device
@@ -946,11 +936,8 @@ privacy_compliance :: delete my identity
 privacy_compliance :: encrypted gdpr export roundtrip
 privacy_compliance :: full erasure after grace period
 privacy_compliance :: hard shred sends purge and revocations
-privacy_compliance :: identity deletion destroys all content encryption keys
 privacy_compliance :: identity deletion notifies contacts end-to-end
 privacy_compliance :: identity deletion produces relay-ready revocation deliveries
-privacy_compliance :: identity deletion propagates across all user devices
-privacy_compliance :: identity deletion sends revocation signal to all contacts
 privacy_compliance :: identity purge sends relay purge and revocations
 privacy_compliance :: identity purge sends relay purge request
 privacy_compliance :: non-revocation blobs are not misclassified
