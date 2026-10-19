@@ -100,8 +100,6 @@ contact_import :: Local groups have no visibility semantics
 contact_import :: Phone normalization detects duplicates across formatting
 contact_import :: Re-import same vCard file does not create duplicates
 contact_recovery :: Batch query for recovery proofs
-contact_recovery :: Blocked contact cannot be recovery-trusted
-contact_recovery :: Contact card is refreshed after recovery
 contact_recovery :: Contact discovers recovery proof via relay
 contact_recovery :: Isolated contact accepts with warning
 contact_recovery :: Isolated contact meets in person and vouches
@@ -313,26 +311,9 @@ visibility_control :: Contact cannot determine hidden field existence
 visibility_control :: New contacts see fields I made visible to all
 visibility_control :: New fields default to hidden for grouped contacts
 visibility_control :: Visibility changes are atomic
-visibility_labels :: Add multiple contacts to a label at once
-visibility_labels :: Apply label template to new contact
-visibility_labels :: Associate field with multiple labels
 visibility_labels :: Cancel label deletion
 visibility_labels :: Cannot rename to existing label name
-visibility_labels :: Clear per-contact overrides
-visibility_labels :: Contact sees fields based on label membership
-visibility_labels :: Create custom label with any name
 visibility_labels :: Default labels are suggested on first use
-visibility_labels :: Grant visibility to contact not in label
-visibility_labels :: Groups mode visibility
-visibility_labels :: Label with no contacts still exists
 visibility_labels :: Labels exist only on my devices
-visibility_labels :: No-group mode visibility
-visibility_labels :: Non-member does not see label-restricted fields
-visibility_labels :: Per-group display name override
-visibility_labels :: Remove field from label visibility
-visibility_labels :: Revoke visibility from contact in label
-visibility_labels :: Transition from groups to no-group mode
 visibility_labels :: Transition from no-group to groups mode
-visibility_labels :: View all labels for a contact
-visibility_labels :: View effective visibility for a contact
 visibility_labels :: View which labels can see a field
