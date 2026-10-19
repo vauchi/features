@@ -188,7 +188,7 @@ Feature: Contact Recovery
       | new_pk    | pk_new         |
       | timestamp | current_time   |
 
-  @recovery @vouching @implemented
+  @recovery @vouching @planned
   Scenario: Voucher recognizes old contact
     Given Bob has Alice as a contact with public key "pk_old"
     When Bob scans Alice's recovery QR code claiming "pk_old"
@@ -218,7 +218,7 @@ Feature: Contact Recovery
       | signature  | Ed25519 signature of above fields |
     And the voucher is sent to Alice's new identity
 
-  @recovery @vouching @implemented
+  @recovery @vouching @planned
   Scenario: Voucher establishes contact with new identity
     Given Bob vouches for Alice's recovery from "pk_old" to "pk_new"
     Then Bob's contact record for Alice is updated to "pk_new"
@@ -281,7 +281,7 @@ Feature: Contact Recovery
   # Discovery by Other Contacts
   # ============================================================
 
-  @recovery @discovery @implemented
+  @recovery @discovery @planned
   Scenario: Contact discovers recovery proof via relay
     Given Alice has uploaded a recovery proof
     And John has Alice as a contact with public key "pk_old"
@@ -290,7 +290,7 @@ Feature: Contact Recovery
     And John's app finds the recovery proof for "pk_old"
     And John is notified about Alice's recovery claim
 
-  @recovery @discovery @implemented
+  @recovery @discovery @planned
   Scenario: Batch query for recovery proofs
     Given John has 50 contacts
     When John's app checks for recovery proofs
@@ -298,7 +298,7 @@ Feature: Contact Recovery
     And the relay cannot determine which specific contact John is checking
     And John receives any matching recovery proofs
 
-  @recovery @discovery @implemented
+  @recovery @discovery @planned
   Scenario: No recovery proof found
     Given John has Alice as a contact
     And Alice has not uploaded a recovery proof
@@ -381,7 +381,7 @@ Feature: Contact Recovery
       you're not part of. But it could also be an impersonator.
       """
 
-  @recovery @verification @isolated @implemented
+  @recovery @verification @isolated @planned
   Scenario: Isolated contact options
     Given David receives a recovery proof with no mutual contact vouchers
     Then David is presented with options:
@@ -472,7 +472,7 @@ Feature: Contact Recovery
   # Edge Cases and Security
   # ============================================================
 
-  @recovery @security @implemented
+  @recovery @security @planned
   Scenario: Reject recovery from unknown identity
     Given John receives a recovery proof for "pk_unknown"
     And John does not have "pk_unknown" as a contact

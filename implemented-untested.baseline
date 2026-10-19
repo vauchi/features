@@ -99,25 +99,18 @@ contact_import :: Imported contacts sync to linked device
 contact_import :: Local groups have no visibility semantics
 contact_import :: Phone normalization detects duplicates across formatting
 contact_import :: Re-import same vCard file does not create duplicates
-contact_recovery :: Batch query for recovery proofs
-contact_recovery :: Contact discovers recovery proof via relay
 contact_recovery :: Isolated contact accepts with warning
 contact_recovery :: Isolated contact meets in person and vouches
-contact_recovery :: Isolated contact options
 contact_recovery :: Isolated contact verifies out of band
-contact_recovery :: No recovery proof found
 contact_recovery :: Recovery after losing all devices
 contact_recovery :: Recovery proof expiration
 contact_recovery :: Recovery when user has multiple devices
 contact_recovery :: Reject recovery
-contact_recovery :: Reject recovery from unknown identity
 contact_recovery :: Relay handles proof expiration
 contact_recovery :: Relay returns recovery proof on query
 contact_recovery :: Relay stores recovery proof privately
 contact_recovery :: Remember old identity fingerprint
 contact_recovery :: Trust state is private to the user
-contact_recovery :: Voucher establishes contact with new identity
-contact_recovery :: Voucher recognizes old contact
 contact_recovery :: What is NOT recovered
 contact_recovery :: What is recovered
 contacts_management :: Add contact to group
