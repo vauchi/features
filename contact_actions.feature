@@ -188,19 +188,28 @@ Feature: Open Contact Info in External Applications
     Then the default maps application should open
     And it should show the location "123 Main St, San Francisco, CA 94102"
 
-  @address @maps @android @planned
+  @address @maps @android @implemented
   Scenario: Address opens Google Maps on Android
     Given I am using the Android app
     And Bob has an address field with value "123 Main St, City, ST 12345"
     When I tap on the address
-    Then the intent should use "geo:0,0?q=123+Main+St,+City,+ST+12345"
+    Then the intent should use "geo:0,0?q=123+Main+St%2C+City%2C+ST+12345"
+    And the address should also offer:
+      | option                |
+      | Open in Google Maps   |
+      | Open in OpenStreetMap |
+      | Open in Organic Maps  |
 
-  @address @maps @ios @planned
+  @address @maps @ios @implemented
   Scenario: Address opens Apple Maps on iOS
     Given I am using the iOS app
     And Bob has an address field with value "123 Main St, City, ST 12345"
     When I tap on the address
-    Then Maps app should open with the address query
+    Then Apple Maps should open with the address query
+    And the address should also offer:
+      | option                |
+      | Open in OpenStreetMap |
+      | Open in Organic Maps  |
 
   @address @maps @desktop @implemented
   Scenario: Address opens web maps on desktop
