@@ -106,17 +106,49 @@ Feature: Privacy Compliance
   # ============================================================
 
   @deletion @implemented
-  Scenario: Delete my account
-    When I choose Delete Account in Privacy and confirm
-    Then my account deletion should be scheduled with a 7-day grace period
+  Scenario: Delete my identity
+    When I choose Delete Identity in Privacy and confirm
+    Then my identity deletion should be scheduled with a 7-day grace period
     And I should be able to cancel it during the grace period
     When the grace period has passed and I confirm the deletion
     Then my identity should be deleted locally
     And each of my contacts should be sent a revocation
 
+  @deletion @recovery @implemented
+  Scenario: Deleting my identity asks whether recovery stays possible
+    Given I have contacts I trust for recovery
+    When I choose Delete Identity in Privacy and confirm
+    Then I should choose between keeping recovery and erasing everything
+    And I should be told the relay keeps my encrypted list of trusted contacts for up to 365 days if I keep recovery
+    And nothing should be scheduled until I choose
+    And cancelling should schedule nothing
+
+  @deletion @recovery @implemented
+  Scenario: With nobody trusted for recovery, deleting erases everything
+    Given I trust no contact for recovery
+    When I choose Delete Identity in Privacy and confirm
+    Then I should not be asked about recovery
+    And the deletion should erase everything
+
+  @deletion @recovery @relay @implemented
+  Scenario: The relay purge carries my recovery choice
+    Given I scheduled my identity deletion and chose whether to keep recovery
+    When the deletion runs after the grace period
+    Then the relay should receive a purge signed by my identity
+    And the purge should ask to erase my list of trusted contacts only if I chose to erase everything
+    And a purge that keeps recovery should be accepted by relays that predate the choice
+    And my linked devices should keep the same choice
+
+  @deletion @recovery @relay @planned
+  Scenario: The relay erases my recovery data on purge
+    Given I scheduled my identity deletion and chose to erase everything
+    When the relay receives my purge
+    Then the relay should delete my encrypted list of trusted contacts
+    And the relay should delete every recovery proof my identity uploaded
+
   @deletion @implemented
   Scenario: Deletion is thorough
-    When I delete my account
+    When I delete my identity
     Then all local data should be wiped
     And keychain/keystore entries should be removed
     And cached files should be deleted
@@ -126,14 +158,14 @@ Feature: Privacy Compliance
   @deletion @implemented
   Scenario: Deletion notifies contacts
     Given Alice has my contact
-    When I delete my account
+    When I delete my identity
     Then Alice's app should receive my revocation
     And my card should be removed from Alice's contacts
     And Alice's app should refuse anything still signed by my identity
 
   @deletion @implemented
   Scenario: Grace period before permanent deletion
-    When I request account deletion
+    When I request identity deletion
     Then I should be told there is a 7-day grace period
     And I should be able to cancel during this period
     And after 7 days deletion should be permanent
@@ -141,11 +173,11 @@ Feature: Privacy Compliance
 
   @deletion @implemented
   Scenario: Cancel deletion during grace period
-    Given I requested account deletion 3 days ago
+    Given I requested identity deletion 3 days ago
     When I go to Settings > Privacy
     Then I should see "Deletion scheduled"
     And I should be able to cancel
-    And canceling should restore my account fully
+    And canceling should restore my identity fully
 
   @deletion @implemented
   Scenario: Delete specific contacts
@@ -322,9 +354,9 @@ Feature: Privacy Compliance
   # ============================================================
 
   @deletion @relay @implemented
-  Scenario: Relay notified on account deletion
+  Scenario: Relay notified on identity deletion
     Given I have pending messages on a relay
-    When I delete my account
+    When I delete my identity
     Then the relay should receive a deletion request
     And all my mailbox data should be purged within 24 hours
     And the relay should return a confirmation receipt
@@ -356,9 +388,9 @@ Feature: Privacy Compliance
     And the previous content encryption key is no longer valid
 
   @crypto-shredding @deletion @implemented
-  Scenario: Account deletion destroys all content encryption keys
+  Scenario: Identity deletion destroys all content encryption keys
     Given Alice has exchanged cards with Bob and Carol
-    When Alice deletes her account
+    When Alice deletes her identity
     Then Alice's content encryption keys for Bob and Carol are destroyed
     And Bob's copy of Alice's card becomes permanently unreadable
     And Carol's copy of Alice's card becomes permanently unreadable
@@ -381,9 +413,9 @@ Feature: Privacy Compliance
   # ============================================================
 
   @revocation @deletion @implemented
-  Scenario: Account deletion sends revocation signal to all contacts
+  Scenario: Identity deletion sends revocation signal to all contacts
     Given Alice has exchanged cards with Bob and Carol
-    When Alice deletes her account
+    When Alice deletes her identity
     Then Bob receives an authenticated revocation signal from Alice
     And Carol receives an authenticated revocation signal from Alice
 
@@ -403,7 +435,7 @@ Feature: Privacy Compliance
 
   @revocation @deletion @relay @implemented
   Scenario: Offline contact receives revocation on reconnect
-    Given Alice deleted her account while Bob was offline
+    Given Alice deleted her identity while Bob was offline
     When Bob reconnects to the relay within 120 days
     Then Bob receives the revocation signal
     And Alice's card is removed from Bob's device
@@ -417,8 +449,8 @@ Feature: Privacy Compliance
 
   @revocation @security @implemented
   Scenario: Replayed revocation for re-established contact is rejected
-    Given Alice previously revoked her account
-    And Alice created a new account and re-exchanged cards with Bob
+    Given Alice previously revoked her identity
+    And Alice created a new identity and re-exchanged cards with Bob
     When an attacker replays Alice's old revocation signal
     Then Bob rejects the stale revocation
     And Alice's new card remains intact
@@ -426,10 +458,12 @@ Feature: Privacy Compliance
   # Multi-Device Deletion
   # ============================================================
 
-  @deletion @sync @implemented
-  Scenario: Account deletion propagates across all user devices
+  # Planned until a device sends the schedule: today linked devices only
+  # apply one they receive (vauchi/private#723).
+  @deletion @sync @planned
+  Scenario: Identity deletion propagates across all user devices
     Given Alice has devices A, B, and C
-    When Alice schedules account deletion from device A
+    When Alice schedules identity deletion from device A
     Then device B receives the deletion schedule via device sync
     And device C receives the deletion schedule via device sync
     And all devices execute deletion after the grace period
@@ -437,19 +471,22 @@ Feature: Privacy Compliance
   # Relay Purge
   # ============================================================
 
-  @deletion @relay @implemented
-  Scenario: Account deletion purges all relay data including recovery proofs
+  # Planned: the relay does not erase recovery proofs yet (vauchi/private#711
+  # step 2), and the blob purge does not reach rotating mailboxes
+  # (vauchi/private#154).
+  @deletion @relay @planned
+  Scenario: Identity deletion purges all relay data including recovery proofs
     Given Alice has stored blobs and recovery proofs on the relay
-    When Alice deletes her account
+    When Alice deletes her identity
     Then all blobs for Alice are deleted from the relay
     And all device sync messages for Alice are deleted
     And Alice's recovery proof is deleted
 
   @deletion @relay @command @implemented
   Scenario: Execute deletion after grace period sends revocations and purge
-    Given I scheduled account deletion 8 days ago
+    Given I scheduled identity deletion 8 days ago
     And I have contacts Alice and Bob
-    When I execute the account deletion
+    When I execute the identity deletion
     Then Alice should receive an authenticated revocation signal
     And Bob should receive an authenticated revocation signal
     And the relay should receive a purge request
@@ -457,8 +494,8 @@ Feature: Privacy Compliance
 
   @deletion @relay @command @implemented
   Scenario: Execute deletion requires grace period to have elapsed
-    Given I scheduled account deletion 2 days ago
-    When I try to execute the account deletion
+    Given I scheduled identity deletion 2 days ago
+    When I try to execute the identity deletion
     Then the execution should fail with a grace period error
     And no data should be destroyed
 

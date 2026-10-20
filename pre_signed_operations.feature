@@ -6,7 +6,7 @@
 Feature: Pre-signed Operations
   As a Vauchi user
   I want critical messages to be pre-signed at identity creation
-  So that emergency account deletion can notify contacts and relays
+  So that emergency identity deletion can notify contacts and relays
   even after my signing keys have been destroyed
 
   Background:
@@ -21,7 +21,7 @@ Feature: Pre-signed Operations
     When I create a new identity
     Then pre-signed shred messages should be generated
     And the messages should include a relay purge request
-    And the messages should include an account deletion notice
+    And the messages should include an identity deletion notice
     And the messages should be stored locally
 
   @generation @implemented

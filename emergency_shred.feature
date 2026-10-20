@@ -5,7 +5,7 @@
 @security @privacy @shred
 Feature: Emergency Shred
   As a Vauchi user
-  I want multiple levels of account destruction
+  I want multiple levels of identity destruction
   So that I can choose between graceful deletion and emergency wipe
   depending on the threat level
 
@@ -20,7 +20,7 @@ Feature: Emergency Shred
   @soft @implemented
   Scenario: Soft shred schedules deletion with grace period
     When I initiate a soft shred
-    Then account deletion should be scheduled
+    Then identity deletion should be scheduled
     And a 7-day grace period should begin
     And I should receive a shred token
     And my data should remain accessible during the grace period
@@ -31,7 +31,7 @@ Feature: Emergency Shred
     And the grace period has not expired
     When I cancel the deletion
     Then the scheduled deletion should be cancelled
-    And my account should continue functioning normally
+    And my identity should continue functioning normally
 
   @soft @implemented
   Scenario: Soft shred cannot proceed before grace period expires

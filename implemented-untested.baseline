@@ -161,7 +161,6 @@ performance :: Reasonable storage footprint
 pre_signed_operations :: Contact can verify deletion notice signature
 pre_signed_operations :: Relay can verify purge request signature
 pre_signed_operations :: Tampered pre-signed message is rejected
-privacy_compliance :: Account deletion purges all relay data including recovery proofs
 privacy_compliance :: Contact display name is protected by crypto-shredding
 privacy_compliance :: Delete specific contacts
 privacy_compliance :: Deletion is thorough
@@ -169,7 +168,7 @@ privacy_compliance :: Export works offline
 privacy_compliance :: Local data persists until deleted
 privacy_compliance :: Offline contact receives revocation on reconnect
 privacy_compliance :: Panic shred immediately destroys all data and notifies contacts
-privacy_compliance :: Relay notified on account deletion
+privacy_compliance :: Relay notified on identity deletion
 privacy_compliance :: Understand E2E encryption
 privacy_compliance :: View what data is on relays
 privacy_compliance :: View what data is stored locally
