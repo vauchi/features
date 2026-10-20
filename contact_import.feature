@@ -22,9 +22,9 @@ Feature: External Contact Import
 
   @import @implemented
   Scenario: Import vCard 2.1 with QUOTED-PRINTABLE encoding
-    Given I have a vCard 2.1 file with name "Hans Mueller" encoded as QUOTED-PRINTABLE
+    Given I have a vCard 2.1 file with name "Müller" encoded as QUOTED-PRINTABLE
     When I import the vCard file
-    Then I should see "Hans Mueller" with correctly decoded characters
+    Then I should see "Müller" with correctly decoded characters
 
   @import @implemented
   Scenario: Import vCard 3.0 from Google Contacts

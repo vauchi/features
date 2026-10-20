@@ -79,26 +79,17 @@ contact_exchange :: Exchange blocked on low battery
 contact_exchange :: Exchange fails due to full storage
 contact_exchange :: Exchange timeout after interruption
 contact_exchange :: Incomplete exchange recovery
-contact_import :: Add field to imported contact
-contact_import :: Cannot edit exchanged contact fields
-contact_import :: Contact backup with wrong password fails
 contact_import :: Create local organization group
-contact_import :: Direct cross-kind merge is rejected
-contact_import :: Edit imported contact fields
 contact_import :: Export and import contact backup
 contact_import :: Import contacts from a vCard file
-contact_import :: Import non-UTF-8 vCard file
 contact_import :: Import respects contact limit
-contact_import :: Import vCard 2.1 with QUOTED-PRINTABLE encoding
 contact_import :: Import vCard 3.0 from Google Contacts
 contact_import :: Imported contacts are visually distinct
 contact_import :: Imported contacts cannot be trusted for proposals
 contact_import :: Imported contacts cannot be trusted for recovery
-contact_import :: Imported contacts cannot have fingerprint verified
 contact_import :: Imported contacts sync to linked device
 contact_import :: Local groups have no visibility semantics
 contact_import :: Phone normalization detects duplicates across formatting
-contact_import :: Re-import same vCard file does not create duplicates
 contact_recovery :: Isolated contact accepts with warning
 contact_recovery :: Isolated contact meets in person and vouches
 contact_recovery :: Isolated contact verifies out of band
