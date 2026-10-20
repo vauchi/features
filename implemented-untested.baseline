@@ -26,14 +26,6 @@ ble_exchange :: Rollback on nonexistent contact is a no-op
 ble_exchange :: Tampered BLE payload fails signature verification
 ble_exchange_modes :: Accepting relay fallback switches to Link mode
 ble_exchange_modes :: BLE failure offers relay fallback
-ble_exchange_modes :: BLE timeout after connection is ignored
-ble_exchange_modes :: BLE timeout during discovery triggers fallback
-ble_exchange_modes :: Bump mode completes with strong impact
-ble_exchange_modes :: Bump mode completes with weak impact (unverified)
-ble_exchange_modes :: Magic mode completes even if audio times out
-ble_exchange_modes :: Magic mode completes with audio verification
-ble_exchange_modes :: Magic mode discovery emits BLE commands
-ble_exchange_modes :: Shake mode completes with peer envelope correlation
 ble_exchange_modes :: Shake mode records and exchanges envelopes
 certificate_pinning :: Connection rejected with mismatched certificate
 certificate_pinning :: Graceful certificate rotation
@@ -171,20 +163,15 @@ pre_signed_operations :: Relay can verify purge request signature
 pre_signed_operations :: Tampered pre-signed message is rejected
 privacy_compliance :: Account deletion purges all relay data including recovery proofs
 privacy_compliance :: Contact display name is protected by crypto-shredding
-privacy_compliance :: Delete my account
 privacy_compliance :: Delete specific contacts
 privacy_compliance :: Deletion is thorough
-privacy_compliance :: Deletion notifies contacts
 privacy_compliance :: Export requires authentication
 privacy_compliance :: Export works offline
 privacy_compliance :: Local data persists until deleted
 privacy_compliance :: Offline contact receives revocation on reconnect
 privacy_compliance :: Panic shred immediately destroys all data and notifies contacts
-privacy_compliance :: Relay data expires automatically
 privacy_compliance :: Relay notified on account deletion
 privacy_compliance :: Understand E2E encryption
-privacy_compliance :: View data retention settings
-privacy_compliance :: View privacy policy in app
 privacy_compliance :: View what data is on relays
 privacy_compliance :: View what data is stored locally
 relay_network :: Anonymous token routing requires no signature

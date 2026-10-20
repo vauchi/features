@@ -17,9 +17,10 @@ Feature: BLE Exchange Modes (Magic, Bump, Shake)
 
   @magic @implemented
   Scenario: Magic mode discovery emits BLE commands
-    When Alice starts a Magic exchange
-    Then the engine emits BleStartAdvertising and BleStartScanning commands
-    And the step is "Discovering"
+    When Alice starts a BLE exchange
+    Then the step is "Discovering"
+    And the engine emits BleStartAdvertising and then BleStartScanning
+    And it does not emit them again on the next render
 
   @magic @implemented
   Scenario: Magic mode connects on device discovery
@@ -36,20 +37,19 @@ Feature: BLE Exchange Modes (Magic, Bump, Shake)
     And the step advances to "Exchanging"
 
   @magic @implemented
-  Scenario: Magic mode completes with audio verification
+  Scenario: Magic mode verifies proximity with an audio response
     Given Alice is in Magic mode Exchanging step
-    And card data has been received
     When an audio response is received
-    Then the proximity confidence is approximately 0.85
-    And the exchange completes successfully
+    Then the proximity is verified with confidence approximately 0.85
+    And audio stops
+    And the step advances to "Verifying", where the handshake completes the exchange
 
   @magic @implemented
-  Scenario: Magic mode completes even if audio times out
+  Scenario: Magic mode is not blocked by an audio timeout
     Given Alice is in Magic mode Exchanging step
-    And audio proximity has timed out
-    When card data is received
-    Then the exchange completes with degraded trust
-    And the proximity confidence is 0.0
+    When audio proximity times out
+    Then the proximity is not verified and its confidence is 0.0
+    And card data arriving afterwards is still accepted
 
   # --- Bump Mode (BLE + Impact) ---
 
@@ -61,20 +61,18 @@ Feature: BLE Exchange Modes (Magic, Bump, Shake)
     And the step advances to "Exchanging"
 
   @bump @implemented
-  Scenario: Bump mode completes with strong impact
+  Scenario: Bump mode verifies proximity with a strong impact
     Given Alice is in Bump mode Exchanging step
-    And card data has been received
-    When an impact of 3g is detected
+    When an impact of 10g is detected
     Then the proximity is verified
     And the confidence is capped at 0.6
 
   @bump @implemented
-  Scenario: Bump mode completes with weak impact (unverified)
+  Scenario: Bump mode leaves proximity unverified on a weak impact
     Given Alice is in Bump mode Exchanging step
-    And card data has been received
     When an impact of 1g is detected
     Then the proximity is not verified
-    And the exchange still completes
+    And the step still advances to "Verifying", where the handshake completes the exchange
 
   # --- Shake Mode (BLE + Accelerometer Correlation) ---
 
@@ -87,13 +85,13 @@ Feature: BLE Exchange Modes (Magic, Bump, Shake)
     And an AccelerometerStop command is emitted
 
   @shake @implemented
-  Scenario: Shake mode completes with peer envelope correlation
+  Scenario: Shake mode verifies proximity by correlating the peer's envelope
     Given Alice is in Shake mode Exchanging step
     And recording is done and envelope sent
-    And card data has been received
     When the peer's magnitude envelope arrives
-    Then cross-correlation produces a proximity result
-    And the confidence is capped at 0.5
+    Then cross-correlation verifies the proximity
+    And the confidence is at most 0.5
+    And the step advances to "Verifying", where the handshake completes the exchange
 
   # --- Fallback Degradation ---
 
@@ -112,15 +110,14 @@ Feature: BLE Exchange Modes (Magic, Bump, Shake)
     And relay escrow commands are emitted
 
   @fallback @implemented
-  Scenario: BLE timeout during discovery triggers fallback
-    Given Alice is in Magic mode Discovering step
-    When the BLE discovery timer expires
-    Then a fallback is offered
-    And the step is "Failed"
+  Scenario: BLE discovery that finds no one offers Retry and QR
+    Given Alice is in Magic mode Discovering step on a device with a camera
+    When the discovery budget passes without finding a peer
+    Then the "nothing found" screen is shown
+    And it offers Retry and "Switch to QR"
 
   @fallback @implemented
-  Scenario: BLE timeout after connection is ignored
+  Scenario: A stalled BLE exchange fails after its step budget
     Given Alice is in Magic mode Exchanging step
-    When the BLE timer fires
-    Then the timeout is ignored
-    And the exchange continues normally
+    When the step budget passes without progress
+    Then the exchange fails

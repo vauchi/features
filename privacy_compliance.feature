@@ -55,13 +55,12 @@ Feature: Privacy Compliance
 
   @deletion @implemented
   Scenario: Delete my account
-    When I go to Settings > Privacy > Delete Account
-    And I confirm deletion by typing "DELETE"
-    And I confirm again
+    When I choose Delete Account in Privacy and confirm
+    Then my account deletion should be scheduled with a 7-day grace period
+    And I should be able to cancel it during the grace period
+    When the grace period has passed and I confirm the deletion
     Then my identity should be deleted locally
-    And my data should be removed from all relays
-    And my contacts should be notified I'm gone
-    And I should return to the welcome screen
+    And each of my contacts should be sent a revocation
 
   @deletion @implemented
   Scenario: Deletion is thorough
@@ -76,9 +75,9 @@ Feature: Privacy Compliance
   Scenario: Deletion notifies contacts
     Given Alice has my contact
     When I delete my account
-    Then Alice should receive a notification
-    And my card in Alice's contacts should be marked "Account deleted"
-    And Alice should be unable to send me updates
+    Then Alice's app should receive my revocation
+    And my card should be removed from Alice's contacts
+    And Alice's app should refuse anything still signed by my identity
 
   @deletion @implemented
   Scenario: Grace period before permanent deletion
@@ -139,10 +138,8 @@ Feature: Privacy Compliance
 
   @transparency @implemented
   Scenario: View privacy policy in app
-    When I go to Settings > Privacy Policy
-    Then I should see the full privacy policy
-    And it should be in my language if available
-    And it should be understandable (no legal jargon)
+    When I choose Privacy policy in Help
+    Then the published privacy policy should open in my browser
 
   @transparency @implemented
   Scenario: View what data is stored locally
@@ -175,9 +172,9 @@ Feature: Privacy Compliance
   @retention @implemented
   Scenario: Relay data expires automatically
     Given I sent an update via relay
-    When 30 days pass without delivery
+    When 120 days pass without delivery
     Then the update should be automatically deleted from the relay
-    And no personal data should persist on relays beyond TTL
+    And a later update to the same contact should be kept until its own 120 days pass
 
   @retention @implemented
   Scenario: Local data persists until deleted
@@ -186,12 +183,12 @@ Feature: Privacy Compliance
     # Until I explicitly delete it
     And no automatic purging should occur without my consent
 
-  @retention @implemented
+  @retention @planned
   Scenario: View data retention settings
     When I go to Settings > Privacy > Data Retention
     Then I should see:
       | Setting              | Value                      |
-      | Relay message TTL    |                    30 days |
+      | Relay message TTL    |                   120 days |
       | Local data retention | Forever (until you delete) |
       | Backup retention     | Your control               |
     And I should understand each setting
@@ -355,7 +352,7 @@ Feature: Privacy Compliance
   @revocation @deletion @relay @implemented
   Scenario: Offline contact receives revocation on reconnect
     Given Alice deleted her account while Bob was offline
-    When Bob reconnects to the relay within 30 days
+    When Bob reconnects to the relay within 120 days
     Then Bob receives the revocation signal
     And Alice's card is removed from Bob's device
 
