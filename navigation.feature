@@ -192,7 +192,7 @@ Feature: Navigation Architecture
   # Groups
 
   @navigation @groups @implemented
-  Scenario: Groups tab shows group list
+  Scenario: Groups screen shows group list
     When I switch to the "Groups" screen
     Then I should see a list of my visibility groups
     And each group should show its name and member count
