@@ -141,7 +141,7 @@ Feature: Open Contact Info in External Applications
       | instagram | bob.smith   | https://instagram.com/{username}    | https://instagram.com/bob.smith      |
       | mastodon  | @bob@mas.to | https://{instance}/@{user}          | https://mas.to/@bob                  |
 
-  @social @deep-link @android @implemented
+  @social @deep-link @android @planned
   Scenario: Social media opens native app if installed (Android)
     Given I am using the Android app
     And the Twitter app is installed
@@ -150,7 +150,7 @@ Feature: Open Contact Info in External Applications
     Then the Twitter app should open to Bob's profile
     And the browser should not open
 
-  @social @deep-link @ios @implemented
+  @social @deep-link @ios @planned
   Scenario: Social media opens native app if installed (iOS)
     Given I am using the iOS app
     And the Instagram app is installed
@@ -158,7 +158,7 @@ Feature: Open Contact Info in External Applications
     When I tap on the social field
     Then the Instagram app should open to Bob's profile
 
-  @social @fallback @implemented
+  @social @fallback @planned
   Scenario: Social media falls back to browser when app not installed
     Given the Twitter app is not installed
     And Bob has a social field "twitter" with value "@bobsmith"
@@ -188,14 +188,14 @@ Feature: Open Contact Info in External Applications
     Then the default maps application should open
     And it should show the location "123 Main St, San Francisco, CA 94102"
 
-  @address @maps @android @implemented
+  @address @maps @android @planned
   Scenario: Address opens Google Maps on Android
     Given I am using the Android app
     And Bob has an address field with value "123 Main St, City, ST 12345"
     When I tap on the address
     Then the intent should use "geo:0,0?q=123+Main+St,+City,+ST+12345"
 
-  @address @maps @ios @implemented
+  @address @maps @ios @planned
   Scenario: Address opens Apple Maps on iOS
     Given I am using the iOS app
     And Bob has an address field with value "123 Main St, City, ST 12345"
@@ -240,7 +240,7 @@ Feature: Open Contact Info in External Applications
     Then the system should detect it as a phone number
     And the dialer should open with the number
 
-  @custom @heuristic @implemented
+  @custom @heuristic @planned
   Scenario: Custom field with email-like value offers email
     Given Bob has a custom field "Alternate" with value "bob.alt@email.com"
     When I tap on the custom field
@@ -273,7 +273,7 @@ Feature: Open Contact Info in External Applications
   # Error Handling
   # ============================================================
 
-  @error @no-handler @implemented
+  @error @no-handler @planned
   Scenario: No application available for action
     Given Bob has an email field with value "bob@company.com"
     And no email application is configured on the device
@@ -306,7 +306,7 @@ Feature: Open Contact Info in External Applications
     Then I should see "Invalid phone number format"
     And the value should be copied to clipboard as fallback
 
-  @error @network @implemented
+  @error @network @planned
   Scenario: Network error when opening social profile
     Given Bob has a social field "twitter" with value "@bobsmith"
     And the device has no network connectivity
@@ -332,7 +332,7 @@ Feature: Open Contact Info in External Applications
     Then openURL should be called with the appropriate URL
     And the system should handle app routing
 
-  @platform @desktop @implemented
+  @platform @desktop @planned
   Scenario: Desktop opens URL via system handler
     Given I am using a desktop app
     When I tap on any actionable contact field
@@ -346,7 +346,7 @@ Feature: Open Contact Info in External Applications
     When I select to open a contact field
     Then the open crate should launch the system handler
 
-  @platform @tui @implemented
+  @platform @tui @planned
   Scenario: TUI offers to open in external app
     Given I am using the TUI
     And I view Bob's contact details
@@ -358,21 +358,21 @@ Feature: Open Contact Info in External Applications
   # Accessibility
   # ============================================================
 
-  @a11y @implemented
+  @a11y @planned
   Scenario: Actionable fields are announced as buttons
     Given Bob has multiple contact fields
     When a screen reader focuses on an email field
     Then it should announce "bob@company.com, email, button"
     And it should indicate the action "double tap to compose email"
 
-  @a11y @implemented
+  @a11y @planned
   Scenario: Action menu is accessible
     Given Bob has a phone field
     When I activate the context menu via accessibility action
     Then the action menu should be announced
     And each option should be focusable and labeled
 
-  @a11y @keyboard @implemented
+  @a11y @keyboard @planned
   Scenario: Keyboard navigation on desktop
     Given I am using the desktop app with keyboard
     And I am viewing Bob's contact details
@@ -385,21 +385,21 @@ Feature: Open Contact Info in External Applications
   # Visual Feedback
   # ============================================================
 
-  @ui @implemented
+  @ui @planned
   Scenario: Actionable fields show tap affordance
     Given Bob has multiple contact fields
     When I view Bob's contact details
     Then actionable fields should have a subtle indicator
     And they should show hover/press feedback on interaction
 
-  @ui @implemented
+  @ui @planned
   Scenario: Brief loading indicator when opening external app
     Given Bob has an email field
     When I tap on the email
     Then a brief loading indicator should appear
     And it should dismiss when the external app opens
 
-  @ui @implemented
+  @ui @planned
   Scenario: Confirmation toast after copy to clipboard
     Given Bob has a phone field
     When I long-press and select "Copy to Clipboard"

@@ -43,23 +43,7 @@ certificate_pinning :: Graceful certificate rotation
 certificate_pinning :: Pin computation is deterministic
 certificate_pinning :: Pin is SHA-256 hash of the certificate's SPKI
 certificate_pinning :: Pin verification happens before sending data
-contact_actions :: Action menu is accessible
-contact_actions :: Actionable fields are announced as buttons
-contact_actions :: Actionable fields show tap affordance
-contact_actions :: Address opens Apple Maps on iOS
-contact_actions :: Address opens Google Maps on Android
-contact_actions :: Brief loading indicator when opening external app
 contact_actions :: CLI uses open crate
-contact_actions :: Confirmation toast after copy to clipboard
-contact_actions :: Custom field with email-like value offers email
-contact_actions :: Desktop opens URL via system handler
-contact_actions :: Keyboard navigation on desktop
-contact_actions :: Network error when opening social profile
-contact_actions :: No application available for action
-contact_actions :: Social media falls back to browser when app not installed
-contact_actions :: Social media opens native app if installed (Android)
-contact_actions :: Social media opens native app if installed (iOS)
-contact_actions :: TUI offers to open in external app
 contact_card_management :: Add a custom field
 contact_card_management :: Add a physical address field
 contact_card_management :: Add unlisted social network as custom field
@@ -166,11 +150,6 @@ navigation :: Navigate from contact to preview-as
 navigation :: Preview as group member
 navigation :: Preview my card as a specific contact
 navigation :: Switching screens preserves state
-navigation :: Tap address to open in maps
-navigation :: Tap email to compose
-navigation :: Tap phone number to call
-navigation :: Tap social handle to open in app
-navigation :: Tap URL to open in browser
 navigation :: Toggle proposal trust on a contact
 navigation :: Validate a contact's field
 navigation :: View and edit private note on own field
