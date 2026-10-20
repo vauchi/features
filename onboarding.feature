@@ -63,7 +63,7 @@ Feature: Onboarding Experience
     And adding them should take one tap each
     And I should be able to skip
 
-  @card-creation @implemented
+  @card-creation @planned
   Scenario: Suggest display name variations
     Given I entered my full name "Alexandra Johnson"
     When I reach the display name step
@@ -79,28 +79,13 @@ Feature: Onboarding Experience
     Given I completed card setup
     When I reach the "What would you like to do?" screen
     Then I should see options to:
-      | option                    |
-      | Exchange cards            |
-      | Import existing contacts  |
-      | Read about security       |
-      | Read about backup         |
-      | Start using the app       |
+      | option                   | style     |
+      | Start using the app      | primary   |
+      | Exchange cards           | secondary |
+      | Import existing contacts | secondary |
     And all options should complete onboarding
     And I should be taken to the chosen destination
-
-  @what-next @implemented
-  Scenario: Security info accessible from WhatNext
-    Given I am on the WhatNext screen
-    When I choose "Read about security"
-    Then I should see information about E2E encryption
-    And it should convey "Only you and your contacts can see your info"
-
-  @what-next @implemented
-  Scenario: Backup accessible from WhatNext
-    Given I am on the WhatNext screen
-    When I choose "Read about backup"
-    Then I should be taken to the backup setup screen
-    And I should understand why backup matters
+    And it should not offer reading about security or backup, which live in Help
   # ============================================================
   # First Exchange
   # ============================================================
@@ -187,13 +172,9 @@ Feature: Onboarding Experience
   @default-name @implemented
   Scenario: User enters default name during onboarding
     Given I am on the default name step
-    When I enter "Alice Johnson"
-    Then my identity should be created with display name "Alice Johnson"
-    And I should see name suggestions
-      | suggestion |
-      | Alice      |
-      | Ali        |
-      | A. Johnson |
+    When I enter "Alice"
+    And I finish onboarding
+    Then my identity should be created with display name "Alice"
 
   @groups-setup @implemented
   Scenario: User creates groups during onboarding

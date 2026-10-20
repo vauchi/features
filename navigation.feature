@@ -18,11 +18,12 @@ Feature: Navigation Architecture
     When I view the main screen
     Then I should see a navigation bar with 5 tabs:
       | screen   | position |
-      | MyInfo   |        1 |
-      | Contacts |        2 |
+      | Contacts |        1 |
+      | My Card  |        2 |
       | Exchange |        3 |
-      | Groups   |        4 |
-      | More     |        5 |
+      | Devices  |        4 |
+      | Settings |        5 |
+    And every other screen should be reachable from a Settings row
 
   @navigation @implemented
   Scenario: Dynamic default screen with no contacts

@@ -168,14 +168,10 @@ message_delivery :: Read receipts are off by default
 navigation :: Add private note to a contact
 navigation :: Add private note to a contact's shared field
 navigation :: Contact shows trust level badge
-navigation :: Dynamic default screen with contacts
 navigation :: Dynamic default screen with no contacts
 navigation :: Exchange is accessible from navigation
-navigation :: Exit preview returns to edit mode
 navigation :: Group detail shows member list
-navigation :: Groups tab shows group list
 navigation :: Navigate from contact to preview-as
-navigation :: Navigation shows 5 tabs
 navigation :: Preview as group member
 navigation :: Preview my card as a specific contact
 navigation :: Switching screens preserves state
@@ -187,26 +183,18 @@ navigation :: Tap URL to open in browser
 navigation :: Toggle proposal trust on a contact
 navigation :: Validate a contact's field
 navigation :: View and edit private note on own field
-onboarding :: Backup accessible from WhatNext
 onboarding :: Can skip optional steps
 onboarding :: Complete onboarding in under 30 seconds
 onboarding :: Demo contact is dismissible
 onboarding :: Demo contact removed after first real contact
 onboarding :: Demo contact updates demonstrate value
 onboarding :: Exchange success celebration
-onboarding :: Identity check on first launch
-onboarding :: Minimum viable card
-onboarding :: No sync chip before the first contact
 onboarding :: Onboarding completion via WhatNext
 onboarding :: Onboarding progress indicator
 onboarding :: Prompt for first exchange
-onboarding :: Security info accessible from WhatNext
-onboarding :: Suggest display name variations
 onboarding :: User adds contact info with no-group visibility
 onboarding :: User adds contact info with per-group visibility
-onboarding :: User chooses next action after onboarding
 onboarding :: User creates groups during onboarding
-onboarding :: User enters default name during onboarding
 performance :: Clear cache option
 performance :: Handle low disk space
 performance :: Handle process killed for memory on Android
@@ -236,10 +224,8 @@ relay_network :: Anonymous token routing requires no signature
 relay_network :: Deploy relay node with Docker
 relay_network :: Direct connection preferred
 relay_network :: Expired timestamp rejected
-relay_network :: Invalid signature rejected by relay
 relay_network :: No relays available
 relay_network :: No special privileges for contributors
-relay_network :: Nonce replay attack prevented
 relay_network :: Plaintext connections are rejected
 relay_network :: Rate limiting on relay nodes
 relay_network :: Relay gossip protocol
@@ -251,7 +237,6 @@ relay_network :: Signature key mismatch rejected
 relay_network :: Signed operations verified without a routing identity
 relay_network :: Sybil attack resistance
 relay_network :: Version mismatch between relays is an explicit refusal
-relay_network :: Version-skewed control messages are refused, not dropped
 relay_transport_security :: Defense in depth
 relay_transport_security :: No plaintext fallback exists
 relay_transport_security :: Non-https relay URLs are rejected at the parse boundary
