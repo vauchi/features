@@ -16,7 +16,8 @@ Feature: Privacy Compliance
   @export @implemented
   Scenario: Export all my data
     When I go to Settings > Privacy > Export My Data
-    And I confirm the export
+    And I confirm it is me
+    And I choose JSON and accept that the file is not protected
     Then I should receive a downloadable file
     And the file should contain all my personal data
     And the file should be in a machine-readable format (JSON)
@@ -37,11 +38,62 @@ Feature: Privacy Compliance
     And the export should be encrypted with my key
 
   @export @implemented
-  Scenario: Export requires authentication
-    Given I request a data export
-    Then I should be required to authenticate (PIN/biometric)
-    And the export file should be encrypted
-    And a notification should be sent to all my devices
+  Scenario: Export asks for my app password first
+    Given I have set an app password
+    When I request a data export
+    Then I should be asked for my app password
+    And nothing should be exported until it is confirmed
+    And repeated wrong passwords should lock the export like any other wrong password
+
+  @export @planned
+  Scenario: Without an app password, export uses the phone's own lock
+    Given I have not set an app password
+    And my phone can check it is me with its screen lock or biometrics
+    When I request a data export
+    Then my phone should ask me to unlock with its own check
+    And the export should continue only after that check succeeds
+    And cancelling the check should export nothing
+
+  @export @implemented
+  Scenario: Export asks me to set an app password when nothing else can check it is me
+    Given I have not set an app password
+    And my phone cannot check it is me
+    When I request a data export
+    Then I should be asked to set an app password first
+    And nothing should be exported
+
+  @export @implemented
+  Scenario: An encrypted file is the first export choice
+    Given I have confirmed it is me for an export
+    Then I should be offered an encrypted file, a vCard and a JSON file
+    When I choose the encrypted file
+    Then I should set an export password and enter it twice
+    And a weak or mismatched export password should be refused
+    And the export file should be encrypted with that password
+
+  @export @implemented
+  Scenario: Readable exports warn before writing an unprotected file
+    Given I have confirmed it is me for an export
+    When I choose a vCard or a JSON file
+    Then I should be warned that anyone holding the file can read it
+    And the file should be written only after I accept the warning
+
+  @export @implemented
+  Scenario: A vCard export carries Vauchi origin markers
+    When I export my contacts as a vCard
+    Then each contact should carry its Vauchi id and kind
+    And importing that file into Vauchi again should not duplicate my contacts
+
+  @export @implemented
+  Scenario: One confirmation covers one export
+    Given I have exported my data once
+    When I request another export
+    Then I should be asked to confirm it is me again
+
+  @export @planned
+  Scenario: My other devices are told about an export
+    When I export my data
+    Then my other linked devices should show that an export was made
 
   @export @implemented
   Scenario: Export works offline

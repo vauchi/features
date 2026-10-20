@@ -165,7 +165,6 @@ privacy_compliance :: Account deletion purges all relay data including recovery 
 privacy_compliance :: Contact display name is protected by crypto-shredding
 privacy_compliance :: Delete specific contacts
 privacy_compliance :: Deletion is thorough
-privacy_compliance :: Export requires authentication
 privacy_compliance :: Export works offline
 privacy_compliance :: Local data persists until deleted
 privacy_compliance :: Offline contact receives revocation on reconnect
