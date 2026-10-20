@@ -30,12 +30,9 @@ ble_exchange_modes :: BLE timeout after connection is ignored
 ble_exchange_modes :: BLE timeout during discovery triggers fallback
 ble_exchange_modes :: Bump mode completes with strong impact
 ble_exchange_modes :: Bump mode completes with weak impact (unverified)
-ble_exchange_modes :: Bump mode starts accelerometer on connection
 ble_exchange_modes :: Magic mode completes even if audio times out
 ble_exchange_modes :: Magic mode completes with audio verification
-ble_exchange_modes :: Magic mode connects on device discovery
 ble_exchange_modes :: Magic mode discovery emits BLE commands
-ble_exchange_modes :: Magic mode starts audio proximity on connection
 ble_exchange_modes :: Shake mode completes with peer envelope correlation
 ble_exchange_modes :: Shake mode records and exchanges envelopes
 certificate_pinning :: Connection rejected with mismatched certificate
