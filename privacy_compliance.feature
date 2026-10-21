@@ -139,7 +139,7 @@ Feature: Privacy Compliance
     And a purge that keeps recovery should be accepted by relays that predate the choice
     And my linked devices should keep the same choice
 
-  @deletion @recovery @relay @planned
+  @deletion @recovery @relay @implemented
   Scenario: The relay erases my recovery data on purge
     Given I scheduled my identity deletion and chose to erase everything
     When the relay receives my purge
