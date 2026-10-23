@@ -893,6 +893,7 @@ onboarding :: welcome screen on first launch
 onboarding_workflow :: field visibility default empty (privacy-first)
 onboarding_workflow :: remove field cleans up field_visibility
 onboarding_workflow :: show and hide field in no-group mode
+pair5_device_link_bridge :: a content update while the code is shown keeps the codes-match action
 pair5_device_link_bridge :: a session that cannot start reports instead of spinning
 pair5_device_link_bridge :: bridges no-op (return none) off the device-linking screen
 pair5_device_link_bridge :: cancel from any device-link step navigates away
