@@ -103,6 +103,14 @@ Feature: Sealed Mailbox Tokens (SP-33)
     Then 256 tokens should be registered (50 real + 206 padding)
     And the relay cannot distinguish real tokens from padding
 
+  @privacy @implemented
+  Scenario: Fetch responses come in a few fixed sizes
+    Given one mailbox is empty, one holds a few small updates
+    And one holds more updates than fit in one page
+    When each mailbox is fetched over OHTTP
+    Then every response an observer between me and the OHTTP relay sees is 4 KiB, 32 KiB or 96 KiB plus the fixed OHTTP overhead
+    And the observer cannot tell an empty mailbox from one with a few updates
+
   @privacy @planned
   Scenario: Combined with SP-32 — relay sees neither sender nor recipient
     Given Alice sends a card update to Bob
