@@ -39,8 +39,8 @@ Feature: Contact Recovery
     Given I have an identity
     When I try to set my recovery threshold to 0
     Then the operation should fail with "Recovery threshold must be at least 1"
-    When I try to set my recovery threshold to 20
-    Then the operation should fail with "Recovery threshold cannot exceed 10"
+    When I try to set my recovery threshold to 10
+    Then the operation should fail with "Recovery threshold cannot exceed 9"
   # ============================================================
   # Trusted Contacts for Recovery
   # ============================================================

@@ -55,6 +55,13 @@ Feature: Guardian Key Shard Backup Recovery
     And no backup should be created
 
   @v4 @guardian @setup @planned
+  Scenario: Reject guardian backup that needs every guardian
+    Given I have 3 exchanged contacts
+    When I try to create a v4 guardian backup with threshold 3 of 3 guardians
+    Then the operation should fail with "One guardian must be spare"
+    And no backup should be created
+
+  @v4 @guardian @setup @planned
   Scenario: Reject guardian backup with fewer than 3 guardians
     Given I have 2 exchanged contacts
     When I try to create a v4 guardian backup with threshold 2 of 2 guardians
