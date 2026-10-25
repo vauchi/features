@@ -48,10 +48,17 @@ Feature: Guardian Key Shard Backup Recovery
     And no backup should be created
 
   @v4 @guardian @setup @planned
-  Scenario: Reject guardian backup with more than 10 guardians
-    Given I have 11 exchanged contacts
-    When I try to create a v4 guardian backup with threshold 2 of 11 guardians
-    Then the operation should fail with "Guardian count cannot exceed 10"
+  Scenario: Reject guardian backup with more than 9 guardians
+    Given I have 10 exchanged contacts
+    When I try to create a v4 guardian backup with threshold 2 of 10 guardians
+    Then the operation should fail with "Guardian count cannot exceed 9"
+    And no backup should be created
+
+  @v4 @guardian @setup @planned
+  Scenario: Reject guardian backup with fewer than 3 guardians
+    Given I have 2 exchanged contacts
+    When I try to create a v4 guardian backup with threshold 2 of 2 guardians
+    Then the operation should fail with "At least 3 guardians are needed"
     And no backup should be created
 
   @v4 @guardian @setup @planned
