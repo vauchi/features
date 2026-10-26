@@ -162,21 +162,14 @@ privacy_compliance :: Relay notified on identity deletion
 privacy_compliance :: Understand E2E encryption
 privacy_compliance :: View what data is on relays
 privacy_compliance :: View what data is stored locally
-relay_network :: Anonymous token routing requires no signature
 relay_network :: Deploy relay node with Docker
 relay_network :: Direct connection preferred
-relay_network :: Expired timestamp rejected
 relay_network :: No relays available
 relay_network :: No special privileges for contributors
 relay_network :: Plaintext connections are rejected
 relay_network :: Rate limiting on relay nodes
-relay_network :: Relay gossip protocol
-relay_network :: Relay includes forwarding hints
 relay_network :: Relay node authentication
-relay_network :: Relay node discovery via DHT
 relay_network :: Relay registry for peer discovery
-relay_network :: Signature key mismatch rejected
-relay_network :: Signed operations verified without a routing identity
 relay_network :: Sybil attack resistance
 relay_network :: Version mismatch between relays is an explicit refusal
 relay_transport_security :: Defense in depth

@@ -149,7 +149,9 @@ Feature: Relay Network
     And users should connect to nearby relays
     And latency should be minimized
 
-  @health @implemented
+  # No DHT exists in core or relay; peers are found by configuration and
+  # gossip (see Relay gossip protocol). Retagged by private#631.
+  @health @planned
   Scenario: Relay node discovery via DHT
     Given I need to find a relay node
     When I query the DHT
@@ -352,7 +354,9 @@ Feature: Relay Network
     And messages should be collected from all sources
     And duplicate messages should be deduplicated
 
-  @federation @phase1 @implemented
+  # The offloading relay records a hint, but no fetch path serves it and
+  # no client follows one (private#835).
+  @federation @phase1 @planned
   Scenario: Relay includes forwarding hints
     Given relay A has offloaded blob X to relay B
     When the recipient queries relay A for messages
