@@ -63,7 +63,6 @@ avatar_editor_wiring :: myinfo shows imagecircle component
 avatar_editor_wiring :: navigate to avatareditor shows source picker
 avatar_editor_wiring :: remove avatar action clears and completes
 avatar_editor_wiring :: save avatar persists and navigates back
-backup-reminder :: native toast action opens backup
 backup_format_versioning :: backup contains only the master seed
 backup_format_versioning :: backup level toggle switches between full and identity-only
 backup_format_versioning :: full backup defaults to full level
@@ -91,11 +90,6 @@ backup_recovery :: create encrypted backup
 backup_recovery :: create mode has no file pick
 backup_recovery :: picked backup bytes populate the restore payload
 backup_recovery :: restore offers a file pick for full backups
-backup_reminder :: export updates reminder state
-backup_reminder :: first reminder after 7 days
-backup_reminder :: frequency cycling
-backup_reminder :: monthly frequency at 30-day threshold
-backup_reminder :: reminders disabled
 batch3 :: every screen renders in the active locale
 ble_exchange :: a peripheral responder (no discovery) persists the contact
 ble_exchange :: both peers persist the exchanged contact

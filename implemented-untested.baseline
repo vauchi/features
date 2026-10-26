@@ -9,12 +9,6 @@ accessibility :: Helpful error messages
 accessibility :: Keyboard shortcuts for common actions
 accessibility :: Screen reader announces app structure on desktop
 accessibility :: TUI is fully keyboard navigable
-backup_reminder :: First reminder fires 7 days after identity creation
-backup_reminder :: Monthly frequency suppresses reminder at 7 days
-backup_reminder :: Settings exposes a cycling frequency control
-backup_reminder :: Showing a reminder increments the reminder count
-backup_reminder :: Successful backup resets the reminder timer
-backup_reminder :: User disables backup reminders via frequency "Never"
 ble_exchange :: BLE payload has valid signature
 ble_exchange :: Commit on nonexistent contact returns error
 ble_exchange :: Commit returns pending data and removes it
