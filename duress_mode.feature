@@ -378,6 +378,19 @@ Feature: Duress Mode
     And I should be able to "edit" their visibility
     And changes should persist in the decoy database
 
+  # A group that vanishes after a lock gives the mode away (vauchi/private#813,
+  # the own card in #811): the duress session's groups, tags and places live
+  # in twin tables of the real database, never in the real ones.
+  @edge @implemented
+  Scenario: What a duress session makes survives a lock
+    Given I am in duress mode
+    And I have created a group, a tag and a named place
+    When the app locks
+    And I unlock with the duress credential again
+    Then the group, the tag and the place should still be there
+    And the real groups, tags and places should be unchanged
+    And disabling duress mode should discard them
+
   @edge @planned
   Scenario: Duress mode timeout
     Given I am in duress mode
