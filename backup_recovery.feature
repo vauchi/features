@@ -54,12 +54,42 @@ Feature: Guardian Key Shard Backup Recovery
     Then the operation should fail with "Guardian count cannot exceed 9"
     And no backup should be created
 
-  @v4 @guardian @setup @planned
-  Scenario: Reject guardian backup that needs every guardian
+  @v4 @guardian @setup @implemented
+  Scenario: A guardian backup may need every guardian
     Given I have 3 exchanged contacts
-    When I try to create a v4 guardian backup with threshold 3 of 3 guardians
-    Then the operation should fail with "One guardian must be spare"
-    And no backup should be created
+    When I create a v4 guardian backup with threshold 3 of 3 guardians
+    Then the backup key should be split into 3 shards
+    And recovery should require all 3 guardians
+
+  @v4 @guardian @setup @implemented
+  Scenario: Recover with one guardian from each group
+    Given I have guardians in groups {Bob}, {Charlie, Dave} and {Eve}
+    When I create a v4 guardian backup for those groups
+    Then the backup key should be split into 3 shards, one per group
+    And Charlie and Dave should each hold the second group's share
+    And Bob, Dave and Eve re-sealing their shares should recover the backup
+
+  @v4 @guardian @recovery @implemented
+  Scenario: Two guardians of one group count as one
+    Given I have a v4 guardian backup for groups {Bob}, {Charlie, Dave} and {Eve}
+    When Bob, Charlie and Dave return their shares
+    Then the operation should fail with "Guardian backup recovery failed"
+    And when Eve also returns her share, the backup should be recovered
+
+  @v4 @guardian @recovery @implemented
+  Scenario: A whole group missing blocks recovery
+    Given I have a v4 guardian backup for groups {Bob}, {Charlie, Dave} and {Eve}
+    When nobody from Eve's group returns a share
+    Then the operation should fail with "Guardian backup recovery failed"
+    And the backup key should not be reconstructed
+
+  @v4 @guardian @setup @planned
+  Scenario: The setup explains groups and why guardians should not know each other
+    Given I am choosing guardians for a v4 guardian backup
+    When I pick all of 3 guardians
+    Then the setup should say that, ideally, the three do not know each other
+    And when I use groups, the setup should say that one from each group must help
+    And that a group with two or more members has a spare
 
   @v4 @guardian @setup @planned
   Scenario: Reject guardian backup with fewer than 3 guardians
