@@ -381,7 +381,6 @@ contact_recovery :: threshold met enables submit
 contact_recovery :: truncated ciphertext fails authentication
 contact_recovery :: user initiates social recovery
 contact_recovery :: verify a freshly created guardian token
-contact_recovery :: verify other shows fingerprint
 contact_recovery :: version byte is 2 for voucher with token and 1 without
 contact_recovery :: voucher added updates progress
 contact_recovery :: vouching returns showvoucherqr
