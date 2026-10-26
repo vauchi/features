@@ -181,6 +181,15 @@ Feature: Message Delivery Guarantees
     And I should see a summary of changes
 
   @offline @implemented
+  Scenario: A client away longer than retention asks its contacts for their cards
+    Given a contact updated their card while I was offline longer than the relay keeps messages
+    When I come online and finish catching up
+    Then I should ask each contact to send their card again
+    And a contact should answer at most once a day
+    And a blocked contact's request should be refused
+    And I should see the contact's current card on my next sync
+
+  @offline @implemented
   Scenario: Offline indicator
     Given I am offline
     Then the app should show an offline indicator
