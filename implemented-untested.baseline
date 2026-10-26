@@ -61,12 +61,8 @@ contact_recovery :: Isolated contact accepts with warning
 contact_recovery :: Isolated contact meets in person and vouches
 contact_recovery :: Isolated contact verifies out of band
 contact_recovery :: Recovery after losing all devices
-contact_recovery :: Recovery proof expiration
 contact_recovery :: Recovery when user has multiple devices
 contact_recovery :: Reject recovery
-contact_recovery :: Relay handles proof expiration
-contact_recovery :: Relay returns recovery proof on query
-contact_recovery :: Relay stores recovery proof privately
 contact_recovery :: Remember old identity fingerprint
 contact_recovery :: Trust state is private to the user
 contact_recovery :: What is NOT recovered
