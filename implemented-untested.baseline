@@ -93,7 +93,6 @@ mesh_exchange :: Exchange timeout
 mesh_exchange :: Exchange with user already in contacts
 mesh_exchange :: Replay attack prevention
 message_delivery :: Read receipts are off by default
-navigation :: Preview my card as a specific contact
 onboarding :: Demo contact removed after first real contact
 onboarding :: Demo contact updates demonstrate value
 performance :: Clear cache option
