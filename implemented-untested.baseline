@@ -54,10 +54,8 @@ contact_recovery :: Remember old identity fingerprint
 contact_recovery :: Trust state is private to the user
 contact_recovery :: What is NOT recovered
 contact_recovery :: What is recovered
-contacts_management :: Cross-kind merge with name and avatar adoption
 contacts_management :: Remove contact cleans up visibility rules
 contacts_management :: Search contacts by field value
-contacts_management :: Sort contacts by recent interaction
 demo_contact :: Demo contact does not count as real contact
 device_management :: Insufficient storage for sync
 device_management :: Interrupted initial sync

@@ -72,7 +72,8 @@ Feature: Contacts Management
     When I sort by name ascending
     Then contacts should appear in order: "Alice", "Mike", "Zara"
 
-  @filter @implemented
+  # Planned: the contact list has no sort order to choose (private#631).
+  @filter @planned
   Scenario: Sort contacts by recent interaction
     Given I exchanged with Bob yesterday and Carol today
     When I sort by recent interaction
@@ -341,7 +342,9 @@ Feature: Contacts Management
     When the shared name "Bobby" is removed by a sync delta
     Then the resolved display name for contact "Bob" falls back to primary
 
-  @merge @implemented
+  # Planned: Core refuses to merge an exchanged contact with an imported
+  # one (private#631).
+  @merge @planned
   Scenario: Cross-kind merge with name and avatar adoption
     Given I have an exchanged contact "Bob"
     And I have an imported contact "Robert" with avatar
