@@ -211,7 +211,6 @@ contact_card_management :: initials avatar is symmetric
 contact_card_management :: initials avatar pin specific pixels
 contact_card_management :: initials avatar size grows with side length
 contact_card_management :: initials avatar small size
-contact_card_management :: large avatar image normalized
 contact_card_management :: list available social networks
 contact_card_management :: mandelbrot avatar corners transparent
 contact_card_management :: mandelbrot center is inside the set

@@ -27,17 +27,10 @@ certificate_pinning :: Pin computation is deterministic
 certificate_pinning :: Pin is SHA-256 hash of the certificate's SPKI
 certificate_pinning :: Pin verification happens before sending data
 contact_actions :: CLI uses open crate
-contact_card_management :: Add a custom field
-contact_card_management :: Add a physical address field
-contact_card_management :: Add unlisted social network as custom field
 contact_card_management :: Cancel editing preserves original values
 contact_card_management :: Cancel field removal
-contact_card_management :: Field order persists after restart
-contact_card_management :: Field value size limit
-contact_card_management :: Oversized avatar input is normalized, not rejected
 contact_card_management :: Remove field updates contacts
 contact_card_management :: Validate social network username format
-contact_card_management :: View verification workflow for social network
 contact_exchange :: BLE exchange prevents self-exchange
 contact_exchange :: BLE exchange rejects expired payload
 contact_exchange :: Card update propagates after exchange

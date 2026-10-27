@@ -286,7 +286,9 @@ Feature: Contact Card Management
     Then I should see the profile URL "https://github.com/octocat"
     And I should be able to open the profile link
 
-  @social-registry @verification @implemented
+  # Planned: the social network data carries no verification method or
+  # steps, and no code reads one (private#631).
+  @social-registry @verification @planned
   Scenario: View verification workflow for social network
     Given the social network config has been loaded
     When I view the verification options for "twitter"
