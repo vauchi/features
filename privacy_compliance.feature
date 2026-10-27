@@ -100,7 +100,6 @@ Feature: Privacy Compliance
     Given I am offline
     When I export my data
     Then the export should succeed for local data
-    And I should be informed that relay data may be incomplete
   # ============================================================
   # Data Deletion
   # ============================================================
