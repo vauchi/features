@@ -41,7 +41,6 @@ contact_exchange :: Exchange timeout after interruption
 contact_exchange :: Incomplete exchange recovery
 contact_import :: Create local organization group
 contact_import :: Export and import contact backup
-contact_import :: Import contacts from a vCard file
 contact_import :: Import respects contact limit
 contact_import :: Import vCard 3.0 from Google Contacts
 contact_import :: Imported contacts are visually distinct
