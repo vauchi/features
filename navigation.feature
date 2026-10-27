@@ -38,7 +38,9 @@ Feature: Navigation Architecture
     When I unlock the app
     Then the "Contacts" screen should be active
 
-  @navigation @implemented
+  # Planned: a tab always opens at its root; returning to Contacts shows the
+  # list, not the contact that was open (private#631).
+  @navigation @planned
   Scenario: Switching screens preserves state
     Given I am on the "Contacts" screen viewing Bob's details
     When I switch to the "MyInfo" screen
@@ -165,15 +167,9 @@ Feature: Navigation Architecture
     And I type "Call before 5pm"
     Then the note should be saved
     And Bob should not see my note on his field
-  # Contacts — "What do they see?"
-
-  @navigation @what-they-see @implemented
-  Scenario: Navigate from contact to preview-as
-    Given I am viewing Bob's contact details on the "Contacts" screen
-    When I tap "What do they see?"
-    Then I should navigate to the "MyInfo" screen
-    And I should see my card in preview-as mode for Bob
-    And the banner should say "Viewing as Bob"
+  # Contacts — "What do they see?": the contact screen's button was removed
+  # (core 7cc1888e1, 2026-06-05) because its inline "They see me as" section
+  # answers the question; the full preview starts from My Card or a group.
   # Contacts — Proposal Trust
 
   @navigation @trust @implemented

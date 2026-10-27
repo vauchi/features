@@ -100,10 +100,8 @@ navigation :: Contact shows trust level badge
 navigation :: Dynamic default screen with no contacts
 navigation :: Exchange is accessible from navigation
 navigation :: Group detail shows member list
-navigation :: Navigate from contact to preview-as
 navigation :: Preview as group member
 navigation :: Preview my card as a specific contact
-navigation :: Switching screens preserves state
 navigation :: Toggle proposal trust on a contact
 navigation :: Validate a contact's field
 navigation :: View and edit private note on own field
