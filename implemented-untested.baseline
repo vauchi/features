@@ -86,10 +86,6 @@ emergency_shred :: Panic shred when network is unavailable
 emergency_shred :: Shred verification audits completeness
 emergency_shred :: Soft shred cannot proceed before grace period expires
 emergency_shred :: Soft shred schedules deletion with grace period
-field_validation :: Mark my own field as self-attested
-field_validation :: Remove self-attestation
-field_validation :: Self-attestation is per-field
-field_validation :: Self-attestation resets when field value changes
 help_faq :: Access FAQs from CLI
 help_faq :: Access FAQs from desktop app
 help_faq :: Access FAQs from TUI

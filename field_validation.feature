@@ -24,15 +24,18 @@ Feature: Field Validation
   # ============================================================
   # Self-Attestation (owner marks their own fields)
   # ============================================================
+  # Planned: a field carries no attestation state and no code marks,
+  # shows or resets one; the scenarios were tagged @implemented when the
+  # feature was simplified on 2026-03-17 (private#631).
 
-  @self-attest @implemented
+  @self-attest @planned
   Scenario: Mark my own field as self-attested
     Given I have a phone field "+1-555-000-0000"
     When I tap "Mark as verified" on my phone field
     Then the field should show a self-attested badge
     And contacts who have my card should see the badge
 
-  @self-attest @implemented
+  @self-attest @planned
   Scenario: Self-attestation is per-field
     Given I have self-attested my phone field
     But I have not self-attested my email field
@@ -40,14 +43,14 @@ Feature: Field Validation
     Then my phone should show "self-verified"
     And my email should show "unverified"
 
-  @self-attest @implemented
+  @self-attest @planned
   Scenario: Self-attestation resets when field value changes
     Given I have self-attested my phone field
     When I change my phone number
     Then the self-attestation badge should be removed
     And I should need to re-attest the new value
 
-  @self-attest @implemented
+  @self-attest @planned
   Scenario: Remove self-attestation
     Given I have self-attested my email field
     When I tap "Remove verification" on my email field
