@@ -21,7 +21,9 @@ Feature: Relay Network
     And the update should be delivered via relay
     And I should see "Delivered via relay"
 
-  @usage @implemented
+  # Planned: card updates always travel through a relay; the only direct
+  # transport is the in-person exchange (private#631).
+  @usage @planned
   Scenario: Direct connection preferred
     Given Bob and I can establish direct P2P connection
     When I send an update to Bob
@@ -165,7 +167,7 @@ Feature: Relay Network
     Given a user is sending excessive traffic
     Then the relay should rate limit them
     And legitimate traffic should not be affected
-    And the rate limit should be per-authenticated-identity
+    And the rate limit should be per mailbox, since the relay never learns who is sending
 
   @abuse @implemented
   Scenario: Storage limits per blob
@@ -182,7 +184,9 @@ Feature: Relay Network
     And storage should be reclaimed
     And the sender should be notified
 
-  @abuse @implemented
+  # Planned: there is no proof of work, and per-mailbox limits do not stop
+  # one party using many mailboxes (private#631).
+  @abuse @planned
   Scenario: Sybil attack resistance
     Given an attacker tries to flood the network
     Then proof-of-work may be required
@@ -193,9 +197,8 @@ Feature: Relay Network
   @protocol @implemented
   Scenario: Relay node authentication
     Given I am connecting to a relay
-    Then the relay should authenticate with a certificate
-    And I should verify the relay's identity
-    And connection should be encrypted (TLS)
+    Then the relay's gateway key should chain to the anchor pinned for that relay
+    And a key signed under any other anchor should never be installed
   # Signed Operations (originally "Relay Authentication Phase 1",
   # relay!28 + core!88). Connection-level identity authentication was
   # retired with the sealed-mailbox model (SP-33, ADR-029/ADR-037):
@@ -274,7 +277,7 @@ Feature: Relay Network
     Given all relay nodes are unreachable
     When I try to send an update
     Then the update should be queued locally
-    And I should be notified "Updates will send when network available"
+    And I should be notified "You're offline. Changes will sync when you reconnect."
     And retry should occur periodically
 
   @fallback @planned
@@ -427,7 +430,7 @@ Feature: Relay Network
     Then relay B should answer with its own version and "accepted: false"
     And relay A should not offload any blobs to relay B
     And relay A's blobs should remain in local storage for retry
-    And the refusal should be visible in both relays' metrics
+    And relay B should count the handshake and relay A the refused connection in their metrics
     # promoted_to: relay (tests/it/federation_handshake_tests.rs +
     # federation_connector_tests.rs, 2026-07-04-federation-version-negotiation)
 
