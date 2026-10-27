@@ -278,7 +278,10 @@ Feature: Contact Card Management
     Examples:
       | network     | username    | result | message        |
       | Example Net | @alice      | pass   |                |
+      | Example Net | alice       | pass   |                |
+      | Example Net | a_b_c       | pass   |                |
       | Example Net | alice_smith | fail   | Invalid format |
+      | Example Net | al-ce       | fail   | Invalid format |
 
   @social-registry @profile-url @implemented
   Scenario: Generate profile URL from social field
