@@ -94,16 +94,7 @@ mesh_exchange :: Exchange timeout
 mesh_exchange :: Exchange with user already in contacts
 mesh_exchange :: Replay attack prevention
 message_delivery :: Read receipts are off by default
-navigation :: Add private note to a contact
-navigation :: Add private note to a contact's shared field
-navigation :: Contact shows trust level badge
-navigation :: Dynamic default screen with no contacts
-navigation :: Exchange is accessible from navigation
-navigation :: Group detail shows member list
-navigation :: Preview as group member
 navigation :: Preview my card as a specific contact
-navigation :: Toggle proposal trust on a contact
-navigation :: View and edit private note on own field
 onboarding :: Can skip optional steps
 onboarding :: Complete onboarding in under 30 seconds
 onboarding :: Demo contact is dismissible
