@@ -35,12 +35,6 @@ contact_exchange :: Exchange blocked on low battery
 contact_exchange :: Exchange fails due to full storage
 contact_exchange :: Exchange timeout after interruption
 contact_exchange :: Incomplete exchange recovery
-contact_import :: Export and import contact backup
-contact_import :: Import respects contact limit
-contact_import :: Import vCard 3.0 from Google Contacts
-contact_import :: Imported contacts cannot be trusted for proposals
-contact_import :: Imported contacts cannot be trusted for recovery
-contact_import :: Imported contacts sync to linked device
 contact_import :: Phone normalization detects duplicates across formatting
 contact_recovery :: Isolated contact accepts with warning
 contact_recovery :: Isolated contact meets in person and vouches
