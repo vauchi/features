@@ -263,21 +263,22 @@ Feature: Contact Card Management
     Then I should see the cached list of social networks
     And I should be able to add social fields normally
 
+  # A network's username rule is data in the networks list served from the
+  # content CDN (networks.json); Core holds no rule of its own. A network
+  # listed without a rule accepts any value.
   @social-registry @validation @implemented
   Scenario Outline: Validate social network username format
-    Given the social network config has been loaded
+    Given the networks list from the content CDN has been loaded
+    And it gives "<network>" a username of at most 5 letters, digits or underscores
     When I add a social field for "<network>"
     And I enter "<username>" as the value
     Then the validation should "<result>"
     And I should see message "<message>"
 
     Examples:
-      | network | username              | result | message                         |
-      | twitter | @alicesmith           | pass   |                                 |
-      | twitter | alice                 | pass   |                                 |
-      | twitter | this_is_way_too_long! | fail   | Invalid Twitter username format |
-      | github  | octocat               | pass   |                                 |
-      | github  | -invalid              | fail   | Invalid GitHub username format  |
+      | network     | username    | result | message        |
+      | Example Net | @alice      | pass   |                |
+      | Example Net | alice_smith | fail   | Invalid format |
 
   @social-registry @profile-url @implemented
   Scenario: Generate profile URL from social field
