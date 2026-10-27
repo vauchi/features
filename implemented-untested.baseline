@@ -94,15 +94,8 @@ mesh_exchange :: Exchange with user already in contacts
 mesh_exchange :: Replay attack prevention
 message_delivery :: Read receipts are off by default
 navigation :: Preview my card as a specific contact
-onboarding :: Can skip optional steps
-onboarding :: Complete onboarding in under 30 seconds
-onboarding :: Demo contact is dismissible
 onboarding :: Demo contact removed after first real contact
 onboarding :: Demo contact updates demonstrate value
-onboarding :: Exchange success celebration
-onboarding :: Onboarding completion via WhatNext
-onboarding :: Onboarding progress indicator
-onboarding :: Prompt for first exchange
 performance :: Clear cache option
 performance :: Handle low disk space
 performance :: Handle process killed for memory on Android
@@ -110,15 +103,6 @@ performance :: Reasonable storage footprint
 pre_signed_operations :: Contact can verify deletion notice signature
 pre_signed_operations :: Relay can verify purge request signature
 pre_signed_operations :: Tampered pre-signed message is rejected
-privacy_compliance :: Contact display name is protected by crypto-shredding
-privacy_compliance :: Delete specific contacts
-privacy_compliance :: Deletion is thorough
-privacy_compliance :: Export works offline
-privacy_compliance :: Local data persists until deleted
-privacy_compliance :: Offline contact receives revocation on reconnect
-privacy_compliance :: Panic shred immediately destroys all data and notifies contacts
-privacy_compliance :: Relay notified on identity deletion
-privacy_compliance :: Understand E2E encryption
 privacy_compliance :: View what data is stored locally
 relay_network :: Deploy relay node with Docker
 relay_network :: Direct connection preferred
