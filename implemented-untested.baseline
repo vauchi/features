@@ -104,9 +104,6 @@ onboarding :: Exchange success celebration
 onboarding :: Onboarding completion via WhatNext
 onboarding :: Onboarding progress indicator
 onboarding :: Prompt for first exchange
-onboarding :: User adds contact info with no-group visibility
-onboarding :: User adds contact info with per-group visibility
-onboarding :: User creates groups during onboarding
 performance :: Clear cache option
 performance :: Handle low disk space
 performance :: Handle process killed for memory on Android

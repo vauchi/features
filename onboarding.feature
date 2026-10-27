@@ -176,7 +176,9 @@ Feature: Onboarding Experience
     And I finish onboarding
     Then my identity should be created with display name "Alice"
 
-  @groups-setup @implemented
+  # Planned: the groups step creates the selected groups, but offers no way
+  # to set the name a group's members see (private#631).
+  @groups-setup @planned
   Scenario: User creates groups during onboarding
     Given I am on the groups setup step
     Then I should see suggested groups
@@ -191,7 +193,9 @@ Feature: Onboarding Experience
     Then I should have 2 groups
     And the "Friends" group should have name override "Matt"
 
-  @contact-info @implemented
+  # Planned: the contact info step collects values only; who sees an entry
+  # is set afterwards on My Card (private#631).
+  @contact-info @planned
   Scenario: User adds contact info with no-group visibility
     Given I have no groups
     And I am on the contact info step
@@ -200,7 +204,9 @@ Feature: Onboarding Experience
     When I toggle the field to shown
     Then the field should be visible to all contacts
 
-  @contact-info @groups @implemented
+  # Planned: as above, the contact info step has no per-group choice
+  # (private#631).
+  @contact-info @groups @planned
   Scenario: User adds contact info with per-group visibility
     Given I have groups "Family" and "Friends"
     And I am on the contact info step
