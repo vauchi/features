@@ -193,6 +193,15 @@ Feature: Contact Card Exchange
     When Alice's device discovers its own BLE advertisement
     Then the exchange should fail with "SelfExchange" error
 
+  # The phones put the first bytes of the advertised token on the air; a
+  # value derived from the identity key let a bystander recognise the same
+  # user across two exchange screens (vauchi/private#726).
+  @ble @privacy @implemented
+  Scenario: A BLE advertisement does not identify the user across sessions
+    Given Alice opens a BLE exchange screen twice
+    Then the token advertised each time is different
+    And neither is her identity key or its prefix
+
   # NFC Active Exchange (phone-to-phone tap)
 
   @nfc @active @mobile @implemented
