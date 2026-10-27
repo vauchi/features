@@ -179,17 +179,9 @@ relay_transport_security :: Relay URLs must use https
 relay_transport_security :: Sensitive requests are OHTTP-encapsulated when configured
 relay_transport_security :: WebSocket upgrades are rejected
 release_privacy_multidevice_certification :: Exact two-user update propagates through both privacy hops
-remote_content :: Apply updates compatible with current app version
-remote_content :: Check for updates when interval elapsed
-remote_content :: Detect available updates
 remote_content :: Fetch content manifest on app launch
-remote_content :: No updates when versions match
-remote_content :: Reject a manifest signed by an untrusted publisher
-remote_content :: Reject content with mismatched checksum
-remote_content :: Respect update check interval
 remote_content :: Skip updates requiring newer app version
 remote_content :: Use cached manifest when offline
-remote_content :: Verify content checksum before saving
 sealed_mailbox :: AccountRevoked verified client-side
 sealed_mailbox :: Contact mailbox token derived from shared key
 sealed_mailbox :: Device sync routed by self-token
