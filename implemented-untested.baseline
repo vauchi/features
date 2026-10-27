@@ -103,7 +103,6 @@ navigation :: Group detail shows member list
 navigation :: Preview as group member
 navigation :: Preview my card as a specific contact
 navigation :: Toggle proposal trust on a contact
-navigation :: Validate a contact's field
 navigation :: View and edit private note on own field
 onboarding :: Can skip optional steps
 onboarding :: Complete onboarding in under 30 seconds

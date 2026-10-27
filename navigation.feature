@@ -142,13 +142,9 @@ Feature: Navigation Architecture
     Then I should see a trust level badge derived from exchange facts
     And the trust level should not be user-editable
 
-  @navigation @trust @implemented
-  Scenario: Validate a contact's field
-    Given I am viewing Bob's contact details
-    And Bob has shared a phone number with me
-    When I tap the validation indicator on Bob's phone number
-    Then the field should be marked as personally validated
-    And the validation confidence should increase
+  # "Validate a contact's field" was removed: ADR-040 derives a field's
+  # confidence from the exchange and fingerprint verification, and core
+  # 1664bdc3c (2026-03-27) dropped cross-user field validation.
   # Contacts — Private Notes
 
   @navigation @notes @implemented
