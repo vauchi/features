@@ -236,7 +236,9 @@ Feature: Privacy Compliance
       | Settings | Your preferences                      |
     And I should see that data is E2E encrypted
 
-  @transparency @implemented
+  # Planned: the app has no screen listing my envelopes on relays; the relay
+  # holds them sealed and drops them after delivery or 120 days (private#631).
+  @transparency @planned
   Scenario: View what data is on relays
     When I go to Settings > Privacy > Relay Data
     Then I should see pending messages on relays
@@ -245,7 +247,7 @@ Feature: Privacy Compliance
 
   @transparency @implemented
   Scenario: Understand E2E encryption
-    When I go to Settings > Privacy > How Your Data Is Protected
+    When I open "What is end-to-end encryption?" in Help
     Then I should see an explanation of E2E encryption
     And it should explain that Vauchi cannot read my data
     And it should explain that only my contacts can read updates

@@ -119,7 +119,6 @@ privacy_compliance :: Offline contact receives revocation on reconnect
 privacy_compliance :: Panic shred immediately destroys all data and notifies contacts
 privacy_compliance :: Relay notified on identity deletion
 privacy_compliance :: Understand E2E encryption
-privacy_compliance :: View what data is on relays
 privacy_compliance :: View what data is stored locally
 relay_network :: Deploy relay node with Docker
 relay_network :: Direct connection preferred
