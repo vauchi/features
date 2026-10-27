@@ -27,9 +27,6 @@ certificate_pinning :: Pin computation is deterministic
 certificate_pinning :: Pin is SHA-256 hash of the certificate's SPKI
 certificate_pinning :: Pin verification happens before sending data
 contact_actions :: CLI uses open crate
-contact_card_management :: Cancel editing preserves original values
-contact_card_management :: Cancel field removal
-contact_card_management :: Remove field updates contacts
 contact_card_management :: Validate social network username format
 contact_exchange :: BLE exchange prevents self-exchange
 contact_exchange :: BLE exchange rejects expired payload
