@@ -68,15 +68,6 @@ emergency_shred :: Panic shred when network is unavailable
 emergency_shred :: Shred verification audits completeness
 emergency_shred :: Soft shred cannot proceed before grace period expires
 emergency_shred :: Soft shred schedules deletion with grace period
-help_faq :: Access FAQs from CLI
-help_faq :: Access FAQs from desktop app
-help_faq :: Access FAQs from TUI
-help_faq :: FAQ content covers core topics
-help_faq :: FAQ localization for supported languages
-help_faq :: FAQs are available offline
-help_faq :: Search FAQs from CLI
-help_faq :: View FAQ categories from CLI
-help_faq :: View specific FAQ from CLI
 identity_management :: Generate device linking QR code
 identity_management :: Link second device successfully
 mesh_exchange :: Discover nearby Vauchi users
