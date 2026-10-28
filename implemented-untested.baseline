@@ -31,11 +31,6 @@ demo_contact :: Demo contact does not count as real contact
 duress_mode :: Cannot disable duress mode from duress mode
 duress_mode :: Duress password option hidden until app password enabled
 duress_mode :: Pre-populate decoy contacts
-emergency_broadcast :: Alert is encrypted end-to-end
-emergency_broadcast :: Alert looks like normal sync traffic
-emergency_broadcast :: Blocked contact in trusted list
-emergency_broadcast :: Emergency broadcast with confirmation
-emergency_broadcast :: Rate limiting emergency broadcasts
 identity_management :: Generate device linking QR code
 identity_management :: Link second device successfully
 mesh_exchange :: Discover nearby Vauchi users

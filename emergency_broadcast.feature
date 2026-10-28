@@ -58,8 +58,9 @@ Feature: Emergency Broadcast
   # Triggering Alerts
   # ============================================================
 
-  @trigger @implemented
+  @trigger @planned
   Scenario: Send emergency broadcast from app
+    # Configure and send exist in Core and the CLI only.
     Given I have configured emergency broadcast contacts
     When I navigate to the emergency broadcast screen
     And I trigger the alert
@@ -81,8 +82,9 @@ Feature: Emergency Broadcast
     And this should work without opening the full app
   # promoted_to: tui!67, desktop!99
 
-  @trigger @implemented
+  @trigger @planned
   Scenario: Emergency broadcast with confirmation
+    # The app has no broadcast screen yet; the CLI asks before sending.
     Given I am about to send an emergency broadcast
     When I tap the send button
     Then I should see a brief confirmation: "Send alert to 5 contacts?"
@@ -248,17 +250,19 @@ Feature: Emergency Broadcast
     Then queued alerts should be cancelled
     And I should see confirmation of cancellation
 
-  @edge @implemented
+  @edge @planned
   Scenario: Blocked contact in trusted list
     Given I have blocked a contact who was in my trusted list
     Then they should be automatically removed from trusted list
+    And I should be told they were removed
     And they should not receive emergency broadcasts
+    # Today a blocked contact stays listed and is skipped when an alert is sent.
   # promoted_to: tui!67
 
   @edge @implemented
   Scenario: Rate limiting emergency broadcasts
     Given I have sent an emergency broadcast
     When I try to send another within 1 minute
-    Then I should see a warning "Alert recently sent"
-    And I should be asked to confirm
+    Then the second alert should be refused
+    And I can send again once the minute has passed
     And this prevents accidental repeated alerts
