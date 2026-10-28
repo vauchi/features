@@ -127,15 +127,6 @@ sync_updates :: Receive update while offline
 sync_updates :: Relay stores updates for offline contacts
 sync_updates :: Sync state persisted atomically
 sync_updates :: Sync via relay
-theming :: Apply Catppuccin Frappé (dark)
-theming :: Apply Catppuccin Macchiato (dark)
-theming :: Catppuccin flavor themes available
-theming :: Dracula theme available
-theming :: Gruvbox themes available
-theming :: High contrast mode overrides theme
-theming :: Nord theme available
-theming :: Solarized themes available
-theming :: Theme applies on iOS
 visibility_control :: A visible field outside every group reaches group members too
 visibility_control :: Block contact removes all their visibility
 visibility_control :: Contact cannot determine hidden field existence
