@@ -168,9 +168,9 @@ Feature: Contact Recovery
 
   @recovery @identity @implemented
   Scenario: Remember old identity fingerprint
-    Given Alice had an identity with fingerprint "ABCD-1234-EFGH-5678"
+    Given Alice had an identity with public key "pk_old"
     When Alice creates a new identity on a new device
-    Then Alice can enter her old fingerprint manually
+    Then Alice can enter her old public key manually
     And the app stores the recovery claim for "pk_old"
   # ============================================================
   # In-Person Vouching Process

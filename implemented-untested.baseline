@@ -39,10 +39,7 @@ contact_import :: Phone normalization detects duplicates across formatting
 contact_recovery :: Isolated contact accepts with warning
 contact_recovery :: Isolated contact meets in person and vouches
 contact_recovery :: Recovery after losing all devices
-contact_recovery :: Recovery when user has multiple devices
 contact_recovery :: Reject recovery
-contact_recovery :: Remember old identity fingerprint
-contact_recovery :: Trust state is private to the user
 contact_recovery :: What is NOT recovered
 contact_recovery :: What is recovered
 contacts_management :: Search contacts by field value
