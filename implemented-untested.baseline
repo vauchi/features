@@ -13,10 +13,6 @@ ble_exchange_modes :: Accepting relay fallback switches to Link mode
 ble_exchange_modes :: BLE failure offers relay fallback
 ble_exchange_modes :: Shake mode records and exchanges envelopes
 certificate_pinning :: Connection rejected with mismatched certificate
-certificate_pinning :: Graceful certificate rotation
-certificate_pinning :: Pin computation is deterministic
-certificate_pinning :: Pin is SHA-256 hash of the certificate's SPKI
-certificate_pinning :: Pin verification happens before sending data
 contact_actions :: CLI uses open crate
 contact_exchange :: BLE exchange rejects expired payload
 contact_import :: Phone normalization detects duplicates across formatting
