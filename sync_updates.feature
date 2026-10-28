@@ -176,7 +176,7 @@ Feature: Sync and Updates
 
   @efficiency @planned
   Scenario: Merkle tree for efficient sync detection
-    # MerkleTree exists but sync does not use it; deltas come from the pending queue (private#880).
+    # MerkleTree exists but sync does not use it; deltas come from the pending queue.
     Given Bob and I have been synced
     When we reconnect after a period offline
     Then Merkle tree comparison should detect changes

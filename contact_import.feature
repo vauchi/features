@@ -93,8 +93,7 @@ Feature: External Contact Import
     Then Bob should have email "bob@example.com"
   # Visual distinction
 
-  # Planned: the contacts list shows no kind indicator on any row
-  # (private#631).
+  # Planned: the contacts list shows no kind indicator on any row.
   @display @planned
   Scenario: Imported contacts are visually distinct
     Given I have exchanged contact "Carol" and imported contact "Bob"

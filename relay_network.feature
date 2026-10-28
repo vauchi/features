@@ -22,7 +22,7 @@ Feature: Relay Network
     And I should see "Delivered via relay"
 
   # Planned: card updates always travel through a relay; the only direct
-  # transport is the in-person exchange (private#631).
+  # transport is the in-person exchange.
   @usage @planned
   Scenario: Direct connection preferred
     Given Bob and I can establish direct P2P connection
@@ -85,7 +85,7 @@ Feature: Relay Network
     Then a relay node should start
     And it should begin accepting connections
     # Joining the relay network is not implemented: a started relay contacts
-    # no peer until it offloads (private#872).
+    # no peer until it offloads.
 
   @contribute @implemented
   Scenario: Relay node configuration
@@ -185,7 +185,7 @@ Feature: Relay Network
     And the sender should be notified
 
   # Planned: there is no proof of work, and per-mailbox limits do not stop
-  # one party using many mailboxes (private#631).
+  # one party using many mailboxes.
   @abuse @planned
   Scenario: Sybil attack resistance
     Given an attacker tries to flood the network
@@ -343,7 +343,7 @@ Feature: Relay Network
 
   @federation @phase3 @planned
   Scenario: Relay registry for peer discovery
-    # The registry exists but nothing fills it at runtime (private#872).
+    # The registry exists but nothing fills it at runtime.
     Given multiple relay nodes exist
     Then there should be a registry of known relays
     And the registry should include relay capacity status

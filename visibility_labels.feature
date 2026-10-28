@@ -346,8 +346,7 @@ Feature: Visibility Labels
   @display-name-override @planned
   Scenario: Per-group display name override
     # The resolver exists, but the send path does not apply per-group
-    # presentation yet, so contacts still see the default name (ADR-054,
-    # private#374).
+    # presentation yet, so contacts still see the default name (ADR-054).
     Given I have a group "Business"
     When I set the display name override to "Dr. Egloff"
     Then contacts in "Business" should see my name as "Dr. Egloff"

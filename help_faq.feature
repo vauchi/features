@@ -163,14 +163,14 @@ Feature: Help & FAQ System
 
   @platform @planned
   Scenario: Access FAQs from desktop app
-    # Help shows its own list, not the FAQ catalog by category (private#876).
+    # Help shows its own list, not the FAQ catalog by category.
     When I navigate to the Help page
     Then I should see a searchable FAQ interface
     And I should be able to browse by category
 
   @platform @planned
   Scenario: Access FAQs from TUI
-    # Help shows its own list, not the FAQ catalog by category (private#876).
+    # Help shows its own list, not the FAQ catalog by category.
     When I navigate to the Help screen
     Then I should see FAQ content navigable with keyboard
 
@@ -180,7 +180,7 @@ Feature: Help & FAQ System
 
   @offline @planned
   Scenario: FAQs are available offline
-    # Help works offline but omits most catalog FAQs (private#876).
+    # Help works offline but omits most catalog FAQs.
     Given I have no network connection
     When I open the Help section
     Then I should see all bundled FAQ content
