@@ -83,9 +83,3 @@ visibility_control :: Contact cannot determine hidden field existence
 visibility_control :: New contacts see fields I made visible to all
 visibility_control :: New fields default to hidden for grouped contacts
 visibility_control :: Visibility changes are atomic
-visibility_labels :: Cancel label deletion
-visibility_labels :: Cannot rename to existing label name
-visibility_labels :: Default labels are suggested on first use
-visibility_labels :: Labels exist only on my devices
-visibility_labels :: Transition from no-group to groups mode
-visibility_labels :: View which labels can see a field
