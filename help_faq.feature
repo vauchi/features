@@ -147,7 +147,7 @@ Feature: Help & FAQ System
 
   @platform @implemented
   Scenario: Search FAQs from CLI
-    When I run "vauchi faq list --query encryption"
+    When I run "vauchi faq list encryption"
     Then I should see only FAQs matching "encryption"
 
   @platform @implemented
@@ -161,14 +161,16 @@ Feature: Help & FAQ System
     Then I should see the full question and answer
     And I should see related FAQ IDs if any exist
 
-  @platform @implemented
+  @platform @planned
   Scenario: Access FAQs from desktop app
+    # Help shows its own list, not the FAQ catalog by category.
     When I navigate to the Help page
     Then I should see a searchable FAQ interface
     And I should be able to browse by category
 
-  @platform @implemented
+  @platform @planned
   Scenario: Access FAQs from TUI
+    # Help shows its own list, not the FAQ catalog by category.
     When I navigate to the Help screen
     Then I should see FAQ content navigable with keyboard
 
@@ -176,8 +178,9 @@ Feature: Help & FAQ System
   # Offline & Updates
   # ============================================================
 
-  @offline @implemented
+  @offline @planned
   Scenario: FAQs are available offline
+    # Help works offline but omits most catalog FAQs.
     Given I have no network connection
     When I open the Help section
     Then I should see all bundled FAQ content

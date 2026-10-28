@@ -39,7 +39,7 @@ Feature: Demo Contact
   # Demo Updates
   # ============================================================
 
-  @demo-updates @implemented
+  @demo-updates @planned
   Scenario: Demo contact sends periodic updates
     Given the demo contact exists
     And I have been using the app for some time
@@ -47,7 +47,7 @@ Feature: Demo Contact
     Then I should receive an update notification
     And the update should contain a new tip or feature explanation
 
-  @demo-updates @implemented
+  @demo-updates @planned
   Scenario: Demo updates demonstrate the update flow
     Given the demo contact exists
     When I receive a demo update
@@ -55,7 +55,7 @@ Feature: Demo Contact
     And the contact card should show updated content
     And this demonstrates how real updates work
 
-  @demo-updates @implemented
+  @demo-updates @planned
   Scenario: Demo update shows before/after diff
     Given the demo contact exists
     And I view a demo update for the first time
@@ -75,7 +75,7 @@ Feature: Demo Contact
       | updates         | How updates work                    |
       | recovery        | What happens if you lose your phone |
 
-  @demo-content @implemented
+  @demo-content @planned
   Scenario: Demo tips change over time
     Given the demo contact exists
     When I check the demo contact later
@@ -92,7 +92,7 @@ Feature: Demo Contact
     Then the demo contact should be removed
     And I can restore it from Settings if needed
 
-  @demo-dismiss @implemented
+  @demo-dismiss @planned
   Scenario: Demo contact auto-removes after first real exchange
     Given the demo contact exists
     When I complete an exchange with a real contact
@@ -121,7 +121,7 @@ Feature: Demo Contact
     Given the demo contact exists
     When I check my contact count
     Then the demo contact should not be counted
-    And sharing stats should exclude the demo
+    And it should not be listed among my contacts
   # ============================================================
   # Persistence
   # ============================================================

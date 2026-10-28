@@ -16,7 +16,7 @@ Feature: Remote Content Updates
 
   @manifest @implemented
   Scenario: Fetch content manifest on app launch
-    Given the app has not checked for updates today
+    Given the app has never checked for content updates
     When the app launches
     Then the app should fetch the manifest from the content server
     And the manifest should be cached locally
@@ -24,10 +24,10 @@ Feature: Remote Content Updates
   @manifest @offline @implemented
   Scenario: Use cached manifest when offline
     Given the app has a cached manifest from a previous session
-    And the device is offline
-    When the app launches
-    Then the app should use the cached manifest
-    And no network requests should be made for content
+    And the content server cannot be reached
+    When the app checks for updates
+    Then the check should fail without changing the cache
+    And the cached content should stay in use
 
   @manifest @interval @implemented
   Scenario: Respect update check interval
@@ -82,7 +82,6 @@ Feature: Remote Content Updates
     And the remote manifest has networks version "2.0.0" requiring app version "1.5.0"
     When the app checks for updates
     Then networks should not be listed as updateable
-    And a warning should be logged about version incompatibility
 
   @version @compatibility @implemented
   Scenario: Apply updates compatible with current app version

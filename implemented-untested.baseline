@@ -6,103 +6,22 @@
 # only shrink: add a test annotated `// @scenario: <stem> :: <name>`, or
 # retag the scenario @planned, then delete its line here.
 accessibility :: Helpful error messages
-ble_exchange :: Commit on nonexistent contact returns error
-ble_exchange :: Commit returns pending data and removes it
-ble_exchange :: Default rollback manager is empty
-ble_exchange :: Rollback all clears everything
-ble_exchange :: Rollback clears pending contact data
-ble_exchange :: Rollback on nonexistent contact is a no-op
-ble_exchange_modes :: Accepting relay fallback switches to Link mode
-ble_exchange_modes :: BLE failure offers relay fallback
 ble_exchange_modes :: Shake mode records and exchanges envelopes
 certificate_pinning :: Connection rejected with mismatched certificate
-certificate_pinning :: Graceful certificate rotation
-certificate_pinning :: Pin computation is deterministic
-certificate_pinning :: Pin is SHA-256 hash of the certificate's SPKI
-certificate_pinning :: Pin verification happens before sending data
-contact_actions :: CLI uses open crate
-contact_exchange :: Deny exchange request
-contact_exchange :: Exchange blocked on low battery
-contact_exchange :: Exchange fails due to full storage
-contact_exchange :: Incomplete exchange recovery
-contact_import :: Create local organization group
-contact_import :: Imported contacts are visually distinct
-contact_import :: Local groups have no visibility semantics
-contact_import :: Phone normalization detects duplicates across formatting
 contact_recovery :: Isolated contact accepts with warning
 contact_recovery :: Isolated contact meets in person and vouches
 contact_recovery :: Recovery after losing all devices
 contact_recovery :: Reject recovery
 contact_recovery :: What is NOT recovered
 contact_recovery :: What is recovered
-contacts_management :: Search contacts by field value
-demo_contact :: Demo contact does not count as real contact
-device_management :: Insufficient storage for sync
-device_management :: Interrupted initial sync
-device_management :: Link new device via numeric code
-device_management :: Transfer primary device role
-duress_mode :: Cannot disable duress mode from duress mode
-duress_mode :: Duress password option hidden until app password enabled
-duress_mode :: Pre-populate decoy contacts
-emergency_broadcast :: Alert is encrypted end-to-end
-emergency_broadcast :: Alert looks like normal sync traffic
-emergency_broadcast :: Blocked contact in trusted list
-emergency_broadcast :: Emergency broadcast with confirmation
-emergency_broadcast :: Rate limiting emergency broadcasts
-emergency_shred :: Hard shred after grace period
-emergency_shred :: Hard shred attempts network notifications before destruction
-emergency_shred :: Panic shred when network is unavailable
-emergency_shred :: Shred verification audits completeness
-emergency_shred :: Soft shred cannot proceed before grace period expires
-emergency_shred :: Soft shred schedules deletion with grace period
-help_faq :: Access FAQs from desktop app
-help_faq :: Access FAQs from TUI
-help_faq :: FAQs are available offline
 identity_management :: Generate device linking QR code
-identity_management :: Link second device successfully
-mesh_exchange :: Discover nearby Vauchi users
-mesh_exchange :: Exchange timeout
-mesh_exchange :: Exchange with user already in contacts
-mesh_exchange :: Replay attack prevention
-message_delivery :: Read receipts are off by default
 onboarding :: Demo contact removed after first real contact
 onboarding :: Demo contact updates demonstrate value
-performance :: Clear cache option
-performance :: Handle low disk space
-performance :: Handle process killed for memory on Android
-performance :: Reasonable storage footprint
-pre_signed_operations :: Contact can verify deletion notice signature
 pre_signed_operations :: Relay can verify purge request signature
 privacy_compliance :: View what data is stored locally
-relay_network :: Direct connection preferred
-relay_network :: No special privileges for contributors
-relay_network :: Relay registry for peer discovery
-relay_network :: Sybil attack resistance
 relay_transport_security :: Defense in depth
-release_privacy_multidevice_certification :: Exact two-user update propagates through both privacy hops
-remote_content :: Fetch content manifest on app launch
-remote_content :: Skip updates requiring newer app version
-remote_content :: Use cached manifest when offline
-sealed_mailbox :: AccountRevoked verified client-side
-sealed_mailbox :: Contact mailbox token derived from shared key
-sealed_mailbox :: Device sync routed by self-token
 sealed_mailbox :: Encrypted transport is mandatory
-sealed_mailbox :: Register mailbox tokens on connect
-sealed_mailbox :: Token set padded to hide contact count
 storage_key_upgrade :: A keychain that fails for another reason offers Try again
 storage_key_upgrade :: A keychain that needs an unlock starts on Core's unlock screen
 storage_key_upgrade :: The upgrade keeps everything and leaves only Core's key
 storage_key_upgrade :: Unlocking finishes the upgrade
-sync_updates :: Compression of sync payloads
-sync_updates :: Handle SSH disconnection
-sync_updates :: Merkle tree for efficient sync detection
-sync_updates :: Sync state persisted atomically
-theming :: High contrast mode overrides theme
-theming :: Theme applies on iOS
-visibility_control :: A visible field outside every group reaches group members too
-visibility_control :: Block contact removes all their visibility
-visibility_control :: Contact cannot determine hidden field existence
-visibility_control :: New contacts see fields I made visible to all
-visibility_control :: New fields default to hidden for grouped contacts
-visibility_control :: Visibility changes are atomic
-visibility_labels :: Default labels are suggested on first use

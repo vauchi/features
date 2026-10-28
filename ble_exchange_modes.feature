@@ -107,7 +107,7 @@ Feature: BLE Exchange Modes (Magic, Bump, Shake)
     Given Alice's BLE exchange has failed with fallback available
     When Alice accepts the relay fallback
     Then the exchange switches to Link mode
-    And relay escrow commands are emitted
+    And the Link share screen is shown
 
   @fallback @implemented
   Scenario: BLE discovery that finds no one offers Retry and QR

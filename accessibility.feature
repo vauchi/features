@@ -37,8 +37,7 @@ Feature: Accessibility
     Given I am using a screen reader on desktop
     When I open the app
     Then the screen reader should announce the window title
-    And ARIA landmarks should identify regions
-    And I should be able to navigate by landmarks
+    And the app's destinations should appear in the platform accessibility tree
 
   @screen-reader @implemented
   Scenario: Contact list is navigable with screen reader
@@ -108,12 +107,17 @@ Feature: Accessibility
     And focus should be visible at all times
     And the tab order should be logical
 
-  @keyboard @desktop @implemented
+  @keyboard @implemented
   Scenario: Keyboard shortcuts for common actions
+    Given a dialog or menu is open
+    When I press Escape
+    Then it should close
+
+  @keyboard @desktop @planned
+  Scenario: Shortcut to start an exchange, listed in help
     Given I am on the main screen
     When I press Ctrl+N (or Cmd+N on Mac)
     Then the new contact exchange screen should open
-    And pressing Escape should close dialogs
     And shortcuts should be documented in help
 
   @keyboard @desktop @implemented
@@ -136,7 +140,7 @@ Feature: Accessibility
   Scenario: TUI is fully keyboard navigable
     Given I am using the TUI app
     Then all actions should be accessible via keyboard
-    And key bindings should be shown on screen
+    And choices should show the key that selects them
     And navigation should follow terminal conventions
 
   # ============================================================

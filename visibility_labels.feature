@@ -30,17 +30,6 @@ Feature: Visibility Labels
     And the label should have no fields associated
 
   @label-create @implemented
-  Scenario: Default labels are suggested on first use
-    Given I have not created any labels yet
-    When I open the label management screen
-    Then I should see suggested labels:
-      | label        |
-      | Family       |
-      | Friends      |
-      | Professional |
-    And I should be able to create them with one tap
-
-  @label-create @implemented
   Scenario: Create custom label with any name
     When I create a new label named "University Colleagues"
     Then the label "University Colleagues" should be created
@@ -65,7 +54,7 @@ Feature: Visibility Labels
   Scenario: Cannot rename to existing label name
     Given I have labels "Friends" and "Family"
     When I try to rename "Friends" to "Family"
-    Then I should see an error "Label name already in use"
+    Then I should see an error naming "Family" as taken
     And the label should remain named "Friends"
 
   @label-delete @implemented
@@ -155,8 +144,9 @@ Feature: Visibility Labels
   Scenario: View which labels can see a field
     Given my "Personal" phone is visible to labels "Family" and "Close Friends"
     When I view visibility settings for "Personal" phone
-    Then I should see "Family" and "Close Friends" listed
-    And I should see how many contacts are in each label
+    Then I should see "Family" and "Close Friends" switched on
+    And I should see each contact who can see it, with the label that lets them
+    And I should see how many contacts can see it in total
   # Label-based Visibility in Action
 
   @visibility-effect @implemented
@@ -244,7 +234,7 @@ Feature: Visibility Labels
   @local-only @implemented
   Scenario: Labels exist only on my devices
     Given I have labels "Family", "Friends", and "Work"
-    When Bob exchanges contacts with me
+    When Bob receives my card
     Then Bob should not receive any label information
     And my labels should remain private to me
 
@@ -353,8 +343,10 @@ Feature: Visibility Labels
   # Display Name Overrides
   # ============================================================
 
-  @display-name-override @implemented
+  @display-name-override @planned
   Scenario: Per-group display name override
+    # The resolver exists, but the send path does not apply per-group
+    # presentation yet, so contacts still see the default name (ADR-054).
     Given I have a group "Business"
     When I set the display name override to "Dr. Egloff"
     Then contacts in "Business" should see my name as "Dr. Egloff"
@@ -395,4 +387,4 @@ Feature: Visibility Labels
     And I have an email field marked as shown
     When I create a group "Family"
     Then the email field should still be marked as shown on the card
-    And I should be prompted to assign shown fields to groups
+    And I should be told that entries outside every group keep their own Visible/Hidden toggle

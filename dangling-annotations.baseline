@@ -65,7 +65,6 @@ avatar_editor_wiring :: remove avatar action clears and completes
 avatar_editor_wiring :: save avatar persists and navigates back
 backup_format_versioning :: backup contains only the master seed
 backup_format_versioning :: backup level toggle switches between full and identity-only
-backup_format_versioning :: full backup defaults to full level
 backup_format_versioning :: full backup import rejects existing identity
 backup_format_versioning :: full backup requires identity
 backup_format_versioning :: full backup round-trip via api

@@ -21,7 +21,9 @@ Feature: Relay Network
     And the update should be delivered via relay
     And I should see "Delivered via relay"
 
-  @usage @implemented
+  # Planned: card updates always travel through a relay; the only direct
+  # transport is the in-person exchange.
+  @usage @planned
   Scenario: Direct connection preferred
     Given Bob and I can establish direct P2P connection
     When I send an update to Bob
@@ -81,8 +83,9 @@ Feature: Relay Network
     Given I want to contribute a relay node
     When I run the Docker image
     Then a relay node should start
-    And it should join the relay network
     And it should begin accepting connections
+    # Joining the relay network is not implemented: a started relay contacts
+    # no peer until it offloads.
 
   @contribute @implemented
   Scenario: Relay node configuration
@@ -126,12 +129,11 @@ Feature: Relay Network
     And contribution should always be voluntary
 
   @contribution @implemented
-  Scenario: No special privileges for contributors
+  Scenario: No mailbox gets privileged treatment
     Given I am running a relay node
-    Then I should not get priority routing
-    And I should not get extra storage
-    And all users should be treated equally
-    # promoted_to: relay (all clients treated equally, no contributor concept)
+    Then my own mailbox has the same storage quota as every other mailbox
+    And my own mailbox has the same rate limit as every other mailbox
+    And no setting exempts any mailbox from either limit
   # Relay Network Health
 
   @health @implemented
@@ -165,7 +167,7 @@ Feature: Relay Network
     Given a user is sending excessive traffic
     Then the relay should rate limit them
     And legitimate traffic should not be affected
-    And the rate limit should be per-authenticated-identity
+    And the rate limit should be per mailbox, since the relay never learns who is sending
 
   @abuse @implemented
   Scenario: Storage limits per blob
@@ -182,7 +184,9 @@ Feature: Relay Network
     And storage should be reclaimed
     And the sender should be notified
 
-  @abuse @implemented
+  # Planned: there is no proof of work, and per-mailbox limits do not stop
+  # one party using many mailboxes.
+  @abuse @planned
   Scenario: Sybil attack resistance
     Given an attacker tries to flood the network
     Then proof-of-work may be required
@@ -193,9 +197,8 @@ Feature: Relay Network
   @protocol @implemented
   Scenario: Relay node authentication
     Given I am connecting to a relay
-    Then the relay should authenticate with a certificate
-    And I should verify the relay's identity
-    And connection should be encrypted (TLS)
+    Then the relay's gateway key should chain to the anchor pinned for that relay
+    And a key signed under any other anchor should never be installed
   # Signed Operations (originally "Relay Authentication Phase 1",
   # relay!28 + core!88). Connection-level identity authentication was
   # retired with the sealed-mailbox model (SP-33, ADR-029/ADR-037):
@@ -274,7 +277,7 @@ Feature: Relay Network
     Given all relay nodes are unreachable
     When I try to send an update
     Then the update should be queued locally
-    And I should be notified "Updates will send when network available"
+    And I should be notified "You're offline. Changes will sync when you reconnect."
     And retry should occur periodically
 
   @fallback @planned
@@ -338,8 +341,9 @@ Feature: Relay Network
     And it should establish peer connections
     And it should exchange capacity information periodically
 
-  @federation @phase3 @implemented
+  @federation @phase3 @planned
   Scenario: Relay registry for peer discovery
+    # The registry exists but nothing fills it at runtime.
     Given multiple relay nodes exist
     Then there should be a registry of known relays
     And the registry should include relay capacity status
@@ -427,7 +431,7 @@ Feature: Relay Network
     Then relay B should answer with its own version and "accepted: false"
     And relay A should not offload any blobs to relay B
     And relay A's blobs should remain in local storage for retry
-    And the refusal should be visible in both relays' metrics
+    And relay B should count the handshake and relay A the refused connection in their metrics
     # promoted_to: relay (tests/it/federation_handshake_tests.rs +
     # federation_connector_tests.rs, 2026-07-04-federation-version-negotiation)
 
@@ -439,12 +443,3 @@ Feature: Relay Network
     And no message should ever be silently discarded without a metric
     # promoted_to: relay (tests/it/federation_http_tests.rs,
     # 2026-07-04-federation-version-negotiation)
-
-  @security @implemented
-  Scenario: No mailbox gets privileged treatment
-    Given a relay with a per-mailbox quota and a per-mailbox rate limit
-    When one mailbox is flooded while another is quiet
-    Then the flooded mailbox is refused with "too many requests" once it exceeds its limit
-    And the quiet mailbox is still served
-    And the operator's own mailbox hits the same quota as a stranger's
-    # promoted_to: relay (tests/it/rate_limit_ux.rs, tests/it/http_api_limits_tests.rs)

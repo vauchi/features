@@ -274,20 +274,11 @@ Feature: Message Delivery Guarantees
   # ============================================================
 
   @privacy @implemented
-  Scenario: Delivery receipts are optional
-    Given I value privacy over delivery confirmation
-    When I disable delivery receipts in settings
-    Then I should not receive delivery acknowledgments
-    And contacts should not know when I received updates
-    And the relay should not track my online status
-
-  @privacy @implemented
   Scenario: Read receipts are off by default
     Given I receive an update from Alice
     And I have not enabled read receipts
-    Then Alice should not know when I read the update
-    And there should be no "seen" indicators
-    And only delivery (not read) status is tracked
+    When I open Alice's contact
+    Then nothing should be sent back to Alice
     # Read receipts are opt-in via Settings > Privacy > Read Receipts
     # (privacy_compliance.feature "Disable read receipts").
 

@@ -58,7 +58,7 @@ Feature: Contacts Management
     Given I have contacts with various phone numbers
     When I search for "555-1234"
     Then I should see contacts with that phone number
-    And the matching field should be highlighted
+    And each contact found by a field should show that field under its name
 
   @filter @implemented
   Scenario: Filter contacts by group
@@ -182,7 +182,7 @@ Feature: Contacts Management
     Given Eve is blocked
     When Eve tries to exchange contacts with me
     Then the exchange should be rejected
-    And Eve should see "Exchange declined"
+    And Eve should see "Exchange failed"
 
   # Favorites
 

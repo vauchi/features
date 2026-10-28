@@ -93,7 +93,8 @@ Feature: External Contact Import
     Then Bob should have email "bob@example.com"
   # Visual distinction
 
-  @display @implemented
+  # Planned: the contacts list shows no kind indicator on any row.
+  @display @planned
   Scenario: Imported contacts are visually distinct
     Given I have exchanged contact "Carol" and imported contact "Bob"
     When I view the contacts list
@@ -141,17 +142,6 @@ Feature: External Contact Import
     When device B links to device A via full sync
     Then device B should have imported contact "Bob"
     And Bob's hidden/blocked/favorite flags should be preserved
-  # Local groups
-
-  @groups @implemented
-  Scenario: Create local organization group
-    Given I create a local group called "Family"
-    And I add imported contact "Bob" to "Family"
-    When I view the "Family" group
-    Then I should see "Bob" in the group
-
-  @groups @implemented
-  Scenario: Local groups have no visibility semantics
-    Given I have a local group "Friends" with imported contact "Bob"
-    Then the group should NOT control what Bob sees of my card
-    And the group should have no "visible_fields" property
+  # Local groups were retired (ADR-054, core 22a0b9497, 2026-06-13): they had
+  # no API or UI. Organising contacts without sharing anything is done with
+  # tags (ADR-051).

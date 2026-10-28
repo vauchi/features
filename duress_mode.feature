@@ -69,11 +69,11 @@ Feature: Duress Mode
     And the duress password must be different from my real password
 
   @setup @implemented
-  Scenario: Duress password option hidden until app password enabled
+  Scenario: Duress PIN requires an app password
     Given app password is not enabled
-    When I view Security settings
-    Then "Duress password" option should not be visible
-    And only duress PIN option should be available
+    When I try to set up a duress PIN
+    Then the setup should be refused
+    And I should be told an app password is needed first
 
   @setup @planned
   Scenario: Duress password strength requirements
@@ -121,13 +121,15 @@ Feature: Duress Mode
     And selected contacts become static decoy entries
     And they are disconnected from real phone contacts
 
-  @decoy @implemented
+  @decoy @planned
   Scenario: Pre-populate decoy contacts
     Given I am setting up duress mode
     When I choose to auto-populate decoy contacts
-    Then contacts should be created with realistic names
-    And cards should contain plausible fake data
-    And the list should look like a normal contact list
+    Then a small handful of contacts should be created (roughly 3 to 8)
+    And their cards should be sparse, a phone or an email, rarely both
+    And their timestamps should spread plausibly over months
+    And no two generated profiles should be identical
+    # ADR-032 addendum 2026-07-04: decoys read as an almost unused app.
 
   @decoy @planned
   Scenario: Auto-generated decoys read as an almost unused app

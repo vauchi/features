@@ -134,16 +134,8 @@ Feature: Identity Management
     And the QR code should contain encrypted device linking data
     And the QR code should expire after 5 minutes
 
-  @multi-device @implemented
-  Scenario: Link second device successfully
-    Given I have an existing identity on Device A
-    And Device A is displaying a device linking QR code
-    And I have Vauchi installed on Device B
-    When I scan the QR code with Device B
-    And proximity is verified between devices
-    Then Device B should receive my identity
-    And both devices should share the same public key
-    And both devices should appear in my linked devices list
+  # Linking the second device is specified in device_management.feature
+  # (Link new device via QR code).
 
   @multi-device @planned
   Scenario: Device linking requires proximity

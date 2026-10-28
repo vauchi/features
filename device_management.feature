@@ -32,8 +32,9 @@ Feature: Device Management
     And Device B should sync all my data
     And Device B should appear in my linked devices list
 
-  @link @implemented
+  @link @planned
   Scenario: Link new device via numeric code
+    # Linking starts from a scanned QR; there is no typed-code path.
     Given Device A is showing a linking code "123-456-789"
     And I have Vauchi on Device B without camera
     When I enter "123-456-789" on Device B
@@ -257,8 +258,9 @@ Feature: Device Management
     Then I should be able to link it using Device B
     And Device C should receive all my data
 
-  @recovery @implemented
+  @recovery @planned
   Scenario: Transfer primary device role
+    # DeviceRegistry::transfer_primary exists but nothing in the app calls it.
     Given Device A is my primary device
     When Device A is about to be replaced
     Then I should be able to designate Device B as primary
@@ -302,8 +304,11 @@ Feature: Device Management
     Then the registry version should increment again
     And version should enable sync conflict detection
 
-  @edge-case @interruption @implemented
+  @edge-case @interruption @planned
   Scenario: Interrupted initial sync
+    # The initial state arrives as one payload with the link response, so a
+    # partial transfer cannot occur; what an interrupted link leaves in the
+    # registry is untested.
     Given I am linking Device B to Device A
     And the data transfer is 50% complete
     When Device B loses internet connection
@@ -311,8 +316,9 @@ Feature: Device Management
     And Device B should NOT show as a functional device in the registry
     And the process should resume or restart cleanly when reconnected
 
-  @edge-case @storage @implemented
+  @edge-case @storage @planned
   Scenario: Insufficient storage for sync
+    # No storage pre-check exists on the link path.
     Given Device B has only 10MB of free space
     And my identity data is 50MB
     When I attempt to link Device B
@@ -323,8 +329,8 @@ Feature: Device Management
   Scenario: Linking to a device that already has a different identity
     Given Device B is already set up with identity "Bob"
     When I try to link Device B to identity "Alice"
-    Then Device B must prompt: "Existing data will be wiped. Proceed?"
-    And "Bob's" data must be securely erased before "Alice's" data is synced
+    Then Device B should refuse with "This device already has an identity."
+    And "Bob's" data should be left untouched
 
   @edge-case @timezone @implemented
   Scenario: Timezone change during sync
