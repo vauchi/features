@@ -38,9 +38,6 @@ relay_transport_security :: No plaintext fallback exists
 relay_transport_security :: Non-https relay URLs are rejected at the parse boundary
 relay_transport_security :: Relay URLs must use https
 release_privacy_multidevice_certification :: Exact two-user update propagates through both privacy hops
-remote_content :: Fetch content manifest on app launch
-remote_content :: Skip updates requiring newer app version
-remote_content :: Use cached manifest when offline
 sealed_mailbox :: Encrypted transport is mandatory
 storage_key_upgrade :: A keychain that fails for another reason offers Try again
 storage_key_upgrade :: A keychain that needs an unlock starts on Core's unlock screen
