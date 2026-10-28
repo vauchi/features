@@ -286,8 +286,9 @@ Feature: Contact Card Exchange
 
   # Exchange States and Errors
 
-  @exchange-state @implemented
+  @exchange-state @planned
   Scenario: Incomplete exchange recovery
+    # Sessions expire after 60 s, but the app neither says "Exchange interrupted" nor resumes.
     Given Alice and Bob are mid-exchange
     When Alice's device loses connectivity
     Then the exchange should pause
@@ -440,8 +441,9 @@ Feature: Contact Card Exchange
     And the exchange should be retried
 
 
-  @privacy @consent @implemented
+  @privacy @consent @planned
   Scenario: Deny exchange request
+    # ConsentDenied exists but nothing raises it; there is no request/decline step.
     Given Alice sees Bob in the nearby list
     When Alice sends an exchange request to Bob
     And Bob selects "Decline"
@@ -458,15 +460,17 @@ Feature: Contact Card Exchange
 
   # Hardware & Resource Constraints
 
-  @hardware @battery @implemented
+  @hardware @battery @planned
   Scenario: Exchange blocked on low battery
+    # The capability gate blocks below 5% but nothing asks it before an exchange.
     Given Alice's device battery is below 5%
     When Alice attempts to initiate an exchange
     Then Alice should see "Battery too low for secure exchange"
     And the QR code should not be generated
 
-  @hardware @storage @implemented
+  @hardware @storage @planned
   Scenario: Exchange fails due to full storage
+    # No storage-full check exists on the exchange path.
     Given Bob's device has zero available storage
     When Bob scans Alice's QR code
     Then the exchange should fail

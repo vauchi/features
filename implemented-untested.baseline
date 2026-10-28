@@ -18,14 +18,7 @@ certificate_pinning :: Pin computation is deterministic
 certificate_pinning :: Pin is SHA-256 hash of the certificate's SPKI
 certificate_pinning :: Pin verification happens before sending data
 contact_actions :: CLI uses open crate
-contact_exchange :: BLE exchange prevents self-exchange
 contact_exchange :: BLE exchange rejects expired payload
-contact_exchange :: Card update propagates after exchange
-contact_exchange :: Deny exchange request
-contact_exchange :: Exchange blocked on low battery
-contact_exchange :: Exchange fails due to full storage
-contact_exchange :: Exchange timeout after interruption
-contact_exchange :: Incomplete exchange recovery
 contact_import :: Phone normalization detects duplicates across formatting
 contact_recovery :: Isolated contact accepts with warning
 contact_recovery :: Isolated contact meets in person and vouches
