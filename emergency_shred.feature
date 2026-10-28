@@ -39,7 +39,7 @@ Feature: Emergency Shred
     And the grace period has not expired
     When I try to execute hard shred
     Then the operation should be rejected
-    And I should see a message about the remaining grace period
+    And the app should not offer to delete now until the grace period ends
 
   # ============================================================
   # Hard Shred (Phase 2) — Irreversible Destruction
@@ -98,7 +98,7 @@ Feature: Emergency Shred
     Given I have no network connection
     When I trigger a panic shred
     Then local data should still be destroyed immediately
-    And pre-signed messages should be queued if possible
+    And notifications should be attempted once, with nothing left queued on the device
     And the shred report should note that notifications were not sent
 
   # ============================================================

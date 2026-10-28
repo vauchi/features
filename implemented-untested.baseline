@@ -36,12 +36,6 @@ emergency_broadcast :: Alert looks like normal sync traffic
 emergency_broadcast :: Blocked contact in trusted list
 emergency_broadcast :: Emergency broadcast with confirmation
 emergency_broadcast :: Rate limiting emergency broadcasts
-emergency_shred :: Hard shred after grace period
-emergency_shred :: Hard shred attempts network notifications before destruction
-emergency_shred :: Panic shred when network is unavailable
-emergency_shred :: Shred verification audits completeness
-emergency_shred :: Soft shred cannot proceed before grace period expires
-emergency_shred :: Soft shred schedules deletion with grace period
 identity_management :: Generate device linking QR code
 identity_management :: Link second device successfully
 mesh_exchange :: Discover nearby Vauchi users
