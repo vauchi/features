@@ -9,15 +9,6 @@ accessibility :: Helpful error messages
 accessibility :: Keyboard shortcuts for common actions
 accessibility :: Screen reader announces app structure on desktop
 accessibility :: TUI is fully keyboard navigable
-ble_exchange :: BLE payload has valid signature
-ble_exchange :: Commit on nonexistent contact returns error
-ble_exchange :: Commit returns pending data and removes it
-ble_exchange :: Default rollback manager is empty
-ble_exchange :: Large avatar roundtrips correctly
-ble_exchange :: Rollback all clears everything
-ble_exchange :: Rollback clears pending contact data
-ble_exchange :: Rollback on nonexistent contact is a no-op
-ble_exchange :: Tampered BLE payload fails signature verification
 ble_exchange_modes :: Accepting relay fallback switches to Link mode
 ble_exchange_modes :: BLE failure offers relay fallback
 ble_exchange_modes :: Shake mode records and exchanges envelopes

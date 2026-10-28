@@ -5,7 +5,7 @@
 Feature: BLE Exchange Protocol Internals
   As a Vauchi developer
   I want BLE exchange internals to be thoroughly specified
-  So that low-level transport, handshake, chunking, and rollback behaviors are traceable
+  So that low-level transport, handshake, and chunking behaviors are traceable
 
   Background:
     Given Alice has Vauchi installed with identity "Alice"
@@ -476,43 +476,6 @@ Feature: BLE Exchange Protocol Internals
     Given a truncated 50-byte KeyOffer packet
     When the packet is processed
     Then it should be rejected as invalid
-  # --- BLE Rollback ---
-
-  @rollback @implemented
-  Scenario: Rollback clears pending contact data
-    Given a pending contact has been recorded
-    When rollback is called for that contact
-    Then the pending data should be cleared
-
-  @rollback @implemented
-  Scenario: Rollback on nonexistent contact is a no-op
-    Given no pending contact exists for a given ID
-    When rollback is called for that ID
-    Then it should succeed without error
-
-  @rollback @implemented
-  Scenario: Commit returns pending data and removes it
-    Given a pending contact has been recorded
-    When commit is called
-    Then the pending data should be returned
-    And the pending entry should be removed
-
-  @rollback @error @implemented
-  Scenario: Commit on nonexistent contact returns error
-    Given no pending contact exists for a given ID
-    When commit is called for that ID
-    Then it should return an InvalidState error
-
-  @rollback @implemented
-  Scenario: Rollback all clears everything
-    Given multiple pending contacts have been recorded
-    When rollback_all is called
-    Then all pending data should be cleared
-
-  @rollback @implemented
-  Scenario: Default rollback manager is empty
-    When a new BLE rollback manager is created
-    Then it should have no pending data
   # --- BLE Chunking ---
 
   @chunking @implemented
