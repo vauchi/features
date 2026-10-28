@@ -28,13 +28,6 @@ contact_recovery :: What is NOT recovered
 contact_recovery :: What is recovered
 contacts_management :: Search contacts by field value
 demo_contact :: Demo contact does not count as real contact
-device_management :: Insufficient storage for sync
-device_management :: Interrupted initial sync
-device_management :: Link new device via numeric code
-device_management :: Linking code ignores timezone
-device_management :: Linking to a device that already has a different identity
-device_management :: Timezone change during sync
-device_management :: Transfer primary device role
 duress_mode :: Cannot disable duress mode from duress mode
 duress_mode :: Duress password option hidden until app password enabled
 duress_mode :: Pre-populate decoy contacts
