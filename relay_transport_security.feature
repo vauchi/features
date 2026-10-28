@@ -67,11 +67,13 @@ Feature: Relay Transport Security
   Scenario: Defense in depth
     When I send an update through the relay
     Then TLS should protect every hop
+    And the request should always travel through the OHTTP relay
     And the update payload should be end-to-end encrypted for the recipient
     And a compromised relay should still see only encrypted blobs
-    And with OHTTP configured, no single operator should see both my IP and my traffic pattern
-    # Operator separation is mandatory: the vauchi relay and the OHTTP
-    # relay must be run by distinct entities (ADR-037).
+    And the OHTTP relay and the vauchi relay should run on separate hosts
+    # Alpha and beta run both hops under one operator on separate hosts; a
+    # distinct operator is required before the release stage (ADR-037
+    # addendum 2026-09-08, gate RG-7).
   # ============================================================
   # Relay Side — no unencrypted client transport
   # ============================================================
