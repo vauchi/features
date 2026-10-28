@@ -8,20 +8,14 @@
 accessibility :: Helpful error messages
 ble_exchange_modes :: Shake mode records and exchanges envelopes
 certificate_pinning :: Connection rejected with mismatched certificate
-contact_actions :: CLI uses open crate
 contact_exchange :: BLE exchange rejects expired payload
-contact_import :: Phone normalization detects duplicates across formatting
 contact_recovery :: Isolated contact accepts with warning
 contact_recovery :: Isolated contact meets in person and vouches
 contact_recovery :: Recovery after losing all devices
 contact_recovery :: Reject recovery
 contact_recovery :: What is NOT recovered
 contact_recovery :: What is recovered
-contacts_management :: Search contacts by field value
-demo_contact :: Demo contact does not count as real contact
 identity_management :: Generate device linking QR code
-identity_management :: Link second device successfully
-message_delivery :: Read receipts are off by default
 onboarding :: Demo contact removed after first real contact
 onboarding :: Demo contact updates demonstrate value
 pre_signed_operations :: Relay can verify purge request signature

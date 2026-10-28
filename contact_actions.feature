@@ -349,11 +349,11 @@ Feature: Open Contact Info in External Applications
     And the system default application should open
 
   @platform @cli @implemented
-  Scenario: CLI uses open crate
+  Scenario: CLI hands each field's link to the system handler
     Given I am using the CLI
     And I view Bob's contact details
     When I select to open a contact field
-    Then the open crate should launch the system handler
+    Then the CLI should hand its tel, sms, mailto, web or map link to the system handler
 
   @platform @tui @planned
   Scenario: TUI offers to open in external app

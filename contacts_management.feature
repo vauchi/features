@@ -58,7 +58,7 @@ Feature: Contacts Management
     Given I have contacts with various phone numbers
     When I search for "555-1234"
     Then I should see contacts with that phone number
-    And the matching field should be highlighted
+    And each contact found by a field should show that field under its name
 
   @filter @implemented
   Scenario: Filter contacts by group
