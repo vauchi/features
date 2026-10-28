@@ -99,10 +99,10 @@ Feature: Pre-signed Operations
     And the relay should accept the signature using my public key
 
   @crypto @implemented
-  Scenario: Contact can verify deletion notice signature
-    Given I have a pre-signed deletion notice
-    Then the signature should be valid over the serialized notice
-    And contacts should accept the signature using my public key
+  Scenario: Contacts verify the revocation a deletion sends
+    Given I delete my identity
+    Then each contact receives a revocation signed with my identity key
+    And a contact acts on it only if the signature verifies with my public key
 
   @crypto @implemented
   Scenario: Tampered pre-signed message is rejected
