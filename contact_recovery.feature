@@ -608,3 +608,12 @@ Feature: Contact Recovery
     Given a client makes 1000 recovery proof queries in 1 minute
     Then the relay rate limits the client
     And returns "too many requests" error
+
+  @recovery @implemented
+  Scenario: Reviewing a recovery claim
+    Given a contact has fetched a recovery proof and Core has verified it
+    When the review screen is built from that proof and its verdict
+    Then the confidence shown follows the verified count of mutual vouchers against the threshold
+    And enough mutual vouchers review as high confidence, one as medium, none as low
+    And the fingerprint shown is the proof's new key, not a value the screen was handed
+    # promoted_to: core (tests/it/recovery_claim_review_tests.rs, core!2051)

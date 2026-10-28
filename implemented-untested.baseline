@@ -6,18 +6,12 @@
 # only shrink: add a test annotated `// @scenario: <stem> :: <name>`, or
 # retag the scenario @planned, then delete its line here.
 accessibility :: Helpful error messages
-accessibility :: Keyboard shortcuts for common actions
-accessibility :: Screen reader announces app structure on desktop
-accessibility :: TUI is fully keyboard navigable
-ble_exchange :: BLE payload has valid signature
 ble_exchange :: Commit on nonexistent contact returns error
 ble_exchange :: Commit returns pending data and removes it
 ble_exchange :: Default rollback manager is empty
-ble_exchange :: Large avatar roundtrips correctly
 ble_exchange :: Rollback all clears everything
 ble_exchange :: Rollback clears pending contact data
 ble_exchange :: Rollback on nonexistent contact is a no-op
-ble_exchange :: Tampered BLE payload fails signature verification
 ble_exchange_modes :: Accepting relay fallback switches to Link mode
 ble_exchange_modes :: BLE failure offers relay fallback
 ble_exchange_modes :: Shake mode records and exchanges envelopes
@@ -27,31 +21,18 @@ certificate_pinning :: Pin computation is deterministic
 certificate_pinning :: Pin is SHA-256 hash of the certificate's SPKI
 certificate_pinning :: Pin verification happens before sending data
 contact_actions :: CLI uses open crate
-contact_exchange :: BLE exchange prevents self-exchange
-contact_exchange :: BLE exchange rejects expired payload
-contact_exchange :: Card update propagates after exchange
 contact_exchange :: Deny exchange request
 contact_exchange :: Exchange blocked on low battery
 contact_exchange :: Exchange fails due to full storage
-contact_exchange :: Exchange timeout after interruption
 contact_exchange :: Incomplete exchange recovery
 contact_import :: Create local organization group
-contact_import :: Export and import contact backup
-contact_import :: Import respects contact limit
-contact_import :: Import vCard 3.0 from Google Contacts
 contact_import :: Imported contacts are visually distinct
-contact_import :: Imported contacts cannot be trusted for proposals
-contact_import :: Imported contacts cannot be trusted for recovery
-contact_import :: Imported contacts sync to linked device
 contact_import :: Local groups have no visibility semantics
 contact_import :: Phone normalization detects duplicates across formatting
 contact_recovery :: Isolated contact accepts with warning
 contact_recovery :: Isolated contact meets in person and vouches
 contact_recovery :: Recovery after losing all devices
-contact_recovery :: Recovery when user has multiple devices
 contact_recovery :: Reject recovery
-contact_recovery :: Remember old identity fingerprint
-contact_recovery :: Trust state is private to the user
 contact_recovery :: What is NOT recovered
 contact_recovery :: What is recovered
 contacts_management :: Search contacts by field value
@@ -59,9 +40,6 @@ demo_contact :: Demo contact does not count as real contact
 device_management :: Insufficient storage for sync
 device_management :: Interrupted initial sync
 device_management :: Link new device via numeric code
-device_management :: Linking code ignores timezone
-device_management :: Linking to a device that already has a different identity
-device_management :: Timezone change during sync
 device_management :: Transfer primary device role
 duress_mode :: Cannot disable duress mode from duress mode
 duress_mode :: Duress password option hidden until app password enabled
@@ -77,15 +55,9 @@ emergency_shred :: Panic shred when network is unavailable
 emergency_shred :: Shred verification audits completeness
 emergency_shred :: Soft shred cannot proceed before grace period expires
 emergency_shred :: Soft shred schedules deletion with grace period
-help_faq :: Access FAQs from CLI
 help_faq :: Access FAQs from desktop app
 help_faq :: Access FAQs from TUI
-help_faq :: FAQ content covers core topics
-help_faq :: FAQ localization for supported languages
 help_faq :: FAQs are available offline
-help_faq :: Search FAQs from CLI
-help_faq :: View FAQ categories from CLI
-help_faq :: View specific FAQ from CLI
 identity_management :: Generate device linking QR code
 identity_management :: Link second device successfully
 mesh_exchange :: Discover nearby Vauchi users
@@ -101,25 +73,12 @@ performance :: Handle process killed for memory on Android
 performance :: Reasonable storage footprint
 pre_signed_operations :: Contact can verify deletion notice signature
 pre_signed_operations :: Relay can verify purge request signature
-pre_signed_operations :: Tampered pre-signed message is rejected
 privacy_compliance :: View what data is stored locally
-relay_network :: Deploy relay node with Docker
 relay_network :: Direct connection preferred
-relay_network :: No relays available
 relay_network :: No special privileges for contributors
-relay_network :: Plaintext connections are rejected
-relay_network :: Rate limiting on relay nodes
-relay_network :: Relay node authentication
 relay_network :: Relay registry for peer discovery
 relay_network :: Sybil attack resistance
-relay_network :: Version mismatch between relays is an explicit refusal
 relay_transport_security :: Defense in depth
-relay_transport_security :: No plaintext fallback exists
-relay_transport_security :: Non-https relay URLs are rejected at the parse boundary
-relay_transport_security :: Relay identity survives the Noise retirement
-relay_transport_security :: Relay URLs must use https
-relay_transport_security :: Sensitive requests are OHTTP-encapsulated when configured
-relay_transport_security :: WebSocket upgrades are rejected
 release_privacy_multidevice_certification :: Exact two-user update propagates through both privacy hops
 remote_content :: Fetch content manifest on app launch
 remote_content :: Skip updates requiring newer app version
@@ -136,20 +95,9 @@ storage_key_upgrade :: The upgrade keeps everything and leaves only Core's key
 storage_key_upgrade :: Unlocking finishes the upgrade
 sync_updates :: Compression of sync payloads
 sync_updates :: Handle SSH disconnection
-sync_updates :: Manual sync trigger
 sync_updates :: Merkle tree for efficient sync detection
-sync_updates :: Receive update while offline
-sync_updates :: Relay stores updates for offline contacts
 sync_updates :: Sync state persisted atomically
-sync_updates :: Sync via relay
-theming :: Apply Catppuccin Frappé (dark)
-theming :: Apply Catppuccin Macchiato (dark)
-theming :: Catppuccin flavor themes available
-theming :: Dracula theme available
-theming :: Gruvbox themes available
 theming :: High contrast mode overrides theme
-theming :: Nord theme available
-theming :: Solarized themes available
 theming :: Theme applies on iOS
 visibility_control :: A visible field outside every group reaches group members too
 visibility_control :: Block contact removes all their visibility
@@ -157,9 +105,4 @@ visibility_control :: Contact cannot determine hidden field existence
 visibility_control :: New contacts see fields I made visible to all
 visibility_control :: New fields default to hidden for grouped contacts
 visibility_control :: Visibility changes are atomic
-visibility_labels :: Cancel label deletion
-visibility_labels :: Cannot rename to existing label name
 visibility_labels :: Default labels are suggested on first use
-visibility_labels :: Labels exist only on my devices
-visibility_labels :: Transition from no-group to groups mode
-visibility_labels :: View which labels can see a field

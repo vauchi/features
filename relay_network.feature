@@ -439,3 +439,12 @@ Feature: Relay Network
     And no message should ever be silently discarded without a metric
     # promoted_to: relay (tests/it/federation_http_tests.rs,
     # 2026-07-04-federation-version-negotiation)
+
+  @security @implemented
+  Scenario: No mailbox gets privileged treatment
+    Given a relay with a per-mailbox quota and a per-mailbox rate limit
+    When one mailbox is flooded while another is quiet
+    Then the flooded mailbox is refused with "too many requests" once it exceeds its limit
+    And the quiet mailbox is still served
+    And the operator's own mailbox hits the same quota as a stranger's
+    # promoted_to: relay (tests/it/rate_limit_ux.rs, tests/it/http_api_limits_tests.rs)
