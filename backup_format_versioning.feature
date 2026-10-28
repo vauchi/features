@@ -95,6 +95,13 @@ Feature: Backup Format Versioning
     And it should include my own contact card and labels
     And nothing should be readable without the password
 
+  @v6 @security @implemented
+  Scenario: Full backup refuses a weak password
+    Given I have an existing identity with contacts
+    When I create a full backup with the password "password1"
+    Then the backup should be refused for the same weak password as an identity backup
+    And a full backup with a strong password should still be created
+
   @v6 @planned
   Scenario: Password backup preserves sharing and contact state
     Given I have contacts, groups and explicit per-contact sharing choices
