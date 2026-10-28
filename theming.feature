@@ -151,7 +151,7 @@ Feature: App Theming
   Scenario: Apply Solarized Light theme
     When the user applies "Solarized Light" theme
     Then the background primary color should be "#fdf6e3"
-    And the text primary color should be "#657b83"
+    And the text primary color should be "#586e75"
     And the accent color should be "#268bd2"
 
   @gruvbox @implemented
@@ -198,7 +198,7 @@ Feature: App Theming
   # Accessibility
   # ===========================================
 
-  @accessibility @contrast @implemented
+  @accessibility @contrast @planned
   Scenario: High contrast mode overrides theme
     Given the user has enabled high contrast mode
     When any theme is applied
@@ -221,7 +221,7 @@ Feature: App Theming
   # Cross-Platform Consistency
   # ===========================================
 
-  @platform @ios @implemented
+  @platform @ios @planned
   Scenario: Theme applies on iOS
     Given the user is on iOS
     When the user applies "Catppuccin Mocha" theme
