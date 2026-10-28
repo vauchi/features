@@ -65,6 +65,14 @@ Feature: Sealed Mailbox Tokens (SP-33)
     And every batch of tokens should be padded to 256
     And the relay should not know how many real contacts I have
 
+  @registration @privacy @implemented
+  Scenario: Fetch requests never span two day epochs
+    Given I register mailbox tokens for yesterday and today
+    When the client fetches its mailboxes
+    Then each registration batch holds one day's tokens
+    And no fetch request carries tokens of two days
+    And the relay cannot chain my fetches across days through a shared token
+
   @registration @planned
   Scenario: Historical token registration after offline period
     Given I was offline for 5 days
