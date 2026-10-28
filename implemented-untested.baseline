@@ -94,9 +94,6 @@ pre_signed_operations :: Contact can verify deletion notice signature
 pre_signed_operations :: Relay can verify purge request signature
 pre_signed_operations :: Tampered pre-signed message is rejected
 privacy_compliance :: View what data is stored locally
-relay_network :: Deploy relay node with Docker
-relay_network :: No special privileges for contributors
-relay_network :: Relay registry for peer discovery
 relay_transport_security :: Defense in depth
 relay_transport_security :: No plaintext fallback exists
 relay_transport_security :: Non-https relay URLs are rejected at the parse boundary

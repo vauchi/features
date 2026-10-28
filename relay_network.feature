@@ -83,8 +83,9 @@ Feature: Relay Network
     Given I want to contribute a relay node
     When I run the Docker image
     Then a relay node should start
-    And it should join the relay network
     And it should begin accepting connections
+    # Joining the relay network is not implemented: a started relay contacts
+    # no peer until it offloads (private#872).
 
   @contribute @implemented
   Scenario: Relay node configuration
@@ -128,12 +129,11 @@ Feature: Relay Network
     And contribution should always be voluntary
 
   @contribution @implemented
-  Scenario: No special privileges for contributors
+  Scenario: No mailbox gets privileged treatment
     Given I am running a relay node
-    Then I should not get priority routing
-    And I should not get extra storage
-    And all users should be treated equally
-    # promoted_to: relay (all clients treated equally, no contributor concept)
+    Then my own mailbox has the same storage quota as every other mailbox
+    And my own mailbox has the same rate limit as every other mailbox
+    And no setting exempts any mailbox from either limit
   # Relay Network Health
 
   @health @implemented
@@ -341,8 +341,9 @@ Feature: Relay Network
     And it should establish peer connections
     And it should exchange capacity information periodically
 
-  @federation @phase3 @implemented
+  @federation @phase3 @planned
   Scenario: Relay registry for peer discovery
+    # The registry exists but nothing fills it at runtime (private#872).
     Given multiple relay nodes exist
     Then there should be a registry of known relays
     And the registry should include relay capacity status
