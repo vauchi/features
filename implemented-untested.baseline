@@ -6,9 +6,6 @@
 # only shrink: add a test annotated `// @scenario: <stem> :: <name>`, or
 # retag the scenario @planned, then delete its line here.
 accessibility :: Helpful error messages
-accessibility :: Keyboard shortcuts for common actions
-accessibility :: Screen reader announces app structure on desktop
-accessibility :: TUI is fully keyboard navigable
 ble_exchange_modes :: Accepting relay fallback switches to Link mode
 ble_exchange_modes :: BLE failure offers relay fallback
 ble_exchange_modes :: Shake mode records and exchanges envelopes
