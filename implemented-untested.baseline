@@ -29,10 +29,6 @@ duress_mode :: Duress password option hidden until app password enabled
 duress_mode :: Pre-populate decoy contacts
 identity_management :: Generate device linking QR code
 identity_management :: Link second device successfully
-mesh_exchange :: Discover nearby Vauchi users
-mesh_exchange :: Exchange timeout
-mesh_exchange :: Exchange with user already in contacts
-mesh_exchange :: Replay attack prevention
 message_delivery :: Read receipts are off by default
 onboarding :: Demo contact removed after first real contact
 onboarding :: Demo contact updates demonstrate value
