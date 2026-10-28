@@ -6,8 +6,6 @@
 # only shrink: add a test annotated `// @scenario: <stem> :: <name>`, or
 # retag the scenario @planned, then delete its line here.
 accessibility :: Helpful error messages
-ble_exchange_modes :: Accepting relay fallback switches to Link mode
-ble_exchange_modes :: BLE failure offers relay fallback
 ble_exchange_modes :: Shake mode records and exchanges envelopes
 certificate_pinning :: Connection rejected with mismatched certificate
 contact_actions :: CLI uses open crate
