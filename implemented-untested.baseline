@@ -21,9 +21,6 @@ contact_recovery :: What is NOT recovered
 contact_recovery :: What is recovered
 contacts_management :: Search contacts by field value
 demo_contact :: Demo contact does not count as real contact
-duress_mode :: Cannot disable duress mode from duress mode
-duress_mode :: Duress password option hidden until app password enabled
-duress_mode :: Pre-populate decoy contacts
 identity_management :: Generate device linking QR code
 identity_management :: Link second device successfully
 message_delivery :: Read receipts are off by default
