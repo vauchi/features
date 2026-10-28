@@ -8,7 +8,6 @@
 accessibility :: Helpful error messages
 ble_exchange_modes :: Shake mode records and exchanges envelopes
 certificate_pinning :: Connection rejected with mismatched certificate
-contact_exchange :: BLE exchange rejects expired payload
 contact_recovery :: Isolated contact accepts with warning
 contact_recovery :: Isolated contact meets in person and vouches
 contact_recovery :: Recovery after losing all devices
@@ -21,9 +20,6 @@ onboarding :: Demo contact updates demonstrate value
 pre_signed_operations :: Relay can verify purge request signature
 privacy_compliance :: View what data is stored locally
 relay_transport_security :: Defense in depth
-relay_transport_security :: No plaintext fallback exists
-relay_transport_security :: Non-https relay URLs are rejected at the parse boundary
-relay_transport_security :: Relay URLs must use https
 sealed_mailbox :: Encrypted transport is mandatory
 storage_key_upgrade :: A keychain that fails for another reason offers Try again
 storage_key_upgrade :: A keychain that needs an unlock starts on Core's unlock screen
