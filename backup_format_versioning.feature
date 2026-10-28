@@ -123,11 +123,18 @@ Feature: Backup Format Versioning
     Then both should receive the exact updated shared values
     And explicitly hidden fields should remain absent
 
-  @v3 @planned
-  Scenario: Full backup is opt-in
-    Given I have never opted in to full backup
-    Then no contact or card data should be written to any backup file
-    And only the identity backup should be offered by default
+  @v6 @implemented
+  Scenario: Full backup defaults to full level
+    Given I open the backup wizard without changing the level
+    Then the full backup is the level offered
+    And the identity-only backup is the opt-in alternative
+
+  @v6 @implemented
+  Scenario: Full backup refuses a weak password
+    Given I have an identity with contacts
+    When I export a full backup with a password the identity-only export refuses
+    Then the export fails with the same weak-password error
+    And a full backup with a strong password still exports
 
   @v3 @planned
   Scenario: Full backup can be unlocked via social recovery
