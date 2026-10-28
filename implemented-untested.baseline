@@ -69,10 +69,7 @@ privacy_compliance :: View what data is stored locally
 relay_transport_security :: Defense in depth
 relay_transport_security :: No plaintext fallback exists
 relay_transport_security :: Non-https relay URLs are rejected at the parse boundary
-relay_transport_security :: Relay identity survives the Noise retirement
 relay_transport_security :: Relay URLs must use https
-relay_transport_security :: Sensitive requests are OHTTP-encapsulated when configured
-relay_transport_security :: WebSocket upgrades are rejected
 release_privacy_multidevice_certification :: Exact two-user update propagates through both privacy hops
 remote_content :: Fetch content manifest on app launch
 remote_content :: Skip updates requiring newer app version

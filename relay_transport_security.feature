@@ -51,7 +51,7 @@ Feature: Relay Transport Security
   @layering @implemented
   Scenario: Sensitive requests are OHTTP-encapsulated when configured
     Given an OHTTP relay is configured
-    When I send a sensitive relay request (fetch, register, purge)
+    When I send a sensitive relay request (send, fetch, ack, purge)
     Then the request should be HPKE-encapsulated (OHTTP)
     And it should reach the vauchi relay via the OHTTP relay
     And the vauchi relay should not learn my IP address
