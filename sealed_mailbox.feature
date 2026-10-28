@@ -28,6 +28,7 @@ Feature: Sealed Mailbox Tokens (SP-33)
     When I compute Bob's mailbox token for today
     Then the token should be derived via HKDF-SHA256
     And the derivation should use "Vauchi_Mailbox_v1" as domain separator
+    And the derivation should include the recipient's public key, so each direction has its own token
     And the token should include the daily epoch (unix_timestamp / 86400)
     And the token should be exactly 32 bytes
 
@@ -60,8 +61,8 @@ Feature: Sealed Mailbox Tokens (SP-33)
   @registration @implemented
   Scenario: Register mailbox tokens on connect
     Given I connect to the relay
-    Then I should register mailbox tokens for current and previous day
-    And the registration should be padded to 256 tokens
+    Then I should poll mailbox tokens for the current and previous day
+    And every batch of tokens should be padded to 256
     And the relay should not know how many real contacts I have
 
   @registration @planned
@@ -83,8 +84,8 @@ Feature: Sealed Mailbox Tokens (SP-33)
   Scenario: Device sync routed by self-token
     Given I have 2 linked devices
     When device A sends a sync message
-    Then the message should be routed via the self-mailbox token
-    And device B should receive it via the same token
+    Then the message should be routed via a token derived for device B from my master seed
+    And device B should poll that token, and no other device should
     And the relay should not see my identity
   # ============================================================
   # Privacy Properties
@@ -100,7 +101,7 @@ Feature: Sealed Mailbox Tokens (SP-33)
   Scenario: Token set padded to hide contact count
     Given I have 50 contacts
     When I register tokens on connect
-    Then 256 tokens should be registered (50 real + 206 padding)
+    Then every batch of tokens should hold exactly 256
     And the relay cannot distinguish real tokens from padding
 
   @privacy @implemented

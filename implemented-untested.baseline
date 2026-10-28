@@ -67,12 +67,7 @@ release_privacy_multidevice_certification :: Exact two-user update propagates th
 remote_content :: Fetch content manifest on app launch
 remote_content :: Skip updates requiring newer app version
 remote_content :: Use cached manifest when offline
-sealed_mailbox :: AccountRevoked verified client-side
-sealed_mailbox :: Contact mailbox token derived from shared key
-sealed_mailbox :: Device sync routed by self-token
 sealed_mailbox :: Encrypted transport is mandatory
-sealed_mailbox :: Register mailbox tokens on connect
-sealed_mailbox :: Token set padded to hide contact count
 storage_key_upgrade :: A keychain that fails for another reason offers Try again
 storage_key_upgrade :: A keychain that needs an unlock starts on Core's unlock screen
 storage_key_upgrade :: The upgrade keeps everything and leaves only Core's key
