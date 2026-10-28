@@ -77,9 +77,3 @@ storage_key_upgrade :: A keychain that fails for another reason offers Try again
 storage_key_upgrade :: A keychain that needs an unlock starts on Core's unlock screen
 storage_key_upgrade :: The upgrade keeps everything and leaves only Core's key
 storage_key_upgrade :: Unlocking finishes the upgrade
-visibility_control :: A visible field outside every group reaches group members too
-visibility_control :: Block contact removes all their visibility
-visibility_control :: Contact cannot determine hidden field existence
-visibility_control :: New contacts see fields I made visible to all
-visibility_control :: New fields default to hidden for grouped contacts
-visibility_control :: Visibility changes are atomic

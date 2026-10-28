@@ -207,8 +207,10 @@ Feature: Visibility Control
     Then all visibility rules for Dave should be removed
     And if I later re-add Dave, default visibility should apply
 
-  @edge-cases @implemented
+  @edge-cases @planned
   Scenario: Block contact removes all their visibility
+    # Core stops updates to a blocked contact, but the app has no block
+    # action yet, and the optional final wipe (ADR-056) is not built.
     Given Dave can see all my fields
     When I block Dave
     Then Dave should not be able to see any of my fields

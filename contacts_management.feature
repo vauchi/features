@@ -182,7 +182,7 @@ Feature: Contacts Management
     Given Eve is blocked
     When Eve tries to exchange contacts with me
     Then the exchange should be rejected
-    And Eve should see "Exchange declined"
+    And Eve should see "Exchange failed"
 
   # Favorites
 
