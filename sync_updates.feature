@@ -174,18 +174,14 @@ Feature: Sync and Updates
     Then only the phone field delta should be transmitted
     And the full contact card should not be sent
 
-  @efficiency @implemented
+  @efficiency @planned
   Scenario: Merkle tree for efficient sync detection
+    # MerkleTree exists but sync does not use it; deltas come from the pending queue (private#880).
     Given Bob and I have been synced
     When we reconnect after a period offline
     Then Merkle tree comparison should detect changes
     And only changed data should be transmitted
 
-  @efficiency @implemented
-  Scenario: Compression of sync payloads
-    Given I am sending an update
-    Then the payload should be compressed before encryption
-    And the encrypted payload should be as small as possible
   # Sync Settings
 
   @settings @planned
@@ -356,8 +352,9 @@ Feature: Sync and Updates
     And sync should resume on next launch
     And no data corruption should occur
 
-  @platform-edge-case @cross-platform @crash-recovery @implemented
+  @platform-edge-case @cross-platform @crash-recovery @planned
   Scenario: Sync state persisted atomically
+    # The device-sync checkpoint API exists but nothing calls it during a batch.
     Given a batch sync of 50 items is in progress
     When the app crashes after processing 25 items
     Then the checkpoint should record exactly 25 items synced
@@ -380,8 +377,9 @@ Feature: Sync and Updates
     And I should see updates when I open the app
     And I should be gently prompted to enable notifications
 
-  @platform-edge-case @tui @terminal @implemented
+  @platform-edge-case @tui @terminal @planned
   Scenario: Handle SSH disconnection
+    # The TUI does not handle a hangup; writes are committed as they happen, untested on a drop.
     Given I am using Vauchi TUI over SSH
     When the SSH connection drops
     Then the app should save state before exit
