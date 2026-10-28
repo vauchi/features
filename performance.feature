@@ -220,19 +220,20 @@ Feature: Performance Requirements
   Scenario: Reasonable storage footprint
     Given I have 100 contacts
     Then local storage should be under 50MB
-    And database should be compacted periodically
-    And caches should have size limits
+    And deleting data should shrink the database file
 
-  @storage @implemented
+  @storage @planned
   Scenario: Handle low disk space
+    # No free-space check or low-space warning exists.
     Given device has less than 50MB free space
     When I try to sync updates
     Then I should see a warning about low space
     And critical operations should still work
     And cache should be cleared automatically
 
-  @storage @implemented
+  @storage @planned
   Scenario: Clear cache option
+    # The only cache is downloaded content; no screen offers to clear it.
     When I go to Settings > Storage > Clear Cache
     Then I should see how much space cache uses
     And I should be able to clear it
@@ -338,8 +339,9 @@ Feature: Performance Requirements
     And images should be released from memory
     And core data should be preserved
 
-  @platform-edge-case @android @memory @implemented
+  @platform-edge-case @android @memory @planned
   Scenario: Handle process killed for memory on Android
+    # Saved data survives; the open screen and unsaved drafts are not restored.
     Given Android kills the app process
     When I return to the app
     Then the app should restore state

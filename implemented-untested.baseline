@@ -36,10 +36,6 @@ mesh_exchange :: Replay attack prevention
 message_delivery :: Read receipts are off by default
 onboarding :: Demo contact removed after first real contact
 onboarding :: Demo contact updates demonstrate value
-performance :: Clear cache option
-performance :: Handle low disk space
-performance :: Handle process killed for memory on Android
-performance :: Reasonable storage footprint
 pre_signed_operations :: Contact can verify deletion notice signature
 pre_signed_operations :: Relay can verify purge request signature
 pre_signed_operations :: Tampered pre-signed message is rejected
