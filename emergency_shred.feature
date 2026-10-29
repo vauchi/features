@@ -77,29 +77,18 @@ Feature: Emergency Shred
   # ============================================================
 
   @panic @implemented
-  Scenario: Panic shred destroys everything immediately
+  Scenario: Panic shred destroys this device's data and sends nothing
     When I trigger a panic shred
     Then there should be NO grace period
-    And pre-signed messages should be loaded
-    And pre-signed messages should be sent to relays and contacts
-    And then all cryptographic keys should be destroyed immediately
-    And all local data should be wiped
+    And all cryptographic keys on this device should be destroyed immediately
+    And all local data on this device should be wiped
+    And nothing should be sent to the relay or to my contacts
+    And the shred report should show no notifications
 
-  @panic @implemented
-  Scenario: Panic shred follows sign-before-destroy pattern
-    When I trigger a panic shred
-    Then pre-signed purge requests should be sent first
-    And pre-signed deletion notices should be broadcast
-    And ONLY THEN should keys be destroyed
-    And this order ensures contacts and relays receive valid notifications
-
-  @panic @implemented
-  Scenario: Panic shred when network is unavailable
-    Given I have no network connection
-    When I trigger a panic shred
-    Then local data should still be destroyed immediately
-    And notifications should be attempted once, with nothing left queued on the device
-    And the shred report should note that notifications were not sent
+  # An emergency wipe concerns one of the identity's devices; telling the
+  # contacts or the relay would end the identity on the others too, and a
+  # message at the moment of a coerced wipe tells an observer it happened
+  # (ADR-033 amendment 2026-10-29, vauchi/private#910).
 
   # ============================================================
   # Shred Report
@@ -162,4 +151,5 @@ Feature: Emergency Shred
     Given I have 3 linked devices
     When I trigger a panic shred on one device
     Then only the current device's data should be destroyed
-    And other devices should receive a revocation notice
+    And the other devices should keep working
+    And I can revoke the wiped device from one of the other devices

@@ -501,10 +501,9 @@ Feature: Privacy Compliance
     And no data should be destroyed
 
   @deletion @relay @command @emergency @implemented
-  Scenario: Panic shred immediately destroys all data and notifies contacts
+  Scenario: Panic shred destroys this device's data and tells no one
     Given I have contacts Alice and Bob
     When I execute a panic shred
-    Then Alice should receive an authenticated revocation signal
-    And Bob should receive an authenticated revocation signal
-    And the relay should receive a purge request
-    And all local keys and data should be destroyed immediately
+    Then all local keys and data should be destroyed immediately
+    And neither Alice nor Bob should receive anything
+    And the relay should receive nothing

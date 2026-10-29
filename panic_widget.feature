@@ -98,16 +98,14 @@ Feature: Panic Button Widget
   Scenario: Widget triggers full panic shred
     Given I have triggered panic via the widget
     Then the panic shred process should execute per emergency_shred.feature
-    And pre-signed messages should be sent first
     And all cryptographic keys should be destroyed
     And all local data should be wiped
 
   @shred @planned
-  Scenario: Widget shred sends pre-signed notifications
+  Scenario: Widget shred sends nothing
     Given I have triggered panic via the widget
-    Then pre-signed deletion notices should be sent to contacts
-    And pre-signed purge requests should be sent to relays
-    And this happens before key destruction
+    Then nothing should be sent to my contacts
+    And nothing should be sent to the relay
 
   @shred @planned
   Scenario: Widget shred completes quickly
@@ -189,8 +187,7 @@ Feature: Panic Button Widget
     Given I have no network connection
     When I trigger the panic widget
     Then local data should still be destroyed
-    And pre-signed messages should be queued
-    And shred report should note notifications pending
+    And the wipe should not wait for the network
 
   @edge @planned
   Scenario: Remove panic widget
@@ -205,8 +202,7 @@ Feature: Panic Button Widget
     Given I have the panic widget on multiple devices
     When I trigger panic on one device
     Then only that device's data should be destroyed
-    And other devices should receive a revocation notice
-    And they continue functioning
+    And the other devices continue functioning
   # ============================================================
   # Platform-Specific Behavior
   # ============================================================
