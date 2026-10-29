@@ -17,7 +17,6 @@ contact_recovery :: What is recovered
 identity_management :: Generate device linking QR code
 onboarding :: Demo contact removed after first real contact
 onboarding :: Demo contact updates demonstrate value
-pre_signed_operations :: Relay can verify purge request signature
 privacy_compliance :: View what data is stored locally
 relay_transport_security :: Defense in depth
 sealed_mailbox :: Encrypted transport is mandatory

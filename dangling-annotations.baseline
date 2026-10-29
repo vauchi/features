@@ -920,7 +920,6 @@ pinning :: resolve_pins falls back to bundled when refresh fails
 pinning :: resolve_pins returns only bundled when no verify key
 pinning :: stale cache beyond ttl
 platform_edge_cases :: sync state persisted atomically
-pre_signed_operations :: pre-signed purge request has valid ed25519 signature
 privacy_compliance :: a received revocation blob shreds the contact
 privacy_compliance :: consent for optional features
 privacy_compliance :: crypto-shredding key hierarchy is sound
