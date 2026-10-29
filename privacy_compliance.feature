@@ -106,7 +106,7 @@ Feature: Privacy Compliance
 
   @deletion @implemented
   Scenario: Delete my identity
-    When I choose Delete Identity in Privacy and confirm
+    When I choose Leave Vauchi in Privacy and confirm
     Then my identity deletion should be scheduled with a 7-day grace period
     And I should be able to cancel it during the grace period
     When the grace period has passed and I confirm the deletion
@@ -116,7 +116,7 @@ Feature: Privacy Compliance
   @deletion @recovery @implemented
   Scenario: Deleting my identity asks whether recovery stays possible
     Given I have contacts I trust for recovery
-    When I choose Delete Identity in Privacy and confirm
+    When I choose Leave Vauchi in Privacy and confirm
     Then I should choose between keeping recovery and erasing everything
     And I should be told the relay keeps my encrypted list of trusted contacts for up to 365 days if I keep recovery
     And nothing should be scheduled until I choose
@@ -125,9 +125,31 @@ Feature: Privacy Compliance
   @deletion @recovery @implemented
   Scenario: With nobody trusted for recovery, deleting erases everything
     Given I trust no contact for recovery
-    When I choose Delete Identity in Privacy and confirm
+    When I choose Leave Vauchi in Privacy and confirm
     Then I should not be asked about recovery
     And the deletion should erase everything
+
+  @deletion @devices @implemented
+  Scenario: Leaving Vauchi asks whether my other devices wipe too
+    Given my identity is on this device and on my laptop and tablet
+    When I choose Leave Vauchi in Privacy and confirm
+    Then I should be asked whether my other devices wipe too
+    And the laptop and the tablet should be named
+    And my answer should travel with the scheduled deletion to every device
+
+  @deletion @devices @implemented
+  Scenario: When I leave with the wipe choice my other devices wipe
+    Given I scheduled Leave Vauchi and chose to wipe my other devices
+    When the grace period has passed and I confirm the deletion
+    Then my other devices should be told to wipe before my contacts are told
+    And each of them should wipe itself when it next syncs
+    And return to setup
+
+  @deletion @devices @implemented
+  Scenario: Scheduling or cancelling my deletion reaches my other devices
+    Given my identity is on this device and on my tablet
+    When I schedule Leave Vauchi and later cancel it
+    Then the tablet should learn of the schedule and of its cancellation
 
   @deletion @recovery @relay @implemented
   Scenario: The relay purge carries my recovery choice
