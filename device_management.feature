@@ -133,14 +133,39 @@ Feature: Device Management
     And Device B should no longer receive updates
     And Device B should be notified of removal
 
-  @unlink @planned
+  @unlink @implemented
   Scenario: Unlink current device
-    Given I am on Device B
-    When I select "Unlink This Device"
-    And I confirm
-    Then Device B should be unlinked
-    And Device B should return to initial setup
+    Given Device A and Device B are linked
+    And I am on Device B
+    When I select "Remove from This Device" on the Devices screen
+    And I type WIPE to confirm
+    Then Device B revokes itself and tells Device A
     And my data should be removed from Device B
+    And Device B should return to initial setup
+    And neither my contacts nor the relay are told
+
+  @unlink @implemented
+  Scenario: Removing the only device offers identity deletion instead
+    Given Device A is my only active device
+    When I select "Remove from This Device"
+    Then I am told that removing it would end my identity
+    And I am pointed to identity deletion or Emergency Shred
+    And nothing is revoked or wiped
+
+  @unlink @implemented
+  Scenario: Removing a device while offline stops before wiping
+    Given Device B cannot reach the relay
+    When I confirm "Remove from This Device" on Device B
+    Then I am told my other devices were not told
+    And nothing is wiped yet
+    And I can try again or erase anyway
+
+  @unlink @duress @implemented
+  Scenario: Removing a device in duress mode is the emergency wipe
+    Given Vauchi is in duress mode
+    When I confirm "Remove from This Device"
+    Then my real data is wiped as Emergency Shred would
+    And nothing is sent and the real device registry is not revoked
 
   @unlink @implemented
   Scenario: Unlinked device data wiped
