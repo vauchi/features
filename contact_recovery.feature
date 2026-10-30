@@ -502,6 +502,13 @@ Feature: Contact Recovery
     Then the voucher is rejected as expired
     And Alice must generate a fresh recovery claim
 
+  @recovery @security @planned
+  Scenario: Vouchers of one recovery are given within 96 hours
+    Given Alice assembles a recovery proof from two vouchers
+    When the two voucher timestamps are 97 hours apart
+    Then the proof is refused as outside the voucher window
+    And a proof whose vouchers are 95 hours apart is accepted
+
   @recovery @security @implemented
   Scenario: Detect conflicting recovery claims
     Given Alice uploads a recovery proof for "pk_old" -> "pk_new_1"
