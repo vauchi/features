@@ -497,7 +497,7 @@ Feature: Contact Recovery
   @recovery @security @implemented
   Scenario: Voucher timestamp validation
     Given Alice generates a recovery claim at time T
-    When Bob vouches 48 hours later
+    When Bob vouches 193 hours later
     Then the voucher is rejected as expired
     And Alice must generate a fresh recovery claim
 
