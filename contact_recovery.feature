@@ -605,11 +605,33 @@ Feature: Contact Recovery
 
   @recovery @relay @implemented
   Scenario: Relay handles proof expiration
-    Given Alice uploaded a recovery proof 91 days ago
-    And the proof expiration is 90 days
+    Given Alice uploaded a recovery proof 10 days ago
+    And the proof expiration is 9 days
     When John's app queries for the proof
     Then the relay returns "not found"
     And Alice must create a new recovery proof if needed
+
+  @recovery @relay @implemented
+  Scenario: Relay keeps recovery proofs for nine days
+    Given Alice uploads a recovery proof
+    Then the relay keeps it for 9 days after the upload
+    And a contact accepts its vouchers for at most 192 hours, so nothing useful outlives the slot
+
+  @recovery @relay @security @implemented
+  Scenario: Relay refuses a recovery proof upload the new key did not sign
+    Given Mallory knows Alice's old public key, as every contact does
+    When Mallory uploads a proof for Alice's old key signed with Mallory's own key
+    Then the relay refuses it because the signer is not the proof's new key
+    And an unsigned upload is refused as well
+    And a proof whose old key does not hash to the slot it is sent to is refused
+
+  @recovery @relay @security @implemented
+  Scenario: Relay keeps a second recovery proof beside the first
+    Given Mallory has stored a proof under hash(Alice's old key)
+    When Alice uploads her real recovery proof under the same hash
+    Then the relay stores Alice's proof beside Mallory's
+    And a contact who queries the hash receives both and can tell them apart
+    And at most four owners hold a proof under one hash, each replacing only its own
 
   @recovery @relay @implemented
   Scenario: Relay rate limits recovery queries
