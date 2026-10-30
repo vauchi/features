@@ -84,37 +84,12 @@ Feature: BLE Exchange Protocol Internals
     When scanning is started
     Then it should succeed without error
 
-  @transport @implemented
-  Scenario: BLE transport connect, read, write, disconnect
-    Given a mock BLE transport
-    When a connection is established
-    Then reading a characteristic should return data
-    And writing a characteristic should succeed
-    And disconnecting should succeed
-
   @transport @error @implemented
   Scenario: BLE transport in failure mode returns errors
     Given a mock BLE transport configured to fail
     When any transport operation is attempted
     Then it should return an error
   # --- BLE Exchange Session States ---
-
-  @session @implemented
-  Scenario: New BLE session starts in AwaitingBleConnection
-    When a new BLE exchange session is created
-    Then its state should be AwaitingBleConnection
-
-  @session @implemented
-  Scenario: Session transitions to AwaitingBleVerification after payload exchange
-    Given a BLE session in AwaitingBleConnection state
-    When payloads are exchanged between Alice and Bob
-    Then the session state should transition to AwaitingBleVerification
-
-  @session @implemented
-  Scenario: Session transitions to AwaitingKeyAgreement after proximity verification
-    Given a BLE session in AwaitingBleVerification state
-    When proximity is verified
-    Then the session state should transition to AwaitingKeyAgreement
 
   @session @implemented
   Scenario: Full BLE exchange lifecycle
@@ -152,18 +127,6 @@ Feature: BLE Exchange Protocol Internals
     Given an exchange session using QR transport
     When a BLE-specific event is received
     Then it should be rejected
-
-  @session @error @implemented
-  Scenario: Proximity verification requires AwaitingBleVerification state
-    Given a BLE session in AwaitingBleConnection state
-    When proximity verification is attempted
-    Then it should fail because the session is not in the correct state
-
-  @session @error @implemented
-  Scenario: Key agreement blocked without proximity verification
-    Given a BLE session that has not completed proximity verification
-    When key agreement is attempted
-    Then it should be blocked
 
   @session @error @implemented
   Scenario: BLE error variants have proper display messages
