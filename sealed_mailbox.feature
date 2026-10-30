@@ -113,6 +113,12 @@ Feature: Sealed Mailbox Tokens (SP-33)
     And the relay cannot distinguish real tokens from padding
 
   @privacy @implemented
+  Scenario: Fetch padding does not reveal the real tokens
+    Given I have 3 contacts
+    When I register tokens twice on the same day
+    Then both registrations present the same token set, padding included
+    And two days later the token set shares no token with today's
+  @privacy @implemented
   Scenario: Fetch responses come in a few fixed sizes
     Given one mailbox is empty, one holds a few small updates
     And one holds more updates than fit in one page
