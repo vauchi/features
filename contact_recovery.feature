@@ -203,6 +203,16 @@ Feature: Contact Recovery
     Then Bob's app shows "Unknown identity - you have no contact with this public key"
     And Bob cannot create a voucher
 
+  @recovery @vouching @security @implemented
+  Scenario: A revoked contact can still vouch for the real recovery
+    Given Bob had Alice as a contact with public key "pk_old"
+    And Alice's old device, in a thief's hands, revoked her identity at Bob
+    And Bob's app destroyed Alice's card and keys and kept a tombstone with her key and name
+    When Bob scans Alice's real recovery claim for "pk_old" -> "pk_new"
+    Then Bob's app names Alice as the former contact the claim is for
+    And Bob can create a voucher
+    And a claim for a key Bob never met is still refused
+
   @recovery @vouching @implemented
   Scenario: Create voucher after in-person verification
     Given Bob has Alice as a contact with public key "pk_old"
