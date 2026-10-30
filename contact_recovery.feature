@@ -264,10 +264,11 @@ Feature: Contact Recovery
 
   @recovery @proof @implemented
   Scenario: Recovery proof expiration
-    Given Alice uploads a recovery proof
-    Then the proof has a default expiration of 90 days
-    And after 90 days the relay deletes the proof
-    And Alice must create a new proof if needed
+    Given Alice uploads a recovery proof whose first voucher is 193 hours old
+    When a contact verifies the proof
+    Then the contact refuses it as expired
+    And a proof whose first voucher is 191 hours old is still verified
+    And Alice must start a fresh recovery claim
 
   @recovery @proof @implemented
   Scenario: Continue collecting vouchers after threshold
