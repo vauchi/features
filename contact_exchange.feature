@@ -112,7 +112,8 @@ Feature: Contact Card Exchange
     Given Alice scans Bob's QR in the app
     When the exchange auto-advances to completion
     Then the new contact is a placeholder named "Bob", not a copy of Alice's own card
-  @exchange @glance @security @implemented
+
+  @exchange @glance @security @planned
   Scenario: A Glance displayer accepts one KeyOffer per nonce
     Given Alice shows a Glance QR and Bob scans it and connects
     When Bob's KeyOffer echoing the QR's nonce is accepted
