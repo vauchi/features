@@ -270,7 +270,7 @@ Feature: Contact Recovery
     When Alice uploads the recovery proof
     Then the relay stores the proof under key hash(old_pk)
     And the relay does not learn Alice's identity
-    And the proof is retrievable by anyone who knows old_pk
+    And only someone who holds old_pk, a contact of Alice's, can open the proof
 
   @recovery @proof @implemented
   Scenario: Recovery proof expiration
@@ -603,8 +603,10 @@ Feature: Contact Recovery
   Scenario: Relay stores recovery proof privately
     Given Alice uploads a recovery proof
     Then the relay stores the proof under hash(pk_old)
-    And the relay cannot read the proof contents (not encrypted, but opaque)
-    And the relay does not learn Alice's identity or contacts
+    And the relay reads only the proof's version byte and Alice's new key
+    And the rest, the old key and every helper's key, is sealed to the old key
+    And a reader who does not hold the old key cannot open it
+    And the relay refuses a plain, unsealed proof
 
   @recovery @relay @implemented
   Scenario: Relay returns recovery proof on query
@@ -633,7 +635,7 @@ Feature: Contact Recovery
     When Mallory uploads a proof for Alice's old key signed with Mallory's own key
     Then the relay refuses it because the signer is not the proof's new key
     And an unsigned upload is refused as well
-    And a proof whose old key does not hash to the slot it is sent to is refused
+    And a proof shorter than its header or of a version the relay does not know is refused
 
   @recovery @relay @security @implemented
   Scenario: Relay keeps a second recovery proof beside the first
