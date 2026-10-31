@@ -112,6 +112,13 @@ Feature: Contact Card Exchange
     Given Alice scans Bob's QR in the app
     When the exchange auto-advances to completion
     Then the new contact is a placeholder named "Bob", not a copy of Alice's own card
+  @exchange @glance @security @implemented
+  Scenario: A Glance displayer accepts one KeyOffer per nonce
+    Given Alice shows a Glance QR and Bob scans it and connects
+    When Bob's KeyOffer echoing the QR's nonce is accepted
+    Then a replay of that offer after the displayer resets is refused as a spent nonce
+    And a second scanner of the same QR, echoing the same nonce, is refused as well
+    And a Bluetooth responder that required no nonce still takes a fresh offer after a reset
 
   @ble @glance @implemented
   Scenario: Glance redials a connection that never established
