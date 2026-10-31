@@ -608,6 +608,47 @@ Feature: Contact Recovery
   # Relay Behavior
   # ============================================================
 
+  @recovery @security @implemented
+  Scenario: Recovery parsers take exactly their bytes
+    Given a recovery claim, a voucher and a proof as Core serializes them
+    When a byte trails any of them or a proof carries another version
+    Then the claim parser takes exactly 73 bytes
+    And the proof parser takes exactly its postcard bytes at version 2
+    And a voucher is exactly its header, or its header and one token of the declared length
+
+  @recovery @security @implemented
+  Scenario: A recovery proof outside the threshold bounds is refused
+    Given a recovery proof whose threshold is 0 or 10
+    When a contact validates it
+    Then it is refused as outside 1 to 9, even with no vouchers to count
+
+  @recovery @security @trust @implemented
+  Scenario: A guardian token travels under the voucher signature
+    Given Bob vouches as a guardian with the token Alice designated him with
+    When the token is stripped, swapped for another or the voucher is rewritten as the unsigned format 2
+    Then the voucher does not verify or does not parse
+    And a proof carrying a voucher whose token was forged by another key fails validation
+
+  @recovery @security @implemented
+  Scenario: A future-dated recovery claim is refused
+    Given a recovery claim stamped more than 10 minutes ahead of the helper's clock
+    When a helper tries to vouch for it, now or a year later
+    Then the voucher is refused as from the future
+    And a contact refuses a proof with a voucher stamped more than 10 minutes ahead
+
+  @recovery @security @implemented
+  Scenario: An old-key voucher is refused while collecting
+    Given Alice is collecting vouchers for her recovery claim
+    When a voucher signed by her old key, which a thief may hold, arrives
+    Then it is refused as self-vouching before anything is uploaded
+
+  @recovery @security @trust @implemented
+  Scenario: A guardian vouches only with a token naming the claim and itself
+    Given Bob is asked to vouch for Alice's recovery claim
+    When the relay hands him an entry that opens but names another designator or another guardian
+    Then Bob does not vouch with it
+    And he vouches with the entry Alice designated him with
+
   @recovery @relay @implemented
   Scenario: Relay stores recovery proof privately
     Given Alice uploads a recovery proof
