@@ -269,6 +269,14 @@ Feature: Duress Mode
     And each database key derived from respective credential
 
   @security @planned
+  Scenario: The storage file does not reveal whether a duress PIN exists
+    Given two installations with an app password, one also with a duress PIN
+    When someone reads both storage files without the storage key
+    Then the identity rows should have the same columns set and blob lengths
+    And both should have a duress copy of the own card
+    And a duress session or disabling the PIN should leave them so
+
+  @security @planned
   Scenario: Duress detection should be impossible
     Given an attacker is examining the app
     When they compare duress mode to real mode
