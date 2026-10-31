@@ -65,6 +65,15 @@ Feature: Contact Recovery
     Then Bob should not be marked as recovery-trusted
     And Alice should have 0 recovery-trusted contacts
 
+  @recovery @trust @security @implemented
+  Scenario: A tenth recovery-trusted contact is refused, not dropped
+    Given Alice has marked nine contacts as recovery-trusted
+    When Alice marks a tenth contact as trusted for recovery
+    Then the operation should fail with "at most 9"
+    And Alice still has 9 recovery-trusted contacts and the tenth is not one
+    And releasing one guardian frees the place for another
+    And a guardian backup for more guardians than one byte counts is refused, not split for the wrapped count
+
   @recovery @trust @implemented
   Scenario: Trust state syncs across linked devices
     Given Alice has two linked devices
