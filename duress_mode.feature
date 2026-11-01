@@ -268,7 +268,7 @@ Feature: Duress Mode
     And the decoy database should use separate encryption
     And each database key derived from respective credential
 
-  @security @planned
+  @security @implemented
   Scenario: The storage file does not reveal whether a duress PIN exists
     Given two installations with an app password, one also with a duress PIN
     When someone reads both storage files without the storage key
