@@ -248,13 +248,12 @@ Feature: Emergency Broadcast
     Then queued alerts should be cancelled
     And I should see confirmation of cancellation
 
-  @edge @planned
+  @edge @implemented
   Scenario: Blocked contact in trusted list
     Given I have blocked a contact who was in my trusted list
     Then they should be automatically removed from trusted list
     And I should be told they were removed
     And they should not receive emergency broadcasts
-    # Today a blocked contact stays listed and is skipped when an alert is sent.
   # promoted_to: tui!67
 
   @edge @implemented
