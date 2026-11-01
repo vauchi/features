@@ -81,33 +81,33 @@ Feature: Contact Card Exchange
     When Alice leaves the Glance exchange
     Then Alice's screen brightness should be restored
 
-  @exchange @planned
+  @exchange @implemented
   Scenario: A QR contact carries its real exchange timestamp
     Given Alice and Bob complete a mutual QR exchange at a known clock time
     Then each contact's exchange timestamp is that time, not zero
     And the same completion path stamps Bluetooth, NFC and USB contacts
 
-  @exchange @audio @planned
+  @exchange @audio @implemented
   Scenario: In a mutual QR exchange one side emits the audio challenge first
     Given Alice and Bob have scanned each other's QR and agreed keys
     When both sessions emit their audio proximity commands
     Then exactly one side emits the challenge first and the other listens first
     And the identity-key order decides which, as it does for the escrow role
 
-  @exchange @planned
+  @exchange @implemented
   Scenario: A confirmed proximity is not lowered by the automatic check
     Given the shell confirmed medium proximity before key agreement
     When the automatic proximity baseline after key agreement fails
     Then the session and the contact keep medium confidence
 
-  @exchange @glance @security @planned
+  @exchange @glance @security @implemented
   Scenario: A Glance displayer closes its QR window after sixty seconds
     Given Alice shows a Glance QR
     When a connector sends a KeyOffer with a fresh timestamp more than sixty seconds later
     Then Alice's displayer refuses it as expired, whatever timestamp the connector chose
     And a Bluetooth responder that required no nonce keeps waiting for an offer
 
-  @exchange @planned
+  @exchange @implemented
   Scenario: A QR contact is named after the peer's QR until their card arrives
     Given Alice scans Bob's QR in the app
     When the exchange auto-advances to completion
