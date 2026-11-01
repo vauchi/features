@@ -181,20 +181,26 @@ lint:implemented-scenarios:
   before_script:
     - apt-get update -qq && apt-get install -y -qq --no-install-recommends git ca-certificates > /dev/null
     - |
-      for repo in scripts core cli tui e2e relay ohttp-relay linux-gtk linux-qt windows web-demo ios macos android contract linux-hw; do
+      # The registry (repos.toml in vauchi/vauchi, `scenario_root = true`)
+      # says which repositories' tests carry scenario annotations; a new
+      # repository is one entry there, not a line here (private#1013).
+      for repo in vauchi scripts; do
         git clone --quiet --depth=1 --branch main \
           "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/vauchi/${repo}.git" "/tmp/repos/${repo}"
       done
+      ROOTS=$(cd /tmp/repos/vauchi && python3 /tmp/repos/scripts/scripts/lib/repo-registry.py scenario-roots)
+      echo "scenario roots: $ROOTS"
+      for repo in $ROOTS; do
+        git clone --quiet --depth=1 --branch main \
+          "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/vauchi/${repo}.git" "/tmp/repos/${repo}"
+      done
+      printf '/tmp/repos/%s\n' $ROOTS > /tmp/repos/scenario-roots.txt
   script:
     - >-
       python3 /tmp/repos/scripts/scripts/check-implemented-scenarios.py
       --features . --baseline implemented-untested.baseline
       --dangling-baseline dangling-annotations.baseline
-      /tmp/repos/core /tmp/repos/cli /tmp/repos/tui /tmp/repos/e2e
-      /tmp/repos/relay /tmp/repos/ohttp-relay /tmp/repos/linux-gtk
-      /tmp/repos/linux-qt /tmp/repos/windows /tmp/repos/web-demo
-      /tmp/repos/contract /tmp/repos/linux-hw
-      /tmp/repos/ios /tmp/repos/macos /tmp/repos/android
+      $(cat /tmp/repos/scenario-roots.txt)
 
 # A wired step reworded or deleted here unbinds a scenario core runs, and
 # core CI (which checks out features main) went red on every MR after the
