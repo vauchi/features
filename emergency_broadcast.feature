@@ -58,9 +58,8 @@ Feature: Emergency Broadcast
   # Triggering Alerts
   # ============================================================
 
-  @trigger @planned
+  @trigger @implemented
   Scenario: Send emergency broadcast from app
-    # Configure and send exist in Core and the CLI only.
     Given I have configured emergency broadcast contacts
     When I navigate to the emergency broadcast screen
     And I trigger the alert
@@ -82,9 +81,8 @@ Feature: Emergency Broadcast
     And this should work without opening the full app
   # promoted_to: tui!67, desktop!99
 
-  @trigger @planned
+  @trigger @implemented
   Scenario: Emergency broadcast with confirmation
-    # The app has no broadcast screen yet; the CLI asks before sending.
     Given I am about to send an emergency broadcast
     When I tap the send button
     Then I should see a brief confirmation: "Send alert to 5 contacts?"
