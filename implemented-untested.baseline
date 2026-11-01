@@ -17,7 +17,6 @@ contact_recovery :: What is recovered
 identity_management :: Generate device linking QR code
 onboarding :: Demo contact removed after first real contact
 onboarding :: Demo contact updates demonstrate value
-privacy_compliance :: View what data is stored locally
 relay_transport_security :: Defense in depth
 sealed_mailbox :: Encrypted transport is mandatory
 storage_key_upgrade :: A keychain that fails for another reason offers Try again
