@@ -181,7 +181,7 @@ lint:implemented-scenarios:
   before_script:
     - apt-get update -qq && apt-get install -y -qq --no-install-recommends git ca-certificates > /dev/null
     - |
-      for repo in scripts core cli tui e2e relay ohttp-relay linux-gtk linux-qt windows web-demo ios macos android; do
+      for repo in scripts core cli tui e2e relay ohttp-relay linux-gtk linux-qt windows web-demo ios macos android contract; do
         git clone --quiet --depth=1 --branch main \
           "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/vauchi/${repo}.git" "/tmp/repos/${repo}"
       done
@@ -193,6 +193,7 @@ lint:implemented-scenarios:
       /tmp/repos/core /tmp/repos/cli /tmp/repos/tui /tmp/repos/e2e
       /tmp/repos/relay /tmp/repos/ohttp-relay /tmp/repos/linux-gtk
       /tmp/repos/linux-qt /tmp/repos/windows /tmp/repos/web-demo
+      /tmp/repos/contract
       /tmp/repos/ios /tmp/repos/macos /tmp/repos/android
 
 # A wired step reworded or deleted here unbinds a scenario core runs, and
