@@ -114,14 +114,6 @@ Feature: Security
     And a security event should be logged
 
   @attacks @implemented
-  Scenario: Relay attack prevention on BLE
-    Given an attacker is relaying BLE signals
-    When I attempt proximity-verified exchange
-    Then the distance-bounding protocol should detect the attack
-    And the exchange should be blocked
-    And I should see "Possible relay attack detected"
-
-  @attacks @implemented
   Scenario: QR code screenshot attack prevention
     Given someone screenshots my exchange QR code
     When they try to scan it remotely

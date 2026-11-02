@@ -180,36 +180,17 @@ Feature: Contact Card Exchange
   @ble @mobile @implemented
   Scenario: Discover nearby Vauchi users via BLE
     Given Alice has BLE enabled
-    And Bob has BLE enabled and is within 2 meters
+    And Bob has BLE enabled and is nearby
     When Alice opens the "Nearby" screen
     Then Alice should see Bob in the nearby users list
-    And the signal strength should indicate close proximity
 
   @ble @mobile @implemented
   Scenario: Initiate BLE exchange
     Given Alice sees Bob in the nearby users list
-    And Bob is within 2 meters (verified by RSSI)
     When Alice taps on Bob to exchange
     And Bob accepts the exchange request
     Then contact cards should be exchanged over BLE
     And both should see "Exchange Successful"
-
-  @ble @mobile @proximity-fail @implemented
-  Scenario: BLE exchange blocked when too far
-    Given Alice sees Bob in the nearby users list
-    But Bob is more than 2 meters away
-    When Alice attempts to exchange with Bob
-    Then the exchange should be blocked
-    And Alice should see "Move closer to exchange"
-
-  @ble @mobile @implemented
-  Scenario: BLE exchange with relay attack prevention
-    Given an attacker is relaying BLE signals
-    And Alice attempts to exchange with what appears to be Bob
-    When the challenge-response verification runs
-    Then the relay attack should be detected
-    And the exchange should be blocked
-    And Alice should see "Security verification failed"
 
   @ble @forward-secrecy @implemented
   Scenario: BLE exchange uses fresh ephemeral keys

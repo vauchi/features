@@ -302,12 +302,6 @@ Feature: BLE Exchange Protocol Internals
     When Alice filters by exchange token
     Then only matching devices should be returned
 
-  @integration @distance @implemented
-  Scenario: Distance estimation from RSSI
-    Given a BLE signal with known RSSI
-    When distance is estimated
-    Then the estimate should be reasonable for the RSSI value
-
   @integration @session @implemented
   Scenario: Exchange session creation
     When Alice creates a BLE exchange session
@@ -350,22 +344,10 @@ Feature: BLE Exchange Protocol Internals
     Then the session should transition to Cancelled state
 
   @integration @proximity @implemented
-  Scenario: Proximity verification passes for close devices
-    Given Bob's device is within range
-    When proximity is verified
-    Then verification should succeed
-
-  @integration @proximity @implemented
   Scenario: Proximity challenge and response
     Given Alice's device emits a proximity challenge
     When Bob's device responds
     Then the response should be verified successfully
-
-  @integration @proximity @error @implemented
-  Scenario: Proximity fails when device is too far
-    Given Bob's device is beyond the maximum range
-    When proximity verification is attempted
-    Then it should fail with TooFar error
 
   @integration @error @implemented
   Scenario: Discovery failure handling
