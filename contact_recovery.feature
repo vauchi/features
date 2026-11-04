@@ -755,6 +755,42 @@ Feature: Contact Recovery
     Then the backup opens only with the passphrase as well
 
   # ============================================================
+  # Recovery backup transfer (planned, vauchi/private#796, P33)
+  # ============================================================
+
+  @recovery @same-identity @planned
+  Scenario: A recovery backup crosses a connection that accepts small parts
+    Given Alice's new phone has accepted her guardian's recovery share
+    And their Bluetooth connection accepts only small parts at a time
+    When the guardian sends Alice's encrypted backup in person
+    Then the phone receives the complete backup without exceeding the connection's limits
+    And the backup matches the one named by the accepted share
+
+  @recovery @same-identity @planned
+  Scenario: A busy recovery connection reports an incomplete transfer
+    Given Alice's new phone has accepted her guardian's recovery share
+    And her guardian is sending the encrypted backup in person
+    When the guardian's phone cannot accept another part to send
+    Then Alice is told that the backup transfer could not finish
+    And recovery stays incomplete
+    And the accepted shares remain available for another attempt
+
+  @recovery @same-identity @planned
+  Scenario: An interrupted backup transfer resumes after a restart
+    Given Alice's new phone has accepted her guardian's recovery share
+    And it has received some parts of the named backup
+    When the phone restarts and meets the guardian again
+    Then it keeps the accepted share and the parts already received
+    And receiving the remaining parts completes the same backup
+
+  @recovery @same-identity @security @planned
+  Scenario: Cancelling a backup transfer ignores late parts
+    Given Alice's new phone is receiving a guardian's backup
+    When Alice cancels the transfer
+    Then the Bluetooth transfer stops
+    And parts arriving from that cancelled transfer cannot complete a restore
+
+  # ============================================================
   # Compromise rotation (planned, vauchi/private#796, P25 to P31)
   # ============================================================
 
