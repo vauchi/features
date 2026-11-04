@@ -25,7 +25,7 @@ Feature: Field Validation
   # Self-Attestation (owner marks their own fields)
   # ============================================================
   # Planned: a field carries no attestation state and no code marks,
-  # shows or resets one; the scenarios were tagged @implemented when the
+  # shows or resets one; the scenarios were marked implemented when the
   # feature was simplified on 2026-03-17 (private#631).
 
   @self-attest @planned
