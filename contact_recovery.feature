@@ -162,6 +162,8 @@ Feature: Contact Recovery
     And only the recovery trust flag should change
   # ============================================================
   # Identity Loss and New Identity Creation
+  # Today's path. Planned to be replaced by "Social recovery restores
+  # the same identity" below (vauchi/private#796, P28, P32).
   # ============================================================
 
   @recovery @identity @implemented
@@ -365,7 +367,7 @@ Feature: Contact Recovery
       
       Mutual contacts vouching: 2 of 2 required ✓
       """
-    And John can confidently accept the recovery
+    And John's contact for Alice does not move until the policy guardians' certificate for the rotation exists
 
   @recovery @verification @mutual @implemented
   Scenario: High trust with many mutual contacts
@@ -412,20 +414,13 @@ Feature: Contact Recovery
       | Reject               | Safe     | Decline the recovery                 |
       | Remind Me Later      | Neutral  | Check again in 7 days                |
 
-  @recovery @verification @isolated @implemented
-  Scenario: Isolated contact accepts with warning
+  @recovery @verification @isolated @security @implemented
+  Scenario: No contact accepts a recovery without the certificate
     Given David has no mutual contacts with the vouchers
-    When David chooses "Accept Anyway"
-    Then David is shown a final warning:
-      """
-      You are accepting a recovery without mutual contact verification.
-      
-      If this is an impersonator, they will have access to communicate
-      with you as if they were Alice.
-      
-      Are you sure?
-      """
-    And David must confirm to proceed
+    When David receives Alice's rekey offer
+    Then David's app drops the offer
+    And David's contact for Alice keeps its key and shared key
+    And neither vouchers nor the old key's signatures move it
 
   @recovery @verification @isolated @implemented
   Scenario: Isolated contact verifies out of band
@@ -455,9 +450,10 @@ Feature: Contact Recovery
   # Acceptance and Reconnection
   # ============================================================
 
-  @recovery @acceptance @implemented
+  @recovery @acceptance @planned
   Scenario: Accept recovery and reconnect
-    Given John accepts Alice's recovery
+    Given the policy guardians' certificate rotates Alice to her registered next identity
+    And John receives Alice's rekey offer signed by that identity with the certificate
     Then John's contact record for Alice is updated:
       | field      | old_value | new_value |
       | public_key | pk_old    | pk_new    |
@@ -465,9 +461,9 @@ Feature: Contact Recovery
     And John and Alice establish a new shared secret
     And the old shared secret is discarded
 
-  @recovery @acceptance @implemented
+  @recovery @acceptance @planned
   Scenario: Contact card is refreshed after recovery
-    Given John accepts Alice's recovery
+    Given John accepted Alice's certified rotation
     And the new key exchange completes
     When Alice sends her current contact card
     Then John receives Alice's updated contact card
@@ -709,3 +705,78 @@ Feature: Contact Recovery
     And enough mutual vouchers review as high confidence, one as medium, none as low
     And the fingerprint shown is the proof's new key, not a value the screen was handed
     # promoted_to: core (tests/it/recovery_claim_review_tests.rs, core!2051)
+
+  # ============================================================
+  # Social recovery restores the same identity (planned,
+  # vauchi/private#796, P28, P32)
+  # ============================================================
+
+  @recovery @same-identity @planned
+  Scenario: Social recovery restores the same identity on a new device
+    Given Alice's guardians keep pieces of her backup in three groups
+    And Alice's phone is lost
+    When Alice's new phone begins a recovery naming her old identity
+    And a guardian of each group recognizes Alice and hands back its piece in person
+    Then the new phone becomes Alice's identity as a new device
+    And the lost device is listed as revoked in Alice's signed registry
+    And Alice's contacts keep their shared keys
+    And no contact waits for a rekey
+
+  @recovery @same-identity @security @planned
+  Scenario: A backup of another identity is refused
+    Given Alice's new phone began a recovery naming her old identity
+    When someone seals another identity's backup to the phone's recovery key
+    Then the phone refuses to restore it
+    And the phone still has no identity
+
+  @recovery @same-identity @planned
+  Scenario: Retried hand-backs count once
+    Given Alice's new phone began a recovery
+    When the same guardian hands back its piece many times
+    Then the phone keeps that piece once
+    And the restore still succeeds with the other groups' pieces
+
+  @recovery @same-identity @planned
+  Scenario: An interrupted restore keeps its recovery key and pieces
+    Given Alice's new phone began a recovery and took two guardians' pieces
+    When the phone restarts
+    Then it still holds the recovery key and the two pieces
+    And the third guardian's piece completes the restore
+
+  @recovery @same-identity @security @planned
+  Scenario: The recovery key is discarded after the restore
+    Given Alice's new phone restored her identity
+    Then the temporary recovery key and the pieces are gone
+
+  @recovery @same-identity @security @planned
+  Scenario: The recovery passphrase is still needed
+    Given Alice set a recovery passphrase on her guardian backup
+    When a guardian of each group hands back its piece
+    Then the backup opens only with the passphrase as well
+
+  # ============================================================
+  # Compromise rotation (planned, vauchi/private#796, P25 to P31)
+  # ============================================================
+
+  @recovery @compromise @security @planned
+  Scenario: Revoking a phone stolen unlocked does not take back its keys
+    Given Alice's phone was stolen unlocked
+    When Alice revokes it from another device
+    Then it stops syncing with her other devices
+    And it still holds the identity's keys
+    And moving contacts needs a rotation to Alice's registered next identity
+
+  @recovery @compromise @security @planned
+  Scenario: A contact met in person rotates to the registered next identity
+    Given John pinned the hash of Alice's registered next identity
+    When John meets Alice in person and recognizes her
+    And her phone shows the identity matching that hash
+    Then John rotates to it without a certificate
+    And John marks Alice's old identity compromised
+
+  @recovery @compromise @security @planned
+  Scenario: Meeting in person does not rotate to an unregistered identity
+    Given John pinned the hash of Alice's registered next identity
+    When someone John recognizes as Alice shows an identity not matching that hash
+    Then John makes a separate contact for it
+    And John's contact for Alice's old identity does not move

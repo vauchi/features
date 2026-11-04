@@ -187,15 +187,15 @@ Feature: Device Management
     Given Device A and Device B are linked
     Then each device should have its own encryption key
     And the device key should be derived from master seed
-    And compromise of one device key should not compromise others
+    And a device holding the master seed can derive every other device's key
 
   @security @implemented
   Scenario: Lost device revocation
     Given Device B has been lost or stolen
     When I mark Device B as "Lost" on Device A
-    Then Device B should be immediately unlinked
-    And Device B's device key should be revoked
-    And contacts should be notified if necessary
+    Then Device B should stop syncing with Device A
+    And Device B's device key should be revoked in the signed registry
+    And Device B should still hold the identity's keys it had
 
   @security @implemented
   Scenario: Verify device during linking
