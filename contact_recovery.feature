@@ -414,9 +414,7 @@ Feature: Contact Recovery
       | Reject               | Safe     | Decline the recovery                 |
       | Remind Me Later      | Neutral  | Check again in 7 days                |
 
-  # @planned until its test's annotation is on core main (core!2187), then
-  # @implemented: the behaviour is on main since core!2183.
-  @recovery @verification @isolated @security @planned
+  @recovery @verification @isolated @security @implemented
   Scenario: No contact accepts a recovery without the certificate
     Given David has no mutual contacts with the vouchers
     When David receives Alice's rekey offer
