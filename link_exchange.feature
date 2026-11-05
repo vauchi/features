@@ -9,7 +9,7 @@ Feature: Link contact exchange
     Given a user "Alice"
     And a user "Bob"
 
-  @feature-driver @planned
+  @feature-driver @implemented
   Scenario: Two users exchange contact cards using a link
     When "Alice" shares an exchange link with "Bob"
     Then "Alice" has "Bob" as a contact
