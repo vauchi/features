@@ -271,7 +271,7 @@ Feature: Remote Content Updates
     When the app applies updates
     Then "catppuccin-mocha" should appear in theme selection
 
-  @themes @planned
+  @themes @implemented
   Scenario: Apply downloaded theme
     Given the user has downloaded the "catppuccin-mocha" theme
     When the user selects "catppuccin-mocha" theme
