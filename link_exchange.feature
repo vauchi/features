@@ -21,3 +21,13 @@ Feature: Link contact exchange
     Then "Bob" is told the exchange link is invalid
     And "Alice" has no contacts
     And "Bob" has no contacts
+
+  @feature-driver @planned
+  Scenario: Users exchange contact cards after a malformed link is rejected
+    When "Bob" opens a malformed exchange link
+    Then "Bob" is told the exchange link is invalid
+    And "Alice" has no contacts
+    And "Bob" has no contacts
+    When "Alice" shares an exchange link with "Bob"
+    Then "Alice" has "Bob" as a contact
+    And "Bob" has "Alice" as a contact
