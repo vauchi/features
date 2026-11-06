@@ -3,7 +3,8 @@
 
 @exchange @link
 Feature: Link contact exchange
-  People exchange contact cards remotely using a shared link.
+  People exchange contact cards remotely using a shared link and a code sent
+  another way.
 
   Background:
     Given a user "Alice"
@@ -31,3 +32,16 @@ Feature: Link contact exchange
     When "Alice" shares an exchange link with "Bob"
     Then "Alice" has "Bob" as a contact
     And "Bob" has "Alice" as a contact
+
+  @implemented
+  Scenario: A wrong code makes no contact
+    When "Alice" shares an exchange link
+    And "Bob" opens the exchange link with a wrong code
+    Then "Alice" has no contacts
+    And "Bob" has no contacts
+
+  @implemented
+  Scenario: Opening a link without a code sends nothing
+    When "Alice" shares an exchange link
+    And "Bob" opens the exchange link without typing a code
+    Then nothing from "Bob" reaches the relay
