@@ -711,7 +711,7 @@ Feature: Contact Recovery
   # vauchi/private#796, P28, P32)
   # ============================================================
 
-  @recovery @same-identity @planned
+  @recovery @same-identity @implemented
   Scenario: Social recovery restores the same identity on a new device
     Given Alice's guardians keep pieces of her backup in three groups
     And Alice's phone is lost
@@ -758,7 +758,7 @@ Feature: Contact Recovery
   # Recovery backup transfer (planned, vauchi/private#796, P33)
   # ============================================================
 
-  @recovery @same-identity @planned
+  @recovery @same-identity @implemented
   Scenario: A recovery backup crosses a connection that accepts small parts
     Given Alice's new phone has accepted her guardian's recovery share
     And their Bluetooth connection accepts only small parts at a time
@@ -766,7 +766,7 @@ Feature: Contact Recovery
     Then the phone receives the complete backup without exceeding the connection's limits
     And the backup matches the one named by the accepted share
 
-  @recovery @same-identity @planned
+  @recovery @same-identity @implemented
   Scenario: A busy recovery connection reports an incomplete transfer
     Given Alice's new phone has accepted her guardian's recovery share
     And her guardian is sending the encrypted backup in person
@@ -775,7 +775,7 @@ Feature: Contact Recovery
     And recovery stays incomplete
     And the accepted shares remain available for another attempt
 
-  @recovery @same-identity @planned
+  @recovery @same-identity @implemented
   Scenario: An interrupted backup transfer resumes after a restart
     Given Alice's new phone has accepted her guardian's recovery share
     And it has received some parts of the named backup
@@ -783,7 +783,7 @@ Feature: Contact Recovery
     Then it keeps the accepted share and the parts already received
     And receiving the remaining parts completes the same backup
 
-  @recovery @same-identity @security @planned
+  @recovery @same-identity @security @implemented
   Scenario: Cancelling a backup transfer ignores late parts
     Given Alice's new phone is receiving a guardian's backup
     When Alice cancels the transfer
