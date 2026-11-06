@@ -22,7 +22,7 @@ Feature: Link contact exchange
     And "Alice" has no contacts
     And "Bob" has no contacts
 
-  @feature-driver @planned
+  @feature-driver @implemented
   Scenario: Users exchange contact cards after a malformed link is rejected
     When "Bob" opens a malformed exchange link
     Then "Bob" is told the exchange link is invalid
