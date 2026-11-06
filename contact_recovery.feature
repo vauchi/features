@@ -755,7 +755,7 @@ Feature: Contact Recovery
     Then the backup opens only with the passphrase as well
 
   # ============================================================
-  # Recovery backup transfer (planned, vauchi/private#796, P33)
+  # Recovery backup transfer (vauchi/private#796, P33)
   # ============================================================
 
   @recovery @same-identity @implemented
