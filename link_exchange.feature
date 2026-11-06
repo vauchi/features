@@ -14,3 +14,10 @@ Feature: Link contact exchange
     When "Alice" shares an exchange link with "Bob"
     Then "Alice" has "Bob" as a contact
     And "Bob" has "Alice" as a contact
+
+  @feature-driver @planned
+  Scenario: A malformed exchange link is rejected without adding contacts
+    When "Bob" opens a malformed exchange link
+    Then "Bob" is told the exchange link is invalid
+    And "Alice" has no contacts
+    And "Bob" has no contacts
