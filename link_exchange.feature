@@ -15,7 +15,7 @@ Feature: Link contact exchange
     Then "Alice" has "Bob" as a contact
     And "Bob" has "Alice" as a contact
 
-  @feature-driver @planned
+  @feature-driver @implemented
   Scenario: A malformed exchange link is rejected without adding contacts
     When "Bob" opens a malformed exchange link
     Then "Bob" is told the exchange link is invalid
