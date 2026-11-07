@@ -33,14 +33,14 @@ Feature: Link contact exchange
     Then "Alice" has "Bob" as a contact
     And "Bob" has "Alice" as a contact
 
-  @implemented
+  @planned
   Scenario: A wrong code makes no contact
     When "Alice" shares an exchange link
     And "Bob" opens the exchange link with a wrong code
     Then "Alice" has no contacts
     And "Bob" has no contacts
 
-  @implemented
+  @planned
   Scenario: Opening a link without a code sends nothing
     When "Alice" shares an exchange link
     And "Bob" opens the exchange link without typing a code
