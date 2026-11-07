@@ -141,6 +141,20 @@ Feature: Sync and Updates
     When I tap "Sync Now"
     Then immediate sync attempt should be made
     And sync status should update
+
+  @status @planned
+  Scenario: A background check missed while the phone was locked shows after unlock
+    Given a background check ran while my phone was locked
+    And it could not open my data
+    When I unlock my phone and open Vauchi
+    Then the sync status says it could not check for updates while the phone was locked
+    And it says when that was
+
+  @status @planned
+  Scenario: A later successful sync clears the missed-check note
+    Given the sync status says a background check was missed while locked
+    When a sync succeeds
+    Then the sync status no longer mentions the missed check
   # Sync Reliability
 
   @reliability @implemented
