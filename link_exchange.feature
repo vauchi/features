@@ -16,6 +16,17 @@ Feature: Link contact exchange
     Then "Alice" has "Bob" as a contact
     And "Bob" has "Alice" as a contact
 
+  @feature-driver @planned
+  Scenario: A user exchanges contact cards with two people in succession
+    Given a user "Carol"
+    When "Alice" shares an exchange link with "Bob"
+    Then "Alice" has "Bob" as a contact
+    And "Bob" has "Alice" as a contact
+    When "Alice" shares an exchange link with "Carol"
+    Then "Alice" has "Bob" and "Carol" as contacts
+    And "Bob" has "Alice" as a contact
+    And "Carol" has "Alice" as a contact
+
   @feature-driver @implemented
   Scenario: A malformed exchange link is rejected without adding contacts
     When "Bob" opens a malformed exchange link
