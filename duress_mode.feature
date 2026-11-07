@@ -254,7 +254,7 @@ Feature: Duress Mode
     And memory should not contain real database key
     And forensic analysis should not reveal real contacts
 
-  @security @planned
+  @security @implemented
   Scenario: Real keys never loaded in duress mode
     Given I am in duress mode
     Then real encryption keys should not be in memory
@@ -323,7 +323,7 @@ Feature: Duress Mode
       | Last updated | Staggered, believable dates |
       | Last seen    | Some recent, some older     |
 
-  @believability @planned
+  @believability @implemented
   Scenario: Settings reflect decoy state
     Given I am in duress mode
     When I view settings
