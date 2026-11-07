@@ -44,11 +44,12 @@ Feature: Link contact exchange
     Then "Alice" has "Bob" as a contact
     And "Bob" has "Alice" as a contact
 
-  @implemented
+  @feature-driver @implemented
   Scenario: A wrong code makes no contact
     When "Alice" shares an exchange link
     And "Bob" opens the exchange link with a wrong code
-    Then "Alice" has no contacts
+    Then "Bob" is still waiting for the exchange
+    And "Alice" has no contacts
     And "Bob" has no contacts
 
   @implemented
