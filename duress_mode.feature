@@ -410,7 +410,7 @@ Feature: Duress Mode
     And either credential will work
     And no indication of previous duress mode
 
-  @edge @planned
+  @edge @implemented
   Scenario: Duress mode with notification
     Given I am in duress mode
     And a real update arrives in the background
