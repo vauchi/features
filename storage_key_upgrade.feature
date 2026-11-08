@@ -18,7 +18,7 @@ Feature: Storage keys move into the platform keychain on upgrade
     Given the keychain answers
     When the updated app starts
     Then the identity and every contact are still there
-    And the keychain holds only the shredding master key
+    And the keychain holds only the shredding master key and the background receive key
     And the app's own copy of the old key is gone
 
   @implemented
@@ -34,7 +34,7 @@ Feature: Storage keys move into the platform keychain on upgrade
     Given the updated app started on Core's unlock screen
     When the person unlocks with the platform prompt
     Then the identity and every contact are still there
-    And the keychain holds only the shredding master key
+    And the keychain holds only the shredding master key and the background receive key
 
   @implemented
   Scenario: A keychain that fails for another reason offers Try again
