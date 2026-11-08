@@ -115,7 +115,7 @@ Feature: Emergency Shred
       | No key material remains in storage |
       | SMK is no longer accessible        |
 
-  @report @planned
+  @report @implemented
   Scenario: Every shred destroys the background receive key
     Given the keychain holds a shredding master key and a background receive key
     When a panic shred or a widget shred runs

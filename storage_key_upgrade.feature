@@ -43,14 +43,14 @@ Feature: Storage keys move into the platform keychain on upgrade
     Then Core's try-again screen is shown
     And nothing has been deleted or rekeyed yet
 
-  @planned
+  @implemented
   Scenario: Creating an identity makes a background receive key
     When I create an identity
     Then the keychain holds a random background receive key
     And it is stored in the class usable after the first unlock since boot
     And it is not derived from the shredding master key
 
-  @planned
+  @implemented
   Scenario: An identity made before the background receive key gets one at the next open
     Given an identity whose keychain holds a shredding master key and no background receive key
     When the app opens its data
