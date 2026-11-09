@@ -210,7 +210,7 @@ Feature: Duress Mode
     But they should be discarded on logout
     And real data should be unaffected
 
-  @behavior @planned
+  @behavior @implemented
   Scenario: No trace of duress mode after logout
     Given I was in duress mode
     When I logout or close the app
@@ -292,7 +292,7 @@ Feature: Duress Mode
     And the log should be accessible only from real mode
     And I can review when duress mode was used
 
-  @security @planned
+  @security @implemented
   Scenario: Credentials processed identically at UI level
     Given duress mode is enabled
     When observing the login process
@@ -418,7 +418,7 @@ Feature: Duress Mode
     And the update should be processed silently
     And it will be visible in real mode later
 
-  @edge @planned
+  @edge @implemented
   Scenario: Backup includes duress profile
     Given duress mode is enabled
     When I create an encrypted backup
