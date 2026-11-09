@@ -10,7 +10,7 @@ Feature: Generic presentation command/event protocol
     When each supported shell receives that command
     Then each shell renders the supplied content without domain interpretation
 
-  @planned
+  @implemented
   Scenario: User interaction returns as an opaque event
     Given a rendered action with an opaque binding identifier
     When the user activates that action

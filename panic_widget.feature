@@ -94,7 +94,7 @@ Feature: Panic Button Widget
   # Panic Shred Execution
   # ============================================================
 
-  @shred @planned
+  @shred @implemented
   Scenario: Widget triggers full panic shred
     Given I have triggered panic via the widget
     Then the panic shred process should execute per emergency_shred.feature

@@ -356,7 +356,7 @@ Feature: Duress Mode
     Then normal lockout behavior should apply
     And no indication of duress mode existence should be shown
 
-  @edge @planned
+  @edge @implemented
   Scenario: Biometric unlock with duress
     Given I have configured duress mode
     And I have biometric unlock enabled
@@ -365,7 +365,7 @@ Feature: Duress Mode
     And my normal PIN should open my real profile
     And my duress PIN should open the decoy profile the same way
 
-  @edge @planned
+  @edge @implemented
   Scenario: Biometric unlock without duress
     Given I have an app password but no duress PIN
     And I have biometric unlock enabled
