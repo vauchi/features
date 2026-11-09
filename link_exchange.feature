@@ -16,7 +16,7 @@ Feature: Link contact exchange
     Then "Alice" has "Bob" as a contact
     And "Bob" has "Alice" as a contact
 
-  @feature-driver @planned
+  @feature-driver @implemented
   Scenario: A user exchanges contact cards with two people in succession
     Given a user "Carol"
     When "Alice" shares an exchange link with "Bob"
