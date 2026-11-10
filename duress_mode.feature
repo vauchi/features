@@ -98,7 +98,8 @@ Feature: Duress Mode
   # Decoy Profile Setup
   # ============================================================
 
-  @decoy @implemented
+  # @planned until core !2307 lands its test annotation on main; then flip.
+  @decoy @planned
   Scenario: Decoy contacts are static (no sync)
     Given I have decoy contacts configured
     Then decoy contacts should not sync
@@ -221,7 +222,8 @@ Feature: Duress Mode
     # survives a lock"). They live in the mask profile until duress is
     # disabled.
 
-  @behavior @implemented
+  # @planned until core !2307 lands its test annotation on main; then flip.
+  @behavior @planned
   Scenario: No trace of duress mode after logout
     Given I was in duress mode
     When I logout or close the app
@@ -258,7 +260,8 @@ Feature: Duress Mode
     And the decoy database should use the duress credential for encryption
     And the real database should not be accessible with the duress credential
 
-  @security @implemented
+  # @planned until core !2307 lands its test annotation on main; then flip.
+  @security @planned
   Scenario: Real database cryptographically inaccessible in duress mode
     Given I have unlocked with the duress credential
     Then the real database key should not be derivable from the duress credential
@@ -308,7 +311,8 @@ Feature: Duress Mode
     And the log should be accessible only from real mode
     And I can review when duress mode was used
 
-  @security @implemented
+  # @planned until core !2307 lands its test annotation on main; then flip.
+  @security @planned
   Scenario: Credentials processed identically at UI level
     Given duress mode is enabled
     When observing the login process
@@ -330,7 +334,8 @@ Feature: Duress Mode
       | Contact details | Shows decoy contact info    |
       | Edit card       | Appears to save (discarded) |
 
-  @believability @implemented
+  # @planned until core !2307 lands its test annotation on main; then flip.
+  @believability @planned
   Scenario: Decoy profile has realistic timestamps
     Given I have decoy contacts
     Then decoy contacts should show:
