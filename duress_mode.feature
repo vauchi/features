@@ -15,12 +15,11 @@ Feature: Duress Mode
   the duress PIN or password reveals a decoy contact list while optionally
   alerting trusted contacts.
 
-  Duress mode supports two entry methods:
-  - **Duress PIN**: 6-digit numeric code (separate from unlock PIN)
-  - **Duress password**: Alphanumeric password (requires app password enabled first)
-
-  Both entry methods provide identical duress behavior. The choice depends
-  on the user's app lock configuration (PIN vs password).
+  The duress credential is a six-digit PIN, separate from the app
+  password, which must be set first. The claims chapter states the PIN's
+  limit: someone who images the device and also holds the storage master
+  key can guess it offline. (The API still calls it a duress password;
+  it accepts six ASCII digits and nothing else.)
 
   PRINCIPLES ALIGNMENT:
   - Privacy is a right: Protects contacts under coercion
@@ -75,28 +74,29 @@ Feature: Duress Mode
     Then the setup should be refused
     And I should be told an app password is needed first
 
-  @setup @planned
-  Scenario: Duress password strength requirements
-    Given I am setting up a duress password
-    Then the duress password should meet requirements:
-      | requirement        | description                                   |
-      | Minimum length     | At least 8 characters                         |
-      | Different from app | Must not match app password                   |
-      | Memorable          | User should be able to recall it under stress |
+  @setup @implemented
+  Scenario: Duress credential is six digits
+    Given I am setting up a duress PIN
+    When I enter anything but six ASCII digits
+    Then the PIN should be rejected
+    And six ASCII digits should be accepted
+    # Rewritten 2026-11-10 (vauchi/private#1196): the credential is a
+    # six-digit PIN, not an alphanumeric password.
 
   @setup @implemented
   Scenario: Configure decoy contacts
     Given I have enabled duress mode
     When I configure the decoy profile
     Then I should be able to add fake contacts
-    And I should be able to import from system contacts
     And the decoy contacts should be stored separately
+    # Importing from the system contacts is "Import decoy contacts from
+    # phone" below, still planned (vauchi/private#1196).
 
   # ============================================================
   # Decoy Profile Setup
   # ============================================================
 
-  @decoy @planned
+  @decoy @implemented
   Scenario: Decoy contacts are static (no sync)
     Given I have decoy contacts configured
     Then decoy contacts should not sync
@@ -184,16 +184,18 @@ Feature: Duress Mode
   # Duress Mode Behavior
   # ============================================================
 
-  @behavior @planned
-  Scenario: Duress mode sync is fake but looks real
+  @behavior @implemented
+  Scenario: Duress mode sync is real but carries nothing real
     Given I am in duress mode
-    When I try to sync
-    Then a fake sync animation should play
+    When the app syncs
+    Then the sync should run as it does in normal mode
     And no real contact data should be synced
-    And any network traffic should be indistinguishable from a normal sync
-    And "Sync complete" should be shown
-    # No real payload rides this sync: a duress unlock sends nothing
-    # (see "A duress unlock sends nothing").
+    And what it sends should be cover items of the real items' lengths
+    And the other device should treat a cover item as nothing
+    # Rewritten 2026-11-10 (vauchi/private#1196): the sync is not faked.
+    # The mask profile syncs for real; a duress edit journals cover of the
+    # real item's length (ADR-032 addendum, ADR-080), and a duress unlock
+    # sends nothing (see "A duress unlock sends nothing").
   # Removed: "Exchange in duress mode is fake" — contradicted line 216
   # ("Exchanges add to decoy profile"). For plausible deniability, the
   # exchange must APPEAR to work. A coercer watching would notice a
@@ -201,14 +203,19 @@ Feature: Duress Mode
   # works but adds to decoy profile only.
   # See: audit 2026-03-23, finding H4.
 
-  @behavior @planned
-  Scenario: Edits in duress mode are discarded
+  @behavior @implemented
+  Scenario: Edits in duress mode stay in the decoy profile
     Given I am in duress mode
     When I edit my decoy contact card
     And I save the changes
-    Then changes should appear saved
-    But they should be discarded on logout
-    And real data should be unaffected
+    Then the changes should be saved in the decoy profile
+    And they should still be there after a lock and a second duress unlock
+    And the real card should be untouched
+    And disabling duress mode should discard them
+    # Rewritten 2026-11-10 (vauchi/private#1196): discarding edits on
+    # logout would give the mode away (see "What a duress session makes
+    # survives a lock"). They live in the mask profile until duress is
+    # disabled.
 
   @behavior @implemented
   Scenario: No trace of duress mode after logout
@@ -247,19 +254,24 @@ Feature: Duress Mode
     And the decoy database should use the duress credential for encryption
     And the real database should not be accessible with the duress credential
 
-  @security @planned
+  @security @implemented
   Scenario: Real database cryptographically inaccessible in duress mode
     Given I have unlocked with the duress credential
-    Then the real database key should not be derivable
-    And memory should not contain real database key
-    And forensic analysis should not reveal real contacts
+    Then the real database key should not be derivable from the duress credential
+    And the foreground should hold no real key, seed or emergency message
+    And the duress content should open under the mask key only
+    # Narrowed 2026-11-10 (ADR-080, vauchi/private#1196): the real profile
+    # runs as a background worker, so process memory does hold its key;
+    # what is promised is that nothing reachable from the foreground does.
 
   @security @implemented
   Scenario: Real keys never loaded in duress mode
     Given I am in duress mode
-    Then real encryption keys should not be in memory
-    And real identity seed should not be accessed
-    And real contacts database should not be decrypted
+    Then no real encryption key should be reachable from the foreground
+    And the real identity seed should not be accessible
+    And the real contacts should not be readable
+    # Narrowed to the foreground, as ADR-080 says: the real profile's
+    # background worker holds its keys and exposes nothing to the UI.
 
   @security @implemented
   Scenario: Both databases use strong encryption
@@ -297,7 +309,7 @@ Feature: Duress Mode
     Given duress mode is enabled
     When observing the login process
     Then entering either credential should look the same
-    And timing should be similar
+    And both credentials should be checked every time, in constant time
     And no visual difference should reveal which was entered
   # ============================================================
   # Believability
@@ -308,20 +320,20 @@ Feature: Duress Mode
     Given I am in duress mode
     Then all app features should appear to work:
       | feature         | behavior                    |
-      | Sync            | Fake animation, "success"   |
-      | Exchange        | Shows QR (non-functional)   |
+      | Sync            | Runs, carries only cover    |
+      | Exchange        | Works, adds to the decoys   |
       | Settings        | Fake settings that "save"   |
       | Contact details | Shows decoy contact info    |
       | Edit card       | Appears to save (discarded) |
 
-  @believability @planned
+  @believability @implemented
   Scenario: Decoy profile has realistic timestamps
     Given I have decoy contacts
     Then decoy contacts should show:
-      | field        | behavior                    |
-      | Added date   | Realistic past dates        |
-      | Last updated | Staggered, believable dates |
-      | Last seen    | Some recent, some older     |
+      | field        | behavior                                  |
+      | Added date   | Past dates inside a documented window     |
+      | Last updated | At least a week old, after the added date |
+    And no two decoys should share the same dates
 
   @believability @implemented
   Scenario: Settings reflect decoy state
@@ -348,6 +360,30 @@ Feature: Duress Mode
     When I navigate to Privacy or Security settings
     Then I should not see the option to disable duress
     And I should not be able to access real settings
+
+  @edge @implemented
+  Scenario: The duress setup is invisible in duress mode
+    Given I am in duress mode
+    When I read the duress settings, the decoy list or the emergency status
+    Then the duress PIN should read as not set up
+    And the decoy contacts should not be named
+    And the emergency status should show no duress protection and no trusted contacts
+    And no screen should show a real contact, group, tag or place
+
+  @edge @implemented
+  Scenario: The duress setup cannot be changed in duress mode
+    Given I am in duress mode
+    When I set a new duress PIN, add or remove decoys, or disable duress
+    Then the real duress setup should be unchanged
+    And the real duress PIN should still work
+    And the PIN set in duress mode should never have been stored
+
+  @edge @implemented
+  Scenario: Changes made in duress mode look like they worked
+    Given I am in duress mode
+    When I change the duress setup or the decoys
+    Then the changes should read back as done for the rest of the session
+    And a decoy added in duress mode should stay out of the contact list
 
   @edge @implemented
   Scenario: Wrong credential handling
