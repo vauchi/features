@@ -312,7 +312,7 @@ Feature: Duress Mode
     And I can review when duress mode was used
 
   # @planned until core !2307 lands its test annotation on main; then flip.
-  @security @planned
+  @security @implemented
   Scenario: Credentials processed identically at UI level
     Given duress mode is enabled
     When observing the login process
