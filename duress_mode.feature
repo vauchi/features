@@ -45,9 +45,10 @@ Feature: Duress Mode
   @setup @implemented
   Scenario: Enable duress PIN in settings
     Given duress mode is disabled
+    And my device has biometric unlock
     When I navigate to Privacy settings
     And I enable "Duress PIN"
-    Then I should be prompted to create a duress PIN
+    Then I should be prompted to create a 6-digit duress PIN
     And I should be prompted to set up a decoy profile
 
   @setup @implemented
@@ -59,8 +60,11 @@ Feature: Duress Mode
     And I should see "Duress PIN must be different from your unlock PIN"
 
   @setup @implemented
+  # ADR-032 amendment 2026-11-10: without biometric unlock in front of it,
+  # a 6-digit duress PIN falls to an offline guess in minutes.
   Scenario: Enable duress password (requires app password)
     Given app password is enabled
+    And my device has no biometric unlock
     When I navigate to Security settings
     And I enable "Duress password"
     And I authenticate with my real password
@@ -78,12 +82,26 @@ Feature: Duress Mode
   # core lint checks new annotations against features main); then flip.
   @setup @planned
   Scenario: Duress credential is six digits
-    Given I am setting up a duress PIN
+    Given my device has biometric unlock
+    And I am setting up a duress PIN
     When I enter anything but six ASCII digits
     Then the PIN should be rejected
     And six ASCII digits should be accepted
     # Rewritten 2026-11-10 (vauchi/private#1196): the credential is a
-    # six-digit PIN, not an alphanumeric password.
+    # six-digit PIN, not an alphanumeric password. Without biometric
+    # unlock it is a password instead (ADR-032 amendment 2026-11-10).
+
+  @setup @planned
+  Scenario: Duress password strength requirements
+    Given my device has no biometric unlock
+    And I am setting up a duress password
+    Then the app password and the duress password should each meet:
+      | requirement        | description                                   |
+      | Minimum length     | At least 8 characters                         |
+      | Hard to guess      | The same strength rule as a backup password   |
+      | Different from app | The duress password must not match it         |
+    And a weak app password should be named, with an offer to change it
+    And while duress is set, the app password should not change to a weak one
 
   @setup @implemented
   Scenario: Configure decoy contacts
@@ -318,6 +336,8 @@ Feature: Duress Mode
     When observing the login process
     Then entering either credential should look the same
     And both credentials should be checked every time, in constant time
+    And with biometric unlock the lock screen should look as it does without duress
+    And a PIN typed before the biometric check should be refused as a wrong one
     And no visual difference should reveal which was entered
   # ============================================================
   # Believability
@@ -409,6 +429,7 @@ Feature: Duress Mode
     Then the lock screen should ask for my PIN without offering biometrics
     And my normal PIN should open my real profile
     And my duress PIN should open the decoy profile the same way
+    But a PIN typed before biometric authentication should open nothing
 
   @edge @implemented
   Scenario: Biometric unlock without duress
@@ -470,6 +491,26 @@ Feature: Duress Mode
     Then the backup should include duress settings
     And decoy profile should be included
     And restore should preserve duress configuration
+    And restore should keep whether duress needs biometrics or two passwords
+
+  # ADR-080 point 7: the second payload is the same size whether it holds a
+  # decoy or nothing, so the file does not show that duress is set.
+  @edge @planned
+  Scenario: A decoy backup password opens only the decoy profile
+    Given duress mode is enabled on my real profile
+    When I create a backup with a backup password and a decoy backup password
+    Then restoring with the decoy backup password should give the decoy profile only
+    And it should lock with the duress credential and have no duress of its own
+    And a restore should not tell which payload opened from its error or timing
+
+  # ADR-080: a wipe sent from another device runs in the coercer's hands, who
+  # sees the app wipe itself. Accepted (owner, 2026-11-07).
+  @edge @planned
+  Scenario: A remote wipe applies during duress
+    Given I am in duress mode on this device
+    When I wipe this device from another of my devices
+    Then the real profile running in the background should apply the wipe
+    And every profile on this device should be destroyed
 
   @edge @planned
   Scenario: Multiple duress credentials not supported
