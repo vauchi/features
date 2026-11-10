@@ -190,7 +190,8 @@ Feature: Sync and Updates
 
   @efficiency @planned
   Scenario: Merkle tree for efficient sync detection
-    # MerkleTree exists but sync does not use it; deltas come from the pending queue.
+    # Core's unused MerkleTree was removed (vauchi/private#880, SC-05);
+    # deltas come from the pending queue. Implementing this means a new design.
     Given Bob and I have been synced
     When we reconnect after a period offline
     Then Merkle tree comparison should detect changes
