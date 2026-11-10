@@ -74,7 +74,9 @@ Feature: Duress Mode
     Then the setup should be refused
     And I should be told an app password is needed first
 
-  @setup @implemented
+  # @planned until core !2307 lands its test annotation on main (the
+  # core lint checks new annotations against features main); then flip.
+  @setup @planned
   Scenario: Duress credential is six digits
     Given I am setting up a duress PIN
     When I enter anything but six ASCII digits
@@ -184,7 +186,8 @@ Feature: Duress Mode
   # Duress Mode Behavior
   # ============================================================
 
-  @behavior @implemented
+  # @planned until core !2307 lands its test annotation on main; then flip.
+  @behavior @planned
   Scenario: Duress mode sync is real but carries nothing real
     Given I am in duress mode
     When the app syncs
@@ -203,7 +206,8 @@ Feature: Duress Mode
   # works but adds to decoy profile only.
   # See: audit 2026-03-23, finding H4.
 
-  @behavior @implemented
+  # @planned until core !2307 lands its test annotation on main; then flip.
+  @behavior @planned
   Scenario: Edits in duress mode stay in the decoy profile
     Given I am in duress mode
     When I edit my decoy contact card
