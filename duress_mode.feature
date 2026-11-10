@@ -208,7 +208,7 @@ Feature: Duress Mode
   # See: audit 2026-03-23, finding H4.
 
   # @planned until core !2307 lands its test annotation on main; then flip.
-  @behavior @planned
+  @behavior @implemented
   Scenario: Edits in duress mode stay in the decoy profile
     Given I am in duress mode
     When I edit my decoy contact card
