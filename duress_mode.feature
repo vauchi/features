@@ -89,7 +89,7 @@ Feature: Duress Mode
     # six-digit PIN, not an alphanumeric password. Without biometric
     # unlock it is a password instead (ADR-032 amendment 2026-11-10).
 
-  @setup @planned
+  @setup @implemented
   Scenario: Duress password strength requirements
     Given my device has no biometric unlock
     And I am setting up a duress password
@@ -486,7 +486,7 @@ Feature: Duress Mode
 
   # ADR-080 point 7: the second payload is the same size whether it holds a
   # decoy or nothing, so the file does not show that duress is set.
-  @edge @planned
+  @edge @implemented
   Scenario: A decoy backup password opens only the decoy profile
     Given duress mode is enabled on my real profile
     When I create a backup with a backup password and a decoy backup password
