@@ -461,7 +461,7 @@ Feature: Contact Recovery
     And John and Alice establish a new shared secret
     And the old shared secret is discarded
 
-  @recovery @acceptance @planned
+  @recovery @acceptance @implemented
   Scenario: Contact card is refreshed after recovery
     Given John accepted Alice's certified rotation
     And the new key exchange completes
@@ -517,7 +517,7 @@ Feature: Contact Recovery
     Then the voucher is rejected as expired
     And Alice must generate a fresh recovery claim
 
-  @recovery @security @planned
+  @recovery @security @implemented
   Scenario: Vouchers of one recovery are given within 96 hours
     Given Alice assembles a recovery proof from two vouchers
     When the two voucher timestamps are 97 hours apart

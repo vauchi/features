@@ -18,7 +18,7 @@ Feature: Internationalization
     And all UI text should be translated
     And the language should not need manual configuration
 
-  @language @planned
+  @language @implemented
   Scenario: App falls back to English for unsupported languages
     Given my device is set to an unsupported language
     When I open the app

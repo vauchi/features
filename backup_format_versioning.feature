@@ -102,7 +102,7 @@ Feature: Backup Format Versioning
     Then the backup should be refused for the same weak password as an identity backup
     And a full backup with a strong password should still be created
 
-  @v6 @planned
+  @v6 @implemented
   Scenario: Password backup preserves sharing and contact state
     Given I have contacts, groups and explicit per-contact sharing choices
     And some contacts are archived, blocked or ignored
@@ -114,14 +114,14 @@ Feature: Backup Format Versioning
     And archived, blocked and ignored contact state should match
     And old v3 readers should reject the richer backup
 
-  @v6 @planned
+  @v6 @implemented
   Scenario: Full backup import is atomic
     Given I have a fresh installation
     When a password full backup contains invalid state or cannot be committed
     Then no restored identity, card, contacts or groups should remain
     And a later valid restore should succeed
 
-  @v6 @planned
+  @v6 @implemented
   Scenario: Restored contacts continue exchanging updates
     Given two CLI installations have exchanged contacts
     And one has a password full backup with sharing choices

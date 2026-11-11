@@ -45,7 +45,7 @@ Feature: Privacy Compliance
     And nothing should be exported until it is confirmed
     And repeated wrong passwords should lock the export like any other wrong password
 
-  @export @planned
+  @export @implemented
   Scenario: Without an app password, export uses the phone's own lock
     Given I have not set an app password
     And my phone can check it is me with its screen lock or biometrics

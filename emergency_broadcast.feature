@@ -136,7 +136,7 @@ Feature: Emergency Broadcast
   # Receiving Alerts
   # ============================================================
 
-  @receive @planned
+  @receive @implemented
   Scenario: Receive emergency alert notification
     Given Bob has me as a trusted contact for emergency broadcast
     When Bob sends an emergency broadcast
@@ -170,14 +170,14 @@ Feature: Emergency Broadcast
   # Location Handling
   # ============================================================
 
-  @location @planned
+  @location @implemented
   Scenario: Location disabled by default
     Given I am configuring emergency broadcast
     Then location sharing should be OFF by default
     And I should see a privacy notice about location
     And enabling requires explicit confirmation
 
-  @location @planned
+  @location @implemented
   Scenario: Include location when enabled
     Given I have enabled location sharing for alerts
     When I send an emergency broadcast

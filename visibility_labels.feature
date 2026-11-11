@@ -343,7 +343,7 @@ Feature: Visibility Labels
   # Display Name Overrides
   # ============================================================
 
-  @display-name-override @planned
+  @display-name-override @implemented
   Scenario: Per-group display name override
     # The resolver exists, but the send path does not apply per-group
     # presentation yet, so contacts still see the default name (ADR-054).
