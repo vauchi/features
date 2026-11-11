@@ -90,7 +90,43 @@ export function patternsFrom(stepsDir) {
   return patterns;
 }
 
-const STEP = /^\s*(?:Given|When|Then|And|But|\*)\s+(.+?)\s*$/;
+// A step definition with the pattern(s) it binds and whether its body does
+// anything. Empty, `let _ = world;`, `assert!(true)` and a lone log line do
+// not: a Then bound only to those checks nothing (vauchi/private#1237).
+const STEP_FN =
+  /((?:#\[(?:given|when|then)\((?:[^()]|\([^()]*\))*\)\]\s*)+)(?:async\s+)?fn\s+\w+\s*\([^)]*\)\s*(?:->[^{]*)?\{/g;
+const TRIVIAL_BODY = /^(?:(?:let _ = \w+;\s*)*|assert!\(true\);?|(?:tracing::|log::|println!|eprintln!)[^;]*;?)$/;
+
+function patternOf(kind, rawHash, raw, quoted) {
+  const text = rawHash ?? raw ?? quoted.replace(/\\(["\\])/g, "$1");
+  if (kind === "regex") return new RegExp(text);
+  if (kind === "expr") return expressionRegex(text);
+  return new RegExp("^" + escapeRegex(text) + "$");
+}
+
+export function stepDefinitionsFrom(stepsDir) {
+  const definitions = [];
+  for (const file of fs.readdirSync(stepsDir).filter((f) => f.endsWith(".rs")).sort()) {
+    const source = fs.readFileSync(path.join(stepsDir, file), "utf8");
+    for (const head of source.matchAll(STEP_FN)) {
+      let i = head.index + head[0].length;
+      let depth = 1;
+      while (depth > 0 && i < source.length) {
+        if (source[i] === "{") depth += 1;
+        else if (source[i] === "}") depth -= 1;
+        i += 1;
+      }
+      const body = source.slice(head.index + head[0].length, i - 1).replace(/\/\/[^\n]*/g, "").replace(/\s+/g, " ").trim();
+      const trivial = TRIVIAL_BODY.test(body);
+      for (const [, kind, rawHash, raw, quoted] of head[1].matchAll(ATTRIBUTE)) {
+        definitions.push({ pattern: patternOf(kind, rawHash, raw, quoted), trivial });
+      }
+    }
+  }
+  return definitions;
+}
+
+const STEP = /^\s*(Given|When|Then|And|But|\*)\s+(.+?)\s*$/;
 
 // Scenario ids of one feature file, each with its full step list (Background
 // first; one entry per Examples row for an outline).
@@ -101,17 +137,21 @@ function scenariosOf(file, text) {
   let inBackground = false;
   let inDocString = false;
   let current = null;
+  let phase = null;
   const flush = () => {
     if (!current) return;
     const count = (seen.get(current.name) ?? 0) + 1;
     seen.set(current.name, count);
     const id = `${file} :: ${current.name}${count > 1 ? ` (${count})` : ""}`;
     const rows = current.tables.flatMap((table) => table.slice(1).map((row) => [table[0], row]));
-    if (rows.length === 0) out.push({ id, steps: [...background, ...current.steps] });
+    if (rows.length === 0) out.push({ id, steps: [...background, ...current.steps], thens: current.thens });
     rows.forEach(([header, row], index) =>
       out.push({
         id: `${id} [row ${index + 1}]`,
         steps: [...background, ...current.steps].map((step) =>
+          step.replace(/<([^>]+)>/g, (whole, key) => (header.includes(key) ? row[header.indexOf(key)] : whole)),
+        ),
+        thens: current.thens.map((step) =>
           step.replace(/<([^>]+)>/g, (whole, key) => (header.includes(key) ? row[header.indexOf(key)] : whole)),
         ),
       }),
@@ -140,7 +180,8 @@ function scenariosOf(file, text) {
     if (scenario) {
       flush();
       inBackground = false;
-      current = { name: scenario[1].trim(), steps: [], tables: [], inExamples: false };
+      current = { name: scenario[1].trim(), steps: [], thens: [], tables: [], inExamples: false };
+      phase = null;
       continue;
     }
     if (/^(Examples|Scenarios):/.test(trimmed)) {
@@ -158,8 +199,12 @@ function scenariosOf(file, text) {
     }
     const step = STEP.exec(line);
     if (!step) continue;
-    if (inBackground) background.push(step[1]);
-    else if (current) current.steps.push(step[1]);
+    if (step[1] !== "And" && step[1] !== "But" && step[1] !== "*") phase = step[1];
+    if (inBackground) background.push(step[2]);
+    else if (current) {
+      current.steps.push(step[2]);
+      if (phase === "Then") current.thens.push(step[2]);
+    }
   }
   flush();
   return out;
@@ -174,6 +219,22 @@ export function wiredScenarios(features, patterns) {
     }
   }
   return wired;
+}
+
+export function uncheckedScenarios(features, definitions) {
+  const bound = (step) => definitions.some((d) => d.pattern.test(step));
+  const checks = (step) => definitions.some((d) => !d.trivial && d.pattern.test(step));
+  const unchecked = [];
+  for (const [file, text] of Object.entries(features)) {
+    for (const { id, steps, thens } of scenariosOf(file, text)) {
+      if (steps.length > 0 && steps.every(bound) && !thens.some(checks)) unchecked.push(id);
+    }
+  }
+  return unchecked.sort();
+}
+
+export function newUnchecked(features, definitions, baseline) {
+  return uncheckedScenarios(features, definitions).filter((id) => !baseline.has(id));
 }
 
 export function lostScenarios(baseFeatures, headFeatures, patterns) {
@@ -215,7 +276,29 @@ function main(argv) {
     `Wired scenarios: ${wiredScenarios(baseFeatures, patterns).size} at ${base}, ` +
       `${wiredScenarios(headFeatures, patterns).size} here (${patterns.length} core step patterns).`,
   );
-  if (lost.length === 0) return 0;
+  let status = 0;
+  const baselineFile = option("--unchecked-baseline");
+  if (baselineFile) {
+    const baseline = new Set(
+      fs.readFileSync(baselineFile, "utf8").split("\n").map((l) => l.trim()).filter((l) => l && !l.startsWith("#")),
+    );
+    const definitions = stepDefinitionsFrom(steps);
+    const unchecked = uncheckedScenarios(headFeatures, definitions);
+    const added = unchecked.filter((id) => !baseline.has(id));
+    const gone = [...baseline].filter((id) => !unchecked.includes(id));
+    console.log(`Wired but checked by no Then step that does something: ${unchecked.length} (baseline ${baseline.size}).`);
+    if (gone.length > 0) {
+      console.log("\nNow checked or gone, remove from the baseline:");
+      for (const id of gone) console.log(`  - ${id}`);
+    }
+    if (added.length > 0) {
+      console.log("\nGATE failed: these wired scenarios check nothing (every Then binds to an empty or log-only body):");
+      for (const id of added) console.log(`  - ${id}`);
+      console.log("\nFix: give one Then step a body that asserts the outcome (core step definition), or tag the scenario @planned.");
+      status = 1;
+    }
+  }
+  if (lost.length === 0) return status;
   console.log("\nGATE failed: these scenarios run in core today and would stop binding:");
   for (const id of lost) console.log(`  - ${id}`);
   console.log(

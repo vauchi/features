@@ -231,7 +231,8 @@ lint:wired-scenarios:
       STEPS=/tmp/core/vauchi-app/tests/steps
       [ -d "$STEPS" ] || STEPS=/tmp/core/vauchi-core/tests/steps
       [ -d "$STEPS" ] || { echo "no cucumber steps directory in core main" >&2; exit 1; }
-      node scripts/check-wired-scenarios.mjs --steps "$STEPS" --base FETCH_HEAD
+      node scripts/check-wired-scenarios.mjs --steps "$STEPS" --base FETCH_HEAD \
+        --unchecked-baseline unchecked-scenarios.baseline
 
 # A planned scenario is public only while work on it runs under an issue
 # (vauchi/private#1237): it carries @issue-<N>. Form only — whether the

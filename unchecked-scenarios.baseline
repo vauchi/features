@@ -1,0 +1,30 @@
+# SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Wired scenarios that core's cucumber run executes but no Then step checks:
+# every Then binds to an empty or log-only step body (vauchi/private#1237).
+# Shrink-only: give one Then a body that asserts the outcome, then delete
+# the line. lint:wired-scenarios fails on an unchecked scenario not listed here.
+backup_format_versioning.feature :: V2 backup uses OWASP-recommended Argon2id parameters
+contact_card_management.feature :: Use cached social network config when offline
+contact_exchange.feature :: Exchange verifies identity
+internationalization.feature :: App falls back to English for unsupported languages
+internationalization.feature :: App uses system language by default
+internationalization.feature :: Available languages are listed
+internationalization.feature :: Core languages are supported [row 1]
+internationalization.feature :: Core languages are supported [row 2]
+internationalization.feature :: Core languages are supported [row 3]
+internationalization.feature :: Core languages are supported [row 4]
+internationalization.feature :: Core languages are supported [row 5]
+internationalization.feature :: Core languages are supported [row 6]
+onboarding.feature :: Demo contact updates demonstrate value
+onboarding.feature :: Minimum viable card
+performance.feature :: Efficient database queries
+performance.feature :: Handle 1000 contacts
+performance.feature :: Search performance with many contacts
+theming.feature :: Dracula theme available
+theming.feature :: Gruvbox themes available [row 1]
+theming.feature :: Gruvbox themes available [row 2]
+theming.feature :: Nord theme available
+theming.feature :: Solarized themes available [row 1]
+theming.feature :: Solarized themes available [row 2]
