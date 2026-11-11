@@ -10,7 +10,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { lostScenarios, patternsFrom, wiredScenarios } from "./check-wired-scenarios.mjs";
+import { lostScenarios, newUnchecked, patternsFrom, stepDefinitionsFrom, uncheckedScenarios, wiredScenarios } from "./check-wired-scenarios.mjs";
 
 const STEPS = `
 #[given("I have a backup file")]
@@ -99,4 +99,58 @@ test("literal, expression, alternation, optional text, outlines and regex steps 
 test("a plain literal step is an exact match, not an expression", () => {
   const head = { "backup.feature": BACKUP("the first byte is not a known version") };
   assert.deepEqual([...wiredScenarios(head, patterns())], []);
+});
+
+
+// "Wired" counted a scenario as run by core when every step bound, even when
+// every Then bound to an empty body (vauchi/private#1237): seven planned
+// scenarios passed on `{}`. A scenario is checked only if a Then-phase step
+// binds to a body that does something.
+const CHECK_STEPS = `
+#[given("a contact")]
+fn contact(world: &mut World) { world.add_contact(); }
+#[then("nothing is checked")]
+fn noop(_world: &mut World) {}
+#[then("a log line is all")]
+fn log_only(_world: &mut World) { tracing::info!("checked"); }
+#[then("the contact is saved")]
+fn saved(world: &mut World) { assert_eq!(world.count(), 1); }
+`;
+const CHECK_FEATURE = `Feature: Check
+
+  Scenario: Vacuous
+    Given a contact
+    Then nothing is checked
+    And a log line is all
+
+  Scenario: Real
+    Given a contact
+    Then nothing is checked
+    And the contact is saved
+
+  Scenario: Unwired
+    Given a contact
+    Then core binds no such step
+`;
+
+function definitions() {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "steps-check-"));
+  fs.writeFileSync(path.join(dir, "check.rs"), CHECK_STEPS);
+  return stepDefinitionsFrom(dir);
+}
+
+test("a wired scenario whose Then steps all have empty or log-only bodies is unchecked", () => {
+  assert.deepEqual(uncheckedScenarios({ "check.feature": CHECK_FEATURE }, definitions()), ["check.feature :: Vacuous"]);
+});
+
+test("one asserting Then makes a scenario checked; an unwired one is not counted at all", () => {
+  const unchecked = uncheckedScenarios({ "check.feature": CHECK_FEATURE }, definitions());
+  assert.equal(unchecked.includes("check.feature :: Real"), false);
+  assert.equal(unchecked.includes("check.feature :: Unwired"), false);
+});
+
+test("the gate reports only unchecked scenarios the baseline does not list", () => {
+  const features = { "check.feature": CHECK_FEATURE };
+  assert.deepEqual(newUnchecked(features, definitions(), new Set(["check.feature :: Vacuous"])), []);
+  assert.deepEqual(newUnchecked(features, definitions(), new Set()), ["check.feature :: Vacuous"]);
 });
