@@ -78,9 +78,7 @@ Feature: Duress Mode
     Then the setup should be refused
     And I should be told an app password is needed first
 
-  # @planned until core !2307 lands its test annotation on main (the
-  # core lint checks new annotations against features main); then flip.
-  @setup @planned
+  @setup @implemented
   Scenario: Duress credential is six digits
     Given my device has biometric unlock
     And I am setting up a duress PIN
@@ -116,8 +114,7 @@ Feature: Duress Mode
   # Decoy Profile Setup
   # ============================================================
 
-  # @planned until core !2307 lands its test annotation on main; then flip.
-  @decoy @planned
+  @decoy @implemented
   Scenario: Decoy contacts are static (no sync)
     Given I have decoy contacts configured
     Then decoy contacts should not sync
@@ -205,8 +202,7 @@ Feature: Duress Mode
   # Duress Mode Behavior
   # ============================================================
 
-  # @planned until core !2307 lands its test annotation on main; then flip.
-  @behavior @planned
+  @behavior @implemented
   Scenario: Duress mode sync is real but carries nothing real
     Given I am in duress mode
     When the app syncs
@@ -225,7 +221,6 @@ Feature: Duress Mode
   # works but adds to decoy profile only.
   # See: audit 2026-03-23, finding H4.
 
-  # @planned until core !2307 lands its test annotation on main; then flip.
   @behavior @implemented
   Scenario: Edits in duress mode stay in the decoy profile
     Given I am in duress mode
@@ -240,8 +235,7 @@ Feature: Duress Mode
     # survives a lock"). They live in the mask profile until duress is
     # disabled.
 
-  # @planned until core !2307 lands its test annotation on main; then flip.
-  @behavior @planned
+  @behavior @implemented
   Scenario: No trace of duress mode after logout
     Given I was in duress mode
     When I logout or close the app
@@ -278,8 +272,7 @@ Feature: Duress Mode
     And the decoy database should use the duress credential for encryption
     And the real database should not be accessible with the duress credential
 
-  # @planned until core !2307 lands its test annotation on main; then flip.
-  @security @planned
+  @security @implemented
   Scenario: Real database cryptographically inaccessible in duress mode
     Given I have unlocked with the duress credential
     Then the real database key should not be derivable from the duress credential
@@ -329,7 +322,6 @@ Feature: Duress Mode
     And the log should be accessible only from real mode
     And I can review when duress mode was used
 
-  # @planned until core !2307 lands its test annotation on main; then flip.
   @security @implemented
   Scenario: Credentials processed identically at UI level
     Given duress mode is enabled
@@ -354,8 +346,7 @@ Feature: Duress Mode
       | Contact details | Shows decoy contact info    |
       | Edit card       | Appears to save (discarded) |
 
-  # @planned until core !2307 lands its test annotation on main; then flip.
-  @believability @planned
+  @believability @implemented
   Scenario: Decoy profile has realistic timestamps
     Given I have decoy contacts
     Then decoy contacts should show:
