@@ -222,7 +222,13 @@ lint:wired-scenarios:
     - git fetch --quiet --depth=1 origin main
   script:
     - node --test scripts/check-wired-scenarios.test.mjs
-    - node scripts/check-wired-scenarios.mjs --steps /tmp/core/vauchi-core/tests/steps --base FETCH_HEAD
+    # The cucumber steps move from vauchi-core to vauchi-app (private#1230);
+    # read whichever core main has, and fail if it has neither.
+    - |
+      STEPS=/tmp/core/vauchi-app/tests/steps
+      [ -d "$STEPS" ] || STEPS=/tmp/core/vauchi-core/tests/steps
+      [ -d "$STEPS" ] || { echo "no cucumber steps directory in core main" >&2; exit 1; }
+      node scripts/check-wired-scenarios.mjs --steps "$STEPS" --base FETCH_HEAD
 
 # ============================================================
 # Deploy Stage — Badge Pages
