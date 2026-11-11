@@ -149,6 +149,49 @@ test("one asserting Then makes a scenario checked; an unwired one is not counted
   assert.equal(unchecked.includes("check.feature :: Unwired"), false);
 });
 
+// Core's cucumber job runs `--tags "not @wip and not @ui"`: a scenario with
+// either tag, on the feature, the scenario or its Examples, never runs there,
+// so it is not counted as wired-but-unchecked by core.
+const TAGGED_FEATURE = `@ui
+Feature: Shell rendering
+
+  Scenario: Excluded by the feature tag
+    Given a contact
+    Then nothing is checked
+`;
+const MIXED_FEATURE = `Feature: Mixed
+
+  @wip
+  Scenario: Excluded by the scenario tag
+    Given a contact
+    Then nothing is checked
+
+  Scenario Outline: Excluded row by row
+    Given a contact
+    Then <check>
+
+    @ui
+    Examples:
+      | check              |
+      | nothing is checked |
+
+    Examples:
+      | check              |
+      | a log line is all  |
+
+  @smoke
+  Scenario: Another tag still runs
+    Given a contact
+    Then nothing is checked
+`;
+
+test("a scenario core's run excludes by @wip or @ui is not reported unchecked", () => {
+  assert.deepEqual(uncheckedScenarios({ "ui.feature": TAGGED_FEATURE, "mixed.feature": MIXED_FEATURE }, definitions()), [
+    "mixed.feature :: Another tag still runs",
+    "mixed.feature :: Excluded row by row [row 2]",
+  ]);
+});
+
 test("the gate reports only unchecked scenarios the baseline does not list", () => {
   const features = { "check.feature": CHECK_FEATURE };
   assert.deepEqual(newUnchecked(features, definitions(), new Set(["check.feature :: Vacuous"])), []);
