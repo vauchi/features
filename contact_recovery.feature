@@ -199,14 +199,6 @@ Feature: Contact Recovery
       | new_pk    | pk_new         |
       | timestamp | current_time   |
 
-  @recovery @vouching @planned
-  Scenario: Voucher recognizes old contact
-    Given Bob has Alice as a contact with public key "pk_old"
-    When Bob scans Alice's recovery QR code claiming "pk_old"
-    Then Bob's app shows "Alice claims to have lost their device"
-    And Bob's app shows Alice's stored display name and photo
-    And Bob is prompted to verify this is really Alice in person
-
   @recovery @vouching @implemented
   Scenario: Voucher does not recognize the claimed identity
     Given Bob does not have "pk_old" as a contact
@@ -238,13 +230,6 @@ Feature: Contact Recovery
       | timestamp  | current_time                      |
       | signature  | Ed25519 signature of above fields |
     And the voucher is sent to Alice's new identity
-
-  @recovery @vouching @planned
-  Scenario: Voucher establishes contact with new identity
-    Given Bob vouches for Alice's recovery from "pk_old" to "pk_new"
-    Then Bob's contact record for Alice is updated to "pk_new"
-    And a new key exchange is initiated between Bob and Alice
-    And Bob and Alice can communicate using the new shared key
 
   @recovery @vouching @implemented
   Scenario: Collect multiple vouchers from trusted contacts
@@ -301,33 +286,6 @@ Feature: Contact Recovery
     And more contacts may be able to verify via mutual contacts
   # ============================================================
   # Discovery by Other Contacts
-  # ============================================================
-
-  @recovery @discovery @planned
-  Scenario: Contact discovers recovery proof via relay
-    Given Alice has uploaded a recovery proof
-    And John has Alice as a contact with public key "pk_old"
-    When John's app syncs with the relay
-    Then John's app queries for recovery proofs for all contacts
-    And John's app finds the recovery proof for "pk_old"
-    And John is notified about Alice's recovery claim
-
-  @recovery @discovery @planned
-  Scenario: Batch query for recovery proofs
-    Given John has 50 contacts
-    When John's app checks for recovery proofs
-    Then John's app sends a single batch query with 50 hashes
-    And the relay cannot determine which specific contact John is checking
-    And John receives any matching recovery proofs
-
-  @recovery @discovery @planned
-  Scenario: No recovery proof found
-    Given John has Alice as a contact
-    And Alice has not uploaded a recovery proof
-    When John's app checks for recovery proofs
-    Then no recovery notification is shown for Alice
-  # ============================================================
-  # Verification - Mutual Contacts
   # ============================================================
 
   @recovery @verification @mutual @implemented
@@ -403,17 +361,6 @@ Feature: Contact Recovery
       you're not part of. But it could also be an impersonator.
       """
 
-  @recovery @verification @isolated @planned
-  Scenario: Isolated contact options
-    Given David receives a recovery proof with no mutual contact vouchers
-    Then David is presented with options:
-      | option               | security | description                          |
-      | Meet Alice in Person | Highest  | Verify directly and become a voucher |
-      | Verify Another Way   | High     | Call or text Alice to confirm        |
-      | Accept Anyway        | Lower    | Trust the unknown vouchers           |
-      | Reject               | Safe     | Decline the recovery                 |
-      | Remind Me Later      | Neutral  | Check again in 7 days                |
-
   @recovery @verification @isolated @security @implemented
   Scenario: No contact accepts a recovery without the certificate
     Given David has no mutual contacts with the vouchers
@@ -450,17 +397,6 @@ Feature: Contact Recovery
   # Acceptance and Reconnection
   # ============================================================
 
-  @recovery @acceptance @planned
-  Scenario: Accept recovery and reconnect
-    Given the policy guardians' certificate rotates Alice to her registered next identity
-    And John receives Alice's rekey offer signed by that identity with the certificate
-    Then John's contact record for Alice is updated:
-      | field      | old_value | new_value |
-      | public_key | pk_old    | pk_new    |
-    And a new X3DH key exchange is initiated
-    And John and Alice establish a new shared secret
-    And the old shared secret is discarded
-
   @recovery @acceptance @implemented
   Scenario: Contact card is refreshed after recovery
     Given John accepted Alice's certified rotation
@@ -487,13 +423,6 @@ Feature: Contact Recovery
   # ============================================================
   # Edge Cases and Security
   # ============================================================
-
-  @recovery @security @planned
-  Scenario: Reject recovery from unknown identity
-    Given John receives a recovery proof for "pk_unknown"
-    And John does not have "pk_unknown" as a contact
-    Then the recovery proof is ignored
-    And no notification is shown
 
   @recovery @security @implemented
   Scenario: Reject recovery with insufficient vouchers
@@ -722,42 +651,6 @@ Feature: Contact Recovery
     And Alice's contacts keep their shared keys
     And no contact waits for a rekey
 
-  @recovery @same-identity @security @planned
-  Scenario: A backup of another identity is refused
-    Given Alice's new phone began a recovery naming her old identity
-    When someone seals another identity's backup to the phone's recovery key
-    Then the phone refuses to restore it
-    And the phone still has no identity
-
-  @recovery @same-identity @planned
-  Scenario: Retried hand-backs count once
-    Given Alice's new phone began a recovery
-    When the same guardian hands back its piece many times
-    Then the phone keeps that piece once
-    And the restore still succeeds with the other groups' pieces
-
-  @recovery @same-identity @planned
-  Scenario: An interrupted restore keeps its recovery key and pieces
-    Given Alice's new phone began a recovery and took two guardians' pieces
-    When the phone restarts
-    Then it still holds the recovery key and the two pieces
-    And the third guardian's piece completes the restore
-
-  @recovery @same-identity @security @planned
-  Scenario: The recovery key is discarded after the restore
-    Given Alice's new phone restored her identity
-    Then the temporary recovery key and the pieces are gone
-
-  @recovery @same-identity @security @planned
-  Scenario: The recovery passphrase is still needed
-    Given Alice set a recovery passphrase on her guardian backup
-    When a guardian of each group hands back its piece
-    Then the backup opens only with the passphrase as well
-
-  # ============================================================
-  # Recovery backup transfer (vauchi/private#796, P33)
-  # ============================================================
-
   @recovery @same-identity @implemented
   Scenario: A recovery backup crosses a connection that accepts small parts
     Given Alice's new phone has accepted her guardian's recovery share
@@ -793,26 +686,3 @@ Feature: Contact Recovery
   # ============================================================
   # Compromise rotation (planned, vauchi/private#796, P25 to P31)
   # ============================================================
-
-  @recovery @compromise @security @planned
-  Scenario: Revoking a phone stolen unlocked does not take back its keys
-    Given Alice's phone was stolen unlocked
-    When Alice revokes it from another device
-    Then it stops syncing with her other devices
-    And it still holds the identity's keys
-    And moving contacts needs a rotation to Alice's registered next identity
-
-  @recovery @compromise @security @planned
-  Scenario: A contact met in person rotates to the registered next identity
-    Given John pinned the hash of Alice's registered next identity
-    When John meets Alice in person and recognizes her
-    And her phone shows the identity matching that hash
-    Then John rotates to it without a certificate
-    And John marks Alice's old identity compromised
-
-  @recovery @compromise @security @planned
-  Scenario: Meeting in person does not rotate to an unregistered identity
-    Given John pinned the hash of Alice's registered next identity
-    When someone John recognizes as Alice shows an identity not matching that hash
-    Then John makes a separate contact for it
-    And John's contact for Alice's old identity does not move

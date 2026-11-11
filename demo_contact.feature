@@ -39,32 +39,6 @@ Feature: Demo Contact
   # Demo Updates
   # ============================================================
 
-  @demo-updates @planned
-  Scenario: Demo contact sends periodic updates
-    Given the demo contact exists
-    And I have been using the app for some time
-    When a demo update is scheduled
-    Then I should receive an update notification
-    And the update should contain a new tip or feature explanation
-
-  @demo-updates @planned
-  Scenario: Demo updates demonstrate the update flow
-    Given the demo contact exists
-    When I receive a demo update
-    Then I should see the update notification
-    And the contact card should show updated content
-    And this demonstrates how real updates work
-
-  @demo-updates @planned
-  Scenario: Demo update shows before/after diff
-    Given the demo contact exists
-    And I view a demo update for the first time
-    Then I should see a before/after comparison
-    And this should trigger the first-update-received aha moment
-  # ============================================================
-  # Demo Contact Content
-  # ============================================================
-
   @demo-content @implemented
   Scenario: Demo contact has rotating tips
     Given the demo contact exists
@@ -75,29 +49,12 @@ Feature: Demo Contact
       | updates         | How updates work                    |
       | recovery        | What happens if you lose your phone |
 
-  @demo-content @planned
-  Scenario: Demo tips change over time
-    Given the demo contact exists
-    When I check the demo contact later
-    Then the tips may have rotated to new content
-    And the update appears as a normal card update
-  # ============================================================
-  # Demo Contact Dismissal
-  # ============================================================
-
   @demo-dismiss @implemented
   Scenario: Demo contact can be manually dismissed
     Given the demo contact exists
     When I choose to dismiss the demo contact
     Then the demo contact should be removed
     And I can restore it from Settings if needed
-
-  @demo-dismiss @planned
-  Scenario: Demo contact auto-removes after first real exchange
-    Given the demo contact exists
-    When I complete an exchange with a real contact
-    Then the demo contact should be automatically removed
-    And a message should explain the demo has ended
 
   @demo-dismiss @implemented
   Scenario: Demo contact can be restored from settings
@@ -149,11 +106,3 @@ Feature: Demo Contact
     When a demo update is scheduled
     Then the update should still work
     And no network error should be shown
-
-  @demo-edge @planned
-  Scenario: Demo contact is removed once any real contact exists
-    Given I have the demo contact
-    When I import a real contact
-    Then the demo contact should be automatically removed
-    # Same invariant as creation ("no demo contact should be created" when
-    # real contacts exist) and as removal on first real exchange.

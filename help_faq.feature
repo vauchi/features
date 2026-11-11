@@ -35,17 +35,6 @@ Feature: Help & FAQ System
     And each FAQ should show its question
     And I should be able to expand any FAQ to see the answer
 
-  @categories @planned
-  Scenario: Category aliases are accepted
-    When I search for category "security"
-    Then I should see the same FAQs as the "Privacy" category
-    And "sync" should show the same FAQs as "Updates"
-    And "start" should show the same FAQs as "Getting Started"
-
-  # ============================================================
-  # FAQ Content
-  # ============================================================
-
   @content @implemented
   Scenario: View a specific FAQ
     When I open FAQ "faq-phone-lost"
@@ -130,16 +119,6 @@ Feature: Help & FAQ System
       | fr     | French   |
       | es     | Spanish  |
 
-  @i18n @planned
-  Scenario: FAQ falls back to English for unsupported locale
-    Given my locale is set to "xx"
-    When I view the FAQ list
-    Then FAQs should be displayed in English
-
-  # ============================================================
-  # Platform Access
-  # ============================================================
-
   @platform @implemented
   Scenario: Access FAQs from CLI
     When I run "vauchi faq list"
@@ -160,35 +139,3 @@ Feature: Help & FAQ System
     When I run "vauchi faq show faq-phone-lost"
     Then I should see the full question and answer
     And I should see related FAQ IDs if any exist
-
-  @platform @planned
-  Scenario: Access FAQs from desktop app
-    # Help shows its own list, not the FAQ catalog by category.
-    When I navigate to the Help page
-    Then I should see a searchable FAQ interface
-    And I should be able to browse by category
-
-  @platform @planned
-  Scenario: Access FAQs from TUI
-    # Help shows its own list, not the FAQ catalog by category.
-    When I navigate to the Help screen
-    Then I should see FAQ content navigable with keyboard
-
-  # ============================================================
-  # Offline & Updates
-  # ============================================================
-
-  @offline @planned
-  Scenario: FAQs are available offline
-    # Help works offline but omits most catalog FAQs.
-    Given I have no network connection
-    When I open the Help section
-    Then I should see all bundled FAQ content
-    And no error should be shown
-
-  @updates @planned
-  Scenario: FAQ content updated via remote content
-    Given a new FAQ has been published remotely
-    When the app fetches content updates
-    Then the new FAQ should appear in the Help section
-    And existing FAQs should be preserved

@@ -72,15 +72,6 @@ Feature: Contacts Management
     When I sort by name ascending
     Then contacts should appear in order: "Alice", "Mike", "Zara"
 
-  # Planned: the contact list has no sort order to choose (private#631).
-  @filter @planned
-  Scenario: Sort contacts by recent interaction
-    Given I exchanged with Bob yesterday and Carol today
-    When I sort by recent interaction
-    Then Carol should appear before Bob
-
-  # Contact Groups
-
   @groups @implemented
   Scenario: Create a contact group
     When I create a group "Family"
@@ -239,14 +230,6 @@ Feature: Contacts Management
 
   # Sharing Contact Info
 
-  @share @no-message @planned
-  Scenario: Share contact info externally
-    Given Bob has phone "555-1234"
-    When I select to share Bob's phone
-    Then I should be able to copy it
-    And I should be able to share via system share sheet
-    But no in-app messaging should be available
-
   @share @implemented
   Scenario: Export contact to vCard
     Given I have contact Bob
@@ -333,37 +316,3 @@ Feature: Contacts Management
     When a sync delta adds shared name "Bobby" for contact "Bob"
     And a sync delta removes shared name "Bob Smith" for contact "Bob"
     Then the contact "Bob" has shared names "Bobby"
-
-  @nickname @planned
-  Scenario: Display follows selected shared name after sync update
-    Given I have an exchanged contact "Bob"
-    And the contact "Bob" has shared names "Bob Smith" and "Bobby"
-    And I set the display name preference to shared name "Bobby"
-    When the shared name "Bobby" is removed by a sync delta
-    Then the resolved display name for contact "Bob" falls back to primary
-
-  # Planned: Core refuses to merge an exchanged contact with an imported
-  # one (private#631).
-  @merge @planned
-  Scenario: Cross-kind merge with name and avatar adoption
-    Given I have an exchanged contact "Bob"
-    And I have an imported contact "Robert" with avatar
-    When I merge "Robert" into "Bob" with name and avatar adoption
-    Then the nickname for contact "Bob" is "Robert"
-    And the contact "Bob" has a custom avatar
-    And the imported contact "Robert" no longer exists
-
-  @merge @planned
-  Scenario: Cross-kind merge with notes preservation
-    Given I have an exchanged contact "Bob"
-    And I have an imported contact "Robert" with phone "555-1234"
-    When I merge "Robert" into "Bob" with notes preservation
-    Then the personal note for "Bob" contains "555-1234"
-    And the imported contact "Robert" no longer exists
-
-  @nickname @planned
-  Scenario: Smart merge - sync delta stays when preference is nickname
-    Given I have an exchanged contact "Bob"
-    And I set the nickname "Bobby" and display name preference to "custom"
-    When a sync delta changes the primary name to "Robert"
-    Then the resolved display name for contact "Bob" is "Bobby"

@@ -247,28 +247,6 @@ Feature: Visibility Labels
     And label-based visibility settings should be synced
   # Quick Actions with Labels
 
-  @quick-assign @planned
-  Scenario: Assign label during contact exchange
-    Given I have labels "Family", "Friends", and "Professional"
-    When I complete a contact exchange with "Frank"
-    Then I should be prompted to assign Frank to a label
-    And I should be able to skip the assignment
-
-  @quick-assign @planned
-  Scenario: Assign label from contact list
-    Given I am viewing my contacts list
-    When I long-press on Bob's contact
-    Then I should see an option to manage labels
-    And I should be able to add or remove Bob from labels
-
-  @quick-assign @planned
-  Scenario: Bulk assign contacts to label
-    Given I have selected Bob, Carol, and Dave
-    When I choose "Add to label"
-    And I select "Work"
-    Then all three contacts should be added to "Work"
-  # Label Visibility Templates
-
   @template @implemented
   Scenario: Configure default fields for a label
     Given I have a label "Professional"
@@ -295,23 +273,6 @@ Feature: Visibility Labels
     Then Dave should be removed from all labels
     And all visibility rules for Dave should be deleted
 
-  @edge-cases @planned
-  Scenario: Block contact removes from all labels
-    Given Eve is in labels "Friends" and "Family"
-    When I block Eve
-    Then Eve should be removed from all labels
-    And Eve should not see any of my fields
-    And no further updates should be sent to Eve
-    # A one-time wipe update is a separate opt-in choice —
-    # visibility_control.feature "Blocking offers a final wipe of my info".
-
-  @edge-cases @planned
-  Scenario: Unblock contact does not restore labels
-    Given I have blocked Eve who was in "Friends"
-    When I unblock Eve
-    Then Eve should not automatically be in "Friends" again
-    And I should be prompted to assign labels if desired
-
   @edge-cases @implemented
   Scenario: Label with no contacts still exists
     Given I have a label "Future Team" with no contacts
@@ -326,22 +287,6 @@ Feature: Visibility Labels
     Then I should see an error "Maximum number of labels reached"
     And I should be suggested to delete unused labels
   # Label Statistics
-
-  @stats @planned
-  Scenario: View label statistics
-    Given I have labels with various contacts
-    When I open the label management screen
-    Then I should see each label with contact count
-    And I should see which labels have visibility rules configured
-
-  @stats @planned
-  Scenario: View which contacts are not in any label
-    When I view the unlabeled contacts list
-    Then I should see all contacts not assigned to any label
-    And I should be able to bulk-assign them
-  # ============================================================
-  # Display Name Overrides
-  # ============================================================
 
   @display-name-override @implemented
   Scenario: Per-group display name override

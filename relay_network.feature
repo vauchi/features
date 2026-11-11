@@ -21,16 +21,6 @@ Feature: Relay Network
     And the update should be delivered via relay
     And I should see "Delivered via relay"
 
-  # Planned: card updates always travel through a relay; the only direct
-  # transport is the in-person exchange.
-  @usage @planned
-  Scenario: Direct connection preferred
-    Given Bob and I can establish direct P2P connection
-    When I send an update to Bob
-    Then the update should go directly to Bob
-    And relay nodes should not be used
-    And latency should be minimal
-
   @usage @implemented
   Scenario: Relay stores messages for offline contacts
     Given Carol is offline
@@ -69,15 +59,6 @@ Feature: Relay Network
     And the relay should not know who the recipient is
     And metadata should be minimized
 
-  @privacy @planned
-  Scenario: IP privacy via OHTTP relay
-    Given I want maximum privacy
-    When I connect through the OHTTP relay
-    Then my IP address should be hidden from the vauchi relay
-    And the OHTTP relay should not see my request content
-    And I can optionally route through a SOCKS5 proxy for ISP-level hiding
-  # Running a Relay Node
-
   @contribute @implemented
   Scenario: Deploy relay node with Docker
     Given I want to contribute a relay node
@@ -112,22 +93,6 @@ Feature: Relay Network
     And the network should route around failed nodes
   # Contribution Model
 
-  @contribution @planned
-  Scenario: Prompt to contribute after using relays
-    Given I have used relay bandwidth significantly
-    When the app detects high relay usage
-    Then I should see a non-intrusive suggestion to contribute
-    And I should be able to dismiss the suggestion
-    And dismissing should not affect functionality
-
-  @contribution @planned
-  Scenario: View relay contribution options
-    When I view the contribution screen
-    Then I should see options to run a relay node
-    And I should see option to donate to relay operators
-    And I should see current network health
-    And contribution should always be voluntary
-
   @contribution @implemented
   Scenario: No mailbox gets privileged treatment
     Given I am running a relay node
@@ -151,17 +116,6 @@ Feature: Relay Network
     And users should connect to nearby relays
     And latency should be minimized
 
-  # No DHT exists in core or relay; peers are found by configuration and
-  # gossip (see Relay gossip protocol). Retagged by private#631.
-  @health @planned
-  Scenario: Relay node discovery via DHT
-    Given I need to find a relay node
-    When I query the DHT
-    Then I should discover available relay nodes
-    And nodes should be ranked by latency/availability
-    And I should connect to the best available
-  # Abuse Prevention
-
   @abuse @implemented
   Scenario: Rate limiting on relay nodes
     Given a user is sending excessive traffic
@@ -183,16 +137,6 @@ Feature: Relay Network
     Then stale blobs should be automatically deleted
     And storage should be reclaimed
     And the sender should be notified
-
-  # Planned: there is no proof of work, and per-mailbox limits do not stop
-  # one party using many mailboxes.
-  @abuse @planned
-  Scenario: Sybil attack resistance
-    Given an attacker tries to flood the network
-    Then proof-of-work may be required
-    And rate limits should prevent flooding
-    And the network should remain functional
-  # Relay Protocol
 
   @protocol @implemented
   Scenario: Relay node authentication
@@ -280,141 +224,12 @@ Feature: Relay Network
     And I should be notified "You're offline. Changes will sync when you reconnect."
     And retry should occur periodically
 
-  @fallback @planned
-  Scenario: Partial relay network failure
-    Given half the relay nodes are down
-    When I send an update
-    Then remaining relays should handle the load
-    And delivery should succeed with higher latency
-    And user experience should remain acceptable
-  # User Preferences
-
-  @preferences @planned
-  Scenario: Opt out of relay usage
-    Given I want direct P2P only
-    When I disable relay usage
-    Then my updates should only go via direct connection
-    And I should be warned about potential delivery failures
-    And the setting should be respected
-
   @preferences @implemented
   Scenario: Prefer specific relay nodes
     Given I have trusted relay nodes
     When I configure preferred relays
     Then those relays should be used first
     And fallback to other relays should occur if needed
-
-  @preferences @planned
-  Scenario: Block specific relay nodes
-    Given I don't trust certain relay nodes
-    When I block those relays
-    Then my traffic should avoid those nodes
-    And delivery should use alternative routes
-  # Relay Federation - Message Offloading
-  # Phase 1 (static federation): implemented in relay!22
-  # Phase 2 (client multi-relay): pending
-  # Phase 3 (dynamic discovery): pending
-  # Phase 4 (mutual TLS): pending
-
-  @federation @phase1 @planned
-  Scenario: Relay detects high storage usage
-    Given a relay node has storage limits configured
-    When stored blobs exceed 80% of capacity
-    Then the relay should enter "offload mode"
-    And it should attempt to redistribute oldest blobs to peer relays
-    And new incoming blobs should still be accepted
-
-  @federation @phase1 @planned
-  Scenario: Relay offloads messages to peer relays
-    Given relay A is at 85% storage capacity
-    And relay A knows about peer relays B and C
-    When relay A initiates offloading
-    Then it should transfer some blobs to relay B or C
-    And transferred blobs should be removed from relay A
-    And relay A should record where blobs were sent
-
-  @federation @phase3 @planned
-  Scenario: Peer relay discovery
-    Given a relay node starts up
-    When it queries the relay registry
-    Then it should discover other relay nodes
-    And it should establish peer connections
-    And it should exchange capacity information periodically
-
-  @federation @phase3 @planned
-  Scenario: Relay registry for peer discovery
-    # The registry exists but nothing fills it at runtime.
-    Given multiple relay nodes exist
-    Then there should be a registry of known relays
-    And the registry should include relay capacity status
-    And relays should self-register on startup
-    And the registry should remove unresponsive relays
-
-  @federation @phase2 @planned
-  Scenario: Client queries multiple relays for messages
-    Given my messages may be on relay A or B
-    When I sync for pending messages
-    Then the client should query all known relays
-    And messages should be collected from all sources
-    And duplicate messages should be deduplicated
-
-  # The offloading relay records a hint, but no fetch path serves it and
-  # no client follows one (private#835).
-  @federation @phase1 @planned
-  Scenario: Relay includes forwarding hints
-    Given relay A has offloaded blob X to relay B
-    When the recipient queries relay A for messages
-    Then relay A should respond with "blob X is at relay B"
-    And the client should fetch blob X from relay B
-    And the hint should be temporary (TTL-based)
-
-  @federation @phase1 @planned
-  Scenario: Offloaded messages preserve TTL
-    Given a blob has 30 days remaining TTL
-    When it is offloaded to another relay
-    Then the new relay should honor the original expiration
-    And the blob should not get extra lifetime from transfer
-    And TTL should be included in transfer metadata
-
-  @federation @phase1 @planned
-  Scenario: Relay refuses offload when at capacity
-    Given relay B is at 95% capacity
-    When relay A tries to offload blobs to relay B
-    Then relay B should refuse the transfer
-    And relay A should try other peers
-    And relay A should mark relay B as "full" temporarily
-
-  @federation @phase1 @planned
-  Scenario: Graceful handling of relay shutdown
-    Given relay A is shutting down for maintenance
-    When it initiates graceful shutdown
-    Then it should offload all stored blobs to peers
-    And it should deregister from the relay registry
-    And clients should be directed to other relays
-
-  @federation @phase3 @planned
-  Scenario: Load balancing across relay network
-    Given the relay network has varying capacity
-    When a new blob needs to be stored
-    Then it should be routed to a relay with available capacity
-    And heavily loaded relays should receive less traffic
-    And the network should self-balance over time
-  # Federation Security
-
-  @federation @security @phase4 @planned
-  Scenario: Only authorized relays can join federation
-    Given the relay federation uses mutual TLS
-    When an unknown relay tries to join
-    Then it should be rejected unless it has valid credentials
-    And federation traffic should be encrypted
-    And relay identity should be verified
-
-  @federation @security @phase1 @planned
-  Scenario: Blob integrity preserved during transfer
-    Given a blob is being transferred between relays
-    Then the blob should be transferred with its signature
-    And the receiving relay should verify integrity
-    And corrupted blobs should be rejected
 
   @federation @security @phase1 @implemented
   Scenario: Relay cannot read offloaded blobs

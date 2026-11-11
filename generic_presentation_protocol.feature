@@ -17,13 +17,6 @@ Feature: Generic presentation command/event protocol
     Then the shell returns the identifier and raw value unchanged
     And Core interprets the event and decides the next commands
 
-  @planned
-  Scenario: Core chooses a capability-compatible presentation
-    Given a shell reports its generic capabilities
-    When Core prepares the next presentation
-    Then Core emits only commands supported by those capabilities
-    And the shell does not know which domain feature requested them
-
   @implemented
   Scenario: Invalid boundary input fails safely
     Given a malformed or oversized command or event payload

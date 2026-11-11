@@ -13,14 +13,6 @@ Feature: App Theming
   # Theme Selection
   # ===========================================
 
-  @selection @planned
-  Scenario: Default theme on fresh install follows the system
-    Given this is a fresh app installation
-    When the app launches
-    Then the theme should follow the system dark/light mode preference
-    And a dark-mode system should apply "Default Dark"
-    And a light-mode system should apply "Default Light"
-
   @selection @implemented
   Scenario: Select theme from settings
     Given the user is on the settings page
@@ -34,22 +26,6 @@ Feature: App Theming
     When the user taps on "Catppuccin Mocha"
     Then the app should preview the theme colors
     And the user should see "Apply" and "Cancel" options
-
-  @selection @planned
-  Scenario: Apply selected theme
-    Given the user has previewed "Catppuccin Mocha" theme
-    When the user confirms the theme selection
-    Then the theme should be saved to settings
-    And the theme should persist after app restart
-
-  @selection @planned
-  Scenario: Theme persists across sessions
-    Given the user has selected "Nord" theme
-    When the user closes and reopens the app
-    Then the "Nord" theme should still be applied
-  # ===========================================
-  # Catppuccin Themes
-  # ===========================================
 
   @catppuccin @implemented
   Scenario Outline: Catppuccin flavor themes available
@@ -198,54 +174,11 @@ Feature: App Theming
   # Accessibility
   # ===========================================
 
-  @accessibility @contrast @planned
-  Scenario: High contrast mode overrides theme
-    Given the user has enabled high contrast mode
-    When any theme is applied
-    Then contrast ratios should meet WCAG AAA standards
-    And focus indicators should be more prominent
-
   @accessibility @contrast @implemented
   Scenario: Theme colors meet minimum contrast
     When any theme is applied
     Then text on background should have at least 4.5:1 contrast ratio
     And large text should have at least 3:1 contrast ratio
-
-  @accessibility @planned
-  Scenario: Theme respects reduced motion setting
-    Given the user has enabled reduced motion
-    When a theme is applied
-    Then theme transitions should be instant
-    And no animations should play during theme change
-  # ===========================================
-  # Cross-Platform Consistency
-  # ===========================================
-
-  @platform @ios @planned
-  Scenario: Theme applies on iOS
-    Given the user is on iOS
-    When the user applies "Catppuccin Mocha" theme
-    Then navigation bar should use theme colors
-    And status bar should adapt to theme brightness
-    And system UI elements should harmonize with theme
-
-  @platform @android @planned
-  Scenario: Theme applies on Android
-    Given the user is on Android
-    When the user applies "Catppuccin Mocha" theme
-    Then status bar color should match theme
-    And navigation bar should use theme colors
-    And Material components should use theme colors
-
-  @platform @desktop @planned
-  Scenario: Theme applies on Desktop
-    Given the user is on Desktop
-    When the user applies "Catppuccin Mocha" theme
-    Then the theme tokens should be applied by the native toolkit
-    And window frame should adapt to theme if supported
-  # ===========================================
-  # Theme Schema
-  # ===========================================
 
   @schema @implemented
   Scenario: Theme file contains required colors
@@ -335,11 +268,3 @@ Feature: App Theming
     Then the QR code container should use theme background
     And the QR code itself should remain standard black-on-white
   # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
-
-  @platform-edge-case @desktop @theme @planned
-  Scenario: Respect system theme on desktop
-    Given the system is set to dark mode
-    When I open the app
-    Then the app should use dark theme
-    And changing system theme should update app theme
-    And there should be an override option

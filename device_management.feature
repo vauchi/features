@@ -32,16 +32,6 @@ Feature: Device Management
     And Device B should sync all my data
     And Device B should appear in my linked devices list
 
-  @link @planned
-  Scenario: Link new device via numeric code
-    # Linking starts from a scanned QR; there is no typed-code path.
-    Given Device A is showing a linking code "123-456-789"
-    And I have Vauchi on Device B without camera
-    When I enter "123-456-789" on Device B
-    And I confirm the device fingerprint on Device A
-    Then Device B should be linked to my identity
-    And my data should sync to Device B
-
   @link @implemented
   Scenario: Linking requires proximity verification
     Given Device A is showing a linking QR code
@@ -212,45 +202,6 @@ Feature: Device Management
     And the device should not be linked
   # Platform Support
 
-  @platform @planned
-  Scenario Outline: Link devices across platforms
-    Given I have Device A running <platform_a>
-    When I link Device B running <platform_b>
-    Then linking should succeed
-    And sync should work between platforms
-
-    Examples:
-      | platform_a | platform_b |
-      | iOS        | Android    |
-      | iOS        | macOS      |
-      | iOS        | Windows    |
-      | iOS        | Linux      |
-      | Android    | macOS      |
-      | Android    | Windows    |
-      | macOS      | Windows    |
-
-  @platform @desktop @planned
-  Scenario: Desktop device without camera uses code
-    Given Device B is a desktop without camera
-    When I try to link Device B
-    Then I should be offered numeric code entry
-    And I should be able to type the code from Device A
-  # Device-Specific Settings
-
-  @settings @planned
-  Scenario: Device-specific notification settings
-    Given I have Device A and Device B linked
-    When I disable notifications on Device A
-    Then notifications should be off on Device A
-    But notifications should remain on for Device B
-
-  @settings @planned
-  Scenario: Device-specific sync settings
-    Given I have Device A (mobile) and Device B (desktop)
-    When I set "WiFi only sync" on Device A
-    Then Device A should respect WiFi-only
-    But Device B should sync on any connection
-
   @settings @implemented
   Scenario: Some settings sync across devices
     Given I update my display name on Device A
@@ -258,39 +209,6 @@ Feature: Device Management
     And visibility rules should sync to Device B
     And contact groups should sync to Device B
   # Activity Monitoring
-
-  @activity @planned
-  Scenario: View device activity
-    Given I have multiple linked devices
-    When I view device activity
-    Then I should see which device made recent changes
-    And I should see timestamps of activity
-    And I should see types of activity (sync, exchange, etc.)
-
-  @activity @planned
-  Scenario: Suspicious device activity alert
-    Given Device B shows activity from unusual location
-    When the system detects the anomaly
-    Then I should be alerted on other devices
-    And I should be offered to review and potentially revoke Device B
-  # Recovery
-
-  @recovery @planned
-  Scenario: Recover using any linked device
-    Given I have Device A and Device B linked
-    And I lose Device A
-    When I set up new Device C
-    Then I should be able to link it using Device B
-    And Device C should receive all my data
-
-  @recovery @planned
-  Scenario: Transfer primary device role
-    # DeviceRegistry::transfer_primary exists but nothing in the app calls it.
-    Given Device A is my primary device
-    When Device A is about to be replaced
-    Then I should be able to designate Device B as primary
-    And Device B should handle all primary device functions
-  # Race Condition Edge Cases (Added 2026-01-21)
 
   @edge-case @race-condition @implemented
   Scenario: Concurrent device linking attempts
@@ -329,27 +247,6 @@ Feature: Device Management
     Then the registry version should increment again
     And version should enable sync conflict detection
 
-  @edge-case @interruption @planned
-  Scenario: Interrupted initial sync
-    # The initial state arrives as one payload with the link response, so a
-    # partial transfer cannot occur; what an interrupted link leaves in the
-    # registry is untested.
-    Given I am linking Device B to Device A
-    And the data transfer is 50% complete
-    When Device B loses internet connection
-    Then Device B should pause the process
-    And Device B should NOT show as a functional device in the registry
-    And the process should resume or restart cleanly when reconnected
-
-  @edge-case @storage @planned
-  Scenario: Insufficient storage for sync
-    # No storage pre-check exists on the link path.
-    Given Device B has only 10MB of free space
-    And my identity data is 50MB
-    When I attempt to link Device B
-    Then the system should pre-check storage
-    And linking should be blocked with "Insufficient Storage" error
-
   @edge-case @identity-collision @implemented
   Scenario: Linking to a device that already has a different identity
     Given Device B is already set up with identity "Bob"
@@ -382,67 +279,3 @@ Feature: Device Management
     Then the linking should succeed
     And the 5-minute expiry should be calculated using absolute UTC time, not local time
   # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
-
-  @platform-edge-case @ios @keychain @planned
-  Scenario: Keychain access after device restore on iOS
-    Given I restored my iPhone from backup
-    When I open Vauchi
-    Then keychain items should be accessible
-    # Or I should be prompted to restore from backup
-    And I should not be locked out of my identity
-
-  @platform-edge-case @cross-platform @upgrade @planned
-  Scenario: Handle app upgrade
-    Given I have data from version 1.0
-    When I upgrade to version 2.0
-    Then data migration should occur automatically
-    And no data should be lost
-    And the user should not need to reconfigure
-
-  @platform-edge-case @cross-platform @downgrade @planned
-  Scenario: Prevent data loss on downgrade
-    Given I accidentally downgraded to an older version
-    When the older version cannot read newer data format
-    Then a clear error should be shown
-    And I should be told to upgrade
-    And data should not be corrupted
-
-  @platform-edge-case @cross-platform @restore @planned
-  Scenario: Handle device migration
-    Given I am setting up a new device
-    When I restore from backup
-    Then my identity should be recoverable
-    And contacts should sync from relays
-    And the experience should be smooth
-
-  @platform-edge-case @android @storage @planned
-  Scenario: Handle scoped storage on Android 11+
-    Given I am on Android 11 or later
-    When I export my data
-    Then export should use proper storage APIs
-    And files should go to Downloads or app-specific directory
-    And I should be able to share the export
-
-  @platform-edge-case @android @split @planned
-  Scenario: Handle split APK installation on Android
-    Given the app was installed via split APKs (Play Store)
-    When I use native features (camera, crypto)
-    Then all required libraries should be present
-    And the app should not crash
-    And features should work correctly
-
-  @platform-edge-case @desktop @crash @planned
-  Scenario: Recovery after crash on desktop
-    Given the desktop app crashed unexpectedly
-    When I relaunch the app
-    Then the app should detect the previous crash
-    And it should offer to restore last state
-    And unsaved changes should be preserved if possible
-
-  @platform-edge-case @ios @handoff @planned
-  Scenario: Handoff between iOS devices
-    Given I am editing my card on iPhone
-    When I open Vauchi on my iPad
-    Then I should see option to continue on iPad
-    And my changes should be available
-    And I should not lose unsaved work

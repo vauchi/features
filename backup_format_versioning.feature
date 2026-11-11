@@ -135,12 +135,3 @@ Feature: Backup Format Versioning
     Given I open the backup wizard without changing the level
     Then the full backup is the level offered
     And the identity-only backup is the opt-in alternative
-
-  @v3 @planned
-  Scenario: Full backup can be unlocked via social recovery
-    Given I have a full backup but lost my password
-    When I complete social recovery with my trusted contacts
-    Then I should be able to unlock the full backup
-    # Alternative under consideration: back up only identity + connection
-    # identities and re-fetch card data from contacts after recovery —
-    # more private, but harder (needs contacts online).

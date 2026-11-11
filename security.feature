@@ -137,14 +137,6 @@ Feature: Security
     And a compromised relay should learn nothing about my data
   # Data Protection
 
-  @data @planned
-  Scenario: Sensitive data classification
-    Given I have various types of data
-    Then private keys should be classified as "highly sensitive"
-    And contact information should be classified as "sensitive"
-    And public keys should be classified as "semi-public"
-    And each classification should have appropriate protections
-
   @data @implemented
   Scenario: Local database encryption
     Given I have local data storage
@@ -169,37 +161,6 @@ Feature: Security
     And file system should not retain deleted content
   # Access Control
 
-  @access @planned
-  Scenario: App lock with biometrics
-    Given I have enabled app lock
-    When I open Vauchi
-    Then I should be prompted for biometric authentication
-    And only successful authentication should grant access
-    And data should remain encrypted until authenticated
-
-  @access @planned
-  Scenario: App lock with PIN
-    Given I have enabled PIN lock
-    When I open Vauchi
-    Then I should be prompted for my PIN
-    And incorrect PIN should deny access
-    And multiple failures should trigger lockout
-
-  @access @planned
-  Scenario: Auto-lock on background
-    Given I have auto-lock enabled
-    When the app goes to background for 5 minutes
-    Then the app should lock automatically
-    And reopening should require authentication
-
-  @access @planned
-  Scenario: Screen capture prevention
-    Given Vauchi is displaying sensitive data
-    Then screenshots should be blocked
-    And screen recording should be blocked
-    And the app should appear blank in app switcher
-  # Audit & Logging
-
   @audit @implemented
   Scenario: Security events logged
     Given a security-relevant event occurs
@@ -207,14 +168,6 @@ Feature: Security
     And the log should include timestamp and event type
     And logs should not contain sensitive data
     And logs should be available for security review
-
-  @audit @planned
-  Scenario: View security log
-    When I access the security log
-    Then I should see recent security events
-    And I should see failed exchange attempts
-    And I should see blocked contacts
-    And I should see signature verification failures
 
   @audit @implemented
   Scenario: Export security log
@@ -224,31 +177,6 @@ Feature: Security
     And no private keys should be in the export
     And no contact details should be in the export
   # Security Notifications
-
-  @notifications @planned
-  Scenario: Notification on suspicious activity
-    Given suspicious activity is detected
-    Then I should receive an in-app notification
-    And the notification should describe the activity
-    And I should have options to review or dismiss
-
-  @notifications @planned
-  Scenario: Notification on contact key change
-    Given Bob's identity key has changed
-    When I detect the change
-    Then I should see "Bob's security key has changed"
-    And sync with Bob should pause
-    And I should be prompted to re-verify Bob
-
-  @notifications @planned
-  Scenario: Blocked exchange attempts stay silent
-    Given I have blocked Eve
-    When Eve attempts to exchange contacts
-    Then I should not receive any notification about the attempt
-    And the attempt should appear only in my local security log
-    # Blocked contacts generate no notifications of any kind
-    # (contact_exchange.feature "Blocked user attempts exchange").
-  # Cryptographic Details
 
   @crypto @implemented
   Scenario: Correct algorithms used
@@ -276,17 +204,3 @@ Feature: Security
   # WebView scenario removed — desktop app archived per ADR-027 (2026-03).
   # Native apps (macOS SwiftUI, Linux GTK4, Linux Qt6, Windows WinUI3) do not use WebView.
   # See: audit 2026-03-23, finding H2.
-
-  @platform-edge-case @desktop @planned
-  Scenario: Native desktop apps use platform secure storage
-    Given a native desktop app (macOS, Linux, Windows)
-    Then cryptographic keys should use platform keychain/keyring
-    And external links should open in system browser
-    And no embedded web content should execute
-
-  @platform-edge-case @android @backup @planned
-  Scenario: Android auto-backup handles sensitive data
-    Given Android auto-backup is enabled
-    Then encryption keys should be excluded from backup
-    And backup should include safe data only
-    And restoration should prompt for re-authentication

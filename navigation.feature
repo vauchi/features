@@ -38,16 +38,6 @@ Feature: Navigation Architecture
     When I unlock the app
     Then the "Contacts" screen should be active
 
-  # Planned: a tab always opens at its root; returning to Contacts shows the
-  # list, not the contact that was open (private#631).
-  @navigation @planned
-  Scenario: Switching screens preserves state
-    Given I am on the "Contacts" screen viewing Bob's details
-    When I switch to the "MyInfo" screen
-    And I switch back to the "Contacts" screen
-    Then I should still see Bob's details
-  # MyInfo — Preview As
-
   @navigation @preview-as @implemented
   Scenario: Preview my card as a specific contact
     Given I am on the "MyInfo" screen
@@ -65,22 +55,6 @@ Feature: Navigation Architecture
     Then I should see my full editable card
     And the preview banner should be gone
   # MyInfo — Visibility Management
-
-  @navigation @visibility @planned
-  Scenario: Add individual contact visibility to a field
-    Given I am on the "MyInfo" screen
-    And I have a "Work" email field
-    When I tap the visibility chips on "Work" email
-    And I add contact "Dave"
-    Then "Dave" should appear as a visibility chip on that field
-    And Dave should see my work email
-
-  @navigation @visibility @planned
-  Scenario: Remove visibility from a field
-    Given my "Personal" phone is visible to "Bob"
-    When I remove "Bob" from the visibility chips on "Personal" phone
-    Then Bob should no longer see my personal phone
-  # MyInfo — Per-field Private Notes
 
   @navigation @notes @implemented
   Scenario: View and edit private note on own field
@@ -120,13 +94,6 @@ Feature: Navigation Architecture
     And Carol has shared an address with me
     When I tap the maps action on Carol's address
     Then the maps app should open with Carol's address
-
-  @navigation @contact-actions @planned
-  Scenario: Tap birthday to add to calendar
-    Given I am viewing Bob's contact details
-    And Bob has shared a birthday with me
-    When I tap the calendar action on Bob's birthday
-    Then the calendar app should open to add the event
 
   @navigation @contact-actions @implemented
   Scenario: Tap URL to open in browser
@@ -207,77 +174,3 @@ Feature: Navigation Architecture
   # it carried is offered directly by the overlay now, covered by
   # `nav_destination_self_reference_tests` in vauchi-app.
   # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
-
-  @platform-edge-case @desktop @multi-window @planned
-  Scenario: Handle multiple windows on desktop
-    Given the app is open in one window
-    When I try to open another instance
-    Then the existing window should be focused
-    # Or windows should sync state in real-time
-    And data conflicts should be prevented
-
-  @platform-edge-case @desktop @url-scheme @planned
-  Scenario: Handle vauchi:// URL scheme on desktop
-    Given I click a vauchi:// link
-    When the desktop app is not running
-    Then the app should launch
-    And the link should be processed
-    And the appropriate action should occur
-
-  @platform-edge-case @desktop @tray @planned
-  Scenario: System tray behavior on desktop
-    Given the app is minimized to system tray
-    When a contact update arrives
-    Then the update should be applied silently in the background
-    # No system notification — Principle 4: "no notifications designed to pull you back"
-    And clicking the tray icon should restore the app
-    And the app should not consume CPU while minimized
-
-  @platform-edge-case @tui @terminal @planned
-  Scenario: Handle terminal resize
-    Given I am using the TUI app
-    When I resize my terminal window
-    Then the UI should reflow correctly
-    And no content should be cut off
-    And the app should remain usable
-
-  @platform-edge-case @tui @encoding @planned
-  Scenario: Handle non-UTF8 terminal
-    Given my terminal has limited character support
-    When I view contacts with unicode names
-    Then the app should fallback gracefully
-    And names should still be readable
-    And the app should not crash
-
-  @platform-edge-case @ios @permissions @planned
-  Scenario: Handle camera permission revoked on iOS
-    Given I previously granted camera permission on iOS
-    When I revoke camera permission in Settings
-    And I try to scan a QR code
-    Then I should see a clear message about missing permission
-    And there should be a button to open Settings
-    And the app should not crash
-
-  @platform-edge-case @ios @extension @planned
-  Scenario: Share extension works on iOS
-    Given I am in another app with contact info
-    When I use the iOS share sheet
-    Then Vauchi should appear as an option
-    And I can share data to Vauchi
-    And sharing should work even if main app not running
-
-  @platform-edge-case @android @permissions @planned
-  Scenario: Handle runtime permission denied on Android
-    Given I denied camera permission on Android
-    When I try to scan a QR code
-    Then I should see an explanation of why permission is needed
-    And there should be an option to request permission again
-    And I should not be asked repeatedly if I chose "Don't ask again"
-
-  @platform-edge-case @cross-platform @locale @planned
-  Scenario: Handle locale change
-    Given I change my device language
-    When I open the app
-    Then the app should use the new language
-    And formatting should follow new locale
-    And no restart should be required

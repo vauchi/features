@@ -307,15 +307,6 @@ Feature: Contact Card Exchange
 
   # Exchange States and Errors
 
-  @exchange-state @planned
-  Scenario: Incomplete exchange recovery
-    # Sessions expire after 60 s, but the app neither says "Exchange interrupted" nor resumes.
-    Given Alice and Bob are mid-exchange
-    When Alice's device loses connectivity
-    Then the exchange should pause
-    And both should see "Exchange interrupted"
-    And the exchange should be resumable for 60 seconds
-
   @exchange-state @implemented
   Scenario: Resume interrupted exchange
     Given an exchange between Alice and Bob was interrupted
@@ -373,50 +364,6 @@ Feature: Contact Card Exchange
 
   # Audio Proximity Verification Details
 
-  @audio @proximity @planned
-  Scenario: Ultrasonic audio handshake process
-    Given Alice is displaying a QR code
-    And Bob has scanned the QR code
-    When proximity verification begins
-    Then Alice's device should emit an ultrasonic challenge
-    And Bob's device should detect the challenge
-    And Bob's device should emit a signed response
-    And Alice's device should verify the response
-    And both devices should confirm proximity
-
-  @audio @proximity @planned
-  Scenario: Audio verification works in noisy environment
-    Given there is ambient noise in the environment
-    When Alice and Bob perform audio proximity verification
-    Then the ultrasonic frequencies should not be affected
-    And verification should succeed
-
-  @audio @proximity @planned
-  Scenario: Audio verification on devices without ultrasonic support
-    Given Bob's device cannot emit ultrasonic audio
-    When Bob scans Alice's QR code
-    Then fallback verification should be offered
-    And Alice should manually confirm Bob's presence
-    And a warning about reduced security should be shown
-
-  # Cross-Platform Exchange
-
-  @cross-platform @planned
-  Scenario Outline: Exchange between different platforms
-    Given Alice is using <platform_a>
-    And Bob is using <platform_b>
-    When they perform a QR code exchange with proximity verification
-    Then the exchange should succeed
-    And both should have each other's contact cards
-
-    Examples:
-      | platform_a | platform_b |
-      | iOS        | Android    |
-      | iOS        | Desktop    |
-      | Android    | Desktop    |
-      | Desktop    | iOS        |
-      | Desktop    | Android    |
-
   @cross-platform @desktop @implemented
   Scenario: Desktop exchange without audio (requires confirmation)
     Given Alice is using desktop without microphone
@@ -452,25 +399,6 @@ Feature: Contact Card Exchange
     And no partial state should be stored
     And exchange should require a fresh start
 
-  @edge-case @prekey @planned
-  Scenario: Exchange with stale prekey
-    Given Alice's prekey bundle is cached by Bob
-    When Alice has rotated her prekeys since Bob cached them
-    And Bob uses the cached stale prekey
-    Then the exchange should fail gracefully
-    And Bob should fetch fresh prekeys
-    And the exchange should be retried
-
-
-  @privacy @consent @planned
-  Scenario: Deny exchange request
-    # ConsentDenied exists but nothing raises it; there is no request/decline step.
-    Given Alice sees Bob in the nearby list
-    When Alice sends an exchange request to Bob
-    And Bob selects "Decline"
-    Then Alice should see "Exchange declined"
-    And no contact cards or keys should be shared
-
   @privacy @consent @implemented
   Scenario: Blocked user attempts exchange
     Given Alice has previously blocked "Eve"
@@ -481,35 +409,6 @@ Feature: Contact Card Exchange
 
   # Hardware & Resource Constraints
 
-  @hardware @battery @planned
-  Scenario: Exchange blocked on low battery
-    # The capability gate blocks below 5% but nothing asks it before an exchange.
-    Given Alice's device battery is below 5%
-    When Alice attempts to initiate an exchange
-    Then Alice should see "Battery too low for secure exchange"
-    And the QR code should not be generated
-
-  @hardware @storage @planned
-  Scenario: Exchange fails due to full storage
-    # No storage-full check exists on the exchange path.
-    Given Bob's device has zero available storage
-    When Bob scans Alice's QR code
-    Then the exchange should fail
-    And Bob should see "Storage full: cannot save contact"
-
-  # Multi-User / Group Dynamics
-
-  @multi-user @proximity @planned
-  Scenario: Simultaneous QR scans (Group mode)
-    Given Alice is displaying a "Group Exchange" QR code
-    And Bob and Charlie are both scanning it simultaneously
-    When both verify proximity via audio
-    Then Alice should receive contact cards from both Bob and Charlie
-    And Bob and Charlie should both receive Alice's card
-    But Bob and Charlie should NOT receive each other's cards
-
-  # Identity & Spoofing
-
   @security @spoofing @implemented
   Scenario: Identity mismatch detection
     Given Alice's QR code contains Public Key A
@@ -518,145 +417,3 @@ Feature: Contact Card Exchange
     And Bob should see "Identity verification error"
 
   # Time & Synchronization
-
-  @edge-case @clock-drift @planned
-  Scenario: Exchange fails with significant clock drift
-    Given Alice's system clock is 1 hour behind real time
-    And Bob's clock is accurate
-    When Alice and Bob attempt an exchange
-    Then the timestamped exchange token should be rejected
-    And Alice should see "Check your device time settings"
-
-  # Platform Edge Cases (dissolved from platform_edge_cases.feature 2026-03-17)
-
-  @platform-edge-case @cross-platform @time @planned
-  Scenario: Handle clock skew
-    Given my device clock is 1 hour behind
-    When I sync with contacts
-    Then timestamps should be handled correctly
-    And message ordering should be correct
-    And no sync loops should occur
-
-  @platform-edge-case @cross-platform @time @planned
-  Scenario: Handle timezone change
-    Given I change timezone while app is running
-    When I view timestamps
-    Then they should update to new timezone
-    And relative times should be correct
-    And no duplicate notifications should occur
-
-  # Exchange Reciprocity Confirmation
-  # Detects and surfaces whether both sides completed the exchange.
-  # Design: atomic exchange reciprocity design doc (2026-04-04,
-  # maintainer-internal). Problem: PRB-2026-038 (unilateral exchange race)
-
-  @reciprocity @relay-escrow @planned
-  Scenario: Both sides confirm via relay escrow
-    Given Alice and Bob successfully complete a QR exchange
-    And both devices have internet connectivity
-    When Alice's device deposits her confirmation token to the relay escrow
-    And Bob's device deposits his confirmation token to the relay escrow
-    Then both devices should retrieve the other's token
-    And Alice's contact for Bob should have reciprocity "Confirmed"
-    And Bob's contact for Alice should have reciprocity "Confirmed"
-    And no toast or notification should be shown for the confirmation
-
-  @reciprocity @relay-sync @planned
-  Scenario: Both sides confirm via relay sync fallback
-    Given Alice and Bob successfully complete a QR exchange
-    And relay escrow confirmation has timed out for both
-    When Alice's device sends a ReciprocityConfirm payload during relay sync
-    And Bob's device sends a ReciprocityConfirm payload during relay sync
-    Then Alice's contact for Bob should transition from "Pending" to "Confirmed"
-    And Bob's contact for Alice should transition from "Pending" to "Confirmed"
-    And no toast or notification should be shown for the confirmation
-
-  @reciprocity @planned
-  Scenario: New contact starts with Pending reciprocity
-    Given Alice and Bob successfully complete a QR exchange
-    When Alice's device creates the contact record for Bob
-    Then Alice's contact for Bob should have reciprocity "Pending"
-    And Alice should see a subtle clock icon on Bob's contact
-
-  @reciprocity @planned
-  Scenario: One side never completes the exchange
-    Given Alice scans Bob's QR code and completes the exchange
-    But Bob's device times out before completing
-    When Alice's device attempts relay escrow confirmation
-    Then the escrow gate should never reach 2 deposits
-    And Alice's device should fall through to relay sync confirmation
-    And after 7 days without a ReciprocityConfirm from Bob
-    And Alice's contact for Bob should transition from "Pending" to "Unreciprocated"
-    And Alice should see "May not have your card. Exchange again when you meet."
-    And Bob should NOT have a contact record for Alice
-
-  @reciprocity @planned
-  Scenario: Late confirmation accepted after 7-day window
-    Given Alice has a contact for Bob with reciprocity "Unreciprocated"
-    When Bob later completes an exchange that produces the same shared secret
-    And Bob's device sends a valid ReciprocityConfirm via relay sync
-    Then Alice's contact for Bob should transition from "Unreciprocated" to "Confirmed"
-    And Alice should see the "May not have your card" banner disappear
-    And no toast or notification should be shown
-
-  @reciprocity @security @planned
-  Scenario: Confirmation tokens are asymmetric per identity
-    Given Alice and Bob successfully complete a QR exchange
-    When Alice derives her confirmation token
-    And Bob derives his confirmation token
-    Then Alice's token should NOT equal Bob's token
-    And replaying Alice's own token back to her should NOT confirm the exchange
-
-  @reciprocity @security @planned
-  Scenario: Escrow gate hash is unguessable without shared secret
-    Given Alice and Bob successfully complete a QR exchange
-    And their escrow gate hash is derived via HKDF from the DH shared secret
-    When an adversary who did not participate in the exchange
-    Then the adversary should not be able to derive the gate hash
-    And the adversary should not be able to deposit a fake confirmation token
-
-  @reciprocity @edge-case @planned
-  Scenario: App killed mid-confirmation resumes at relay escrow
-    Given Alice and Bob successfully complete a QR exchange
-    And Alice's device has begun the confirmation cascade
-    When Alice's app is killed before confirmation completes
-    And Alice relaunches the app
-    Then Alice's device should find Bob's contact with reciprocity "Pending"
-    And resume confirmation starting at relay escrow level
-    And skip audio and BLE confirmation levels
-
-  @reciprocity @edge-case @planned
-  Scenario: Re-exchange with same contact cancels previous confirmer
-    Given Alice has a contact for Bob with reciprocity "Pending"
-    And a confirmation cascade is in progress
-    When Alice and Bob perform a new exchange
-    Then the previous confirmer should be cancelled
-    And its tokens should be zeroized
-    And a new confirmer should be created with fresh tokens from the new exchange
-
-  @reciprocity @edge-case @planned
-  Scenario: Remote exchange skips audio and BLE confirmation
-    Given Alice initiates a web-based remote exchange with Bob
-    When both sides complete the exchange
-    Then the confirmation cascade should start at relay escrow level
-    And audio confirmation should NOT be attempted
-    And BLE confirmation should NOT be attempted
-
-  @reciprocity @edge-case @planned
-  Scenario: Network partition during relay escrow falls through to sync
-    Given Alice and Bob successfully complete a QR exchange
-    And Alice's device loses internet connectivity
-    When Alice's relay escrow deposit fails after 3 retry attempts
-    Then Alice's device should fall through to relay sync confirmation
-    And Alice's contact for Bob should remain "Pending"
-    And confirmation should complete when connectivity is restored and sync delivers the payload
-
-  @reciprocity @backward-compat @planned
-  Scenario: Old client receives ReciprocityConfirm gracefully
-    Given Alice is running a version that supports reciprocity confirmation
-    And Bob is running an older version without reciprocity support
-    When Alice sends a ReciprocityConfirm payload (version byte 0x03) via relay sync
-    Then Bob's device should return "UnknownPayloadVersion"
-    And Bob's device should NOT crash or lose data
-    And Alice's contact for Bob should remain "Pending" until timeout
-

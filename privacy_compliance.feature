@@ -90,11 +90,6 @@ Feature: Privacy Compliance
     When I request another export
     Then I should be asked to confirm it is me again
 
-  @export @planned
-  Scenario: My other devices are told about an export
-    When I export my data
-    Then my other linked devices should show that an export was made
-
   @export @implemented
   Scenario: Export works offline
     Given I am offline
@@ -257,15 +252,6 @@ Feature: Privacy Compliance
       | Settings | Your preferences                      |
     And I should see that data is E2E encrypted
 
-  # Planned: the app has no screen listing my envelopes on relays; the relay
-  # holds them sealed and drops them after delivery or 120 days (private#631).
-  @transparency @planned
-  Scenario: View what data is on relays
-    When I go to Settings > Privacy > Relay Data
-    Then I should see pending messages on relays
-    And I should see their expiration dates
-    And I should be able to delete them early
-
   @transparency @implemented
   Scenario: Understand E2E encryption
     When I open "What is end-to-end encryption?" in Help
@@ -289,92 +275,6 @@ Feature: Privacy Compliance
     Then local data should persist indefinitely
     # Until I explicitly delete it
     And no automatic purging should occur without my consent
-
-  @retention @planned
-  Scenario: View data retention settings
-    When I go to Settings > Privacy > Data Retention
-    Then I should see:
-      | Setting              | Value                      |
-      | Relay message TTL    |                   120 days |
-      | Local data retention | Forever (until you delete) |
-      | Backup retention     | Your control               |
-    And I should understand each setting
-  # ============================================================
-  # Third-Party Sharing
-  # ============================================================
-
-  @sharing @planned
-  Scenario: No data sold to third parties
-    Then Vauchi should never sell personal data
-    And no advertising profiles should be created
-    And no data should be shared for marketing
-    And this should be stated in the privacy policy
-
-  @sharing @planned
-  Scenario: No tracking across apps
-    Then Vauchi should not track users across apps
-    And no device fingerprinting should occur
-    And no advertising IDs should be used
-    And no third-party analytics at all
-
-  @sharing @planned
-  Scenario: Relay operators cannot access content
-    Given I use a third-party relay
-    Then the relay operator should not be able to read my data
-    And only encrypted blobs should be visible to relays
-    And metadata should be minimized
-  # ============================================================
-  # Privacy Controls
-  # ============================================================
-
-  @controls @planned
-  Scenario: Control visibility of my data
-    When I go to Settings > Privacy > Visibility
-    Then I should be able to configure who sees what
-    And I should have granular control per field
-    And I should be able to hide from specific contacts
-
-  @controls @planned
-  Scenario: Disable read receipts
-    When I go to Settings > Privacy > Read Receipts
-    And I disable read receipts
-    Then contacts should not know when I read their updates
-    And I should not see when they read mine
-    And this preference should be respected
-
-  @controls @planned
-  Scenario: Limit metadata exposure
-    When I go to Settings > Privacy > Minimize Metadata
-    Then I should be able to enable enhanced privacy
-    And this may include padding messages, random delays
-    And I should understand the tradeoffs
-  # ============================================================
-  # Audit & Verification
-  # ============================================================
-
-  @audit @planned
-  Scenario: View access log
-    When I go to Settings > Privacy > Access Log
-    Then I should see when my data was accessed
-    And I should see which devices accessed it
-    And I should see export/deletion events
-
-  @audit @planned
-  Scenario: Verify no unexpected data access
-    Given I have one device
-    When I view the access log
-    Then I should only see access from my device
-    And no unexpected access should appear
-    And I should be able to report suspicious activity
-
-  @audit @planned
-  Scenario: Open source verification
-    Then Vauchi's source code should be publicly available
-    And users should be able to verify privacy claims
-    And cryptographic implementations should be auditable
-  # ============================================================
-  # Enhanced GDPR Compliance (P16)
-  # ============================================================
 
   @deletion @relay @implemented
   Scenario: Relay notified on identity deletion
@@ -480,30 +380,6 @@ Feature: Privacy Compliance
   # ============================================================
   # Multi-Device Deletion
   # ============================================================
-
-  # Planned until a device sends the schedule: today linked devices only
-  # apply one they receive (vauchi/private#723).
-  @deletion @sync @planned
-  Scenario: Identity deletion propagates across all user devices
-    Given Alice has devices A, B, and C
-    When Alice schedules identity deletion from device A
-    Then device B receives the deletion schedule via device sync
-    And device C receives the deletion schedule via device sync
-    And all devices execute deletion after the grace period
-  # ============================================================
-  # Relay Purge
-  # ============================================================
-
-  # Planned: the relay does not erase recovery proofs yet (vauchi/private#711
-  # step 2), and the blob purge does not reach rotating mailboxes
-  # (vauchi/private#154).
-  @deletion @relay @planned
-  Scenario: Identity deletion purges all relay data including recovery proofs
-    Given Alice has stored blobs and recovery proofs on the relay
-    When Alice deletes her identity
-    Then all blobs for Alice are deleted from the relay
-    And all device sync messages for Alice are deleted
-    And Alice's recovery proof is deleted
 
   @deletion @relay @command @implemented
   Scenario: Execute deletion after grace period sends revocations and purge

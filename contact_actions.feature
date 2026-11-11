@@ -141,31 +141,6 @@ Feature: Open Contact Info in External Applications
       | instagram | bob.smith   | https://instagram.com/{username}    | https://instagram.com/bob.smith      |
       | mastodon  | @bob@mas.to | https://{instance}/@{user}          | https://mas.to/@bob                  |
 
-  @social @deep-link @android @planned
-  Scenario: Social media opens native app if installed (Android)
-    Given I am using the Android app
-    And the Twitter app is installed
-    And Bob has a social field "twitter" with value "@bobsmith"
-    When I tap on the social field
-    Then the Twitter app should open to Bob's profile
-    And the browser should not open
-
-  @social @deep-link @ios @planned
-  Scenario: Social media opens native app if installed (iOS)
-    Given I am using the iOS app
-    And the Instagram app is installed
-    And Bob has a social field "instagram" with value "bob.smith"
-    When I tap on the social field
-    Then the Instagram app should open to Bob's profile
-
-  @social @fallback @planned
-  Scenario: Social media falls back to browser when app not installed
-    Given the Twitter app is not installed
-    And Bob has a social field "twitter" with value "@bobsmith"
-    When I tap on the social field
-    Then the web browser should open
-    And it should navigate to "https://twitter.com/bobsmith"
-
   @social @implemented
   Scenario: Long press social field shows action menu
     Given Bob has a social field "github" with value "bobsmith"
@@ -249,13 +224,6 @@ Feature: Open Contact Info in External Applications
     Then the system should detect it as a phone number
     And the dialer should open with the number
 
-  @custom @heuristic @planned
-  Scenario: Custom field with email-like value offers email
-    Given Bob has a custom field "Alternate" with value "bob.alt@email.com"
-    When I tap on the custom field
-    Then the system should detect it as an email
-    And the mail client should open
-
   @custom @heuristic @implemented
   Scenario: Custom field with URL-like value offers browser
     Given Bob has a custom field "Portfolio" with value "https://portfolio.bob.com"
@@ -282,32 +250,6 @@ Feature: Open Contact Info in External Applications
   # Error Handling
   # ============================================================
 
-  @error @no-handler @planned
-  Scenario: No application available for action
-    Given Bob has an email field with value "bob@company.com"
-    And no email application is configured on the device
-    When I tap on the email
-    Then I should see a message "No email app available"
-    And I should be offered to copy the email to clipboard
-
-  @error @no-handler @android @planned
-  Scenario: No handler found shows fallback on Android
-    Given I am using the Android app
-    And Bob has a phone field with value "+1-555-123-4567"
-    And no dialer app is available
-    When I tap on the phone number
-    Then I should see "No app available to handle this action"
-    And the number should be copied to clipboard automatically
-
-  @error @no-handler @ios @planned
-  Scenario: canOpenURL returns false on iOS
-    Given I am using the iOS app
-    And Bob has a phone field with value "+1-555-123-4567"
-    And the tel: scheme cannot be opened
-    When I tap on the phone number
-    Then I should see "Cannot open phone dialer"
-    And I should be offered to copy the number
-
   @error @malformed @implemented
   Scenario: Malformed phone number shows error
     Given Bob has a phone field with value "not-a-valid-number"
@@ -315,109 +257,12 @@ Feature: Open Contact Info in External Applications
     Then I should see "Invalid phone number format"
     And the value should be copied to clipboard as fallback
 
-  @error @network @planned
-  Scenario: Network error when opening social profile
-    Given Bob has a social field "twitter" with value "@bobsmith"
-    And the device has no network connectivity
-    When I tap on the social field
-    Then the browser should still attempt to open
-    And the browser will show its own network error
-
-  # ============================================================
-  # Cross-Platform Consistency
-  # ============================================================
-
-  @platform @android @planned
-  Scenario: Android uses Intent system
-    Given I am using the Android app
-    When I tap on any actionable contact field
-    Then an Intent with ACTION_VIEW should be created
-    And the appropriate URI scheme should be used
-
-  @platform @ios @planned
-  Scenario: iOS uses openURL environment
-    Given I am using the iOS app
-    When I tap on any actionable contact field
-    Then openURL should be called with the appropriate URL
-    And the system should handle app routing
-
-  @platform @desktop @planned
-  Scenario: Desktop opens URL via system handler
-    Given I am using a desktop app
-    When I tap on any actionable contact field
-    Then the platform system handler should be invoked
-    And the system default application should open
-
   @platform @cli @implemented
   Scenario: CLI hands each field's link to the system handler
     Given I am using the CLI
     And I view Bob's contact details
     When I select to open a contact field
     Then the CLI should hand its tel, sms, mailto, web or map link to the system handler
-
-  @platform @tui @planned
-  Scenario: TUI offers to open in external app
-    Given I am using the TUI
-    And I view Bob's contact details
-    When I press Enter on a contact field
-    Then I should see options to open or copy
-    And selecting open should use the system handler
-
-  # ============================================================
-  # Accessibility
-  # ============================================================
-
-  @a11y @planned
-  Scenario: Actionable fields are announced as buttons
-    Given Bob has multiple contact fields
-    When a screen reader focuses on an email field
-    Then it should announce "bob@company.com, email, button"
-    And it should indicate the action "double tap to compose email"
-
-  @a11y @planned
-  Scenario: Action menu is accessible
-    Given Bob has a phone field
-    When I activate the context menu via accessibility action
-    Then the action menu should be announced
-    And each option should be focusable and labeled
-
-  @a11y @keyboard @planned
-  Scenario: Keyboard navigation on desktop
-    Given I am using the desktop app with keyboard
-    And I am viewing Bob's contact details
-    When I press Tab to navigate to a phone field
-    And I press Enter
-    Then the dialer should open
-    And focus should return to the app when closed
-
-  # ============================================================
-  # Visual Feedback
-  # ============================================================
-
-  @ui @planned
-  Scenario: Actionable fields show tap affordance
-    Given Bob has multiple contact fields
-    When I view Bob's contact details
-    Then actionable fields should have a subtle indicator
-    And they should show hover/press feedback on interaction
-
-  @ui @planned
-  Scenario: Brief loading indicator when opening external app
-    Given Bob has an email field
-    When I tap on the email
-    Then a brief loading indicator should appear
-    And it should dismiss when the external app opens
-
-  @ui @planned
-  Scenario: Confirmation toast after copy to clipboard
-    Given Bob has a phone field
-    When I long-press and select "Copy to Clipboard"
-    Then I should see a toast "Copied to clipboard"
-    And the toast should auto-dismiss after 2 seconds
-
-  # ============================================================
-  # Security
-  # ============================================================
 
   @security @implemented
   Scenario: URLs are validated before opening

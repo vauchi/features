@@ -57,7 +57,7 @@ Feature: Relay Transport Security
     And the vauchi relay should not learn my IP address
     And the OHTTP relay should not see the request content
 
-  @layering @planned
+  @layering @implemented
   Scenario: OHTTP is on by default
     Given a fresh install with a default relay configuration
     When I sync for the first time

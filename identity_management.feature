@@ -136,11 +136,3 @@ Feature: Identity Management
 
   # Linking the second device is specified in device_management.feature
   # (Link new device via QR code).
-
-  @multi-device @planned
-  Scenario: Device linking requires proximity
-    Given I have a device linking QR code
-    When someone scans the QR code from a remote location
-    Then the linking should fail
-    And I should see "Proximity verification failed"
-    And the remote device should not receive my identity

@@ -16,22 +16,6 @@ Feature: Accessibility
   # Screen Reader Support
   # ============================================================
 
-  @screen-reader @ios @planned
-  Scenario: VoiceOver announces app structure on iOS
-    Given I am using VoiceOver on iOS
-    When I open the app
-    Then VoiceOver should announce the current screen title
-    And navigation elements should be labeled
-    And I should be able to navigate by headings
-
-  @screen-reader @android @planned
-  Scenario: TalkBack announces app structure on Android
-    Given I am using TalkBack on Android
-    When I open the app
-    Then TalkBack should announce the current screen title
-    And navigation elements should be labeled
-    And I should be able to explore by touch
-
   @screen-reader @desktop @implemented
   Scenario: Screen reader announces app structure on desktop
     Given I am using a screen reader on desktop
@@ -54,39 +38,6 @@ Feature: Accessibility
     Then each field label should be announced before its value
     And actionable fields should indicate available actions
     And the card structure should be logical
-
-  @screen-reader @planned
-  Scenario: QR code exchange is accessible
-    Given I am on the exchange screen
-    When a screen reader is active
-    Then the QR code should have an accessible description
-    And the "Scan QR" button should be clearly labeled
-    And instructions should be announced
-
-  @screen-reader @planned
-  Scenario: Form fields announce validation errors
-    Given I am editing my contact card
-    When I leave a required field empty
-    And I try to save
-    Then the error should be announced immediately
-    And focus should move to the first error field
-    And the error message should be associated with the field
-
-  @screen-reader @planned
-  Scenario: Dialogs and modals are announced
-    Given a confirmation dialog appears
-    Then the dialog title should be announced
-    And the dialog content should be read
-    And focus should be trapped within the dialog
-    And available actions should be announced
-
-  @screen-reader @planned
-  Scenario: Loading states are announced
-    Given I trigger a sync operation
-    When the sync is in progress
-    Then the loading state should be announced
-    And progress updates should be announced if lengthy
-    And completion should be announced
 
   @screen-reader @implemented
   Scenario: Notifications are announced
@@ -112,13 +63,6 @@ Feature: Accessibility
     Given a dialog or menu is open
     When I press Escape
     Then it should close
-
-  @keyboard @desktop @planned
-  Scenario: Shortcut to start an exchange, listed in help
-    Given I am on the main screen
-    When I press Ctrl+N (or Cmd+N on Mac)
-    Then the new contact exchange screen should open
-    And shortcuts should be documented in help
 
   @keyboard @desktop @implemented
   Scenario: Arrow key navigation in lists
@@ -203,99 +147,12 @@ Feature: Accessibility
     And targets should have adequate spacing
     And small icons should have expanded hit areas
 
-  @motor @timing @planned
-  Scenario: No time-limited interactions
-    Given I am performing any action in the app
-    Then there should be no time limits on user input
-    And session timeouts should warn before expiring
-    And I should be able to extend any timeout
-
-  @motor @gestures @planned
-  Scenario: Complex gestures have alternatives
-    Given the app uses swipe gestures
-    Then each gesture should have a button alternative
-    And long-press actions should have menu alternatives
-    And multi-finger gestures should not be required
-
-  @motor @switch-control @planned
-  Scenario: Switch control compatibility on iOS
-    Given I am using Switch Control on iOS
-    When I navigate the app
-    Then all elements should be reachable
-    And scanning should follow logical order
-    And actions should be performable with switches
-
-  @motor @switch-access @planned
-  Scenario: Switch Access compatibility on Android
-    Given I am using Switch Access on Android
-    When I navigate the app
-    Then all elements should be reachable
-    And scanning should follow logical order
-    And actions should be performable with switches
-
-  # ============================================================
-  # Cognitive Accessibility
-  # ============================================================
-
-  @cognitive @clarity @planned
-  Scenario: Clear and simple language
-    Given I am reading any text in the app
-    Then language should be clear and concise
-    And technical jargon should be avoided or explained
-    And instructions should be step-by-step
-
-  @cognitive @consistency @planned
-  Scenario: Consistent navigation and layout
-    Given I navigate through different screens
-    Then navigation elements should be in consistent positions
-    And similar actions should look similar
-    And the mental model should be predictable
-
   @cognitive @errors @implemented
   Scenario: Helpful error messages
     Given an error occurs
     Then the error message should explain what happened
     And it should suggest how to fix the problem
     And it should not use technical error codes only
-
-  @cognitive @confirmation @planned
-  Scenario: Confirmation for destructive actions
-    Given I try to delete a contact
-    Then I should see a confirmation dialog
-    And the dialog should clearly state what will happen
-    And I should be able to undo or cancel
-
-  @cognitive @focus @planned
-  Scenario: Reduced motion support
-    Given I have enabled reduced motion in system settings
-    When I use the app
-    Then animations should be minimized or disabled
-    And transitions should be instant or very brief
-    And no content should auto-scroll or auto-play
-
-  # ============================================================
-  # Assistive Technology Integration
-  # ============================================================
-
-  @assistive @voice-control @planned
-  Scenario: Voice Control compatibility on iOS
-    Given I am using Voice Control on iOS
-    When I say "tap Contacts"
-    Then the Contacts button should be activated
-    And all interactive elements should have speakable names
-    And overlay numbers should work for unlabeled elements
-
-  @assistive @voice-access @planned
-  Scenario: Voice Access compatibility on Android
-    Given I am using Voice Access on Android
-    When I speak commands
-    Then I should be able to navigate and interact
-    And numbered overlays should identify elements
-    And common actions should have voice commands
-
-  # ============================================================
-  # Accessibility Settings
-  # ============================================================
 
   @settings @implemented
   Scenario: In-app accessibility settings
@@ -306,31 +163,6 @@ Feature: Accessibility
       | Reduce animations          |
       | Increase touch target size |
     And changes should apply immediately
-
-  # High contrast is not a toggle Core can honour on its own: its effect is
-  # theme colours the frontend applies, so it needs effective-theme
-  # resolution in Core plus per-platform wiring. It was removed from the
-  # shipped group rather than persisted as an inert switch.
-  @settings @planned
-  Scenario: Accessibility settings offer contrast and screen-reader options
-    Given I open the Settings screen
-    When I navigate to Accessibility settings
-    Then I should see options for:
-      | Option              |
-      | High contrast mode  |
-      | Screen reader hints |
-    And changes should apply immediately
-
-  @settings @planned
-  Scenario: Accessibility preferences persist
-    Given I have enabled "Reduce animations" in settings
-    When I close and reopen the app
-    Then my accessibility preferences should be preserved
-    And they should apply on app launch
-
-  # ============================================================
-  # Platform-Specific Requirements
-  # ============================================================
 
   @ios @requirement @implemented
   Scenario: iOS Accessibility requirements met

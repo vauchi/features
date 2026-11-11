@@ -13,36 +13,6 @@ Feature: Release privacy and multi-device certification
     And the OHTTP relay and application relay have distinct operators
     And ordinary relay traffic must traverse the OHTTP relay
 
-  @evidence @automated-certification @planned
-  Scenario: One current automated certification report is required
-    Given all seven automated certification lanes passed on E2E main
-    When their pipeline evidence is exported
-    Then one report records every required scenario and tested revision
-    And the release check verifies the report for the current E2E revision
-    And native-device and independent-operator acceptance remain separate
-
-  @evidence @automated-certification @adversarial @planned
-  Scenario Outline: Incomplete automated evidence blocks release
-    Given an automated certification report has <defect>
-    When the release check verifies the report
-    Then the check fails and identifies the invalid evidence
-
-    Examples:
-      | defect                         |
-      | a missing report               |
-      | a missing lane                 |
-      | a missing required scenario    |
-      | no executed scenarios          |
-      | a skipped scenario             |
-      | a failed scenario              |
-      | a non-blocking job             |
-      | an obsolete source revision    |
-      | a result older than seven days |
-      | a future timestamp             |
-      | mixed pipeline identities      |
-      | duplicate scenarios            |
-      | malformed or oversized JSON    |
-
   @rg-2 @rg-3 @ohttp @implemented
   Scenario: Exact two-user update propagates through both privacy hops
     Given Alice and Bob completed a mutual exchange
@@ -115,74 +85,6 @@ Feature: Release privacy and multi-device certification
     And no service-held secret can decrypt a user update
     And relay observations contain no stable user or device identifier
     And rotating mailbox observations cannot be joined into a stable user
-
-  @rg-7 @adr-037 @deployment @planned
-  Scenario: Application relay sees the gateway under a distinct operator
-    When Alice synchronizes from a representative end-user network
-    Then the application relay observes the OHTTP gateway address
-    And it does not observe Alice's end-user address
-    And the two relays have different operator identities and hosts
-
-  @rg-8 @fail-closed @planned
-  Scenario Outline: Weaker transport cannot bypass OHTTP
-    Given the production consumer is <consumer>
-    When <failure> prevents valid OHTTP transport
-    Then the operation fails closed before reaching the application relay
-    And no direct, plaintext, or TLS-only fallback is attempted
-
-    Examples:
-      | consumer | failure                    |
-      | CLI      | the outer relay is down    |
-      | TUI      | the outer key is malformed |
-      | native   | direct mode is injected    |
-      | E2E      | same-operator config loads |
-
-  @rg-8 @device-link @fail-closed @planned
-  Scenario Outline: Device-link actions require a distinct OHTTP outer hop
-    Given the application relay records every request
-    And the OHTTP outer-hop configuration is <outer_state>
-    When the <role> sends a device-link action
-    Then the device-link action fails closed
-    And the application relay records zero requests
-    And no direct fallback is attempted
-
-    Examples:
-      | role      | outer_state                         |
-      | initiator | missing                             |
-      | responder | the application-relay origin        |
-      | initiator | malformed                           |
-      | responder | different from the configured route |
-
-  @rg-8 @device-link @invitation @validation @planned
-  Scenario Outline: Device-link invitations reject unsafe relay metadata
-    Given a scanned device-link invitation contains <relay_metadata>
-    When the invitation is parsed
-    Then the invitation is rejected before network use
-    And the error does not echo the untrusted relay value
-    And no relay records a request
-
-    Examples:
-      | relay_metadata               |
-      | a plaintext HTTP relay       |
-      | a loopback-address alias     |
-      | user information or fragment |
-      | an oversized relay value     |
-      | malformed percent encoding   |
-
-  @rg-8 @shred @fail-closed @planned
-  Scenario Outline: OHTTP failure cannot block local shred
-    Given an authorized <shred_mode> is ready
-    And OHTTP notification has <failure>
-    When the shred is executed
-    Then local keys and data are destroyed
-    And the application relay records zero direct notification requests
-    And the shred report records that notification was not sent
-
-    Examples:
-      | shred_mode  | failure                  |
-      | hard shred  | no distinct outer hop    |
-      | panic shred | a malformed cached key   |
-      | panic shred | an oversized fetched key |
 
   @rg-15 @implemented
   Scenario: Ignoring a contact removes attention but keeps continuity

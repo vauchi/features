@@ -63,17 +63,6 @@ Feature: Onboarding Experience
     And adding them should take one tap each
     And I should be able to skip
 
-  @card-creation @planned
-  Scenario: Suggest display name variations
-    Given I entered my full name "Alexandra Johnson"
-    When I reach the display name step
-    Then I should see suggestions: "Alexandra", "Alex", "A. Johnson"
-    And I should be able to pick one or type custom
-    And I should understand this is what contacts see first
-  # ============================================================
-  # What Next (post-onboarding choices)
-  # ============================================================
-
   @what-next @implemented
   Scenario: User chooses next action after onboarding
     Given I completed card setup
@@ -175,49 +164,6 @@ Feature: Onboarding Experience
     When I enter "Alice"
     And I finish onboarding
     Then my identity should be created with display name "Alice"
-
-  # Planned: the groups step creates the selected groups, but offers no way
-  # to set the name a group's members see (private#631).
-  @groups-setup @planned
-  Scenario: User creates groups during onboarding
-    Given I am on the groups setup step
-    Then I should see suggested groups
-      | group     |
-      | Family    |
-      | Friends   |
-      | Coworkers |
-      | Business  |
-    When I select "Family" and "Friends"
-    And I set the name for "Friends" to "Matt"
-    And I advance to the next step
-    Then I should have 2 groups
-    And the "Friends" group should have name override "Matt"
-
-  # Planned: the contact info step collects values only; who sees an entry
-  # is set afterwards on My Card (private#631).
-  @contact-info @planned
-  Scenario: User adds contact info with no-group visibility
-    Given I have no groups
-    And I am on the contact info step
-    When I add an email field "work@example.com" with label "Work"
-    Then the field should be hidden by default
-    When I toggle the field to shown
-    Then the field should be visible to all contacts
-
-  # Planned: as above, the contact info step has no per-group choice
-  # (private#631).
-  @contact-info @groups @planned
-  Scenario: User adds contact info with per-group visibility
-    Given I have groups "Family" and "Friends"
-    And I am on the contact info step
-    When I add a phone field "+1234567890" with label "Mobile"
-    Then the field should be hidden by default
-    When I assign the field to group "Family"
-    Then the field should be visible to Family contacts
-    And the field should not be visible to Friends contacts
-  # ============================================================
-  # Progress & Navigation
-  # ============================================================
 
   @progress @implemented
   Scenario: Onboarding progress indicator

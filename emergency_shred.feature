@@ -152,11 +152,3 @@ Feature: Emergency Shred
     Then local data should be destroyed
     And no contact notifications need to be sent
     And the operation should succeed
-
-  @edge @planned
-  Scenario: Shred on device with multiple linked devices
-    Given I have 3 linked devices
-    When I trigger a panic shred on one device
-    Then only the current device's data should be destroyed
-    And the other devices should keep working
-    And I can revoke the wiped device from one of the other devices

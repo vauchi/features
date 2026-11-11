@@ -32,15 +32,7 @@ Feature: Sealed Mailbox Tokens (SP-33)
     And the token should include the daily epoch (unix_timestamp / 86400)
     And the token should be exactly 32 bytes
 
-  @derivation @planned
-  Scenario: Self mailbox token derived from master seed
-    Given I have a master seed on my device
-    When I compute my self-mailbox token for device sync
-    Then the token should be derived via HKDF-SHA256
-    And the derivation should use "Vauchi_DeviceSync_v1" as domain separator
-    And all my linked devices should derive the same token
-
-  @derivation @planned
+  @derivation @implemented
   Scenario: Tokens rotate daily
     Given I compute Bob's mailbox token on day N
     When day N+1 begins
@@ -48,7 +40,7 @@ Feature: Sealed Mailbox Tokens (SP-33)
     Then the two tokens should be different
     And the relay cannot link messages across days
 
-  @derivation @planned
+  @derivation @implemented
   Scenario: Different contacts produce different tokens
     Given I have contacts Bob and Carol
     When I compute mailbox tokens for both
@@ -73,21 +65,6 @@ Feature: Sealed Mailbox Tokens (SP-33)
     And no fetch request carries tokens of two days
     And the relay cannot chain my fetches across days through a shared token
 
-  @registration @planned
-  Scenario: Historical token registration after offline period
-    Given I was offline for 5 days
-    When I reconnect to the relay
-    Then I should register tokens for all 5 days plus today
-    And the relay should deliver stored blobs matching any registered token
-    And I should deregister historical tokens after catching up
-
-  @routing @planned
-  Scenario: Messages routed by mailbox token
-    Given I send a card update to Bob
-    Then the EncryptedUpdate.recipient_id should be Bob's daily mailbox token
-    And the relay should store the blob under that token
-    And the relay should not see Bob's identity
-
   @routing @implemented
   Scenario: Device sync routed by self-token
     Given I have 2 linked devices
@@ -98,12 +75,6 @@ Feature: Sealed Mailbox Tokens (SP-33)
   # ============================================================
   # Privacy Properties
   # ============================================================
-
-  @privacy @planned
-  Scenario: Relay cannot link recipient across days
-    Given the relay observes token T1 on day N
-    And the relay observes token T2 on day N+1
-    Then the relay should not be able to determine they belong to the same recipient
 
   @privacy @implemented
   Scenario: Token set padded to hide contact count
@@ -125,16 +96,6 @@ Feature: Sealed Mailbox Tokens (SP-33)
     When each mailbox is fetched over OHTTP
     Then every response an observer between me and the OHTTP relay sees is 4 KiB, 32 KiB or 96 KiB plus the fixed OHTTP overhead
     And the observer cannot tell an empty mailbox from one with a few updates
-
-  @privacy @planned
-  Scenario: Combined with SP-32 — relay sees neither sender nor recipient
-    Given Alice sends a card update to Bob
-    Then the sender_id is an anonymous hourly token (SP-32)
-    And the recipient_id is a daily mailbox token (SP-33)
-    And the relay sees only opaque tokens and encrypted ciphertext
-  # ============================================================
-  # Backward-Compat Cleanup (v0.1 alpha)
-  # ============================================================
 
   @cleanup @implemented
   Scenario: Encrypted transport is mandatory

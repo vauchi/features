@@ -121,53 +121,6 @@ Feature: Duress Mode
     And decoy contacts should not receive updates
     And decoy contacts are just display data
 
-  @decoy @planned
-  Scenario: Make decoy profile believable
-    Given I am configuring the decoy profile
-    Then I should consider:
-      | aspect        | recommendation                        |
-      | Contact count | Have a realistic number (5-20)        |
-      | Names         | Use common, believable names          |
-      | Recency       | Some should have recent "activity"    |
-      | Variety       | Mix of friends, family, work contacts |
-
-  @decoy @planned
-  Scenario: Import decoy contacts from phone
-    Given I am configuring the decoy profile
-    When I choose "Import from phone contacts"
-    Then I should be able to select contacts to copy
-    And selected contacts become static decoy entries
-    And they are disconnected from real phone contacts
-
-  @decoy @planned
-  Scenario: Pre-populate decoy contacts
-    Given I am setting up duress mode
-    When I choose to auto-populate decoy contacts
-    Then a small handful of contacts should be created (roughly 3 to 8)
-    And their cards should be sparse, a phone or an email, rarely both
-    And their timestamps should spread plausibly over months
-    And no two generated profiles should be identical
-    # ADR-032 addendum 2026-07-04: decoys read as an almost unused app.
-
-  @decoy @planned
-  Scenario: Auto-generated decoys read as an almost unused app
-    Given my decoy profile was auto-populated
-    Then the decoy profile should resemble a lightly used app, not a template:
-      | aspect         | requirement                                   |
-      | Contact count  | small (roughly 3-8), not a full address book  |
-      | Card detail    | sparse — a phone or an email, rarely both     |
-      | Timestamps     | plausible, spread over months, none identical |
-      | Update history | little to none — an almost unused app         |
-      | Names          | locale-plausible, no repeating patterns       |
-    And no two auto-generated decoy profiles should be identical
-    # A sparse profile is the credible cover: heavy curated-looking decoys
-    # are hard to fake convincingly; "barely uses the app" is common and
-    # explains away every gap a coercer might probe (ADR-032 addendum
-    # 2026-07-04).
-  # ============================================================
-  # Duress Unlock Behavior
-  # ============================================================
-
   @unlock @implemented
   Scenario: Duress credential shows decoy contacts
     Given I have configured duress mode
@@ -244,17 +197,6 @@ Feature: Duress Mode
     And there should be no trace of duress activity
     And real data should be intact
 
-  @behavior @planned
-  Scenario: Exchanges in duress mode add to decoy profile
-    Given I am in duress mode
-    When I exchange contacts with someone
-    Then the new contact should be added to the decoy profile
-    And they should NOT be added to the real profile
-    And they should receive my decoy card (if configured)
-  # ============================================================
-  # No Alerts (ADR-032 amendment 2026-10-11)
-  # ============================================================
-
   @alert @implemented
   Scenario: A duress unlock sends nothing
     Given I have exchanged contacts
@@ -306,22 +248,6 @@ Feature: Duress Mode
     And both should have a duress copy of the own card
     And a duress session or disabling the PIN should leave them so
 
-  @security @planned
-  Scenario: Duress detection should be impossible
-    Given an attacker is examining the app
-    When they compare duress mode to real mode
-    Then behavior should be indistinguishable
-    And storage patterns should look similar
-    And network timing should be similar
-
-  @security @planned
-  Scenario: Credential entry logged (accessible from real mode only)
-    Given I have configured duress mode
-    When I unlock with the duress credential
-    Then the duress entry should be logged locally
-    And the log should be accessible only from real mode
-    And I can review when duress mode was used
-
   @security @implemented
   Scenario: Credentials processed identically at UI level
     Given duress mode is enabled
@@ -334,17 +260,6 @@ Feature: Duress Mode
   # ============================================================
   # Believability
   # ============================================================
-
-  @believability @planned
-  Scenario: Decoy app has full functionality appearance
-    Given I am in duress mode
-    Then all app features should appear to work:
-      | feature         | behavior                    |
-      | Sync            | Runs, carries only cover    |
-      | Exchange        | Works, adds to the decoys   |
-      | Settings        | Fake settings that "save"   |
-      | Contact details | Shows decoy contact info    |
-      | Edit card       | Appears to save (discarded) |
 
   @believability @implemented
   Scenario: Decoy profile has realistic timestamps
@@ -458,15 +373,6 @@ Feature: Duress Mode
     And the real groups, tags and places should be unchanged
     And disabling duress mode should discard them
 
-  @edge @planned
-  Scenario: Duress mode timeout
-    Given I am in duress mode
-    And the app has been inactive for 5 minutes
-    When the app locks due to timeout
-    Then I should see the normal login screen
-    And either credential will work
-    And no indication of previous duress mode
-
   @edge @implemented
   Scenario: Duress mode with notification
     Given I am in duress mode
@@ -493,65 +399,3 @@ Feature: Duress Mode
     Then restoring with the decoy backup password should give the decoy profile only
     And it should lock with the duress credential and have no duress of its own
     And a restore should not tell which payload opened from its error or timing
-
-  # ADR-080: a wipe sent from another device runs in the coercer's hands, who
-  # sees the app wipe itself. Accepted (owner, 2026-11-07).
-  @edge @planned
-  Scenario: A remote wipe applies during duress
-    Given I am in duress mode on this device
-    When I wipe this device from another of my devices
-    Then the real profile running in the background should apply the wipe
-    And every profile on this device should be destroyed
-
-  @edge @planned
-  Scenario: Multiple duress credentials not supported
-    Given duress mode is enabled
-    When I try to add another duress credential
-    Then this should not be possible
-    And only one duress credential is supported
-    And this prevents complexity attacks
-
-  @edge @planned
-  Scenario: Change duress credential
-    Given duress mode is enabled
-    When I go to Security settings
-    And I authenticate with my real credential
-    And I select "Change duress credential"
-    Then I should be able to set a new duress credential
-    And the old duress credential should stop working
-
-  @edge @planned
-  Scenario: Forgot duress credential
-    Given I cannot remember my duress credential
-    When I login with real credential
-    Then I can access duress settings
-    And I can reset the duress credential
-    And no data is lost
-  # ============================================================
-  # Decoy Profile Management
-  # ============================================================
-
-  @decoy-management @planned
-  Scenario: Edit decoy profile from real mode
-    Given I am logged in with real credential
-    When I go to Security > Duress settings
-    And I select "Edit decoy profile"
-    Then I should be able to modify decoy contacts
-    And I should be able to update decoy card
-
-  @decoy-management @planned
-  Scenario: Preview decoy profile
-    Given duress mode is enabled
-    When I select "Preview decoy profile"
-    Then I should see what the decoy profile looks like
-    And I should be able to verify it looks realistic
-    And I should be clearly in preview mode (not duress)
-
-  @decoy-management @planned
-  Scenario: Reset decoy data
-    Given duress mode is enabled
-    When I choose to reset decoy profile
-    And I confirm the action
-    Then all decoy contacts should be deleted
-    And the decoy card should be reset
-    And I should be prompted to set up again

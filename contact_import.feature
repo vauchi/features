@@ -93,15 +93,6 @@ Feature: External Contact Import
     Then Bob should have email "bob@example.com"
   # Visual distinction
 
-  # Planned: the contacts list shows no kind indicator on any row.
-  @display @planned
-  Scenario: Imported contacts are visually distinct
-    Given I have exchanged contact "Carol" and imported contact "Bob"
-    When I view the contacts list
-    Then Bob should have an "Imported" indicator
-    And Carol should have a "Vauchi contact" indicator
-  # Merge prevention
-
   @merge @implemented
   Scenario: Direct cross-kind merge is rejected
     Given I have exchanged contact "Carol" and imported contact "Carol Smith"

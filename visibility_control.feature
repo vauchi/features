@@ -55,15 +55,6 @@ Feature: Visibility Control
     Then contact "Bob" can see my "Personal Phone" field
     And contact "Carol" can see my "Personal Phone" field
 
-  @default @planned
-  Scenario: Archived contacts stop receiving card updates
-    Given I have a contact "Bob" with an established sync channel
-    And I archived contact "Bob"
-    When I update my "Work Phone" field and sync
-    Then "Bob" receives no card update
-    And unarchiving "Bob" delivers my current card to him
-  # Setting Individual Visibility
-
   @individual @implemented
   Scenario: Hide a field from a specific contact
     Given all my fields are set to "visible to all"
@@ -152,13 +143,6 @@ Feature: Visibility Control
     And my "Personal" phone should be removed from Dave's view
   # Visibility and New Contacts
 
-  @new-contact @planned
-  Scenario: Set visibility before exchange
-    Given I have marked "Personal" phone as "exchange with explicit consent only"
-    When I exchange contacts with "Eve"
-    Then I should be prompted to choose visibility for Eve
-    And Eve should only see fields I approve
-
   @new-contact @implemented
   Scenario: Apply template visibility to new contact
     Given I have a visibility template "Professional"
@@ -176,14 +160,6 @@ Feature: Visibility Control
     When I restart the application
     Then all visibility settings should be preserved
     And Bob, Carol, and Dave should see the same fields as before
-
-  @persistence @planned
-  Scenario: Visibility settings sync across my devices
-    Given I have custom visibility settings on Device A
-    When I link Device B to my identity
-    Then Device B should have the same visibility settings
-    And changes on either device should sync to the other
-  # Visibility Verification
 
   @verification @implemented
   Scenario: View what a specific contact can see
@@ -221,15 +197,6 @@ Feature: Visibility Control
     Then I should be asked whether to remove my info from Dave's device
     And if I confirm, Dave should receive one final update with an empty contact card
     And no further updates should ever be sent to Dave
-
-  @edge-cases @planned
-  Scenario: Unblock contact restores previous visibility
-    Given I have blocked Dave
-    And Dave previously could see my "Work" fields
-    When I unblock Dave
-    Then Dave should be able to see my "Work" fields again
-    And Dave should receive an update with the restored fields
-  # Privacy Protection
 
   @privacy @implemented
   Scenario: Contact cannot determine hidden field existence
