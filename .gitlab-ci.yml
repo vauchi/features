@@ -233,6 +233,23 @@ lint:wired-scenarios:
       [ -d "$STEPS" ] || { echo "no cucumber steps directory in core main" >&2; exit 1; }
       node scripts/check-wired-scenarios.mjs --steps "$STEPS" --base FETCH_HEAD
 
+# A planned scenario is public only while work on it runs under an issue
+# (vauchi/private#1237): it carries @issue-<N>. Form only — whether the
+# issue is open is checked by a scheduled job in the private repository,
+# so this public pipeline never reads the private tracker.
+lint:planned-issue-tags:
+  extends: .mr-or-main
+  stage: lint
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:20-alpine
+  tags: [docker]
+  needs: []
+  allow_failure: false
+  timeout: 5m
+  # vci02-ok: .mr-or-main carries only `rules:`, no before_script to preserve
+  script:
+    - node --test scripts/check-planned-issue-tags.test.mjs
+    - node scripts/check-planned-issue-tags.mjs .
+
 # ============================================================
 # Deploy Stage — Badge Pages
 # ============================================================
