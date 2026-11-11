@@ -128,8 +128,11 @@ export function stepDefinitionsFrom(stepsDir) {
 
 const STEP = /^\s*(Given|When|Then|And|But|\*)\s+(.+?)\s*$/;
 
+// Core's cucumber job runs `--tags "not @wip and not @ui"`.
+const EXCLUDED_BY_CORE_RUN = ["@wip", "@ui"];
+
 // Scenario ids of one feature file, each with its full step list (Background
-// first; one entry per Examples row for an outline).
+// first; one entry per Examples row for an outline) and every tag it inherits.
 function scenariosOf(file, text) {
   const out = [];
   const seen = new Map();
@@ -138,16 +141,21 @@ function scenariosOf(file, text) {
   let inDocString = false;
   let current = null;
   let phase = null;
+  let pendingTags = [];
+  let featureTags = [];
+  let ruleTags = [];
   const flush = () => {
     if (!current) return;
     const count = (seen.get(current.name) ?? 0) + 1;
     seen.set(current.name, count);
     const id = `${file} :: ${current.name}${count > 1 ? ` (${count})` : ""}`;
-    const rows = current.tables.flatMap((table) => table.slice(1).map((row) => [table[0], row]));
-    if (rows.length === 0) out.push({ id, steps: [...background, ...current.steps], thens: current.thens });
-    rows.forEach(([header, row], index) =>
+    const tags = [...featureTags, ...ruleTags, ...current.tags];
+    const rows = current.tables.flatMap((table) => table.rows.slice(1).map((row) => [table.rows[0], row, table.tags]));
+    if (rows.length === 0) out.push({ id, tags, steps: [...background, ...current.steps], thens: current.thens });
+    rows.forEach(([header, row, tableTags], index) =>
       out.push({
         id: `${id} [row ${index + 1}]`,
+        tags: [...tags, ...tableTags],
         steps: [...background, ...current.steps].map((step) =>
           step.replace(/<([^>]+)>/g, (whole, key) => (header.includes(key) ? row[header.indexOf(key)] : whole)),
         ),
@@ -165,9 +173,20 @@ function scenariosOf(file, text) {
       continue;
     }
     if (inDocString || trimmed.startsWith("#")) continue;
+    if (trimmed.startsWith("@")) {
+      pendingTags.push(...trimmed.split(/\s+/).filter((tag) => tag.startsWith("@")));
+      continue;
+    }
     if (/^(Feature|Rule):/.test(trimmed)) {
       flush();
-      if (trimmed.startsWith("Rule:")) background = [];
+      if (trimmed.startsWith("Rule:")) {
+        background = [];
+        ruleTags = pendingTags;
+      } else {
+        featureTags = pendingTags;
+        ruleTags = [];
+      }
+      pendingTags = [];
       inBackground = false;
       continue;
     }
@@ -180,20 +199,22 @@ function scenariosOf(file, text) {
     if (scenario) {
       flush();
       inBackground = false;
-      current = { name: scenario[1].trim(), steps: [], thens: [], tables: [], inExamples: false };
+      current = { name: scenario[1].trim(), tags: pendingTags, steps: [], thens: [], tables: [], inExamples: false };
+      pendingTags = [];
       phase = null;
       continue;
     }
     if (/^(Examples|Scenarios):/.test(trimmed)) {
       if (current) {
-        current.tables.push([]);
+        current.tables.push({ tags: pendingTags, rows: [] });
         current.inExamples = true;
       }
+      pendingTags = [];
       continue;
     }
     if (trimmed.startsWith("|")) {
       if (current?.inExamples) {
-        current.tables.at(-1).push(trimmed.split("|").slice(1, -1).map((cell) => cell.trim()));
+        current.tables.at(-1).rows.push(trimmed.split("|").slice(1, -1).map((cell) => cell.trim()));
       }
       continue;
     }
@@ -226,7 +247,8 @@ export function uncheckedScenarios(features, definitions) {
   const checks = (step) => definitions.some((d) => !d.trivial && d.pattern.test(step));
   const unchecked = [];
   for (const [file, text] of Object.entries(features)) {
-    for (const { id, steps, thens } of scenariosOf(file, text)) {
+    for (const { id, tags, steps, thens } of scenariosOf(file, text)) {
+      if (tags.some((tag) => EXCLUDED_BY_CORE_RUN.includes(tag))) continue;
       if (steps.length > 0 && steps.every(bound) && !thens.some(checks)) unchecked.push(id);
     }
   }

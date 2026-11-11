@@ -17,14 +17,6 @@ internationalization.feature :: Core languages are supported [row 3]
 internationalization.feature :: Core languages are supported [row 4]
 internationalization.feature :: Core languages are supported [row 5]
 internationalization.feature :: Core languages are supported [row 6]
-onboarding.feature :: Demo contact updates demonstrate value
-onboarding.feature :: Minimum viable card
 performance.feature :: Efficient database queries
 performance.feature :: Handle 1000 contacts
 performance.feature :: Search performance with many contacts
-theming.feature :: Dracula theme available
-theming.feature :: Gruvbox themes available [row 1]
-theming.feature :: Gruvbox themes available [row 2]
-theming.feature :: Nord theme available
-theming.feature :: Solarized themes available [row 1]
-theming.feature :: Solarized themes available [row 2]
