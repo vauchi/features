@@ -18,8 +18,13 @@ Each scenario should have corresponding tests.
 Every scenario is tagged with its implementation status:
 
 - `@implemented` — has passing tests in the test suite
-- `@planned` — specced but not yet implemented
+- `@planned` — work on it has started and its test is not on main yet;
+  a scenario nobody is working on is not published here
 - `@wip` — actively being implemented (temporary, feature branches only)
+
+This repository describes what Vauchi does. Scenarios for features that
+are not being built yet are kept with the maintainers' planning notes
+and published here when work on them starts.
 
 Use `grep -c '@implemented' *.feature` to get live implementation counts.
 Ideas and brainstorming live in `_private/features/ideas/` (not in this repo).
