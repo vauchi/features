@@ -37,8 +37,30 @@ test("a future scenario that is not implemented needs one too", () => {
   assert.equal(found.length, 1);
 });
 
-test("an implemented scenario needs no issue tag, even with @future on it", () => {
-  assert.deepEqual(untaggedPlanned("x.feature", feature("  @accent @future @implemented\n  Scenario: Now\n")), []);
+test("an implemented scenario needs no issue tag", () => {
+  assert.deepEqual(untaggedPlanned("x.feature", feature("  @accent @implemented\n  Scenario: Now\n")), []);
+});
+
+for (const tags of ["@future @implemented", "@future @issue-55", "@planned @implemented @issue-55", "@wip @issue-55", ""]) {
+  test(`invalid public lifecycle ${JSON.stringify(tags)} is rejected`, () => {
+    assert.deepEqual(
+      untaggedPlanned("x.feature", feature(`  ${tags}\n  Scenario: Later\n`)),
+      [{ file: "x.feature", scenario: "Later" }],
+    );
+  });
+}
+
+test("conflicting inherited lifecycle tags are rejected", () => {
+  const text = "@implemented @issue-55\nFeature: Example\n\n  @planned\n  Scenario: Later\n";
+  assert.deepEqual(untaggedPlanned("x.feature", text), [{ file: "x.feature", scenario: "Later" }]);
+});
+
+test("the command rejects a future promise disguised as implemented", async () => {
+  const { execFileSync } = await import("node:child_process");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "mixed-lifecycle-"));
+  const script = path.join(path.dirname(new URL(import.meta.url).pathname), "check-planned-issue-tags.mjs");
+  fs.writeFileSync(path.join(dir, "a.feature"), feature("  @future @implemented\n  Scenario: Later\n"));
+  assert.throws(() => execFileSync("node", [script, dir], { stdio: "pipe" }));
 });
 
 test("a scenario outline is checked like a scenario", () => {
