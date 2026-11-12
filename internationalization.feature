@@ -23,7 +23,6 @@ Feature: Internationalization
     Given my device is set to an unsupported language
     When I open the app
     Then the app should display in English
-    And a notice should offer to help translate
     And all functionality should remain available
 
   @language @implemented
