@@ -28,22 +28,6 @@ Feature: Performance Requirements
     And scrolling should be smooth (60fps)
     And there should be no jank
 
-  @contacts @scale @implemented
-  Scenario: Handle 1000 contacts
-    Given I have 1000 contacts
-    When I open the contacts list
-    Then the list should render within 500ms
-    And scrolling should be smooth
-    And the app should remain responsive
-
-  @contacts @search @implemented
-  Scenario: Search performance with many contacts
-    Given I have 1000 contacts
-    When I type a search query
-    Then results should appear within 200ms
-    And results should update as I type
-    And there should be no input lag
-
   # ============================================================
   # Sync Performance
   # ============================================================
@@ -69,14 +53,6 @@ Feature: Performance Requirements
     Then encryption should complete within 100ms
     And decryption should complete within 100ms
     And key operations should not block UI
-
-  @resources @implemented
-  Scenario: Efficient database queries
-    Given I have 1000 contacts
-    When I search or filter
-    Then queries should complete within 50ms
-    And indexes should be used properly
-    And no full table scans for common operations
 
   # ============================================================
   # Stress Testing

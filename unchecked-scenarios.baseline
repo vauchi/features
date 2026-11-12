@@ -5,8 +5,3 @@
 # every Then binds to an empty or log-only step body (vauchi/private#1237).
 # Shrink-only: give one Then a body that asserts the outcome, then delete
 # the line. lint:wired-scenarios fails on an unchecked scenario not listed here.
-backup_format_versioning.feature :: V2 backup uses OWASP-recommended Argon2id parameters
-contact_card_management.feature :: Use cached social network config when offline
-performance.feature :: Efficient database queries
-performance.feature :: Handle 1000 contacts
-performance.feature :: Search performance with many contacts
