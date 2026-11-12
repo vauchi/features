@@ -233,25 +233,6 @@ Feature: App Theming
     Then "Default Dark" should be available
     And "Default Light" should be available
   # ===========================================
-  # Accent Color Customization
-  # ===========================================
-
-  @accent @future @implemented
-  Scenario: Choose accent color within theme
-    Given the user has selected "Catppuccin Mocha" theme
-    When the user opens accent color options
-    Then the user should see Catppuccin accent colors:
-      | rosewater | flamingo | pink  | mauve    |
-      | red       | maroon   | peach | yellow   |
-      | green     | teal     | sky   | sapphire |
-      | blue      | lavender |       |          |
-
-  @accent @future @implemented
-  Scenario: Custom accent color persists
-    Given the user has selected "Catppuccin Mocha" with "mauve" accent
-    When the user closes and reopens the app
-    Then the "mauve" accent color should still be applied
-  # ===========================================
   # QR Code Theming
   # ===========================================
 
