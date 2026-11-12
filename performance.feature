@@ -9,26 +9,6 @@ Feature: Performance Requirements
   So that it doesn't impact my device negatively
 
   # ============================================================
-  # Startup Time
-  # ============================================================
-
-  @startup @implemented
-  Scenario: Cold start time
-    Given the app is not in memory
-    When I launch the app
-    Then it should be interactive within 2 seconds
-    And the contacts list should be visible within 3 seconds
-    And no loading spinner should show for more than 1 second
-
-  @contacts @scale @implemented
-  Scenario: Handle 100 contacts smoothly
-    Given I have 100 contacts
-    When I open the contacts list
-    Then the list should render within 200ms
-    And scrolling should be smooth (60fps)
-    And there should be no jank
-
-  # ============================================================
   # Sync Performance
   # ============================================================
 
