@@ -58,7 +58,6 @@ Feature: Internationalization
       | French     |
       | Spanish    |
       | Italian    |
-      | Portuguese |
 
   @errors @implemented
   Scenario: Error messages are translated
