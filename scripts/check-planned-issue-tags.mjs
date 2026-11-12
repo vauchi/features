@@ -1,16 +1,16 @@
 // SPDX-FileCopyrightText: 2026 Mattia Egloff <mattia.egloff@pm.me>
 // SPDX-License-Identifier: GPL-3.0-or-later
 //
-// A planned scenario is public only while someone works on it
-// (vauchi/private#1237): every scenario tagged @planned, or @future without
-// @implemented, carries @issue-<N>, on itself or on its Feature. This job
-// checks the tag's form only; whether issue N is open is checked by a
+// A public scenario has exactly one lifecycle: @implemented, or @planned
+// while someone works on its @issue-<N> (vauchi/private#1255). Retired
+// @future and unfinished @wip tags cannot enter the public catalogue.
+// This job checks the tag's form only; whether issue N is open is checked by a
 // scheduled job in the private repository, so this public pipeline never
 // reads the private tracker.
 //
 //   node scripts/check-planned-issue-tags.mjs [dir]
 //
-// Exit 0 clean, 1 an untagged planned scenario, 2 no feature files found.
+// Exit 0 clean, 1 invalid lifecycle or missing issue, 2 no feature files found.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -22,7 +22,7 @@ const ISSUE_TAG = /(^|\s)@issue-[1-9][0-9]*(?=\s|$)/;
 
 const hasTag = (tags, tag) => tags.split(/\s+/).includes(tag);
 
-export function untaggedPlanned(file, text) {
+export function invalidPublicScenarios(file, text) {
   const found = [];
   let pending = "";
   let featureTags = "";
@@ -41,8 +41,9 @@ export function untaggedPlanned(file, text) {
     if (scenario) {
       const tags = `${featureTags} ${pending}`;
       pending = "";
-      const planned = hasTag(tags, "@planned") || hasTag(tags, "@future");
-      if (planned && !hasTag(tags, "@implemented") && !ISSUE_TAG.test(tags)) {
+      const lifecycle = ["@implemented", "@planned"].filter((tag) => hasTag(tags, tag));
+      const invalid = lifecycle.length !== 1 || hasTag(tags, "@future") || hasTag(tags, "@wip");
+      if (invalid || (hasTag(tags, "@planned") && !ISSUE_TAG.test(tags))) {
         found.push({ file, scenario: scenario[1] });
       }
       continue;
@@ -59,17 +60,17 @@ function main() {
     console.error(`No .feature files in ${dir}: the check cannot decide.`);
     process.exit(2);
   }
-  const found = files.flatMap((name) => untaggedPlanned(name, fs.readFileSync(path.join(dir, name), "utf8")));
+  const found = files.flatMap((name) => invalidPublicScenarios(name, fs.readFileSync(path.join(dir, name), "utf8")));
   if (found.length > 0) {
-    console.error(`${found.length} planned scenario(s) name no issue:`);
+    console.error(`${found.length} public scenario(s) have invalid lifecycle tags or name no issue:`);
     for (const { file, scenario } of found) console.error(`  ${file} :: ${scenario}`);
     console.error(
-      "\nFix: tag each with @issue-<N> of the open issue its work runs under, or move it to its " +
-        "problem record until work starts (vauchi/private#1237).",
+      "\nFix: use @implemented for tested shipped behavior, or @planned @issue-<N> during active work. " +
+        "Remove @future/@wip and conflicting lifecycle tags; keep future work in the private backlog (vauchi/private#1255).",
     );
     process.exit(1);
   }
-  console.log(`OK: ${files.length} feature files, every planned scenario names its issue.`);
+  console.log(`OK: ${files.length} feature files, valid public lifecycles and planned issue tags.`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) main();
