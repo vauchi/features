@@ -38,6 +38,15 @@ Feature: Contact Card Exchange
     Then "Alice" has "Bob" as a contact
     And "Bob" has "Alice" as a contact
 
+  @first-exchange @planned @issue-276
+  Scenario: First contact milestone after an exchange
+    Given "Alice" has no contacts yet
+    When "Alice" and "Bob" complete an exchange
+    Then "Alice" sees the exchange celebration
+    And after it "Alice" sees one milestone message naming "Bob"
+    When "Alice" adds "Erin" as a contact
+    Then "Alice" sees no milestone message
+
   @qr-code @sync @implemented
   Scenario: Card update propagates after exchange
     Given "Alice" has an email field "Work Email" with value "alice@old.com"
