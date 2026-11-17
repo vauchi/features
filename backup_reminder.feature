@@ -19,6 +19,7 @@ Feature: Backup Reminder
   Scenario: First reminder fires 7 days after identity creation
     Given I created my identity 8 days ago
     And I have never backed up
+    And I have a linked device
     And my reminder frequency is "Weekly"
     When I open the app
     Then I should see a backup reminder toast
@@ -40,6 +41,7 @@ Feature: Backup Reminder
   @implemented
   Scenario: Monthly frequency fires at 30 days
     Given I have not backed up for 31 days
+    And I have a linked device
     And my reminder frequency is "Monthly"
     When I open the app
     Then I should see a backup reminder toast
@@ -51,6 +53,58 @@ Feature: Backup Reminder
     And my reminder frequency is "Monthly"
     When I open the app
     Then I should not see a backup reminder toast
+
+  # ============================================================
+  # Loss prevention: a user with no safeguard (vauchi/private#796)
+  # ============================================================
+  # Without a linked device, guardians or a recent backup, a lost phone
+  # loses the contact list. Such a user is told how to avoid that in
+  # place of the backup reminder; any one safeguard is enough.
+
+  @planned @issue-796
+  Scenario: A user with no safeguard is told how to avoid losing their contacts
+    Given I created my identity 8 days ago
+    And I have never backed up
+    And I have no linked device
+    And I have designated no guardians
+    And my reminder frequency is "Weekly"
+    When I open the app
+    Then I should see a safeguard prompt instead of a backup reminder toast
+    And the prompt should suggest linking a device, choosing guardians or backing up
+    And the toast should expose a "protect_now" action that opens Settings
+
+  @planned @issue-796
+  Scenario Outline: One safeguard is enough to remove the safeguard prompt
+    Given I created my identity 40 days ago
+    And my reminder frequency is "Weekly"
+    And <safeguard>
+    When I open the app
+    Then I should not see a safeguard prompt
+
+    Examples:
+      | safeguard                     |
+      | I have a linked device        |
+      | I have designated a guardian  |
+      | I backed up 10 days ago       |
+
+  @planned @issue-796
+  Scenario: A backup older than 30 days no longer counts as a safeguard
+    Given I backed up 31 days ago
+    And I have no linked device
+    And I have designated no guardians
+    And my reminder frequency is "Weekly"
+    When I open the app
+    Then I should see a safeguard prompt instead of a backup reminder toast
+
+  @planned @issue-796
+  Scenario: Reminders set to "Never" also silence the safeguard prompt
+    Given I created my identity 40 days ago
+    And I have never backed up
+    And I have no linked device
+    And I have designated no guardians
+    And my reminder frequency is "Never"
+    When I open the app
+    Then I should not see a safeguard prompt
 
   # ============================================================
   # State transitions
