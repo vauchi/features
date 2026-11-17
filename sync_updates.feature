@@ -284,20 +284,20 @@ Feature: Sync and Updates
     And sync should resume from last checkpoint
     And no data corruption should occur
 
-  @offline @relay @planned @issue-1273
+  @offline @relay @implemented
   Scenario: Offline mode blocks every relay path
     Given Offline mode is enabled
     When foreground, background, bootstrap, retry, and exchange actions run
     Then no application-relay or OHTTP-relay request is made
     And in-person exchange and update remain available
 
-  @offline @relay @planned @issue-1273
+  @offline @relay @implemented
   Scenario: Updates converge after switching from local to relay
     Given two established contacts use in-person updates
     When one updates their card and both switch to OHTTP relay sync
     Then the peer receives exactly the updated values without re-exchange
 
-  @offline @relay @planned @issue-1273
+  @offline @relay @implemented
   Scenario: Updates converge after switching from relay to local
     Given two established contacts use OHTTP relay sync
     When one updates their card and both switch to in-person updates
