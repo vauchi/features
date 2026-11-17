@@ -38,7 +38,7 @@ Feature: Contact Card Exchange
     Then "Alice" has "Bob" as a contact
     And "Bob" has "Alice" as a contact
 
-  @first-exchange @planned @issue-276
+  @first-exchange @implemented
   Scenario: First contact milestone after an exchange
     Given "Alice" has no contacts yet
     When "Alice" and "Bob" complete an exchange
