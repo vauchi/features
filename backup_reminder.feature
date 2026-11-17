@@ -61,7 +61,7 @@ Feature: Backup Reminder
   # loses the contact list. Such a user is told how to avoid that in
   # place of the backup reminder; any one safeguard is enough.
 
-  @planned @issue-796
+  @implemented
   Scenario: A user with no safeguard is told how to avoid losing their contacts
     Given I created my identity 8 days ago
     And I have never backed up
@@ -73,7 +73,7 @@ Feature: Backup Reminder
     And the prompt should suggest linking a device, choosing guardians or backing up
     And the toast should expose a "protect_now" action that opens Settings
 
-  @planned @issue-796
+  @implemented
   Scenario Outline: One safeguard is enough to remove the safeguard prompt
     Given I created my identity 40 days ago
     And my reminder frequency is "Weekly"
@@ -87,7 +87,7 @@ Feature: Backup Reminder
       | I have designated a guardian  |
       | I backed up 10 days ago       |
 
-  @planned @issue-796
+  @implemented
   Scenario: A backup older than 30 days no longer counts as a safeguard
     Given I backed up 31 days ago
     And I have no linked device
@@ -96,7 +96,7 @@ Feature: Backup Reminder
     When I open the app
     Then I should see a safeguard prompt instead of a backup reminder toast
 
-  @planned @issue-796
+  @implemented
   Scenario: Reminders set to "Never" also silence the safeguard prompt
     Given I created my identity 40 days ago
     And I have never backed up
