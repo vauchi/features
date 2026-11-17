@@ -43,3 +43,9 @@ Feature: Guardian Key Shard Backup Recovery
     When nobody from Eve's group returns a share
     Then the operation should fail with "Guardian backup recovery failed"
     And the backup key should not be reconstructed
+
+  @offline @backup @planned
+  Scenario: Full backup and restore work while Offline mode is enabled
+    Given Offline mode is enabled
+    When a full backup is exported and restored
+    Then the complete identity and contact data round-trip without relay traffic
