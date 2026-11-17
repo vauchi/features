@@ -44,7 +44,7 @@ Feature: Guardian Key Shard Backup Recovery
     Then the operation should fail with "Guardian backup recovery failed"
     And the backup key should not be reconstructed
 
-  @offline @backup @planned
+  @offline @backup @planned @issue-1273
   Scenario: Full backup and restore work while Offline mode is enabled
     Given Offline mode is enabled
     When a full backup is exported and restored
