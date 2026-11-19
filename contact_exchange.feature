@@ -371,6 +371,58 @@ Feature: Contact Card Exchange
     And Alice chooses not to update
     Then Alice's contact for Bob should still show phone "555-1111"
 
+  # One side lost the contact: a restore from an identity-only backup, or
+  # a removal. The phone that still holds it asks before it starts a new
+  # connection (vauchi/private#1285).
+
+  @duplicate @reconnect @planned
+  Scenario: Meeting again asks before starting a new connection
+    Given Alice has Bob in her contacts
+    And Bob no longer has Alice in his contacts
+    When Alice and Bob hold their phones together again
+    Then Alice should be asked whether to start a new connection with Bob
+    And Bob should see that he is waiting for Alice's answer
+    And Bob should have no contact for Alice yet
+    And both phones should keep showing their codes
+
+  @duplicate @reconnect @planned
+  Scenario: Starting a new connection after meeting again
+    Given Alice has Bob in her contacts
+    And Bob no longer has Alice in his contacts
+    And Alice and Bob hold their phones together again
+    When Alice chooses to start a new connection
+    Then Bob should have Alice in his contacts
+    And Alice and Bob should share the key of this exchange
+    And Alice's notes and groups for Bob should be kept
+
+  @duplicate @reconnect @planned
+  Scenario: Leaving the old connection after meeting again
+    Given Alice has Bob in her contacts
+    And Bob no longer has Alice in his contacts
+    And Alice and Bob hold their phones together again
+    When Alice chooses to leave it
+    Then Alice's connection to Bob should be the one she had
+    And Bob should have no contact for Alice
+    And both should be told that no new connection was started
+
+  @duplicate @reconnect @planned
+  Scenario: Nobody answers the reconnect question
+    Given Alice has Bob in her contacts
+    And Bob no longer has Alice in his contacts
+    And Alice and Bob hold their phones together again
+    When Alice does not answer for two minutes
+    Then Alice's connection to Bob should be the one she had
+    And Bob should have no contact for Alice
+    And both should be told that nobody answered in time
+
+  @duplicate @reconnect @planned
+  Scenario: Two phones that still have each other are not asked
+    Given Alice has Bob in her contacts
+    And Bob has Alice in his contacts
+    When Alice and Bob hold their phones together again
+    Then neither should be asked whether to start a new connection
+    And Alice's connection to Bob should be the one she had
+
   # Audio Proximity Verification Details
 
   @cross-platform @desktop @implemented
