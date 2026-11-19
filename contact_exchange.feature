@@ -375,7 +375,7 @@ Feature: Contact Card Exchange
   # a removal. The phone that still holds it asks before it starts a new
   # connection (vauchi/private#1285).
 
-  @duplicate @reconnect @planned
+  @duplicate @reconnect @planned @issue-1285
   Scenario: Meeting again asks before starting a new connection
     Given Alice has Bob in her contacts
     And Bob no longer has Alice in his contacts
@@ -385,7 +385,7 @@ Feature: Contact Card Exchange
     And Bob should have no contact for Alice yet
     And both phones should keep showing their codes
 
-  @duplicate @reconnect @planned
+  @duplicate @reconnect @planned @issue-1285
   Scenario: Starting a new connection after meeting again
     Given Alice has Bob in her contacts
     And Bob no longer has Alice in his contacts
@@ -395,7 +395,7 @@ Feature: Contact Card Exchange
     And Alice and Bob should share the key of this exchange
     And Alice's notes and groups for Bob should be kept
 
-  @duplicate @reconnect @planned
+  @duplicate @reconnect @planned @issue-1285
   Scenario: Leaving the old connection after meeting again
     Given Alice has Bob in her contacts
     And Bob no longer has Alice in his contacts
@@ -405,7 +405,7 @@ Feature: Contact Card Exchange
     And Bob should have no contact for Alice
     And both should be told that no new connection was started
 
-  @duplicate @reconnect @planned
+  @duplicate @reconnect @planned @issue-1285
   Scenario: Nobody answers the reconnect question
     Given Alice has Bob in her contacts
     And Bob no longer has Alice in his contacts
@@ -415,7 +415,7 @@ Feature: Contact Card Exchange
     And Bob should have no contact for Alice
     And both should be told that nobody answered in time
 
-  @duplicate @reconnect @planned
+  @duplicate @reconnect @planned @issue-1285
   Scenario: Two phones that still have each other are not asked
     Given Alice has Bob in her contacts
     And Bob has Alice in his contacts
