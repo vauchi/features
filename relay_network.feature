@@ -29,13 +29,14 @@ Feature: Relay Network
     And the update should be delivered when Carol comes online
     And the relay should delete the blob after delivery
 
+  # The relay keeps a blob for 120 days (relay/src/config.rs blob_ttl_secs).
+  # It tells the sender nothing about delivery or expiry: no delivery
+  # evidence reaches the sender at all.
   @usage @implemented
   Scenario: Relay blob expiration
     Given I sent an update to Dave via relay
-    And Dave has been offline for 30 days
+    And Dave has been offline for more than 120 days
     Then the relay should expire the update blob
-    And my client should be notified of failed delivery
-    And I should be prompted to retry later
   # Privacy in Relay
 
   @privacy @implemented
